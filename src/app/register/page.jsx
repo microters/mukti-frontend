@@ -7,6 +7,7 @@ import logo from "../../../public/assets/logo-black.png";
 import backgroundImage from "@/../public/assets/banner.jpg";
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
   // State for form fields
   const [formData, setFormData] = useState({
     name: "",
@@ -17,10 +18,10 @@ const Register = () => {
 
   // State for validation errors
   const [errors, setErrors] = useState({
-    name: true,
-    email: true,
-    phone: true,
-    password: true,
+    name: false,
+    email: false,
+    phone: false,
+    password: false,
   });
 
   // Email validation regex (basic validation for standard email formats)
@@ -180,7 +181,7 @@ const Register = () => {
             </label>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Enter Your Password"
                 className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
@@ -194,10 +195,35 @@ const Register = () => {
                   <Icon icon="proicons:alert-circle" width="20" />
                 </div>
               )}
+              <div
+                className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <Icon
+                  icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
+                  width="24"
+                />
+              </div>
             </div>
             {errors.password && (
-              <p className="text-red-500 text-sm mt-2">Password is required</p>
+              <p className="text-red-500 text-sm mt-2">
+                Password is required
+              </p>
             )}
+          </div>
+
+          {/* Checkbox Input */}
+          <div className="flex gap-2 items-center">
+            <input type="checkbox" id="agreement" className="hidden peer" />
+            <span className="h-4 w-4 border flex-none border-slate-100  rounded  inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1">
+              <Icon icon="mynaui:check" width="24" className="text-slate-100" />
+            </span>
+            <label
+              htmlFor="agreement"
+              className=" cursor-pointer font-jost font-normal text-base text-slate-400"
+            >
+              You accept our Terms and Conditions and Privacy Policy
+            </label>
           </div>
 
           {/* Submit Button */}
