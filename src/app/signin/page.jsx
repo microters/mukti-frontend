@@ -27,9 +27,7 @@ const Signin = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Check if all fields are valid
-  const isFormValid =
-    !Object.values(errors).includes(true) &&
-    Object.values(formData).every((value) => value.trim() !== "");
+  const isFormValid = !Object.values(errors).includes(true);
 
   // Handle input change with validation
   const handleChange = (e) => {
@@ -42,6 +40,7 @@ const Signin = () => {
       ...prev,
       [id]: id === "email" ? !emailRegex.test(value) : value.trim() === "",
     }));
+    const isFormValid = !isFormValid;
   };
 
   // Handle form submission
@@ -129,7 +128,10 @@ const Signin = () => {
           <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="text-slate-800 mb-2 font-jost font-medium text-base block">
+              <label
+                htmlFor="email"
+                className="text-slate-800 mb-2 font-jost font-medium text-base block"
+              >
                 Email
               </label>
               <div className="relative">
@@ -143,12 +145,25 @@ const Signin = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
+                {errors.email && (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                )}
               </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-2">
+                  Enter a valid email address
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="text-slate-800 mb-2 font-jost font-medium text-base block">
+              <label
+                htmlFor="password"
+                className="text-slate-800 mb-2 font-jost font-medium text-base block"
+              >
                 Password
               </label>
               <div className="relative">
@@ -162,13 +177,29 @@ const Signin = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                <div
-                  className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <Icon icon={showPassword ? "mdi:eye" : "mdi:eye-off"} width="24" />
-                </div>
+                {errors.password && (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                )}
+
+                {!errors.password && (
+                  <div
+                    className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <Icon
+                      icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
+                      width="24"
+                    />
+                  </div>
+                )}
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-2">
+                  Password is required
+                </p>
+              )}
             </div>
 
             {/* Forgot Password Button */}
@@ -198,7 +229,10 @@ const Signin = () => {
         {/* Register Link */}
         <p className="text-center font-jost font-normal text-base text-M-text-color mt-4 uppercase">
           Not Registered Yet?{" "}
-          <Link href={"#"} className="text-M-heading-color font-medium hover:underline">
+          <Link
+            href={"#"}
+            className="text-M-heading-color font-medium hover:underline"
+          >
             Register Now
           </Link>
         </p>
