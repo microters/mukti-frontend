@@ -33,3 +33,8 @@ h4 {
 .has-error {
   @apply border-red-500 focus:outline-red-500 focus:outline-offset-0 focus:outline-1;
 }
+
+/* Footer Area */
+.footer-menu-list-item {
+  @apply text-white text-sm font-poppins font-normal relative transition-all duration-300 hover:text-M-primary-color;
+}
