@@ -3,9 +3,9 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Link from "next/link";
 
-import callIcon from "@/../public/assets/phone2.png";
-import mailIcon from "@/../public/assets/mail.png";
-import Logo from "@/../public/assets/logo-white.png";
+import callIcon from "@/assets/images/phone2.png";
+import mailIcon from "@/assets/images/mail.png";
+import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
 
 const Header = () => {
