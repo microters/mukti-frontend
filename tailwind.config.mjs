@@ -17,8 +17,9 @@ export default {
         "M-secondary-color": "#EA2A2E",
         "M-section-bg": "#EBF7F6",
         "M-text-color": "#6A7C92",
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      },
+      backgroundImage: {
+        'heroBG': "@/public/assets/heroBG.png",
       },
     },
   },
