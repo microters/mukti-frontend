@@ -1,0 +1,31 @@
+{
+    "specialists": [
+      { "id": 1, "name": "Dr. Nahidul Islam", "specialty": "Cardiology", "rating": 124, "location": "Georgia, USA", "image": "@/assets/images/doctor1.png", "category": "Cardiology" },
+      { "id": 2, "name": "Dr. Roksana Rahman", "specialty": "Cardiology", "rating": 132, "location": "New York, USA", "image": "/assets/images/doctor2.png", "category": "Cardiology" },
+      { "id": 3, "name": "Dr. Towkib Tanvir", "specialty": "Cardiology", "rating": 140, "location": "California, USA", "image": "/assets/images/doctor3.png", "category": "Cardiology" },
+      { "id": 4, "name": "Dr. Nasai Eshal", "specialty": "Cardiology", "rating": 110, "location": "Texas, USA", "image": "/assets/images/doctor4.png", "category": "Cardiology" },
+      { "id": 5, "name": "Dr. Sarah Khan", "specialty": "Cardiology", "rating": 98, "location": "Florida, USA", "image": "/assets/images/doctor5.png", "category": "Cardiology" },
+      { "id": 6, "name": "Dr. John Doe", "specialty": "Cardiology", "rating": 85, "location": "Washington, USA", "image": "/assets/images/doctor6.png", "category": "Cardiology" },
+      
+      { "id": 7, "name": "Dr. Alice Brown", "specialty": "Hematology", "rating": 100, "location": "Ohio, USA", "image": "/assets/images/doctor7.png", "category": "Hematology" },
+      { "id": 8, "name": "Dr. Emily Clark", "specialty": "Hematology", "rating": 120, "location": "Georgia, USA", "image": "/assets/images/doctor8.png", "category": "Hematology" },
+      { "id": 9, "name": "Dr. Michael Smith", "specialty": "Hematology", "rating": 115, "location": "California, USA", "image": "/assets/images/doctor9.png", "category": "Hematology" },
+      { "id": 10, "name": "Dr. Olivia Taylor", "specialty": "Hematology", "rating": 105, "location": "New York, USA", "image": "/assets/images/doctor10.png", "category": "Hematology" },
+      { "id": 11, "name": "Dr. Sophia Wilson", "specialty": "Hematology", "rating": 99, "location": "Texas, USA", "image": "/assets/images/doctor11.png", "category": "Hematology" },
+      { "id": 12, "name": "Dr. James Lee", "specialty": "Hematology", "rating": 102, "location": "Washington, USA", "image": "/assets/images/doctor12.png", "category": "Hematology" },
+      
+      { "id": 13, "name": "Dr. Henry Adams", "specialty": "Pulmonology", "rating": 130, "location": "Georgia, USA", "image": "/assets/images/doctor13.png", "category": "Pulmonology" },
+      { "id": 14, "name": "Dr. Rachel Green", "specialty": "Pulmonology", "rating": 125, "location": "New York, USA", "image": "/assets/images/doctor14.png", "category": "Pulmonology" },
+      { "id": 15, "name": "Dr. Monica Bing", "specialty": "Pulmonology", "rating": 110, "location": "California, USA", "image": "/assets/images/doctor15.png", "category": "Pulmonology" },
+      { "id": 16, "name": "Dr. Chandler Bing", "specialty": "Pulmonology", "rating": 108, "location": "Texas, USA", "image": "/assets/images/doctor16.png", "category": "Pulmonology" },
+      { "id": 17, "name": "Dr. Joey Tribbiani", "specialty": "Pulmonology", "rating": 99, "location": "Florida, USA", "image": "/assets/images/doctor17.png", "category": "Pulmonology" },
+      { "id": 18, "name": "Dr. Ross Geller", "specialty": "Pulmonology", "rating": 105, "location": "Washington, USA", "image": "/assets/images/doctor18.png", "category": "Pulmonology" },
+  
+      { "id": 19, "name": "Dr. Emily White", "specialty": "Dermatology", "rating": 112, "location": "Chicago, USA", "image": "/assets/images/doctor19.png", "category": "Dermatology" },
+      { "id": 20, "name": "Dr. Liam Scott", "specialty": "Dermatology", "rating": 117, "location": "San Francisco, USA", "image": "/assets/images/doctor20.png", "category": "Dermatology" },
+      { "id": 21, "name": "Dr. Mia Johnson", "specialty": "Dermatology", "rating": 109, "location": "Seattle, USA", "image": "/assets/images/doctor21.png", "category": "Dermatology" },
+      { "id": 22, "name": "Dr. Noah Carter", "specialty": "Dermatology", "rating": 113, "location": "Boston, USA", "image": "/assets/images/doctor22.png", "category": "Dermatology" },
+      { "id": 23, "name": "Dr. Ava Wilson", "specialty": "Dermatology", "rating": 105, "location": "Denver, USA", "image": "/assets/images/doctor23.png", "category": "Dermatology" },
+      { "id": 24, "name": "Dr. William Brown", "specialty": "Dermatology", "rating": 118, "location": "Phoenix, USA", "image": "/assets/images/doctor24.png", "category": "Dermatology" }
+    ]
+  }
