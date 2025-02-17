@@ -1,12 +1,10 @@
 import React from 'react';
 import appointment from "@/assets/images/appointment.png";
 import Image from 'next/image';
-import Container from '@/app/Component/Shared/Container/Container';
 
 const Appointment = () => {
     return (
-       <Container>
-           <div className="flex justify-between items-center gap-32 py-24">
+           <div className="container flex justify-between items-center gap-32 py-24">
             {/* Left Section: Appointment Form */}
             <div className="w-full lg:w-1/2 bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-[#24285B] mb-6">Book Appointment</h2>
@@ -67,7 +65,6 @@ const Appointment = () => {
                 />
             </div>
         </div>
-       </Container>
     );
 };
 
