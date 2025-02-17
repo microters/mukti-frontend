@@ -3,8 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import logo from "../../../public/assets/logo-black.png";
-import backgroundImage from "@/../public/assets/banner.jpg";
+import logo from "@/assets/images/logo-black.png";
+import backgroundImage from "@/assets/images/banner.jpg";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);

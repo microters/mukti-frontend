@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import logo from "../../../public/assets/logo-black.png";
+import logo from "@/assets/images/logo-black.png";
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -65,8 +65,7 @@ const Signin = () => {
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
       {/* Left Side with Background Image */}
       <div
-        className="hidden md:flex justify-center items-center bg-cover bg-no-repeat bg-right-top"
-        style={{ backgroundImage: "url('/assets/2.jpg')" }}
+        className="hidden md:flex justify-center items-center bg-cover bg-no-repeat bg-right-top bg-[url(@/assets/images/2.jpg)]"x
       >
         <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
       </div>
