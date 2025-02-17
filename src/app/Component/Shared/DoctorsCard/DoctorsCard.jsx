@@ -9,7 +9,7 @@ const DoctorsCard = ({ doctor }) => {
     
   return (
     <div className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between">
-      <div className="flex py-7 px-6 gap-7">
+      <div className="block sm:flex py-7 px-6 gap-7 space-y-5 sm:space-y-0">
         <div className="border-2 border-transparent size-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
           <Image
             src={doctor?.image}
@@ -35,17 +35,17 @@ const DoctorsCard = ({ doctor }) => {
           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
             <Link href={doctor.profileLink}>{doctor.name}</Link>
           </h3>
-          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2">
-          <Icon icon="oui:index-open" width="24" className="text-M-heading-color"/> {doctor.qualification}
+          <p className="text-M-text-color text-base font-normal font-jost flex gap-2">
+          <Icon icon="oui:index-open" width="16" className="text-M-heading-color shrink-0 relative top-[2px]"/> {doctor.qualification}
           </p>
-          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2">
-          <Icon icon="mdi:location-on-outline" width="24" className="text-M-heading-color" /> Mukti Hospital
+          <p className="text-[#858585] text-base font-normal font-jost flex items-center gap-2 mt-3">
+          <Icon icon="mdi:location-on-outline" width="16" className="text-M-heading-color shrink-0" /> Mukti Hospital
           </p>
         </div>
       </div>
       <Link
         href={doctor.appointmentLink}
-        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
+        className="bg-[#E8EEF4] text-M-heading-color text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
       >
         Book An Appointment
       </Link>

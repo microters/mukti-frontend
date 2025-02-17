@@ -83,7 +83,7 @@ const BestDoctors = () => {
     {
       name: "Dr. Robert Lewis",
       specialization: "Dermatology",
-      image: image1,
+      image: image2,
       reviews: 152,
       qualification: "MDS - Dermatology",
       profileLink: "#",
@@ -92,7 +92,7 @@ const BestDoctors = () => {
     {
       name: "Dr. Jessica Lee",
       specialization: "Cardiology",
-      image: image2,
+      image: image5,
       reviews: 65,
       qualification: "MD - Cardiology",
       profileLink: "#",
@@ -101,7 +101,7 @@ const BestDoctors = () => {
     {
       name: "Dr. William Harris",
       specialization: "Gastroenterology",
-      image: image3,
+      image: image2,
       reviews: 120,
       qualification: "MD - Gastroenterology",
       profileLink: "#",
@@ -110,7 +110,7 @@ const BestDoctors = () => {
     {
       name: "Dr. Mia Young",
       specialization: "Ear-Nose-Throat",
-      image: image4,
+      image: image1,
       reviews: 80,
       qualification: "MD - ENT",
       profileLink: "#",
@@ -119,7 +119,7 @@ const BestDoctors = () => {
     {
       name: "Dr. David Robinson",
       specialization: "Ophthalmology",
-      image: image5,
+      image: image3,
       reviews: 90,
       qualification: "MD - Ophthalmology",
       profileLink: "#",
@@ -128,7 +128,7 @@ const BestDoctors = () => {
     {
       name: "Dr. Sophia Martinez",
       specialization: "Nephrology",
-      image: image4,
+      image: image2,
       reviews: 102,
       qualification: "MD - Nephrology",
       profileLink: "#",
@@ -147,13 +147,13 @@ const BestDoctors = () => {
         />
         <div className="p-4 mx-auto mt-8">
           {/* Tab Buttons */}
-          <div className="flex justify-between space-x-2 py-4 px-7 bg-M-heading-color rounded-md">
+          <div className="block sm:flex sm:flex-wrap justify-between space-x-2 py-4 px-7 bg-M-heading-color rounded-md">
             {categoryData.map((tab) => (
               <button
                 key={tab.title}
                 onClick={() => setActiveTab(tab.title)}
-                className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base  uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:absolute before:-right-[24px] before:top-1/2 before:-translate-y-1/2 before:w-[1px] before:h-1/2 before:bg-white last:before:hidden  ${
-                  activeTab === tab.title ? "text-M-heading-color bg-white" : "text-white "
+                className={`block w-full sm:w-auto px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-xs sm:text-base  uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:hidden sm:before:inline before:absolute before:-right-[24px] before:top-1/2 before:-translate-y-1/2 before:w-[1px] before:h-1/2 before:bg-white last:before:hidden  ${
+                  activeTab === tab.title ? "text-M-heading-color bg-white" : "text-white"
                 }`}
               >
                 {tab.title}
