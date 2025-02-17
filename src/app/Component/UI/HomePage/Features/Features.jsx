@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
 
 // Import images
 import rkShape1 from "@/assets/images/features-shape4.png";
@@ -67,22 +68,9 @@ const Features = () => {
             <h3 className={`text-xl text-[${card.color}] mt-2`}>{card.subtitle}</h3>
             <Link
               href={card.link}
-              className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] rounded-full mt-5 group-hover:-rotate-45 transition-transform duration-300"
+              className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] rounded-full mt-5 group-hover:-rotate-45 transition-transform duration-300 text-[#39CABB]"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="21"
-                height="15"
-                viewBox="0 0 21 15"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M16.8552 8.34364L11.3891 13.6442L12.5638 14.8556L20.1494 7.49989L12.5638 0.144165L11.3891 1.35562L16.8552 6.65614H0.374884V8.34364H16.8552Z"
-                  fill="#39CABB"
-                />
-              </svg>
+              <Icon icon="solar:arrow-right-linear" width="24" />
             </Link>
           </div>
         ))}

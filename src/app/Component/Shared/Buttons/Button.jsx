@@ -17,7 +17,7 @@ const Button = ({
   return (
     <div className={`${alignment}`}>
       <Link
-        className={`inline-flex gap-4 ${buttonColor} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase hover:bg-M-secondary-color hover:border-M-secondary-color transition-all duration-300`}
+        className={`inline-flex gap-4 ${buttonColor} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase hover:bg-M-heading-color hover:border-M-heading-color transition-all duration-300`}
         href={linkHref}
       >
         {buttonText}
