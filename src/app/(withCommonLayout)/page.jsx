@@ -6,6 +6,7 @@ import About from '../Component/UI/HomePage/About/About';
 import Category from '../Component/UI/HomePage/Category/Category';
 import BestDoctors from '../Component/UI/HomePage/BestDoctors/BestDoctors';
 import WhyChooseUs from '../Component/UI/HomePage/WhyChooseUs/WhyChooseUs';
+import MobileApp from '../Component/UI/HomePage/MobileApp/MobileApp';
 
 
 const HomePage = () => {
@@ -18,6 +19,7 @@ const HomePage = () => {
             <BestDoctors/>
             <Appointment/>
             <WhyChooseUs/>
+            <MobileApp/>
         </div>
     );
 };

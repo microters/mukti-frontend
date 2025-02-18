@@ -51,7 +51,7 @@ const Appointment = () => {
                 />
               </div>
               <FormButton
-                buttonText="Book Appointment"
+                buttonText="Appointment Now"
                 buttonColor="bg-M-heading-color"
                 textColor="text-white"
                 borderColor="border-M-heading-color"
