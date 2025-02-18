@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
-import logo from "../../../public/assets/logo-black.png";
+import logo from "../../assets/images/logo-black.png";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
