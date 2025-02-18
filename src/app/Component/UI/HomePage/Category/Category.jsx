@@ -67,13 +67,13 @@ const Category = () => {
 
                   {/* Department Icon */}
                   <div className="flex items-center justify-center size-20 mx-auto mb-3">
-                    <Image 
+                    {/* <Image 
                       src={department.icon} 
                       alt={department.translations.en.name} 
                       width={80} 
                       height={80} 
                       className="rounded-full object-cover" 
-                    />
+                    /> */}
                   </div>
 
                   {/* Department Name */}
