@@ -45,7 +45,7 @@ const DoctorsCard = ({ doctor }) => {
 
           {/* Doctor Name */}
           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
-            <Link href={profileLink} className="hover:text-M-primary-color transition-all duration-300">
+            <Link href={profileLink} className="hover:text-M-primary-color transition-all duration-300 capitalize">
               {enTranslation.name || "No Name Available"}
             </Link>
           </h3>
@@ -57,7 +57,7 @@ const DoctorsCard = ({ doctor }) => {
           </p>
 
           {/* Location */}
-          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2">
+          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
             <Icon icon="mdi:location-on-outline" width="24" className="text-M-heading-color" /> Mukti Hospital
           </p>
         </div>
