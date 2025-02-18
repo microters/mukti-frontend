@@ -89,7 +89,7 @@ export default async function Category() {
 
         {/* Button to view all services */}
         <Button
-          linkHref="/services"
+          linkHref="/"
           buttonText="All Services"
           buttonColor="bg-M-secondary-color"
           textColor="text-white"

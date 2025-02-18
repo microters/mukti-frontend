@@ -2,7 +2,6 @@
 
 import BestDoctorsClient from "./BestDoctorsClient";
 
-
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 // **Server-side function to fetch doctors (Allowed in Server Components)**
@@ -14,6 +13,7 @@ const fetchDoctorsData = async () => {
       headers: { "x-api-key": apiKey },
       cache: "no-store", // Ensures fresh data
     });
+    console.log(response);
 
     if (!response.ok) {
       throw new Error("Failed to fetch doctors data");
@@ -22,7 +22,11 @@ const fetchDoctorsData = async () => {
     const data = await response.json();
 
     // Extract unique departments dynamically
-    const uniqueDepartments = [...new Set(data.map((doctor) => doctor?.translations?.en?.department || "Unknown"))];
+    const uniqueDepartments = [
+      ...new Set(
+        data.map((doctor) => doctor?.translations?.en?.department || "Unknown")
+      ),
+    ];
 
     return { doctors: data, departments: uniqueDepartments };
   } catch (error) {
@@ -34,7 +38,7 @@ const fetchDoctorsData = async () => {
 // **Server Component - Fetches data before passing it to Client Component**
 const BestDoctors = async () => {
   const { doctors, departments } = await fetchDoctorsData();
-  
+
   return <BestDoctorsClient doctors={doctors} departments={departments} />;
 };
 
