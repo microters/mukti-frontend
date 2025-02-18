@@ -6,6 +6,10 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "0 15px",
+    },
     extend: {
       fontFamily: {
         jost: ["Jost", "serif"],
@@ -17,9 +21,28 @@ export default {
         "M-secondary-color": "#EA2A2E",
         "M-section-bg": "#EBF7F6",
         "M-text-color": "#6A7C92",
-        background: "var(--background)",
-        foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        'heroBG': "@/public/assets/heroBG.png",
+      },
+      animation: {
+        spin: 'spin 6s linear infinite',
+      },
+      keyframes: {
+        spin: {
+          '0%': {
+            transform: 'rotate(0deg)',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+          },
+        },
+        pulse: {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.1)", opacity: "0.7" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+      }
     },
   },
   plugins: [],

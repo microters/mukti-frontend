@@ -16,9 +16,7 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box
 }
 
 h1,
@@ -28,13 +26,47 @@ h4 {
   @apply font-jost font-bold leading-[1.4];
 }
 
+.container {
+  @apply mx-auto max-w-[1320px] px-3;
+}
 
 /* Input Field */ 
 .has-error {
   @apply border-red-500 focus:outline-red-500 focus:outline-offset-0 focus:outline-1;
 }
 
+.appointment-input-field {
+  @apply px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none border-[#EBF7F6] text-M-text-color;
+}
+
 /* Footer Area */
 .footer-menu-list-item {
   @apply text-white text-sm font-poppins font-normal relative transition-all duration-300 hover:text-M-primary-color;
+}
+
+
+/* Slider Navigation */
+.swiper-button-next, .swiper-rtl .swiper-button-prev,
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+  width: 30px !important;
+  height: 30px !important;
+}
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+  background-color: #009650;
+  width: 30px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  font-size: 18px !important;
+  color: #fff !important;
+}
+
+.swiper-button-next, .swiper-rtl .swiper-button-prev {
+  right: 0 !important;
+}
+
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+  left: 0 !important;
 }

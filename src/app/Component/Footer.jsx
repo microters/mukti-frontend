@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 
-import Logo from '@/../public/assets/logo-white.png';
-import gPlay from '@/../public/assets/google-play.png';
-import appStore from '@/../public/assets/app-store.png';
-import callIcon from '@/../public/assets/phone1.png';
-import shape from '@/../public/assets/shape.png';
+import Logo from '@/assets/images/logo-white.png';
+import gPlay from '@/assets/images/google-play.png';
+import appStore from '@/assets/images/app-store.png';
+import callIcon from '@/assets/images/phone1.png';
+import shape from '@/assets/images/shape.png';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
