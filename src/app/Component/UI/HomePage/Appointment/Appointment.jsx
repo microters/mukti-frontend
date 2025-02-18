@@ -1,71 +1,75 @@
-import React from 'react';
+import React from "react";
 import appointment from "@/assets/images/appointment.png";
-import Image from 'next/image';
+import Image from "next/image";
+import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 
 const Appointment = () => {
-    return (
-           <div className="container flex justify-between items-center gap-32 py-24">
-            {/* Left Section: Appointment Form */}
-            <div className="w-full lg:w-1/2 bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-[#24285B] mb-6">Book Appointment</h2>
-                <form>
-                    <div className="mb-4">
-                        <select className="mt-2 w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            <option>Select Department</option>
-                            <option>Cardiology</option>
-                            <option>Dermatology</option>
-                            <option>Neurology</option>
-                            {/* Add more options */}
-                        </select>
-                    </div>
-                    <div className="mb-4">
-                        <select className="mt-2 w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            <option>Select Doctor</option>
-                            <option>Dr. Nahidul Islam</option>
-                            <option>Dr. Sarah Khan</option>
-                            <option>Dr. Emily Clark</option>
-                            {/* Add more options */}
-                        </select>
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            placeholder="John Doe"
-                            className="mt-2 w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="tel"
-                            placeholder="Phone Numbers"
-                            className="mt-2 w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-                        <input
-                            type="date"
-                            placeholder="mm/dd/yyyy"
-                            className="mt-2 w-full px-4 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full py-2 bg-[#2E2E88] text-white rounded-md hover:bg-blue-600 transition-all"
-                    >
-                        Appointment Now
-                    </button>
-                </form>
-            </div>
-
-            <div className="hidden lg:block w-1/2">
-               <Image
-                    src={appointment}
-                    alt="appointment"
+  return (
+    <div className="bg-[url('@/assets/images/section-bg.png')] rounded-lg">
+      <div className="container flex justify-between items-center gap-20 py-24">
+        <div className="max-w-[480px] w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
+          <div className="w-full relative z-10 bg-white p-8 rounded-[40px] shadow-lg">
+            <h2 className="text-2xl font-semibold text-[#24285B] mb-6 text-center">
+              Book Appointment
+            </h2>
+            <form className="space-y-5">
+              <div>
+                <select className="appointment-input-field">
+                  <option>Select Department</option>
+                  <option>Cardiology</option>
+                  <option>Dermatology</option>
+                  <option>Neurology</option>
+                </select>
+              </div>
+              <div>
+                <select className="appointment-input-field">
+                  <option>Select Doctor</option>
+                  <option>Dr. Nahidul Islam</option>
+                  <option>Dr. Sarah Khan</option>
+                  <option>Dr. Emily Clark</option>
+                </select>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="John Doe"
+                  className="appointment-input-field"
                 />
-            </div>
+              </div>
+              <div>
+                <input
+                  type="tel"
+                  placeholder="Phone Numbers"
+                  className="appointment-input-field"
+                />
+              </div>
+              <div>
+                <input
+                  type="date"
+                  placeholder="mm/dd/yyyy"
+                  className="appointment-input-field"
+                />
+              </div>
+              <FormButton
+                buttonText="Book Appointment"
+                buttonColor="bg-M-heading-color"
+                textColor="text-white"
+                borderColor="border-M-heading-color"
+                padding="py-3 px-8"
+                fontSize="text-lg"
+                icons="iconamoon:arrow-right-2-light"
+                alignment="text-center"
+              />
+            </form>
+          </div>
         </div>
-    );
+
+        <div className="hidden lg:block w-1/2">
+          <Image src={appointment} alt="appointment" />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Appointment;
