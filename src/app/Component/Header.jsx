@@ -7,8 +7,10 @@ import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { i18n } = useTranslation(["header"]);
 
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
@@ -18,6 +20,12 @@ const Header = () => {
     event.preventDefault();
     setOpenIndex(openIndex === index ? null : index); 
   };
+
+  const handleLanguageChange = (e) => {
+    const language = e.target.value;
+    console.log(language); // For debugging purposes
+    i18n.changeLanguage(language); 
+};
 
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
@@ -98,7 +106,8 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none">
+                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none" onChange={handleLanguageChange}
+                            value={i18n.language}>
                     <option value="en">English</option>
                     <option value="bn">Bangla</option>
                   </select>
