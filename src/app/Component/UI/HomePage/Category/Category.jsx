@@ -11,8 +11,6 @@ import axios from "axios";
 import shape from "@/assets/images/features-shape3.png";
 // import defaultIcon from "@/assets/images/default-category.png"; // Fallback image for missing icons
 
-const BASE_URL = "http://localhost:3000/uploads"; // Your uploads folder
-
 const Category = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +28,7 @@ const Category = () => {
         const formattedDepartments = response.data.map((department) => ({
           ...department,
           icon: department.icon && typeof department.icon === "string"
-            ? `${BASE_URL}/${department.icon}` // Construct full URL only if valid
+            ? `http://localhost:3000/uploads/${department.icon}` // Construct full URL only if valid
             : "defaultIcon", // Use fallback image if icon is null or invalid
         }));
 
@@ -44,6 +42,7 @@ const Category = () => {
 
     fetchDepartments();
   }, []);
+  console.log(departments)
 
   return (
     <div className="bg-[#E6F5F3] py-[100px] px-[10px]">
@@ -67,13 +66,13 @@ const Category = () => {
 
                   {/* Department Icon */}
                   <div className="flex items-center justify-center size-20 mx-auto mb-3">
-                    {/* <Image 
+                    <Image 
                       src={department.icon} 
                       alt={department.translations.en.name} 
                       width={80} 
                       height={80} 
                       className="rounded-full object-cover" 
-                    /> */}
+                    />
                   </div>
 
                   {/* Department Name */}
