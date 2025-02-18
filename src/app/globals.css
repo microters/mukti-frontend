@@ -43,3 +43,30 @@ h4 {
 .footer-menu-list-item {
   @apply text-white text-sm font-poppins font-normal relative transition-all duration-300 hover:text-M-primary-color;
 }
+
+
+/* Slider Navigation */
+.swiper-button-next, .swiper-rtl .swiper-button-prev,
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+  width: 30px !important;
+  height: 30px !important;
+}
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+  background-color: #009650;
+  width: 30px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  font-size: 18px !important;
+  color: #fff !important;
+}
+
+.swiper-button-next, .swiper-rtl .swiper-button-prev {
+  right: 0 !important;
+}
+
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+  left: 0 !important;
+}

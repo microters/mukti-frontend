@@ -34,6 +34,8 @@ const BestDoctors = () => {
 
     fetchDoctorsData();
   }, []);
+  console.log(doctorsList);
+  
 
   // Filter doctors based on active tab
   const filteredDoctors = doctorsList.filter(
