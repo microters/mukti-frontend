@@ -75,13 +75,15 @@ const Blog = () => {
                 </Link>
               </div>
               <div className="px-5 py-5 space-y-3">
-                <h3 className="text-xl">
+                <h3 className="text-xl line-clamp-2">
                   <Link href={"#"}>{post.title}</Link>
                 </h3>
                 <p className="bg-[#009650]/10 border-l-2 border-M-primary-color py-3 px-4 rounded text-M-text-color text-sm font-semibold">
                   {post.category}
                 </p>
-                <p className="text-M-text-color">{post.description}</p>
+                <p className="text-M-text-color line-clamp-3">
+                  {post.description}
+                </p>
                 <div className="border-t border-[#F8FBFE] pt-3 flex items-center flex-wrap gap-4 ">
                   <p className="flex items-center gap-2 text-sm text-M-text-color bg-[#F8FBFE] py-2 px-2 rounded hover:bg-M-heading-color transition-all duration-300 hover:text-white group">
                     <Icon
