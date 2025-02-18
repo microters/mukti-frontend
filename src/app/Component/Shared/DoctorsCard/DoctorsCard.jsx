@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import profileImage from "@/assets/images/profileAvatar.png";
 
 const DoctorsCard = ({ doctor }) => {
   if (!doctor) return null; // Prevents rendering if doctor data is missing
@@ -17,7 +18,8 @@ const DoctorsCard = ({ doctor }) => {
         {/* Doctor Image */}
         <div className="border-2 border-transparent size-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
           <Image
-            src={doctor.profilePhoto || "/default-doctor.png"} 
+            // src={doctor.profilePhoto || profileImage} 
+            src={profileImage}
             alt={enTranslation.name || "Doctor"}
             width={96}
             height={96}
