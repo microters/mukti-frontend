@@ -115,7 +115,7 @@ const Register = () => {
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
-          <Image className="mx-auto mb-10" src={logo} alt="Logo" />
+          <Link href="/"><Image className="mx-auto mb-10" src={logo} alt="Logo" /></Link>
           <h1 className="text-4xl text-black font-jost font-bold">
             {showOtp ? "Verify OTP" : "Sign Up"}
           </h1>
@@ -331,6 +331,16 @@ const Register = () => {
             </button>
           </form>
         )}
+
+        <p className="text-center font-jost font-normal text-base text-M-text-color mt-4 uppercase">
+          Already Registered?{" "}
+          <Link
+            href="signin"
+            className="text-M-heading-color font-medium hover:underline"
+          >
+            Sign In
+          </Link>
+        </p>
       </div>
     </div>
   );
