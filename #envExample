@@ -1,2 +1,6 @@
+<<<<<<< HEAD
+
+=======
 NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+>>>>>>> a2a8d3d183c485c49317da7a0e1cfbf901ea50a3
 NEXT_PUBLIC_API_KEY=caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079
