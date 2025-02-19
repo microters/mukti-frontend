@@ -33,7 +33,8 @@ const Register = () => {
   });
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isFormValid = Object.values(errors).every((err) => err === false) && agreeTerms;
+  const isFormValid =
+    Object.values(errors).every((err) => err === false) && agreeTerms;
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -43,10 +44,7 @@ const Register = () => {
     // Validation
     setErrors({
       ...errors,
-      [id]:
-        id === "email"
-          ? !emailRegex.test(value)
-          : value.trim() === "",
+      [id]: id === "email" ? !emailRegex.test(value) : value.trim() === "",
     });
   };
 
@@ -57,7 +55,10 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", formData);
+      const response = await axios.post(
+        "http://localhost:5000/api/register",
+        formData
+      );
 
       if (response.status === 200) {
         setShowOtp(true);
@@ -83,10 +84,13 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/verify-otp", {
-        email: storedEmail,
-        otp,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/verify-otp",
+        {
+          email: storedEmail,
+          otp,
+        }
+      );
 
       if (response.status === 200) {
         alert("OTP verified successfully! Redirecting...");
@@ -102,7 +106,7 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="bg-[url('/assets/2.jpg')] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
+      <div className="bg-[url(@/assets/images/authBG.jpg)] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
         <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
@@ -112,7 +116,9 @@ const Register = () => {
             {showOtp ? "Verify OTP" : "Sign Up"}
           </h1>
           <p className="text-base text-slate-400 font-poppins">
-            {showOtp ? "Enter the OTP sent to your email." : "Create an account to get started."}
+            {showOtp
+              ? "Enter the OTP sent to your email."
+              : "Create an account to get started."}
           </p>
           {error && <p className="text-red-500">{error}</p>}
         </div>
@@ -221,7 +227,10 @@ const Register = () => {
                   className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  <Icon icon={showPassword ? "mdi:eye" : "mdi:eye-off"} width="24" />
+                  <Icon
+                    icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
+                    width="24"
+                  />
                 </div>
               </div>
             </div>
@@ -236,7 +245,11 @@ const Register = () => {
                 onChange={() => setAgreeTerms(!agreeTerms)}
               />
               <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1">
-                <Icon icon="mynaui:check" width="24" className="text-slate-100" />
+                <Icon
+                  icon="mynaui:check"
+                  width="24"
+                  className="text-slate-100"
+                />
               </span>
               <label
                 htmlFor="agreement"

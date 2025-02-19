@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import logo from "@/assets/images/logo-black.png";
-import backgroundImage from "@/assets/images/banner.jpg";
+import backgroundImage from "@/assets/images/authBG.jpg";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,7 +67,7 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="bg-[url(@/assets/images/2.jpg)] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
+      <div className="bg-[url(@/assets/images/authBG.jpg)] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
         <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
@@ -269,10 +269,7 @@ const Register = () => {
                   className="text-slate-100"
                 />
               </span>
-              <label
-                htmlFor="agreement"
-                className=" cursor-pointer font-jost font-normal text-base text-slate-400"
-              >
+              <label htmlFor="agreement" className=" cursor-pointer font-jost font-normal text-base text-slate-400" >
                 You accept our Terms and Conditions and Privacy Policy
               </label>
             </div>

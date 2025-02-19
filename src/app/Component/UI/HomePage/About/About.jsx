@@ -51,31 +51,31 @@ const About = () => {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-2 max-w-[600px]">
-          <div className="border border-[#B2F0FB] rounded-md flex items-center gap-4 overflow-hidden">
-            <div className="w-20 h-16 bg-[#ECFCFF] flex items-center justify-center rounded-s-md rounded-r-[30px]">
-              <Image src={icon1} width={36} alt="icon" />
+          <div className="border border-[#323290] rounded-md flex items-center gap-4 overflow-hidden group">
+            <div className="w-20 h-16 bg-[#323290]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
+              <Image src={icon1} width={36} alt="icon" className="group-hover:animate-shake" />
             </div>
             <h4 className="text-base text-M-heading-color">Emergency Help</h4>
           </div>
-          <div className="border border-[#B2FDCD] rounded-md flex items-center gap-4 overflow-hidden">
-            <div className="w-20 h-16 bg-[#EEFFF4] flex items-center justify-center rounded-s-md rounded-r-[30px]">
-              <Image src={icon2} width={36} alt="icon" />
+          <div className="border border-[#B2FDCD] rounded-md flex items-center gap-4 overflow-hidden group">
+            <div className="w-20 h-16 bg-[#B2FDCD]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
+              <Image src={icon2} width={36} alt="icon" className="group-hover:animate-shake" />
             </div>
             <h4 className="text-base text-M-heading-color">
               Qualified Doctors
             </h4>
           </div>
-          <div className="border border-[#FFBDBC] rounded-md flex items-center gap-4 overflow-hidden">
-            <div className="w-20 h-16 bg-[#FFF0F0] flex items-center justify-center rounded-s-md rounded-r-[30px]">
-              <Image src={icon3} width={36} alt="icon" />
+          <div className="border border-[#FFBDBC] rounded-md flex items-center gap-4 overflow-hidden group">
+            <div className="w-20 h-16 bg-[#FFBDBC]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
+              <Image src={icon3} width={36} alt="icon" className="group-hover:animate-shake" />
             </div>
             <h4 className="text-base text-M-heading-color">
               Best Professionals
             </h4>
           </div>
-          <div className="border border-[#E2C4FF] rounded-md flex items-center gap-4 overflow-hidden">
-            <div className="w-20 h-16 bg-[#F8F8FB] flex items-center justify-center rounded-s-md rounded-r-[30px]">
-              <Image src={icon4} width={36} alt="icon" />
+          <div className="border border-[#E2C4FF] rounded-md flex items-center gap-4 overflow-hidden group">
+            <div className="w-20 h-16 bg-[#E2C4FF]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
+              <Image src={icon4} width={36} alt="icon" className="group-hover:animate-shake" />
             </div>
             <h4 className="text-base text-M-heading-color">
               Medical Treatment
