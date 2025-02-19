@@ -263,15 +263,21 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                 />
-                <div
-                  className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  <Icon
-                    icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
-                    width="24"
-                  />
-                </div>
+                {errors.password ? (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                ) : (
+                  <div
+                    className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <Icon
+                      icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
+                      width="24"
+                    />
+                  </div>
+                )}
               </div>
               {errors.password && (
                 <p className="text-red-500 text-sm mt-2">
