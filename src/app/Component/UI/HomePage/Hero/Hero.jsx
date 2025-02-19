@@ -26,7 +26,7 @@ const Hero = () => {
           </h1>
           <form className="mt-8 bg-white/10 p-4 rounded-md">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-10 justify-between items-center bg-white px-8 py-3 rounded-md">
-              <div className="flex items-center gap-2 relative before:hidden lg:before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
+              <div className="flex items-center gap-2 relative before:hidden lg:before:block before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
                 <Image src={searchIcon} alt="searchIcon" className="w-6" />
                 <input
                   type="text"
@@ -34,7 +34,7 @@ const Hero = () => {
                   className="font-jost font-normal text-base outline-none ring-0 w-full"
                 />
               </div>
-              <div className="flex items-center gap-2 relative before:hidden lg:before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
+              <div className="flex items-center gap-2 relative before:hidden lg:before:block before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
                 <Image src={departmentIcon} alt="searchIcon" className="w-6" />
                 <select
                   name="department"
