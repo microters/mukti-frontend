@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import logo from "../../assets/images/logo-black.png";
+import Link from "next/link";
+
+import bgImage from "@/assets/images/authBG.png";
 
 const Register = () => {
   const [showOtp, setShowOtp] = useState(false);
@@ -106,12 +109,13 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="bg-[url(@/assets/images/authBG.jpg)] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
-        <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
+      <div className="hidden md:flex justify-center items-center p-8">
+        {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
+        <Image className="mx-auto hidden md:block" src={bgImage} alt="Logo" />
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
-          <Image className="block mx-auto md:hidden" src={logo} alt="Logo" />
+          <Image className="mx-auto mb-10" src={logo} alt="Logo" />
           <h1 className="text-4xl text-black font-jost font-bold">
             {showOtp ? "Verify OTP" : "Sign Up"}
           </h1>
@@ -163,16 +167,26 @@ const Register = () => {
               <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
                 Name
               </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Enter Your Name"
-                className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                  errors.name ? "border-red-500" : "border-slate-500"
-                }`}
-                value={formData.name}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Enter Your Name"
+                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
+                    errors.name ? "border-red-500" : "border-slate-500"
+                  }`}
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                {errors.name && (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                )}
+              </div>
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-2">Name is required</p>
+              )}
             </div>
 
             {/* Email Input */}
@@ -180,16 +194,28 @@ const Register = () => {
               <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
                 Email
               </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter Your Email"
-                className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                  errors.email ? "border-red-500" : "border-slate-500"
-                }`}
-                value={formData.email}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="Enter Your Email"
+                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
+                    errors.email ? "border-red-500" : "border-slate-500"
+                  }`}
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                {errors.email && (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                )}
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-2">
+                  Enter a valid email address
+                </p>
+              )}
             </div>
 
             {/* Phone Input */}
@@ -197,16 +223,28 @@ const Register = () => {
               <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
                 Phone
               </label>
-              <input
-                type="tel"
-                id="phoneNumber"
-                placeholder="Enter Your Phone Number"
-                className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                  errors.phoneNumber ? "border-red-500" : "border-slate-500"
-                }`}
-                value={formData.phoneNumber}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  placeholder="Enter Your Phone Number"
+                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
+                    errors.phoneNumber ? "border-red-500" : "border-slate-500"
+                  }`}
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                />
+                {errors.phoneNumber && (
+                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
+                    <Icon icon="proicons:alert-circle" width="20" />
+                  </div>
+                )}
+              </div>
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-sm mt-2">
+                  Phone number is required
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
@@ -219,7 +257,9 @@ const Register = () => {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="Enter Your Password"
-                  className="px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300"
+                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
+                    errors.password ? "border-red-500" : "border-slate-500"
+                  }`}
                   value={formData.password}
                   onChange={handleChange}
                 />
@@ -233,10 +273,15 @@ const Register = () => {
                   />
                 </div>
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-2">
+                  Password is required
+                </p>
+              )}
             </div>
 
             {/* Terms and Conditions Checkbox */}
-            <div className="flex gap-2 items-center">
+            <div className=" relative">
               <input
                 type="checkbox"
                 id="agreement"
@@ -244,7 +289,7 @@ const Register = () => {
                 checked={agreeTerms}
                 onChange={() => setAgreeTerms(!agreeTerms)}
               />
-              <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1">
+              <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
                 <Icon
                   icon="mynaui:check"
                   width="24"
@@ -253,9 +298,16 @@ const Register = () => {
               </span>
               <label
                 htmlFor="agreement"
-                className="cursor-pointer font-jost font-normal text-base text-slate-400"
+                className="cursor-pointer font-jost font-normal text-base text-slate-400 relative z-10 pl-6"
               >
-                You accept our Terms and Conditions and Privacy Policy
+                You accept our{" "}
+                <Link href={"#"} className="text-M-heading-color">
+                  Terms and Conditions
+                </Link>{" "}
+                and{" "}
+                <Link href={"#"} className="text-M-heading-color">
+                  Privacy Policy
+                </Link>
               </label>
             </div>
 
