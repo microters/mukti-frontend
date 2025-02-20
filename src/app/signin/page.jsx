@@ -7,6 +7,8 @@ import logo from "../../assets/images/logo-black.png";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
+import bgImage from "@/assets/images/authBG.png";
+
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
@@ -84,13 +86,14 @@ const Signin = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="hidden md:flex justify-center items-center bg-cover bg-no-repeat bg-right-top" style={{ backgroundImage: "url('/assets/2.jpg')" }}>
-        <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
+      <div className="hidden md:flex justify-center items-center p-8" >
+        {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
+        <Image className="mx-auto hidden md:block" src={bgImage} alt="Logo" />
       </div>
 
       <div className="max-w-[500px] px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
-          <Image className="block mx-auto md:hidden" src={logo} alt="Logo" />
+          <Image className="block mx-auto" src={logo} alt="Logo" />
           <h1 className="text-4xl text-black font-jost font-bold">{showForgotPassword ? "Reset Password" : "Sign In"}</h1>
           <p className="text-base text-slate-400 font-poppins">{showForgotPassword ? "Enter your email to receive a password reset link" : "Sign in to start using Mukti Hospital's services"}</p>
         </div>

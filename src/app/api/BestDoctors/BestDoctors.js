@@ -2,7 +2,7 @@
 import { fetchClient } from "../fetchClient";
 
 export const getDoctorsData = async () => {
-  const data = await fetchClient("/api/doctor"); // Fetch doctors data using fetchClient utility
+  const data = await fetchClient("/api/doctor");
   if (!data) return { doctors: [], departments: [] }; // Handle errors or null data
 
   // Extract unique departments dynamically

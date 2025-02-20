@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import logo from "@/assets/images/logo-black.png";
-import backgroundImage from "@/assets/images/banner.jpg";
+import backgroundImage from "@/assets/images/authBG.png";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -67,8 +67,9 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="bg-[url(@/assets/images/2.jpg)] bg-cover bg-no-repeat bg-right-top md:flex justify-center items-center hidden">
-        <Image className="mx-auto hidden md:block" src={logo} alt="Logo" />
+      <div className="hidden md:flex justify-center items-center p-8" >
+        {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
+        <Image className="mx-auto hidden md:block" src={backgroundImage} alt="Logo" />
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
@@ -262,7 +263,7 @@ const Register = () => {
             {/* Checkbox Input */}
             <div className="flex gap-2 items-center">
               <input type="checkbox" id="agreement" className="hidden peer" />
-              <span className="h-4 w-4 border flex-none border-slate-100  rounded  inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1">
+              <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 relative transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1">
                 <Icon
                   icon="mynaui:check"
                   width="24"

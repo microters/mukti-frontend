@@ -23,22 +23,24 @@ const BestDoctors = ({ doctors, doctorDepartments }) => {
         <SectionHeading heading="Top Rated Specialists" subtitle="MEET OUR PROFESSIONALS" align="center" />
 
         <div className="p-4 mx-auto mt-8">
-          {/* Department Tabs */}
-          <div className="flex justify-center space-x-2 py-4 px-7 bg-M-heading-color rounded-md">
-            {doctorDepartments.length > 0 ? (
-              doctorDepartments.map((department) => (
-                <button
-                  key={department}
-                  onClick={() => setSelectedDepartment(department)}
-                  className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 ${selectedDepartment === department ? "bg-white text-M-heading-color" : "text-white"}`}
-                >
-                  {department}
-                </button>
-              ))
-            ) : (
-              <Skeleton width={150} height={40} count={5} />
-            )}
-          </div>
+          {/* ✅ Department Tabs */}
+                    <div className="flex-col sm:flex-row flex-wrap flex justify-center space-y-0 md:space-x-6 lg:space-x-12 py-4 px-3 md:px-7 bg-M-heading-color rounded-md">
+                      {doctorDepartments.length > 0 ? (
+                        doctorDepartments.map((department) => (
+                          <button
+                            key={department}
+                            onClick={() => setSelectedDepartment(department)}
+                            className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:w-[1px] before:h-1/2 before:bg-white before:absolute before:top-1/2 before:-right-3 lg:before:-right-6 before:-translate-y-1/2 last:before:hidden md:before:block before:hidden ${
+                              selectedDepartment === department ? "bg-white text-M-heading-color" : "text-white"
+                            }`}
+                          >
+                            {department}
+                          </button>
+                        ))
+                      ) : (
+                        <Skeleton width={150} height={40} count={5} />
+                      )}
+                    </div>
 
           {/* Dynamic Doctors List Based on Selected Department */}
           <div className="mt-4">

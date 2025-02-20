@@ -61,7 +61,7 @@ const WhyChooseUs = () => {
                   alt={item.title}
                   width={50}
                   height={50} 
-                  className="shrink-0"
+                  className="shrink-0 w-12 h-14"
                 />
                 <div>
                   <h4 className="font-bold font-jost text-xl text-M-heading-color">

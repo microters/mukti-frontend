@@ -17,34 +17,23 @@ import BestDoctors from "../Component/UI/HomePage/BestDoctors/BestDoctors";
 // Server-side component
 export default async function HomePage() {
   // SSR Data fetching
-  const departments = await getDepartments();  // Static Data (SSG)
-  const reviews = await getReviews();  // Static Data (SSG)
+  const departments = await getDepartments();
+  const reviews = await getReviews();
   const { doctors, departments: doctorDepartments } = await getDoctorsData(); 
 
 
   return (
     <div>
-      {/* Hero Section */}
       <Hero/>
-      {/* Feature Section */}
       <Features/>
-      {/* About Section */}
       <About/>
-      {/* Category Section */}
       <Category departments={departments} />
-      {/* Specialists Section */}
       <BestDoctors doctors={doctors} doctorDepartments={doctorDepartments}/>
-      {/* Appointment Section */}
       <Appointment/>
-      {/* Why Choose Us Section */}
       <WhyChooseUs/>
-      {/* Mobile app Section */}
       <MobileApp/>
-       {/* Testimonials Section */}
       <Testimonials reviews={reviews} />
-      {/* Appointment Process */}
       <AppointmentProcess/>
-      {/* Blog Section */}
       <Blog/>
     </div>
   );

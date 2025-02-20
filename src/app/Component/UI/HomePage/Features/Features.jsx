@@ -21,7 +21,7 @@ const Features = () => {
       mainImage: rkImg1,
       title: "Appointment With",
       subtitle: "Nearest Hospital",
-      color: "#FD5847",
+      color: "#D91656",
       link: "#"
     },
     {
@@ -29,7 +29,7 @@ const Features = () => {
       mainImage: rkImg2,
       title: "Live Discus With",
       subtitle: "Doctor",
-      color: "#39CABB",
+      color: "#009650",
       link: "#"
     },
     {
@@ -55,17 +55,17 @@ const Features = () => {
       <div className="container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
         {/* Loop through cardData array */}
         {cardData.map((card, index) => (
-          <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative">
+          <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative group">
             <Image
               src={card.shapeImage}
               alt="Shape Image"
               className="absolute top-0 left-0 rounded-s-md"
             />
-            <Image src={card.mainImage} alt="Main image" className="w-24 mx-auto" />
+            <Image src={card.mainImage} alt="Main image" className="w-24 mx-auto group-hover:animate-shake" />
             <h5 className="text-M-heading-color text-base font-jost mt-5">
               {card.title}
             </h5>
-            <h3 className={`text-xl text-[${card.color}] mt-2`}>{card.subtitle}</h3>
+            <h3 className={`text-xl mt-2`}  style={{ color: card.color }}>{card.subtitle}</h3>
             <Link
               href={card.link}
               className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] rounded-full mt-5 group-hover:-rotate-45 transition-transform duration-300 text-[#39CABB]"
