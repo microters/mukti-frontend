@@ -21,7 +21,11 @@ const Hero = () => {
         <Image src={injectionIcon} alt="shape" className="left-[3%] bottom-[30%] absolute animate-pulse hidden lg:block" />
         <Image src={penToolIcon} alt="shape" className="right-[10%] bottom-[30%] absolute animate-pulse hidden lg:block" />
         <Image src={crossShapeIcon} alt="shape" className="right-[5%] top-[20%] absolute animate-spin hidden lg:block" />
-        <Image src={waveImag} alt="wave Shape" className="absolute -bottom-1 left-0 w-full" />
+        <Image
+          src={waveImag}
+          alt="wavwe Shape"
+          className="absolute -bottom-1 left-0  w-full"
+        />
         <div className="container mx-auto text-center">
           <span className="font-jost font-medium leading-4 tracking-wider text-base text-white mb-4 block uppercase">
             Welcome to Mukti Hospital

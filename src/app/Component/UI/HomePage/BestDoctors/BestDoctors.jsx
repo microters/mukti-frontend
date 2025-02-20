@@ -1,45 +1,125 @@
-// **Server Component (fetches data on the server)**
+'use client';
+import Link from "next/link";
+import Image from "next/image";
+import { Icon } from "@iconify/react";
+import { useState } from "react";
+import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
+import profileImage from "@/assets/images/profileAvatar.png";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-import BestDoctorsClient from "./BestDoctorsClient";
+const BestDoctors = ({ doctors, doctorDepartments }) => {
+  // State to store the selected department
+  const [selectedDepartment, setSelectedDepartment] = useState(doctorDepartments[0] || ""); 
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  // Filter and slice the doctors array before passing it to the component
+  const filteredDoctors = doctors
+    .filter(doctor => doctor?.translations?.en?.department === selectedDepartment)
+    .slice(0, 6); // Show only first 6 doctors
 
-// **Server-side function to fetch doctors (Allowed in Server Components)**
-const fetchDoctorsData = async () => {
-  try {
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  return (
+    <div className="py-[100px]">
+      <div className="container">
+        <SectionHeading heading="Top Rated Specialists" subtitle="MEET OUR PROFESSIONALS" align="center" />
 
-    const response = await fetch(`${BACKEND_URL}/api/doctor`, {
-      headers: { "x-api-key": apiKey },
-      cache: "no-store", // Ensures fresh data
-    });
-    console.log(response);
+        <div className="p-4 mx-auto mt-8">
+          {/* ✅ Department Tabs */}
+                    <div className="flex-col sm:flex-row flex-wrap flex justify-center space-y-0 md:space-x-6 lg:space-x-12 py-4 px-3 md:px-7 bg-M-heading-color rounded-md">
+                      {doctorDepartments.length > 0 ? (
+                        doctorDepartments.map((department) => (
+                          <button
+                            key={department}
+                            onClick={() => setSelectedDepartment(department)}
+                            className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:w-[1px] before:h-1/2 before:bg-white before:absolute before:top-1/2 before:-right-3 lg:before:-right-6 before:-translate-y-1/2 last:before:hidden md:before:block before:hidden ${
+                              selectedDepartment === department ? "bg-white text-M-heading-color" : "text-white"
+                            }`}
+                          >
+                            {department}
+                          </button>
+                        ))
+                      ) : (
+                        <Skeleton width={150} height={40} count={5} />
+                      )}
+                    </div>
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch doctors data");
-    }
+          {/* Dynamic Doctors List Based on Selected Department */}
+          <div className="mt-4">
+            {filteredDoctors.length === 0 ? (
+              <p className="text-center text-lg font-bold">No doctors available for {selectedDepartment}.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredDoctors.map((doctor) => {
+                  const enTranslation = doctor.translations?.en || {}; // Extracting the translation for each doctor
+                  const profileLink = doctor.id ? `/doctor/${doctor.id}` : "#";
+                  const appointmentLink = doctor.id ? `/book-appointment/${doctor.id}` : "#";
 
-    const data = await response.json();
+                  return (
+                    <div key={doctor.id} className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between">
+                      <div className="flex py-7 px-6 gap-7">
+                        {/* Doctor Image */}
+                        <div className="border-2 border-transparent size-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
+                          <Image
+                            src={profileImage} // You can use doctor.profilePhoto if available
+                            alt={enTranslation.name || "Doctor"}
+                            width={96}
+                            height={96}
+                            className="w-full rounded-full object-cover"
+                            priority
+                          />
+                        </div>
 
-    // Extract unique departments dynamically
-    const uniqueDepartments = [
-      ...new Set(
-        data.map((doctor) => doctor?.translations?.en?.department || "Unknown")
-      ),
-    ];
+                        {/* Doctor Info */}
+                        <div className="flex-1">
+                          <ul className="flex flex-wrap items-center gap-4 mb-5">
+                            {/* Department */}
+                            <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
+                              {enTranslation.department || "Unknown"}
+                            </li>
 
-    return { doctors: data, departments: uniqueDepartments };
-  } catch (error) {
-    console.error("Error fetching doctors data:", error);
-    return { doctors: [], departments: [] };
-  }
-};
+                            {/* Reviews */}
+                            <li className="bg-[#323290] inline-flex items-center gap-1 rounded-md py-2 px-4 font-jost font-normal text-base text-white">
+                              <Icon icon="material-symbols-light:star" width="24" height="24" className="text-[#F1E132]" />
+                              ({doctor.reviews || 0})
+                            </li>
+                          </ul>
 
-// **Server Component - Fetches data before passing it to Client Component**
-const BestDoctors = async () => {
-  const { doctors, departments } = await fetchDoctorsData();
+                          {/* Doctor Name */}
+                          <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
+                            <Link href={profileLink} className="hover:text-M-primary-color transition-all duration-300 capitalize">
+                              {enTranslation.name || "No Name Available"}
+                            </Link>
+                          </h3>
 
-  return <BestDoctorsClient doctors={doctors} departments={departments} />;
+                          {/* Academic Qualification */}
+                          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2">
+                            <Icon icon="oui:index-open" width="24" className="text-M-heading-color" />
+                            {enTranslation.academicQualification || "N/A"}
+                          </p>
+
+                          {/* Location */}
+                          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
+                            <Icon icon="mdi:location-on-outline" width="24" className="text-M-heading-color" /> Mukti Hospital
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Appointment Button */}
+                      <Link
+                        href={appointmentLink}
+                        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
+                      >
+                        Book An Appointment
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default BestDoctors;
