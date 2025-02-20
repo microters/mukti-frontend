@@ -16,7 +16,7 @@
 }
 
 body {
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 h1,
@@ -30,7 +30,7 @@ h4 {
   @apply mx-auto max-w-[1320px] px-3;
 }
 
-/* Input Field */ 
+/* Input Field */
 .has-error {
   @apply border-red-500 focus:outline-red-500 focus:outline-offset-0 focus:outline-1;
 }
@@ -44,14 +44,18 @@ h4 {
   @apply text-white text-sm font-poppins font-normal relative transition-all duration-300 hover:text-M-primary-color;
 }
 
-
 /* Slider Navigation */
-.swiper-button-next, .swiper-rtl .swiper-button-prev,
-.swiper-button-prev, .swiper-rtl .swiper-button-next {
+.swiper-button-next,
+.swiper-rtl .swiper-button-prev,
+.swiper-button-prev,
+.swiper-rtl .swiper-button-next {
   width: 30px !important;
   height: 30px !important;
 }
-.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after, .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after,
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
   background-color: #009650;
   width: 30px !important;
   height: 30px !important;
@@ -63,10 +67,12 @@ h4 {
   color: #fff !important;
 }
 
-.swiper-button-next, .swiper-rtl .swiper-button-prev {
+.swiper-button-next,
+.swiper-rtl .swiper-button-prev {
   right: 0 !important;
 }
 
-.swiper-button-prev, .swiper-rtl .swiper-button-next {
+.swiper-button-prev,
+.swiper-rtl .swiper-button-next {
   left: 0 !important;
 }

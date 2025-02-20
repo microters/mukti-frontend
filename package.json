@@ -23,6 +23,8 @@
   "devDependencies": {
     "@iconify/react": "^5.2.0",
     "postcss": "^8",
+    "prettier": "^3.5.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^3.4.1"
   }
 }

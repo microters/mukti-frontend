@@ -67,9 +67,13 @@ const Register = () => {
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="hidden md:flex justify-center items-center p-8" >
+      <div className="hidden md:flex justify-center items-center p-8">
         {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
-        <Image className="mx-auto hidden md:block" src={backgroundImage} alt="Logo" />
+        <Image
+          className="mx-auto hidden md:block"
+          src={backgroundImage}
+          alt="Logo"
+        />
       </div>
       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
@@ -293,7 +297,7 @@ const Register = () => {
           </form>
         )}
 
-        <p className="text-center font-jost font-normal text-base text-M-text-color mt-4 uppercase">
+        <p className="text-center mt-4 font-jost font-normal text-base text-M-text-color uppercase">
           Already Registered?{" "}
           <Link
             href={"#"}
