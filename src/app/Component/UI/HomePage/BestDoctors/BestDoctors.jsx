@@ -52,6 +52,7 @@ const BestDoctors = ({ doctors, doctorDepartments }) => {
                   const enTranslation = doctor.translations?.en || {}; // Extracting the translation for each doctor
                   const profileLink = doctor.id ? `/doctor/${doctor.id}` : "#";
                   const appointmentLink = doctor.id ? `/book-appointment/${doctor.id}` : "#";
+                  console.log(doctor.icon)
 
                   return (
                     <div key={doctor.id} className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between">
@@ -59,7 +60,7 @@ const BestDoctors = ({ doctors, doctorDepartments }) => {
                         {/* Doctor Image */}
                         <div className="border-2 border-transparent size-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
                           <Image
-                            src={profileImage}
+                            src={doctor.icon}
                             alt={enTranslation.name || "Doctor"}
                             width={96}
                             height={96}

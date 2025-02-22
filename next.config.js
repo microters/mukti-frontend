@@ -1,28 +1,20 @@
-// next.config.js
-// const nextI18NextConfig = require('./next-i18next.config');
-
 module.exports = {
-  // i18n: {
-  //   locales: ["en", "bn"], // Define supported locales
-  //   defaultLocale: "en", // Default language
-  //   localeDetection: false,
-  // },
   images: {
-    domains: ['placehold.co'], // Ensure you only include the domains you use
+    domains: ['placehold.co', 'localhost'],  // Add 'localhost' here
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '5000',
-        pathname: '/uploads/**', // Path pattern for local images
+        pathname: '/uploads/**', // Allow images from localhost:5000/uploads
       },
       {
         protocol: 'https',
-        hostname: 'example.com', // Replace with a real hostname if needed
-        pathname: '/images/**',   // Path pattern for external images
+        hostname: 'example.com', // Example for other external domains
+        pathname: '/images/**',
       },
     ],
   },
-  reactStrictMode: true,
-  swcMinify: true,
+  reactStrictMode: true, // Enable strict mode in React (helpful for development)
+  swcMinify: true, // Use SWC for minification (fast and efficient)
 };
