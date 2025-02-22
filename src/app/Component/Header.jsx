@@ -30,7 +30,7 @@ const Header = () => {
   }
 
   const menuItems = [
-    { label: "HOME", href: "#", hasSubMenu: false },
+    { label: "HOME", href: "/", hasSubMenu: false },
     {
       label: "FIND A DOCTOR",
       href: "#",
@@ -74,17 +74,17 @@ const Header = () => {
       <div className="bg-M-heading-color">
         <div className="container mx-auto px-2 py-4 flex justify-between items-center gap-3">
           <Link href="/">
-            <Image src={Logo} alt="logo" width={200} />
+            <Image src={Logo} alt="logo" width={200} className="w-32 sm:w-auto" />
           </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
-              <li className="hidden lg:block">
+              <li className="">
                 <Link
-                  href={"mailto:info@muktihospital.com"}
-                  className="flex gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 py-1 rounded-md font-jost font-normal text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300"
+                  href={'/signin'}
+                  className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
                 >
-                  <Image src={mailIcon} alt="call" width={20} />
-                  <span>info@muktihospital.com</span>
+                  <Icon icon="uiw:login" width="15" />
+                  <span>Sign In</span>
                 </Link>
               </li>
               <li className="hidden lg:block">
@@ -98,13 +98,14 @@ const Header = () => {
               </li>
               <li>
                 {/* Language switcher */}
-                <div className="flex gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 py-1 rounded-md font-jost font-normal text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300">
+                <div className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300">
                   <Icon
                     icon="fluent:globe-20-regular"
                     width="20"
                     className="text-white"
                   />
-                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none" onChange={handleLanguageChange}>
+                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer" onChange={handleLanguageChange}
+                            value={i18n.language}>
                     <option value="en">English</option>
                     <option value="bn">Bangla</option>
                   </select>

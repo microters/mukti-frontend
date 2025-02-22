@@ -48,7 +48,10 @@ const Signin = () => {
     if (!Object.values(errors).includes(true)) {
       try {
         // Send the login request
-        const response = await axios.post("http://localhost:5000/api/login", formData);
+        const response = await axios.post(
+          "http://localhost:5000/api/login",
+          formData
+        );
 
         if (response.status === 200) {
           // Save the token in localStorage for future authentication
@@ -72,30 +75,41 @@ const Signin = () => {
     setLoading(true);
     const email = formData.email;
     try {
-      const response = await axios.post("http://localhost:5000/api/forgot-password", { email });
+      const response = await axios.post(
+        "http://localhost:5000/api/forgot-password",
+        { email }
+      );
 
       if (response.status === 200) {
         alert("Password reset link sent to your email.");
         setShowForgotPassword(false); // Go back to login
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Error in sending reset password link.");
+      alert(
+        error.response?.data?.message || "Error in sending reset password link."
+      );
     }
     setLoading(false);
   };
 
   return (
     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="hidden md:flex justify-center items-center p-8" >
+      <div className="hidden md:flex justify-center items-center p-8">
         {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
         <Image className="mx-auto hidden md:block" src={bgImage} alt="Logo" />
       </div>
 
       <div className="max-w-[500px] px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
-          <Image className="block mx-auto" src={logo} alt="Logo" />
-          <h1 className="text-4xl text-black font-jost font-bold">{showForgotPassword ? "Reset Password" : "Sign In"}</h1>
-          <p className="text-base text-slate-400 font-poppins">{showForgotPassword ? "Enter your email to receive a password reset link" : "Sign in to start using Mukti Hospital's services"}</p>
+          <Image className="block mx-auto mb-10" src={logo} alt="Logo" />
+          <h1 className="text-4xl text-black font-jost font-bold">
+            {showForgotPassword ? "Reset Password" : "Sign In"}
+          </h1>
+          <p className="text-base text-slate-400 font-poppins">
+            {showForgotPassword
+              ? "Enter your email to receive a password reset link"
+              : "Sign in to start using Mukti Hospital's services"}
+          </p>
         </div>
 
         {showForgotPassword ? (
@@ -103,7 +117,12 @@ const Signin = () => {
           <form className="mt-8 space-y-4" onSubmit={handleResetPasswordSubmit}>
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="text-slate-800 mb-2 font-jost font-medium text-base block">Email</label>
+              <label
+                htmlFor="email"
+                className="text-slate-800 mb-2 font-jost font-medium text-base block"
+              >
+                Email
+              </label>
               <div className="relative">
                 <input
                   type="email"
@@ -115,10 +134,17 @@ const Signin = () => {
                 />
               </div>
             </div>
-            <button type="submit" className="w-full py-2 rounded-md bg-M-primary-color text-white hover:bg-M-secondary-color transition-all duration-300">
+            <button
+              type="submit"
+              className="w-full py-2 rounded-md bg-M-primary-color text-white hover:bg-M-secondary-color transition-all duration-300"
+            >
               Send Reset Link
             </button>
-            <button type="button" onClick={() => setShowForgotPassword(false)} className="w-full py-2 text-base text-slate-600 font-jost font-normal hover:text-slate-950 transition-all duration-300">
+            <button
+              type="button"
+              onClick={() => setShowForgotPassword(false)}
+              className="w-full py-2 text-base text-slate-600 font-jost font-normal hover:text-slate-950 transition-all duration-300"
+            >
               Back to Sign In
             </button>
           </form>
@@ -127,7 +153,12 @@ const Signin = () => {
           <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="text-slate-800 mb-2 font-jost font-medium text-base block">Email</label>
+              <label
+                htmlFor="email"
+                className="text-slate-800 mb-2 font-jost font-medium text-base block"
+              >
+                Email
+              </label>
               <div className="relative">
                 <input
                   type="email"
@@ -143,12 +174,21 @@ const Signin = () => {
                   </div>
                 )}
               </div>
-              {errors.email && <p className="text-red-500 text-sm mt-2">Enter a valid email address</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-2">
+                  Enter a valid email address
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="text-slate-800 mb-2 font-jost font-medium text-base block">Password</label>
+              <label
+                htmlFor="password"
+                className="text-slate-800 mb-2 font-jost font-medium text-base block"
+              >
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -164,30 +204,51 @@ const Signin = () => {
                   </div>
                 )}
                 {!errors.password && (
-                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
-                    <Icon icon={showPassword ? "mdi:eye" : "mdi:eye-off"} width="24" />
+                  <div
+                    className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <Icon
+                      icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
+                      width="24"
+                    />
                   </div>
                 )}
               </div>
-              {errors.password && <p className="text-red-500 text-sm mt-2">Password is required</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-2">
+                  Password is required
+                </p>
+              )}
             </div>
 
             {/* Forgot Password Link */}
-            <button type="button" onClick={handleForgotPassword} className="text-base text-slate-600 font-jost font-normal hover:text-slate-950 transition-all duration-300">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-base text-slate-600 font-jost font-normal hover:text-slate-950 transition-all duration-300"
+            >
               Forgot Password?
             </button>
 
             {/* Submit Button */}
-            <button type="submit" disabled={!isFormValid} className={`w-full py-2 rounded-md transition-all duration-300 ${isFormValid ? "bg-M-primary-color text-white hover:bg-M-secondary-color" : "bg-M-primary-color/50 text-white cursor-not-allowed"}`}>
+            <button
+              type="submit"
+              disabled={!isFormValid}
+              className={`w-full py-2 rounded-md transition-all duration-300 ${isFormValid ? "bg-M-primary-color text-white hover:bg-M-secondary-color" : "bg-M-primary-color/50 text-white cursor-not-allowed"}`}
+            >
               {loading ? "Signing In..." : "Sign In"}
             </button>
           </form>
         )}
 
         {/* Register Link */}
-        <p className="text-center font-jost font-normal text-base text-M-text-color mt-4 uppercase">
+        <p className="text-center font-jost font-normal mt-4 text-base text-M-text-color  uppercase">
           Not Registered Yet?{" "}
-          <Link href="signup" className="text-M-heading-color font-medium hover:underline">
+          <Link
+            href="signup"
+            className="text-M-heading-color font-medium hover:underline"
+          >
             Register Now
           </Link>
         </p>

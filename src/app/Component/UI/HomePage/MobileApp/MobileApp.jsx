@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
-import SectionHeading from '@/app/Component/Shared/SectionHeading/SectionHeading';
 
 // Assets
 import mobileApp from '@/assets/images/mobileapp.png';
@@ -22,7 +21,7 @@ const MobileApp = () => {
                     </div>
                     <div>
                         <h6 className="text-base text-white font-medium font-jost uppercase mb-3">Download apps</h6>
-                        <h2 className="font-jost font-bold text-2xl sm:text-4xl md:text-6xl text-white capitalize">For Better Test Download Mobile App.</h2>
+                        <h2 className="font-jost font-bold text-3xl sm:text-4xl md:text-5xl xl:text-6xl text-white capitalize">For Better Test Download Mobile App.</h2>
                         <p className='text-white mt-5 md:mt-10'>Mukti Hospital now has a convenient mobile app that allows you to search for healthcare providers, schedule appointments, and access patient resources on the go. Mukti Hospital now has a convenient mobile app that allows you to search for healthcare providers, schedule appointments, and access patient resources on the go.</p>
                         <div className='flex gap-6 mt-10'> 
                             <Link href="#"><Image src={Gplay} alt='Gplay' className='w-52' /></Link>
