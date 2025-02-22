@@ -59,7 +59,7 @@ const BestDoctors = ({ doctors, doctorDepartments }) => {
                         {/* Doctor Image */}
                         <div className="border-2 border-transparent size-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
                           <Image
-                            src={profileImage} // You can use doctor.profilePhoto if available
+                            src={profileImage}
                             alt={enTranslation.name || "Doctor"}
                             width={96}
                             height={96}
