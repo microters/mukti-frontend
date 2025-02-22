@@ -13,4 +13,3 @@ export const getDoctorsData = async () => {
   // Return structured data (doctors and unique departments)
   return { doctors: data, departments: uniqueDepartments };
 };
-

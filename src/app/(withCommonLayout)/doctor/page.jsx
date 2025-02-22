@@ -11,13 +11,17 @@ import cardiology from "@/assets/images/cardiologyIcon.png";
 import gastrology from "@/assets/images/gastrologyIcon.png";
 import male from "@/assets/images/male.png";
 import female from "@/assets/images/female.png";
+
+import doctorProfile from "@/assets/images/doctor-profile.jpg";
+import doctorProfile1 from "@/assets/images/doctor-profile2.jpg";
+import doctorProfile2 from "@/assets/images/doctor-profile3.jpg";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
 const Doctor = () => {
-    const [selectedSpecialties, setSelectedSpecialties] = useState({});
-    const [selectedGenders, setSelectedGenders] = useState({});
-    const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
-    const [isGendersOpen, setIsGendersOpen] = useState(true);
+  const [selectedSpecialties, setSelectedSpecialties] = useState({});
+  const [selectedGenders, setSelectedGenders] = useState({});
+  const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
+  const [isGendersOpen, setIsGendersOpen] = useState(true);
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -31,8 +35,82 @@ const Doctor = () => {
     { id: 1, title: "Male", image: male },
     { id: 2, title: "Female", image: female },
   ];
-  
 
+  const doctorsData = [
+    {
+      name: "Dr. Nahidul Islam",
+      image: doctorProfile,
+      department: "Cardiology",
+      experience: 4,
+      qualifications: "MBBS (Bachelor of Medicine, Bachelor of Surgery), MD - Cardiology, MDS - Periodontology and Oral Implantology",
+      hospital: "Mukti Hospital",
+      availability: {
+        days: "Friday - Monday",
+        time: "12:00 AM - 03:00 PM",
+      },
+    },
+    {
+      name: "Dr. Sarah Johnson",
+      image: doctorProfile1,
+      department: "Neurology",
+      experience: 7,
+      qualifications: "MBBS, MD - Neurology, Fellowship in Stroke Management",
+      hospital: "City Care Hospital",
+      availability: {
+        days: "Monday - Thursday",
+        time: "10:00 AM - 02:00 PM",
+      },
+    },
+    {
+      name: "Dr. Robert Smith",
+      image: doctorProfile2,
+      department: "Orthopedics",
+      experience: 5,
+      qualifications: "MBBS, D.Ortho, Fellowship in Joint Replacement Surgery",
+      hospital: "OrthoCare Clinic",
+      availability: {
+        days: "Tuesday - Friday",
+        time: "09:00 AM - 01:00 PM",
+      },
+    },
+    {
+      name: "Dr. Emma White",
+      image: doctorProfile,
+      department: "Pediatrics",
+      experience: 6,
+      qualifications: "MBBS, MD - Pediatrics, Certified in Pediatric Critical Care",
+      hospital: "Children's Health Center",
+      availability: {
+        days: "Monday - Wednesday",
+        time: "08:00 AM - 04:00 PM",
+      },
+    },
+    {
+      name: "Dr. William Brown",
+      image: doctorProfile1,
+      department: "Dermatology",
+      experience: 8,
+      qualifications: "MBBS, MD - Dermatology, Fellowship in Cosmetic Dermatology",
+      hospital: "Dermacare Clinic",
+      availability: {
+        days: "Wednesday - Saturday",
+        time: "11:00 AM - 05:00 PM",
+      },
+    },
+    {
+      name: "Dr. Olivia Davis",
+      image: doctorProfile2,
+      department: "Gynecology",
+      experience: 10,
+      qualifications: "MBBS, MS - Obstetrics & Gynecology, Fellowship in High-Risk Obstetrics",
+      hospital: "Women's Health Clinic",
+      availability: {
+        days: "Monday - Friday",
+        time: "09:00 AM - 03:00 PM",
+      },
+    },
+  ];
+  
 
   const toggleSpecialty = (id) => {
     setSelectedSpecialties((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -102,14 +180,18 @@ const Doctor = () => {
               </form>
             </div>
             <div className="border border-M-primary-color/5 rounded-md overflow-hidden">
-              <h3 onClick={() => setIsSpecialtiesOpen(!isSpecialtiesOpen)}
-               className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full cursor-pointer">
+              <h3
+                onClick={() => setIsSpecialtiesOpen(!isSpecialtiesOpen)}
+                className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full cursor-pointer"
+              >
                 Specialty{" "}
                 <span>
                   <Icon icon="solar:alt-arrow-down-linear" width="24" />
                 </span>
               </h3>
-              <ul className={`px-4 transition-all duration-300 overflow-hidden ${isSpecialtiesOpen ? "h-full" : "h-0"}`}>
+              <ul
+                className={`px-4 transition-all duration-300 overflow-hidden ${isSpecialtiesOpen ? "h-full" : "h-0"}`}
+              >
                 {specialtyItems.map((item) => (
                   <li
                     key={item.id}
@@ -138,14 +220,18 @@ const Doctor = () => {
               </ul>
             </div>
             <div className="border border-M-primary-color/5 rounded-md overflow-hidden">
-              <h3 onClick={() => setIsGendersOpen(!isGendersOpen)} 
-              className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full">
+              <h3
+                onClick={() => setIsGendersOpen(!isGendersOpen)}
+                className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full"
+              >
                 Gender{" "}
                 <span>
                   <Icon icon="solar:alt-arrow-down-linear" width="24" />
                 </span>
               </h3>
-              <ul className={`px-4 transition-all duration-300 overflow-hidden ${isGendersOpen ? "h-auto" : "h-0"}`}>
+              <ul
+                className={`px-4 transition-all duration-300 overflow-hidden ${isGendersOpen ? "h-auto" : "h-0"}`}
+              >
                 {genders.map((item) => (
                   <li
                     key={item.id}
@@ -173,19 +259,122 @@ const Doctor = () => {
                 ))}
               </ul>
             </div>
-            <button onClick={resetSelections} className="font-jost font-normal text-base text-white uppercase px-3 py-3 rounded-md w-full bg-M-secondary-color  transition-all duration-300 hover:bg-M-primary-color">Clear Filters</button>
+            <button
+              onClick={resetSelections}
+              className="font-jost font-normal text-base text-white uppercase px-3 py-3 rounded-md w-full bg-M-secondary-color  transition-all duration-300 hover:bg-M-primary-color"
+            >
+              Clear Filters
+            </button>
           </div>
           <div className="col-span-2">
-            <div className="border border-slate-900/30 flex items-center justify-between px-5 py-3 ">
-                <h5 className="text-xl text-M-heading-color font-jost font-bold">Showing Doctors For You : <span className="bg-M-secondary-color text-white px-3 py-1 rounded-md">50</span></h5>
-                <div>
-                    <select name="sortFilter" id="sortFilter" className="px-3 py-2 rounded border-0 ring-0 focus:outline-none font-jost font-normal bg-slate-50">
-                        <option value="name" className="cursor-pointer">Sort by Name</option>
-                        <option value="experience" className="cursor-pointer">Sort by Experience</option>
-                        <option value="rating" className="cursor-pointer">Sort by Rating</option>
-                    </select>
-                </div>
+            <div className="border border-slate-900/30 flex items-center justify-between px-5 py-3 rounded-md">
+              <h5 className="text-xl text-M-heading-color font-jost font-bold">
+                Showing Doctors For You :{" "}
+                <span className="bg-M-secondary-color text-white px-3 py-1 rounded-md">
+                  50
+                </span>
+              </h5>
+              <div>
+                <select
+                  name="sortFilter"
+                  id="sortFilter"
+                  className="px-3 py-2 rounded border-0 ring-0 focus:outline-none font-jost font-normal bg-slate-50"
+                >
+                  <option disabled selected>
+                    Sort by
+                  </option>
+                  <option value="name" className="text-M-heading-color">
+                    Sort by Name
+                  </option>
+                  <option value="experience" className="text-M-heading-color">
+                    Sort by Experience
+                  </option>
+                  <option value="rating" className="text-M-heading-color">
+                    Sort by Rating
+                  </option>
+                  <option value="date" className="text-M-heading-color">
+                    Sort by Date
+                  </option>
+                </select>
+              </div>
             </div>
+            {/* Doctors Card */}
+            {doctorsData.map((doctor) => (
+              <div className="border border-slate-100 mt-8 p-7 flex gap-6">
+                {/* Doctor Image */}
+                <Image
+                  src={doctor.image}
+                  alt={doctor.name}
+                  className="size-[200px] rounded-full shrink-0"
+                />
+
+                <div className="grid grid-cols-2 gap-10 items-center">
+                  {/* Left Section */}
+                  <div className="flex-1 relative before:w-[1px] before:h-1/4 before:bg-slate-300 before:absolute before:-right-5 before:top-1/2 before:-translate-y-1/2">
+                    <ul className="flex flex-wrap items-center gap-4 mb-5">
+                      {/* Department */}
+                      <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
+                        {doctor.department}
+                      </li>
+
+                      {/* Experience */}
+                      <li className="bg-[#323290] inline-flex items-center gap-2 rounded-md py-2 px-4 font-jost font-normal text-base text-white">
+                        <Icon icon="solar:medical-kit-linear" width="18" />
+                        {doctor.experience} years
+                      </li>
+                    </ul>
+
+                    {/* Doctor Name */}
+                    <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
+                      <Link
+                        href="#"
+                        className="hover:text-M-primary-color transition-all duration-300 capitalize"
+                      >
+                        {doctor.name}
+                      </Link>
+                    </h3>
+
+                    {/* Academic Qualification */}
+                    <p className="text-M-text-color text-base font-normal font-jost flex gap-2">
+                      <Icon
+                        icon="oui:index-open"
+                        width="24"
+                        className="text-M-heading-color shrink-0 relative top-[5px]"
+                      />
+                      {doctor.qualifications}
+                    </p>
+
+                    {/* Location */}
+                    <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
+                      <Icon
+                        icon="mdi:location-on-outline"
+                        width="24"
+                        className="text-M-heading-color"
+                      />
+                      {doctor.hospital}
+                    </p>
+                  </div>
+
+                  {/* Right Section (Availability & Booking) */}
+                  <div className="text-center">
+                    <h4 className="font-jost font-bold text-base text-M-heading-color">
+                      {doctor.availability.days}
+                    </h4>
+                    <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
+                      {doctor.availability.time}
+                    </p>
+                    <Button 
+                        linkHref= "#"
+                        buttonText= 'Book An Appointment'
+                        buttonColor= 'bg-M-primary-color'
+                        textColor= 'text-white'
+                        borderColor= 'border-M-primary-color'
+                        alignment="center"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
