@@ -7,10 +7,8 @@ import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
-import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  const { i18n } = useTranslation(["header"]);
 
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
