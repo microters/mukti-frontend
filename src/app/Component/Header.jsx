@@ -104,7 +104,8 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer" onChange={handleLanguageChange} value="dummy" >
+                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer" onChange={handleLanguageChange}
+                            >
                     <option value="en">English</option>
                     <option value="bn">Bangla</option>
                   </select>
