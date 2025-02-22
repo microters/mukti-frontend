@@ -11,16 +11,33 @@ import tabletIcon from "@/assets/images/tablet.png";
 import injectionIcon from "@/assets/images/injection.png";
 import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
+import Link from "next/link";
 
 const Hero = () => {
   return (
     <div className="bg-[url(@/assets/images/heroBG.png)] bg-cover bg-top">
       <div className="pt-[60px] lg:pt-[180px] pb-20 md:pb-32 lg:pb-[300px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
-        <Image src={tabletIcon} alt="shape" className="left-[10%] top-[10%] absolute animate-spin hidden lg:block" />
-        <Image src={injectionIcon} alt="shape" className="left-[3%] bottom-[30%] absolute animate-pulse hidden lg:block" />
-        <Image src={penToolIcon} alt="shape" className="right-[10%] bottom-[30%] absolute animate-pulse hidden lg:block" />
-        <Image src={crossShapeIcon} alt="shape" className="right-[5%] top-[20%] absolute animate-spin hidden lg:block" />
+        <Image
+          src={tabletIcon}
+          alt="shape"
+          className="left-[10%] top-[10%] absolute animate-spin hidden lg:block"
+        />
+        <Image
+          src={injectionIcon}
+          alt="shape"
+          className="left-[3%] bottom-[30%] absolute animate-pulse hidden lg:block"
+        />
+        <Image
+          src={penToolIcon}
+          alt="shape"
+          className="right-[10%] bottom-[30%] absolute animate-pulse hidden lg:block"
+        />
+        <Image
+          src={crossShapeIcon}
+          alt="shape"
+          className="right-[5%] top-[20%] absolute animate-spin hidden lg:block"
+        />
         <Image
           src={waveImag}
           alt="wavwe Shape"
@@ -48,13 +65,13 @@ const Hero = () => {
                 <select
                   name="department"
                   id="department"
-                  className="w-full outline-none ring-0"
+                  className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
-                  <option value="">Select a Department</option>
-                  <option value="cardiology">Cardiology</option>
-                  <option value="neurology">Neurology</option>
-                  <option value="orthopedics">Orthopedics</option>
-                  <option value="pediatrics">Pediatrics</option>
+                  <option disabled>Select a Department</option>
+                  <option value="cardiology" className="text-M-heading-color">Cardiology</option>
+                  <option value="neurology" className="text-M-heading-color">Neurology</option>
+                  <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
+                  <option value="pediatrics" className="text-M-heading-color">Pediatrics</option>
                 </select>
               </div>
               <div className="flex items-center gap-2">
@@ -62,39 +79,41 @@ const Hero = () => {
                 <select
                   name="department"
                   id="department"
-                  className="w-full outline-none ring-0"
+                  className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
-                  <option value="">Select a Department</option>
-                  <option value="cardiology">Cardiology</option>
-                  <option value="neurology">Neurology</option>
-                  <option value="orthopedics">Orthopedics</option>
-                  <option value="pediatrics">Pediatrics</option>
+                  <option disabled>Select Doctor.... </option>
+                  <option value="cardiology" className="text-M-heading-color">Cardiology</option>
+                  <option value="neurology" className="text-M-heading-color">Neurology</option>
+                  <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
+                  <option value="pediatrics" className="text-M-heading-color">Pediatrics</option>
                 </select>
               </div>
-                <FormButton buttonText="Submit"
-                  buttonColor="bg-M-secondary-color"
-                  textColor="text-white"
-                  borderColor="bg-M-secondary-color"
-                  padding="py-3 px-8 lg:w-auto"
-                  fontSize="text-lg"
-                  alignment="text-center md:text-right" />
+              <FormButton
+                buttonText="Submit"
+                buttonColor="bg-M-secondary-color"
+                textColor="text-white"
+                borderColor="bg-M-secondary-color"
+                padding="py-3 px-8 lg:w-auto"
+                fontSize="text-lg"
+                alignment="text-center md:text-right"
+              />
             </div>
           </form>
           <div className="flex flex-wrap gap-5 items-center justify-center mt-8">
             <h6 className="uppercase font-jost font-medium text-base text-white ">
               Popular Search:
             </h6>
-            <ul className="flex flex-wrap gap-4">
-              <li className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4">
+            <div className="flex flex-wrap gap-4">
+              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
                 Psychiatry
-              </li>
-              <li className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4">
+              </Link>
+              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
                 Pharmacy
-              </li>
-              <li className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4">
+              </Link>
+              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
                 Diagnostics
-              </li>
-            </ul>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

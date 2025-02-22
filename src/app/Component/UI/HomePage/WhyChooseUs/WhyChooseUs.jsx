@@ -46,11 +46,11 @@ const WhyChooseUs = () => {
             heading="Why Our Patients Recommend Us"
             align="left"
           />
-          <p className="text-M-text-color max-w-[525px] mt-4">
+          <p className="text-M-text-color max-w-full lg:max-w-[525px] mt-4">
             We provide the special tips and advice’s of heath care treatment and high level of best technology involve in the our hospital.We provide the special tips and advice’s of heath care treatment.
           </p>
 
-          <div className="max-w-[525px] space-y-6 mt-7">
+          <div className="max-w-full lg:max-w-[525px] space-y-6 mt-7">
             {data.map((item, index) => (
               <div
                 key={index}

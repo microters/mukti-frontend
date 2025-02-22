@@ -6,6 +6,8 @@ import Link from "next/link";
 
 // Assets
 import blogImg1 from "@/assets/images/blog1.png";
+import blogImg2 from "@/assets/images/blog2.jpg";
+import blogImg3 from "@/assets/images/blog3.jpg";
 const blogPosts = [
   {
     id: 1,
@@ -27,7 +29,7 @@ const blogPosts = [
     author: "Admin",
     comments: 5,
     date: "02-10-2022",
-    image: blogImg1,
+    image: blogImg2,
   },
   {
     id: 3,
@@ -38,7 +40,7 @@ const blogPosts = [
     author: "Admin",
     comments: 3,
     date: "03-15-2023",
-    image: blogImg1,
+    image: blogImg3,
   },
   {
     id: 4,
@@ -62,7 +64,7 @@ const Blog = () => {
           heading="News & articles"
           align="center"
         />
-        <div className="mt-10 grid gap-6 grid-cols-1 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {blogPosts.slice(0, 3).map((post) => (
             <div key={post.id} className="shadow-md rounded-xl overflow-hidden">
               <div className="overflow-hidden">
@@ -70,7 +72,7 @@ const Blog = () => {
                   <Image
                     src={post.image}
                     alt="Blog Image"
-                    className="transition-all duration-300 hover:scale-110"
+                    className="transition-all duration-300 hover:scale-110 w-full"
                   />
                 </Link>
               </div>

@@ -101,7 +101,7 @@ const Signin = () => {
 
       <div className="max-w-[500px] px-5 py-8 flex flex-col justify-center mx-auto">
         <div className="text-center space-y-3">
-          <Image className="block mx-auto" src={logo} alt="Logo" />
+          <Image className="block mx-auto mb-10" src={logo} alt="Logo" />
           <h1 className="text-4xl text-black font-jost font-bold">
             {showForgotPassword ? "Reset Password" : "Sign In"}
           </h1>

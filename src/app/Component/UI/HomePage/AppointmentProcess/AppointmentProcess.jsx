@@ -43,12 +43,13 @@ const AppointmentProcess = () => {
           />
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 z-10 relative">
             {features.map((feature) => (
-              <div key={feature.id} className="text-center">
-                <div className="w-60 h-48 flex items-center justify-center bg-white mx-auto rounded-3xl mb-10">
+              <div key={feature.id} className="text-center group">
+                <div className="w-60 h-56 flex items-center justify-center bg-white mx-auto rounded-3xl mb-10">
                   <Image
                     src={feature.icon}
                     width={150}
                     alt={`icon${feature.id}`}
+                    className="group-hover:animate-shake"
                   />
                 </div>
                 <h3 className="font-bold text-lg sm:text-xl text-M-heading-color max-w-48 mx-auto">
