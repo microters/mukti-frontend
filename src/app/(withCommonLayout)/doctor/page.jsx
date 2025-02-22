@@ -18,10 +18,12 @@ import doctorProfile2 from "@/assets/images/doctor-profile3.jpg";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
 const Doctor = () => {
+  const itemsPerPage = 2;
   const [selectedSpecialties, setSelectedSpecialties] = useState({});
   const [selectedGenders, setSelectedGenders] = useState({});
   const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
   const [isGendersOpen, setIsGendersOpen] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -38,11 +40,13 @@ const Doctor = () => {
 
   const doctorsData = [
     {
+      id: 1,
       name: "Dr. Nahidul Islam",
       image: doctorProfile,
       department: "Cardiology",
       experience: 4,
-      qualifications: "MBBS (Bachelor of Medicine, Bachelor of Surgery), MD - Cardiology, MDS - Periodontology and Oral Implantology",
+      qualifications:
+        "MBBS (Bachelor of Medicine, Bachelor of Surgery), MD - Cardiology, MDS - Periodontology and Oral Implantology",
       hospital: "Mukti Hospital",
       availability: {
         days: "Friday - Monday",
@@ -50,6 +54,7 @@ const Doctor = () => {
       },
     },
     {
+      id: 2,
       name: "Dr. Sarah Johnson",
       image: doctorProfile1,
       department: "Neurology",
@@ -62,6 +67,7 @@ const Doctor = () => {
       },
     },
     {
+      id: 3,
       name: "Dr. Robert Smith",
       image: doctorProfile2,
       department: "Orthopedics",
@@ -74,11 +80,13 @@ const Doctor = () => {
       },
     },
     {
+      id: 4,
       name: "Dr. Emma White",
       image: doctorProfile,
       department: "Pediatrics",
       experience: 6,
-      qualifications: "MBBS, MD - Pediatrics, Certified in Pediatric Critical Care",
+      qualifications:
+        "MBBS, MD - Pediatrics, Certified in Pediatric Critical Care",
       hospital: "Children's Health Center",
       availability: {
         days: "Monday - Wednesday",
@@ -86,11 +94,13 @@ const Doctor = () => {
       },
     },
     {
+      id: 5,
       name: "Dr. William Brown",
       image: doctorProfile1,
       department: "Dermatology",
       experience: 8,
-      qualifications: "MBBS, MD - Dermatology, Fellowship in Cosmetic Dermatology",
+      qualifications:
+        "MBBS, MD - Dermatology, Fellowship in Cosmetic Dermatology",
       hospital: "Dermacare Clinic",
       availability: {
         days: "Wednesday - Saturday",
@@ -98,11 +108,13 @@ const Doctor = () => {
       },
     },
     {
+      id: 6,
       name: "Dr. Olivia Davis",
       image: doctorProfile2,
       department: "Gynecology",
       experience: 10,
-      qualifications: "MBBS, MS - Obstetrics & Gynecology, Fellowship in High-Risk Obstetrics",
+      qualifications:
+        "MBBS, MS - Obstetrics & Gynecology, Fellowship in High-Risk Obstetrics",
       hospital: "Women's Health Clinic",
       availability: {
         days: "Monday - Friday",
@@ -110,7 +122,6 @@ const Doctor = () => {
       },
     },
   ];
-  
 
   const toggleSpecialty = (id) => {
     setSelectedSpecialties((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -123,6 +134,19 @@ const Doctor = () => {
   const resetSelections = () => {
     setSelectedSpecialties({});
     setSelectedGenders({});
+  };
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(doctorsData.length / itemsPerPage);
+
+  // Calculate the items to show for the current page
+  const currentItems = doctorsData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -280,9 +304,7 @@ const Doctor = () => {
                   id="sortFilter"
                   className="px-3 py-2 rounded border-0 ring-0 focus:outline-none font-jost font-normal bg-slate-50"
                 >
-                  <option disabled selected>
-                    Sort by
-                  </option>
+                  <option value="N/A">Default</option>
                   <option value="name" className="text-M-heading-color">
                     Sort by Name
                   </option>
@@ -299,8 +321,11 @@ const Doctor = () => {
               </div>
             </div>
             {/* Doctors Card */}
-            {doctorsData.map((doctor) => (
-              <div className="border border-slate-100 mt-8 p-7 flex gap-6">
+            {currentItems.map((doctor, index) => (
+              <div
+                key={doctor.id}
+                className="border border-slate-100 mt-8 p-7 flex gap-6"
+              >
                 {/* Doctor Image */}
                 <Image
                   src={doctor.image}
@@ -363,18 +388,84 @@ const Doctor = () => {
                     <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
                       {doctor.availability.time}
                     </p>
-                    <Button 
-                        linkHref= "#"
-                        buttonText= 'Book An Appointment'
-                        buttonColor= 'bg-M-primary-color'
-                        textColor= 'text-white'
-                        borderColor= 'border-M-primary-color'
-                        alignment="center"
+                    <Button
+                      linkHref="#"
+                      buttonText="Book An Appointment"
+                      buttonColor="bg-M-primary-color"
+                      textColor="text-white"
+                      borderColor="border-M-primary-color"
+                      alignment="center"
                     />
                   </div>
                 </div>
               </div>
             ))}
+
+            {/* Pagination Area */}
+            {doctorsData.length > itemsPerPage && (
+              <ul className="mt-10 px-5 py-3 flex items-center shadow shadow-M-primary-color/10 gap-2">
+                {/* Left Arrow */}
+                <li>
+                  <Link
+                    href="#"
+                    onClick={() =>
+                      handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
+                    }
+                    disabled={currentPage === 1}
+                    className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    <Icon
+                      icon="material-symbols-light:keyboard-arrow-left"
+                      width="24"
+                    />
+                  </Link>
+                </li>
+
+                {/* Page Numbers */}
+                {[...Array(totalPages)].map((_, index) => (
+                  <li key={index}>
+                    <Link
+                      href="#"
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`size-11 inline-flex items-center justify-center  rounded-full  font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                        currentPage === index + 1
+                          ? "bg-M-primary-color text-white"
+                          : "text-M-primary-color bg-M-primary-color/10"
+                      }`}
+                    >
+                      {index + 1}
+                    </Link>
+                  </li>
+                ))}
+
+                {/* Right Arrow */}
+                <li>
+                  <Link
+                    href="#"
+                    onClick={() =>
+                      handlePageChange(
+                        currentPage < totalPages ? currentPage + 1 : totalPages
+                      )
+                    }
+                    disabled={currentPage === totalPages}
+                    className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : ""
+                    }`}
+                  >
+                    <Icon
+                      icon="material-symbols-light:keyboard-arrow-right"
+                      width="24"
+                    />
+                  </Link>
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </div>
