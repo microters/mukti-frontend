@@ -16,6 +16,8 @@ import doctorProfile from "@/assets/images/doctor-profile.jpg";
 import doctorProfile1 from "@/assets/images/doctor-profile2.jpg";
 import doctorProfile2 from "@/assets/images/doctor-profile3.jpg";
 import Button from "@/app/Component/Shared/Buttons/Button";
+import DoctorsCardList from "@/app/Component/Shared/DoctorsCard/DoctorsCardList";
+import DoctorsCardGrid from "@/app/Component/Shared/DoctorsCard/DoctorsCardGrid";
 
 const Doctor = () => {
   const itemsPerPage = 2;
@@ -24,6 +26,7 @@ const Doctor = () => {
   const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
   const [isGendersOpen, setIsGendersOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isGridView, setIsGridView] = useState(true);
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -147,6 +150,11 @@ const Doctor = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+
+  // Handle toggle between grid and list view
+  const toggleLayout = () => {
+    setIsGridView(!isGridView);
   };
 
   return (
@@ -291,18 +299,18 @@ const Doctor = () => {
             </button>
           </div>
           <div className="col-span-2">
-            <div className="border border-slate-900/30 flex items-center justify-between px-5 py-3 rounded-md">
+            <div className="border border-slate-200 flex items-center justify-between px-5 py-3 rounded-md">
               <h5 className="text-xl text-M-heading-color font-jost font-bold">
                 Showing Doctors For You :{" "}
                 <span className="bg-M-secondary-color text-white px-3 py-1 rounded-md">
                   50
                 </span>
               </h5>
-              <div>
+              <div className="flex items-center gap-3">
                 <select
                   name="sortFilter"
                   id="sortFilter"
-                  className="px-3 py-2 rounded border-0 ring-0 focus:outline-none font-jost font-normal bg-slate-50"
+                  className="px-3 py-3 rounded border-0 ring-0 focus:outline-none font-jost font-normal bg-slate-50 "
                 >
                   <option value="N/A">Default</option>
                   <option value="name" className="text-M-heading-color">
@@ -318,88 +326,46 @@ const Doctor = () => {
                     Sort by Date
                   </option>
                 </select>
+                <button
+                  onClick={toggleLayout}
+                  className="size-12 inline-flex items-center justify-center text-white bg-M-heading-color rounded  "
+                >
+                  <Icon
+                    icon="heroicons-outline:menu-alt-2"
+                    width="24"
+                    height="24"
+                  />
+                </button>
+                <button
+                  onClick={toggleLayout}
+                  className="size-12 inline-flex items-center justify-center bg-slate-50 text-M-heading-color rounded  "
+                >
+                  <Icon
+                    icon="tdesign:menu-application"
+                    width="24"
+                    height="24"
+                  />
+                </button>
               </div>
             </div>
             {/* Doctors Card */}
-            {currentItems.map((doctor, index) => (
-              <div
-                key={doctor.id}
-                className="border border-slate-100 mt-8 p-7 flex gap-6"
-              >
-                {/* Doctor Image */}
-                <Image
-                  src={doctor.image}
-                  alt={doctor.name}
-                  className="size-[200px] rounded-full shrink-0"
-                />
-
-                <div className="grid grid-cols-2 gap-10 items-center">
-                  {/* Left Section */}
-                  <div className="flex-1 relative before:w-[1px] before:h-1/4 before:bg-slate-300 before:absolute before:-right-5 before:top-1/2 before:-translate-y-1/2">
-                    <ul className="flex flex-wrap items-center gap-4 mb-5">
-                      {/* Department */}
-                      <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
-                        {doctor.department}
-                      </li>
-
-                      {/* Experience */}
-                      <li className="bg-[#323290] inline-flex items-center gap-2 rounded-md py-2 px-4 font-jost font-normal text-base text-white">
-                        <Icon icon="solar:medical-kit-linear" width="18" />
-                        {doctor.experience} years
-                      </li>
-                    </ul>
-
-                    {/* Doctor Name */}
-                    <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
-                      <Link
-                        href="#"
-                        className="hover:text-M-primary-color transition-all duration-300 capitalize"
-                      >
-                        {doctor.name}
-                      </Link>
-                    </h3>
-
-                    {/* Academic Qualification */}
-                    <p className="text-M-text-color text-base font-normal font-jost flex gap-2">
-                      <Icon
-                        icon="oui:index-open"
-                        width="24"
-                        className="text-M-heading-color shrink-0 relative top-[5px]"
-                      />
-                      {doctor.qualifications}
-                    </p>
-
-                    {/* Location */}
-                    <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
-                      <Icon
-                        icon="mdi:location-on-outline"
-                        width="24"
-                        className="text-M-heading-color"
-                      />
-                      {doctor.hospital}
-                    </p>
+            {isGridView ? (
+              <div className="grid grid-cols-2 gap-6">
+                {currentItems.map((doctor, index) => (
+                  <div key={doctor.id}>
+                    <DoctorsCardGrid key={index} doctor={doctor} />
                   </div>
-
-                  {/* Right Section (Availability & Booking) */}
-                  <div className="text-center">
-                    <h4 className="font-jost font-bold text-base text-M-heading-color">
-                      {doctor.availability.days}
-                    </h4>
-                    <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
-                      {doctor.availability.time}
-                    </p>
-                    <Button
-                      linkHref="#"
-                      buttonText="Book An Appointment"
-                      buttonColor="bg-M-primary-color"
-                      textColor="text-white"
-                      borderColor="border-M-primary-color"
-                      alignment="center"
-                    />
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div>
+                {currentItems.map((doctor, index) => (
+                  <div key={doctor.id}>
+                    <DoctorsCardList key={index} doctor={doctor} />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Pagination Area */}
             {doctorsData.length > itemsPerPage && (
