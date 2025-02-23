@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  mode: 'jit',
+  mode: "jit",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -24,19 +24,19 @@ export default {
         "M-text-color": "#6A7C92",
       },
       backgroundImage: {
-        'heroBG': "@/public/assets/heroBG.png",
+        heroBG: "@/public/assets/heroBG.png",
       },
       animation: {
-        spin: 'spin 6s linear infinite',
-        shake: 'shake 0.5s ease-in-out',
+        spin: "spin 6s linear infinite",
+        shake: "shake 0.5s ease-in-out",
       },
       keyframes: {
         spin: {
-          '0%': {
-            transform: 'rotate(0deg)',
+          "0%": {
+            transform: "rotate(0deg)",
           },
-          '100%': {
-            transform: 'rotate(360deg)',
+          "100%": {
+            transform: "rotate(360deg)",
           },
         },
         pulse: {
@@ -45,14 +45,14 @@ export default {
           "100%": { transform: "scale(1)", opacity: "1" },
         },
         shake: {
-          '0%': { transform: 'translateX(0)' },
-          '25%': { transform: 'translateX(-4px)' },
-          '50%': { transform: 'translateX(4px)' },
-          '75%': { transform: 'translateX(-4px)' },
-          '100%': { transform: 'translateX(0)' },
+          "0%": { transform: "translateX(0)" },
+          "25%": { transform: "translateX(-4px)" },
+          "50%": { transform: "translateX(4px)" },
+          "75%": { transform: "translateX(-4px)" },
+          "100%": { transform: "translateX(0)" },
         },
-      }
+      },
     },
   },
-  plugins: ["prettier-plugin-tailwindcss"]
+  plugins: ["prettier-plugin-tailwindcss"],
 };
