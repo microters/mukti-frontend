@@ -63,7 +63,7 @@ const Doctor = () => {
       department: "Neurology",
       experience: 7,
       qualifications: "MBBS, MD - Neurology, Fellowship in Stroke Management",
-      hospital: "City Care Hospital",
+      hospital: "Mukti Hospital",
       availability: {
         days: "Monday - Thursday",
         time: "10:00 AM - 02:00 PM",
@@ -76,7 +76,7 @@ const Doctor = () => {
       department: "Orthopedics",
       experience: 5,
       qualifications: "MBBS, D.Ortho, Fellowship in Joint Replacement Surgery",
-      hospital: "OrthoCare Clinic",
+      hospital: "Mukti Hospital",
       availability: {
         days: "Tuesday - Friday",
         time: "09:00 AM - 01:00 PM",
@@ -90,7 +90,7 @@ const Doctor = () => {
       experience: 6,
       qualifications:
         "MBBS, MD - Pediatrics, Certified in Pediatric Critical Care",
-      hospital: "Children's Health Center",
+      hospital: "Mukti Hospital",
       availability: {
         days: "Monday - Wednesday",
         time: "08:00 AM - 04:00 PM",
@@ -104,7 +104,7 @@ const Doctor = () => {
       experience: 8,
       qualifications:
         "MBBS, MD - Dermatology, Fellowship in Cosmetic Dermatology",
-      hospital: "Dermacare Clinic",
+      hospital: "Mukti Hospital",
       availability: {
         days: "Wednesday - Saturday",
         time: "11:00 AM - 05:00 PM",
@@ -118,7 +118,7 @@ const Doctor = () => {
       experience: 10,
       qualifications:
         "MBBS, MS - Obstetrics & Gynecology, Fellowship in High-Risk Obstetrics",
-      hospital: "Women's Health Clinic",
+      hospital: "Mukti Hospital",
       availability: {
         days: "Monday - Friday",
         time: "09:00 AM - 03:00 PM",
