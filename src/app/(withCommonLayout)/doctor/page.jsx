@@ -1,5 +1,4 @@
 "use client";
-import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import HeroInnerPage from "@/app/Component/UI/HeroInnerPage";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -15,7 +14,6 @@ import female from "@/assets/images/female.png";
 import doctorProfile from "@/assets/images/doctor-profile.jpg";
 import doctorProfile1 from "@/assets/images/doctor-profile2.jpg";
 import doctorProfile2 from "@/assets/images/doctor-profile3.jpg";
-import Button from "@/app/Component/Shared/Buttons/Button";
 import DoctorsCardList from "@/app/Component/Shared/DoctorsCard/DoctorsCardList";
 import DoctorsCardGrid from "@/app/Component/Shared/DoctorsCard/DoctorsCardGrid";
 
@@ -160,7 +158,6 @@ const Doctor = () => {
   };
 
   // Handle Filter Area in Mobile
-
   useEffect(() => {
     // This check ensures that `window` is only accessed on the client side
     if (typeof window !== "undefined") {
@@ -168,10 +165,7 @@ const Doctor = () => {
         setScreenWidth(window.innerWidth);
       };
 
-      // Set initial screen width on mount
       setScreenWidth(window.innerWidth);
-
-      // Add resize event listener
       window.addEventListener("resize", handleResize);
 
       // Cleanup the event listener on component unmount
@@ -179,19 +173,19 @@ const Doctor = () => {
         window.removeEventListener("resize", handleResize);
       };
     }
-  }, []); // Empty dependency array ensures this effect runs only once
+  }, []);
 
   // Handle toggle of div visibility
   const handleToggle = () => {
     if (screenWidth <= 768) {
-      setIsFilterOpen(!isFilterOpen); // Toggle visibility only for smaller screens
+      setIsFilterOpen(!isFilterOpen);
     }
   };
 
   // Ensure the div is visible if screen is more than 768px
   useEffect(() => {
     if (screenWidth > 768) {
-      setIsFilterOpen(true); // Force the div to be visible if screen width > 768px
+      setIsFilterOpen(true);
     }
   }, [screenWidth]);
 
