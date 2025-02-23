@@ -1,15 +1,18 @@
 "use client"
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
+import i18n from '@/utils/i18n';
 
 const Header = () => {
-
+  const { t } = useTranslation();
+  const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -18,54 +21,56 @@ const Header = () => {
     event.preventDefault();
     setOpenIndex(openIndex === index ? null : index); 
   };
-
-  const handleLanguageChange = (e) => {
-    const language = e.target.value;
-    console.log(language); // For debugging purposes
-    i18n.changeLanguage(language); 
-};
-
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   }
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    const newPath = lng === 'en' ? '/' : `/${lng}`;
+    window.history.pushState(null, '', newPath);
+  };
+
+  if (!isMounted) return null;
+
   const menuItems = [
-    { label: "HOME", href: "/", hasSubMenu: false },
+    { label: t('header.home'), href: "/", hasSubMenu: false },
     {
-      label: "FIND A DOCTOR",
+      label: t('header.findDoctor'),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Search by Specialty", href: "#" },
-        { label: "Search by Name", href: "#" },
-        { label: "Book an Appointment", href: "#" },
+        { label: t('header.searchSpecialty'), href: "#" },
+        { label: t('header.searchName'), href: "#" },
+        { label: t('header.bookAppointment'), href: "#" },
       ],
     },
     {
-      label: "PATIENT CARE",
+      label: t('header.patientCare'),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Health Packages", href: "#" },
-        { label: "Medical Services", href: "#" },
-        { label: "Emergency Services", href: "#" },
+        { label: t('header.healthPackages'), href: "#" },
+        { label: t('header.medicalServices'), href: "#" },
+        { label: t('header.emergencyServices'), href: "#" },
       ],
     },
     {
-      label: "DEPARTMENT",
+      label: t('header.department'),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Cardiology", href: "#" },
-        { label: "Neurology", href: "#" },
-        { label: "Orthopedics", href: "#" },
-        { label: "Cardiology", href: "#" },
-        { label: "Neurology", href: "#" },
-        { label: "Orthopedics", href: "#" },
+        { label: t('header.cardiology'), href: "#" },
+        { label: t('header.neurology'), href: "#" },
+        { label: t('header.orthopedics'), href: "#" },
       ],
     },
-    { label: "About Us", href: "#", hasSubMenu: false },
-    { label: "News & Media", href: "#", hasSubMenu: false },
+    { label: t('header.aboutUs'), href: "#", hasSubMenu: false },
+    { label: t('header.newsMedia'), href: "#", hasSubMenu: false },
   ];
   
 
@@ -84,7 +89,7 @@ const Header = () => {
                   className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
                 >
                   <Icon icon="uiw:login" width="15" />
-                  <span>Sign In</span>
+                  <span>{t('header.signIn')}</span>
                 </Link>
               </li>
               <li className="hidden lg:block">
@@ -104,11 +109,13 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer" onChange={handleLanguageChange}
-                            >
-                    <option value="en">English</option>
-                    <option value="bn">Bangla</option>
-                  </select>
+                  <select
+                    className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
+                    onChange={(e) => changeLanguage(e.target.value)}
+                >
+                    <option value="en">{t('header.english')}</option>
+                    <option value="bn">{t('header.bangla')}</option>
+                </select>
                 </div>
               </li>
             </ul>
