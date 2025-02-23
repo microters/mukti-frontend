@@ -8,7 +8,6 @@ const DoctorsCardGrid = ({ doctor }) => {
   return (
     <div key={doctor.id} className="h-full">
       <div className="items-center w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md ">
-        {/* Left Section */}
         <div>
           {/* Doctor Image */}
           <Image
