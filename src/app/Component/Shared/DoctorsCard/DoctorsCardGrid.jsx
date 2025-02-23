@@ -8,7 +8,7 @@ const DoctorsCardGrid = ({ doctor }) => {
   return (
       <div
         key={doctor.id}
-        className="border border-slate-200 mt-8 p-7 rounded-md"
+        className="border border-slate-200 p-7 rounded-md"
       >
         {/* Doctor Image */}
         <Image

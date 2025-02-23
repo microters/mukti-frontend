@@ -3,7 +3,7 @@ import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import HeroInnerPage from "@/app/Component/UI/HeroInnerPage";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import dermatology from "@/assets/images/dermatology-icon.png";
@@ -20,13 +20,15 @@ import DoctorsCardList from "@/app/Component/Shared/DoctorsCard/DoctorsCardList"
 import DoctorsCardGrid from "@/app/Component/Shared/DoctorsCard/DoctorsCardGrid";
 
 const Doctor = () => {
-  const itemsPerPage = 2;
+  const itemsPerPage = 4;
   const [selectedSpecialties, setSelectedSpecialties] = useState({});
   const [selectedGenders, setSelectedGenders] = useState({});
   const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
   const [isGendersOpen, setIsGendersOpen] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [isGridView, setIsGridView] = useState(true);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -157,12 +159,43 @@ const Doctor = () => {
     setIsGridView(!isGridView);
   };
 
+  // Handle Filter Area in Mobile
+
+  // Effect to track screen resize
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    // Add resize event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Handle toggle of div visibility
+  const handleToggle = () => {
+    if (screenWidth <= 768) {
+      setIsFilterOpen(!isFilterOpen); // Toggle visibility only for smaller screens
+    }
+  };
+
+  // Ensure the div is visible if screen is more than 768px
+  useEffect(() => {
+    if (screenWidth > 768) {
+      setIsFilterOpen(true); // Force the div to be visible if screen width > 768px
+    }
+  }, [screenWidth]);
+
   return (
     <div>
       <HeroInnerPage />
-      <div className="container py-24">
-        <div className="grid grid-cols-3 gap-8">
-          <div className="space-y-8">
+      <div className="container py-24 relative">
+        <button onClick={handleToggle} className="flex gap-3 items-center justify-center w-full py-3 px-3 text-base text-white uppercase font-jost font-semibold bg-M-primary-color sticky bottom-1 z-20 rounded-md mb-4 md:hidden"><Icon icon="cil:filter" width="24"/> Filter</button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        {isFilterOpen && (
+          <div className="space-y-8 fixed md:relative bg-white top-0 left-0 w-full overflow-y-scroll md:overflow-y-auto h-screen md:h-auto px-2 py-2 md:p-0 z-50">
             <div className="bg-M-heading-color px-5 py-7 rounded-lg">
               <h3 className="text-2xl font-bold text-white mb-2">
                 Can't find what are you looking for?
@@ -204,7 +237,7 @@ const Doctor = () => {
                     </label>
                   </div>
                 </div>
-                <button className="font-bold font-jost text-lg text-white py-3 px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
+                <button className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-3 px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
                   {" "}
                   <Icon icon="solar:call-medicine-linear" width="24" /> Request
                   callback
@@ -291,18 +324,28 @@ const Doctor = () => {
                 ))}
               </ul>
             </div>
-            <button
-              onClick={resetSelections}
-              className="font-jost font-normal text-base text-white uppercase px-3 py-3 rounded-md w-full bg-M-secondary-color  transition-all duration-300 hover:bg-M-primary-color"
-            >
-              Clear Filters
-            </button>
+            <div className="flex gap-3 bg-white ">
+              <button
+                onClick={handleToggle}
+                className="font-jost font-normal text-base text-white uppercase px-3 py-3 rounded-md w-full bg-M-primary-color hover:bg-M-heading-color md:hidden transition-all duration-300"
+              >
+                Apply Filters
+              </button>
+              <button
+                onClick={resetSelections}
+                className="font-jost font-normal text-base text-white uppercase px-3 py-3 rounded-md w-full bg-M-secondary-color  transition-all duration-300 hover:bg-M-primary-color"
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
-          <div className="col-span-2">
-            <div className="border border-slate-200 flex items-center justify-between px-5 py-3 rounded-md">
-              <h5 className="text-xl text-M-heading-color font-jost font-bold">
+           )}
+
+          <div className=" md:col-span-2">
+            <div className="border border-slate-200 flex flex-wrap gap-3 items-center justify-center lg:justify-between px-5 py-3 rounded-md">
+              <h5 className="text-base xl:text-xl text-M-heading-color font-jost font-bold">
                 Showing Doctors For You :{" "}
-                <span className="bg-M-secondary-color text-white px-3 py-1 rounded-md">
+                <span className="bg-M-secondary-color text-white text-sm font-normal px-2 lg:px-3 py-1 rounded-md">
                   50
                 </span>
               </h5>
@@ -328,7 +371,7 @@ const Doctor = () => {
                 </select>
                 <button
                   onClick={toggleLayout}
-                  className="size-12 inline-flex items-center justify-center text-white bg-M-heading-color rounded  "
+                  className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${isGridView ? "bg-slate-50 text-M-heading-color" : "text-white bg-M-heading-color"} `}
                 >
                   <Icon
                     icon="heroicons-outline:menu-alt-2"
@@ -338,7 +381,7 @@ const Doctor = () => {
                 </button>
                 <button
                   onClick={toggleLayout}
-                  className="size-12 inline-flex items-center justify-center bg-slate-50 text-M-heading-color rounded  "
+                  className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${isGridView ? "text-white bg-M-heading-color" : "bg-slate-50 text-M-heading-color"} `}
                 >
                   <Icon
                     icon="tdesign:menu-application"
@@ -350,7 +393,7 @@ const Doctor = () => {
             </div>
             {/* Doctors Card */}
             {isGridView ? (
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
                 {currentItems.map((doctor, index) => (
                   <div key={doctor.id}>
                     <DoctorsCardGrid key={index} doctor={doctor} />

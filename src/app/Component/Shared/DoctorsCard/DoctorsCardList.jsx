@@ -8,18 +8,18 @@ const DoctorsCardList = ({ doctor }) => {
   return (
     <div
       key={doctor.id}
-      className="border border-slate-200 mt-8 p-7 flex gap-6 rounded-md"
+      className="border border-slate-200 mt-8 p-7 flex flex-col lg:flex-row gap-6 rounded-md"
     >
       {/* Doctor Image */}
       <Image
         src={doctor.image}
         alt={doctor.name}
-        className="size-[200px] rounded-full shrink-0"
+        className="size-32 xl:size-[200px] rounded-full shrink-0"
       />
 
-      <div className="grid grid-cols-2 gap-10 items-center">
+      <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 items-center">
         {/* Left Section */}
-        <div className="flex-1 relative before:w-[1px] before:h-1/4 before:bg-slate-300 before:absolute before:-right-5 before:top-1/2 before:-translate-y-1/2">
+        <div className="flex-1 relative before:hidden lg:before:block before:w-[1px] before:h-1/4 before:bg-slate-300 before:absolute before:-right-5 before:top-1/2 before:-translate-y-1/2">
           <ul className="flex flex-wrap items-center gap-4 mb-5">
             {/* Department */}
             <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
@@ -65,7 +65,7 @@ const DoctorsCardList = ({ doctor }) => {
         </div>
 
         {/* Right Section (Availability & Booking) */}
-        <div className="text-center">
+        <div className="txt-left lg:text-center">
           <h4 className="font-jost font-bold text-base text-M-heading-color">
             {doctor.availability.days}
           </h4>
@@ -79,6 +79,7 @@ const DoctorsCardList = ({ doctor }) => {
             textColor="text-white"
             borderColor="border-M-primary-color"
             alignment="center"
+            padding="py-2 px-3 xl:py-3 xl:px-5"
           />
         </div>
       </div>

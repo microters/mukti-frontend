@@ -63,7 +63,7 @@ const HeroInnerPage = () => {
                     id="department"
                     className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                   >
-                    <option disabled>Select a Department</option>
+                    <option value="N/A">Select a Department</option>
                     <option value="cardiology" className="text-M-heading-color">Cardiology</option>
                     <option value="neurology" className="text-M-heading-color">Neurology</option>
                     <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
@@ -77,7 +77,7 @@ const HeroInnerPage = () => {
                     id="department"
                     className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                   >
-                    <option disabled>Select Doctor.... </option>
+                    <option value="N/A">Select Doctor.... </option>
                     <option value="cardiology" className="text-M-heading-color">Cardiology</option>
                     <option value="neurology" className="text-M-heading-color">Neurology</option>
                     <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
