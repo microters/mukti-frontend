@@ -347,9 +347,16 @@ const SingleDoctor = () => {
                 <p className="text-M-text-color text-base font-normal font-jost ">Dr. Johnson’s exceptional contributions to medicine and patient care have been widely recognized through numerous awards and honors. Dr. Johnson’s exceptional contributions to medicine and patient care have been widely recognized through numerous awards and honors.</p>
                 <div className="flex  gap-5">
                     <Image src={badge} alt="badge" className="w-14 shrink-0" />
-                    <div>
+                    <div className="space-y-1">
                         <h4>Excellence in Patient Care Award – 2023</h4>
-                        <p className="text-M-text-color font-jost text-">Honored for his outstanding commitment to patient satisfaction and clinical excellence.</p>
+                        <p className="text-M-text-color font-jost text-base">Honored for his outstanding commitment to patient satisfaction and clinical excellence.</p>
+                    </div>
+                </div>
+                <div className="flex  gap-5">
+                    <Image src={badge} alt="badge" className="w-14 shrink-0" />
+                    <div className="space-y-1">
+                        <h4>Excellence in Patient Care Award – 2023</h4>
+                        <p className="text-M-text-color font-jost text-base">Honored for his outstanding commitment to patient satisfaction and clinical excellence.</p>
                     </div>
                 </div>
               </div>
