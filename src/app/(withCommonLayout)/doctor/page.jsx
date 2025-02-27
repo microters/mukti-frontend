@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-
 import dermatology from "@/assets/images/dermatology-icon.png";
 import cardiology from "@/assets/images/cardiologyIcon.png";
 import gastrology from "@/assets/images/gastrologyIcon.png";

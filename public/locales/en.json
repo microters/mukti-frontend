@@ -1,15 +1,40 @@
 {
-    "home": "Home",
-    "findADoctor": "Find a Doctor",
-    "patientCare": "Patient Care",
-    "department": "Department",
-    "aboutUs": "About Us",
-    "newsAndMedia": "News & Media",
-    "appointment": "Appointment",
-    "searchBySpecialty": "Search by Specialty",
-    "searchByName": "Search by Name",
+  "header": {
+    "home": "HOME",
+    "findDoctor": "FIND A DOCTOR",
+    "searchSpecialty": "Search by Specialty",
+    "searchName": "Search by Name",
     "bookAppointment": "Book an Appointment",
+    "patientCare": "PATIENT CARE",
+    "healthPackages": "Health Packages",
+    "medicalServices": "Medical Services",
+    "emergencyServices": "Emergency Services",
+    "department": "DEPARTMENT",
+    "cardiology": "Cardiology",
+    "neurology": "Neurology",
+    "orthopedics": "Orthopedics",
+    "aboutUs": "About Us",
+    "newsMedia": "News & Media",
+    "signIn": "Sign In",
+    "appointment": "Appointment",
+    "callNow": "Call Now",
+    "language": "Language",
     "english": "English",
-    "bangla": "বাংলা"
+    "bangla": "Bangla"
+  },
+  "category": {
+    "title": "Browse by Specialist",
+    "subtitle": "Category",
+    "allServices": "All Services"
+  },
+  "doctors": {
+    "topRated": "Top Rated Specialists",
+    "meetProfessionals": "MEET OUR PROFESSIONALS",
+    "noDoctorsAvailable": "No doctors available for {department}.",
+    "unknownDepartment": "Unknown",
+    "noNameAvailable": "No Name Available",
+    "noQualification": "N/A",
+    "bookAppointment": "Book An Appointment"
   }
-  
+}
+

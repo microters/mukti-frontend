@@ -1,20 +1,32 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+
   images: {
-    domains: ['placehold.co', 'localhost'],  // Add 'localhost' here
+    domains: ['placehold.co', 'localhost', 'example.com'],
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
         port: '5000',
-        pathname: '/uploads/**', // Allow images from localhost:5000/uploads
+        pathname: '/uploads/**',
       },
       {
         protocol: 'https',
-        hostname: 'example.com', // Example for other external domains
+        hostname: 'example.com',
         pathname: '/images/**',
       },
     ],
   },
-  reactStrictMode: true, // Enable strict mode in React (helpful for development)
-  swcMinify: true, // Use SWC for minification (fast and efficient)
+
+  i18n: {
+    locales: ['en', 'bn'],
+    defaultLocale: 'en',
+    localeDetection: false,
+  },
+
+  trailingSlash: true, // This helps keep `/bn` from breaking
 };
+
+module.exports = nextConfig;
+

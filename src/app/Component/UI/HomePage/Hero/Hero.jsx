@@ -2,7 +2,6 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-
 import searchIcon from "@/assets/images/search.png";
 import departmentIcon from "@/assets/images/department.png";
 import doctorIcon from "@/assets/images/doctor.png";
