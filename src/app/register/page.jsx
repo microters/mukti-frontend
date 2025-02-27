@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import logo from "@/assets/images/logo-black.png";
 import backgroundImage from "@/assets/images/authBG.png";
+import Header from "../Component/Header";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
