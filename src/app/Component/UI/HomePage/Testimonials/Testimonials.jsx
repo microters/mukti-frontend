@@ -13,7 +13,6 @@ import { Navigation, Autoplay } from "swiper/modules";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 
 const Testimonials = ({ reviews }) => {
-  console.log(reviews)
   return (
     <div className="py-[100px]">
     <div className="container mx-auto px-4">
