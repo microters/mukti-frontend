@@ -8,7 +8,7 @@ import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
-import i18n from '@/utils/i18n';
+import i18n from "@/utils/i18n";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -31,46 +31,46 @@ const Header = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    const newPath = lng === 'en' ? '/' : `/${lng}`;
-    window.history.pushState(null, '', newPath);
+    const newPath = lng === "en" ? "/" : `/${lng}`;
+    window.history.pushState(null, "", newPath);
   };
 
   if (!isMounted) return null;
 
   const menuItems = [
-    { label: t('header.home'), href: "/", hasSubMenu: false },
+    { label: t("header.home"), href: "/", hasSubMenu: false },
     {
-      label: t('header.findDoctor'),
+      label: t("header.findDoctor"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: t('header.searchSpecialty'), href: "#" },
-        { label: t('header.searchName'), href: "#" },
-        { label: t('header.bookAppointment'), href: "#" },
+        { label: t("header.searchSpecialty"), href: "#" },
+        { label: t("header.searchName"), href: "#" },
+        { label: t("header.bookAppointment"), href: "#" },
       ],
     },
     {
-      label: t('header.patientCare'),
+      label: t("header.patientCare"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: t('header.healthPackages'), href: "#" },
-        { label: t('header.medicalServices'), href: "#" },
-        { label: t('header.emergencyServices'), href: "#" },
+        { label: t("header.healthPackages"), href: "#" },
+        { label: t("header.medicalServices"), href: "#" },
+        { label: t("header.emergencyServices"), href: "#" },
       ],
     },
     {
-      label: t('header.department'),
+      label: t("header.department"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: t('header.cardiology'), href: "#" },
-        { label: t('header.neurology'), href: "#" },
-        { label: t('header.orthopedics'), href: "#" },
+        { label: t("header.cardiology"), href: "#" },
+        { label: t("header.neurology"), href: "#" },
+        { label: t("header.orthopedics"), href: "#" },
       ],
     },
-    { label: t('header.aboutUs'), href: "#", hasSubMenu: false },
-    { label: t('header.newsMedia'), href: "#", hasSubMenu: false },
+    { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
+    { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
   ];
 
   return (
@@ -93,7 +93,7 @@ const Header = () => {
                   className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
                 >
                   <Icon icon="uiw:login" width="15" />
-                  <span>{t('header.signIn')}</span>
+                  <span>{t("header.signIn")}</span>
                 </Link>
               </li>
               <li className="hidden lg:block">
@@ -116,10 +116,10 @@ const Header = () => {
                   <select
                     className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
                     onChange={(e) => changeLanguage(e.target.value)}
-                >
-                    <option value="en">{t('header.english')}</option>
-                    <option value="bn">{t('header.bangla')}</option>
-                </select>
+                  >
+                    <option value="en">{t("header.english")}</option>
+                    <option value="bn">{t("header.bangla")}</option>
+                  </select>
                 </div>
               </li>
             </ul>
@@ -195,7 +195,7 @@ const Header = () => {
         </Link>
 
         <nav
-          className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-10 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
+          className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
         >
           <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
             {menuItems.map((item, index) => (

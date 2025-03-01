@@ -15,8 +15,12 @@
   }
 }
 
+html {
+  @apply scroll-smooth;
+}
+
 body {
-  box-sizing: border-box;
+  @apply box-border;
 }
 
 h1,
