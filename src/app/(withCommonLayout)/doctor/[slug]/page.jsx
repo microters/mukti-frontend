@@ -27,6 +27,7 @@ const SingleDoctor = () => {
     location: true,
   });
 
+  const [activeTab, setActiveTab] = useState(null);
   const [accordionOpenIndex, setAccordionOpenIndex] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -37,7 +38,6 @@ const SingleDoctor = () => {
 
   const maxWords = 100; // Show only first 50 words by default
   const wordsArray = fullText.split(" ");
-  const truncatedText = wordsArray.slice(0, maxWords).join(" ") + "...";
 
   const tabs = [
     { name: "Short Bio", id: "shortBio" },
@@ -216,7 +216,13 @@ const SingleDoctor = () => {
                     <li key={tab.id} className="inline-block">
                       <Link
                         href={"#" + tab.id}
-                        className="inline-block px-2 py-1 md:px-4 md:py-2 border border-M-heading-color/20 rounded-md text-M-text-color text-sm md:text-base font-jost font-normal uppercase hover:bg-M-heading-color hover:text-white transition-all duration-300"
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`inline-block px-2 py-1 md:px-4 md:py-2 border border-M-heading-color/20 rounded-md text-M-text-color text-sm md:text-base font-jost font-normal uppercase transition-all duration-300 
+                          ${
+                            activeTab === tab.id
+                              ? "bg-M-heading-color text-white"
+                              : "hover:bg-M-heading-color hover:text-white"
+                          }`}
                       >
                         {tab.name}
                       </Link>
