@@ -28,8 +28,9 @@ const WhoWeAre = () => {
   ];
 
   const [activeTab, setActiveTab] = useState(tabs[0].id);
+
   return (
-    <div className="bg-M-section-bg py-24">
+    <div className="bg-M-section-bg pt-24">
       <div className="container">
         <SectionHeading
           subtitle="Who We Are"
@@ -69,11 +70,7 @@ const WhoWeAre = () => {
               </p>
             </div>
             <div>
-              <Image
-                src={img1}
-                alt="About Image"
-                className="w-full h-auto"
-              />
+              <Image src={img1} alt="About Image" className="w-full h-auto" />
             </div>
           </div>
         </div>
