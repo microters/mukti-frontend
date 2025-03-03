@@ -15,10 +15,16 @@ import doctorProfile1 from "@/assets/images/doctor-profile2.jpg";
 import doctorProfile2 from "@/assets/images/doctor-profile3.jpg";
 import DoctorsCardList from "@/app/Component/Shared/DoctorsCard/DoctorsCardList";
 import DoctorsCardGrid from "@/app/Component/Shared/DoctorsCard/DoctorsCardGrid";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const Doctor = () => {
   const itemsPerPage = 4;
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
   const [selectedSpecialties, setSelectedSpecialties] = useState({});
+  const [doctors, setDoctors] = useState([]); // State to hold the fetched doctor data
+  const [loading, setLoading] = useState(true); //
   const [selectedGenders, setSelectedGenders] = useState({});
   const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
   const [isGendersOpen, setIsGendersOpen] = useState(true);
@@ -26,6 +32,34 @@ const Doctor = () => {
   const [isGridView, setIsGridView] = useState(true);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
+
+useEffect(() => {
+  const fetchDoctors = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get("http://localhost:5000/api/doctor", {
+        headers: {
+          "x-api-key": "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079",
+        },
+      });
+      // Check if the data is nested
+      const doctorsData = Array.isArray(response.data)
+        ? response.data
+        : response.data.doctors || [];
+
+      setDoctors(doctorsData);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+      toast.error("Failed to fetch doctor list");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDoctors();
+}, []);
+console.log(doctors);
+
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -351,7 +385,7 @@ const Doctor = () => {
               <h5 className="text-base xl:text-xl text-M-heading-color font-jost font-bold">
                 Showing Doctors For You :{" "}
                 <span className="bg-M-secondary-color text-white text-sm font-normal px-2 lg:px-3 py-1 rounded-md">
-                  50
+                  {doctors.length}
                 </span>
               </h5>
               <div className="flex items-center gap-3">
@@ -399,7 +433,7 @@ const Doctor = () => {
             {/* Doctors Card */}
             {isGridView ? (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
-                {currentItems.map((doctor, index) => (
+                {doctors.map((doctor, index) => (
                   <div key={doctor.id}>
                     <DoctorsCardGrid key={index} doctor={doctor} />
                   </div>
@@ -407,7 +441,7 @@ const Doctor = () => {
               </div>
             ) : (
               <div>
-                {currentItems.map((doctor, index) => (
+                {doctors.map((doctor, index) => (
                   <div key={doctor.id}>
                     <DoctorsCardList key={index} doctor={doctor} />
                   </div>
