@@ -60,7 +60,7 @@ const WhoWeAre = () => {
           </ul>
 
           {/* Tab Content */}
-          <div className="grid grid-cols-2 items-center gap-24 mt-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-5 xl:gap-24 mt-5">
             <div>
               <h3 className="text-3xl text-M-heading-color font-bold mb-5">
                 {tabs.find((tab) => tab.id === activeTab)?.label}

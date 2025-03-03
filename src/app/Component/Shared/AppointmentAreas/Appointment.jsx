@@ -10,14 +10,14 @@ import FormButton from "../Buttons/FormButton";
 
 const Appointment = () => {
   return (
-    <div className="bg-[#323290] py-24 relative">
+    <div className="bg-[#323290] py-24 px-2 relative">
       <Image
         src={shape4}
         alt="shape4"
         className="absolute right-0 top-0 z-0 hidden md:block"
       />
       <div className="container relative ">
-        <div className="grid grid-cols-3 items-center lg:grid-cols-3 gap-0">
+        <div className="grid grid-cols-1 items-center lg:grid-cols-3 space-y-5">
           <div className="relative px-0 md:px-20 col-span-2">
             <Image
               src={mobileApp}
