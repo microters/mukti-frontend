@@ -441,18 +441,15 @@ const Doctor = () => {
 
                 {/* Page Numbers */}
                 {[...Array(totalPages)].map((_, index) => (
-                  <li key={index}>
-                    <Link
-                      href="#"
+                  <li key={index}
                       onClick={() => handlePageChange(index + 1)}
-                      className={`size-11 inline-flex items-center justify-center  rounded-full  font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                      className={`size-11 inline-flex items-center justify-center cursor-pointer rounded-full font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
                         currentPage === index + 1
                           ? "bg-M-primary-color text-white"
                           : "text-M-primary-color bg-M-primary-color/10"
                       }`}
                     >
                       {index + 1}
-                    </Link>
                   </li>
                 ))}
 
