@@ -272,7 +272,7 @@ console.log(doctors);
                         htmlFor="agreement"
                         className="cursor-pointer font-jost font-normal text-base text-slate-200 relative z-10 pl-6"
                       >
-                        Get updateds on whatsapp & accept T&C
+                        Get updated on whatsapp & accept T&C
                       </label>
                     </div>
                   </div>
@@ -302,7 +302,7 @@ console.log(doctors);
                       onClick={() => toggleSpecialty(item.id)}
                       className={`flex justify-between items-center gap-3 cursor-pointer py-4 border-b border-M-primary-color/10 last:border-0 transition-all duration-300 ${selectedSpecialties[item.id] ? "text-slate-900" : "text-slate-400"}`}
                     >
-                      <span className="flex gap-3 items-cente font-jost font-normalr">
+                      <span className="flex gap-3 items-center font-jost font-normal">
                         <Image src={item.image} alt={item.title} />
                         {item.title}
                       </span>
