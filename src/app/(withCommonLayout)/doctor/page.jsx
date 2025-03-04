@@ -33,33 +33,33 @@ const Doctor = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
 
-useEffect(() => {
-  const fetchDoctors = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/doctor", {
-        headers: {
-          "x-api-key": "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079",
-        },
-      });
-      // Check if the data is nested
-      const doctorsData = Array.isArray(response.data)
-        ? response.data
-        : response.data.doctors || [];
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("http://localhost:5000/api/doctor", {
+          headers: {
+            "x-api-key":
+              "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079",
+          },
+        });
+        // Check if the data is nested
+        const doctorsData = Array.isArray(response.data)
+          ? response.data
+          : response.data.doctors || [];
 
-      setDoctors(doctorsData);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-      toast.error("Failed to fetch doctor list");
-    } finally {
-      setLoading(false);
-    }
-  };
+        setDoctors(doctorsData);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+        toast.error("Failed to fetch doctor list");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchDoctors();
-}, []);
-console.log(doctors);
-
+    fetchDoctors();
+  }, []);
+  console.log(doctors);
 
   const specialtyItems = [
     { id: 1, title: "Dermatology", image: dermatology },
@@ -453,61 +453,56 @@ console.log(doctors);
             {doctorsData.length > itemsPerPage && (
               <ul className="mt-10 px-5 py-3 flex items-center shadow shadow-M-primary-color/10 gap-2">
                 {/* Left Arrow */}
-                <li>
-                  <Link
-                    href="#"
-                    onClick={() =>
-                      handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
-                    }
-                    disabled={currentPage === 1}
-                    className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
-                      currentPage === 1
-                        ? "pointer-events-none opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                  >
-                    <Icon
-                      icon="material-symbols-light:keyboard-arrow-left"
-                      width="24"
-                    />
-                  </Link>
+                <li
+                  onClick={() =>
+                    handlePageChange(currentPage > 1 ? currentPage - 1 : 1)
+                  }
+                  disabled={currentPage === 1}
+                  className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
+                >
+                  <Icon
+                    icon="material-symbols-light:keyboard-arrow-left"
+                    width="24"
+                  />
                 </li>
 
                 {/* Page Numbers */}
                 {[...Array(totalPages)].map((_, index) => (
-                  <li key={index}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`size-11 inline-flex items-center justify-center cursor-pointer rounded-full font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
-                        currentPage === index + 1
-                          ? "bg-M-primary-color text-white"
-                          : "text-M-primary-color bg-M-primary-color/10"
-                      }`}
-                    >
-                      {index + 1}
+                  <li
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={`size-11 inline-flex items-center justify-center cursor-pointer rounded-full font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                      currentPage === index + 1
+                        ? "bg-M-primary-color text-white"
+                        : "text-M-primary-color bg-M-primary-color/10"
+                    }`}
+                  >
+                    {index + 1}
                   </li>
                 ))}
 
                 {/* Right Arrow */}
-                <li>
-                  <Link
-                    href="#"
-                    onClick={() =>
-                      handlePageChange(
-                        currentPage < totalPages ? currentPage + 1 : totalPages
-                      )
-                    }
-                    disabled={currentPage === totalPages}
-                    className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
-                      currentPage === totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }`}
-                  >
-                    <Icon
-                      icon="material-symbols-light:keyboard-arrow-right"
-                      width="24"
-                    />
-                  </Link>
+                <li
+                  onClick={() =>
+                    handlePageChange(
+                      currentPage < totalPages ? currentPage + 1 : totalPages
+                    )
+                  }
+                  disabled={currentPage === totalPages}
+                  className={`size-11 inline-flex items-center justify-center bg-M-primary-color/10 rounded-full text-M-primary-color font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 ${
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
+                >
+                  <Icon
+                    icon="material-symbols-light:keyboard-arrow-right"
+                    width="24"
+                  />
                 </li>
               </ul>
             )}
