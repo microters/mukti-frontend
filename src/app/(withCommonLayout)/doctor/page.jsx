@@ -5,7 +5,7 @@ import { fetchDoctors } from "@/app/api/doctor";
 export default async function DoctorPage() {
   const doctors = await fetchDoctors(); // ✅ Fetch on the server before rendering
 
-  console.log("Doctors Data:", doctors); // ✅ Log the fetched data
+  console.log("Doctors Data:", doctors); 
 
   if (!doctors || doctors.length === 0) {
     return (
@@ -22,13 +22,8 @@ export default async function DoctorPage() {
   return (
     <div>
       <HeroInnerPage />
-      <div className="container py-24">
-        <h1 className="text-3xl font-bold">Doctors List</h1>
-        <p className="mb-4">Showing {doctors.length} doctors</p>
-
         {/* ✅ Pass doctors data to client component */}
         <DoctorsList doctors={doctors} />
-      </div>
     </div>
   );
 }
