@@ -173,10 +173,10 @@ console.log(doctors);
   };
 
   // Calculate total number of pages
-  const totalPages = Math.ceil(doctorsData.length / itemsPerPage);
+  const totalPages = Math.ceil(doctors.length / itemsPerPage);
 
   // Calculate the items to show for the current page
-  const currentItems = doctorsData.slice(
+  const currentItems = doctors.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -433,7 +433,7 @@ console.log(doctors);
             {/* Doctors Card */}
             {isGridView ? (
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
-                {doctors.map((doctor, index) => (
+                {currentItems.map((doctor, index) => (
                   <div key={doctor.id}>
                     <DoctorsCardGrid key={index} doctor={doctor} />
                   </div>
@@ -441,7 +441,7 @@ console.log(doctors);
               </div>
             ) : (
               <div>
-                {doctors.map((doctor, index) => (
+                {currentItems.map((doctor, index) => (
                   <div key={doctor.id}>
                     <DoctorsCardList key={index} doctor={doctor} />
                   </div>
