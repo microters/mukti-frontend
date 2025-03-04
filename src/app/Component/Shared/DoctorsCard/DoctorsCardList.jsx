@@ -29,7 +29,7 @@ const DoctorsCardList = ({ doctor }) => {
         alt={name}
         width={100}
         height={100}
-        className="size-32 xl:size-[200px] rounded-full shrink-0"
+        className="size-32 xl:size-[150px] rounded-full shrink-0 ring ring-M-primary-color/80"
       />
 
       <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 items-center">

@@ -29,7 +29,7 @@ const DoctorsCardGrid = ({ doctor }) => {
             alt={name}
             width={100}
             height={100}
-            className="size-[120px] rounded-full shrink-0 mb-5"
+            className="size-[120px] rounded-full shrink-0 mb-5 ring ring-M-primary-color/80"
           />
           {/* Doctor Name */}
           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
