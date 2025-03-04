@@ -9,6 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useTranslation } from "react-i18next";
 
 const BestDoctors = ({ doctors = [], doctorDepartments = { en: [], bn: [] } }) => {
+  console.log(doctors)
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
    // Ensure translations are ready before rendering

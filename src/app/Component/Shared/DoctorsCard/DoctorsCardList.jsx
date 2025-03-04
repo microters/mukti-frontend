@@ -5,6 +5,19 @@ import Button from "../Buttons/Button";
 import Image from "next/image";
 
 const DoctorsCardList = ({ doctor }) => {
+  if (!doctor || !doctor.translations) return null;
+
+  // Extract English translation (or fallback to default values)
+  const doctorData = doctor.translations["en"] || {};
+  const {
+    name = "Unknown Doctor",
+    department = "N/A",
+    yearsOfExperience = "N/A",
+    academicQualification = "N/A"
+  } = doctorData;
+
+  // Set default image if doctor icon is missing
+  const doctorImage = doctor.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}` : "/default-profile-photo.png";
   return (
     <div
       key={doctor.id}
@@ -12,8 +25,10 @@ const DoctorsCardList = ({ doctor }) => {
     >
       {/* Doctor Image */}
       <Image
-        src={doctor.image}
-        alt={doctor.name}
+        src={doctorImage}
+        alt={name}
+        width={100}
+        height={100}
         className="size-32 xl:size-[200px] rounded-full shrink-0"
       />
 
@@ -23,13 +38,13 @@ const DoctorsCardList = ({ doctor }) => {
           <ul className="flex flex-wrap items-center gap-4 mb-5">
             {/* Department */}
             <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
-              {doctor.department}
+              {department}
             </li>
 
             {/* Experience */}
             <li className="bg-[#323290] inline-flex items-center gap-2 rounded-md py-2 px-4 font-jost font-normal text-base text-white">
               <Icon icon="solar:medical-kit-linear" width="18" />
-              {doctor.experience} years
+              {yearsOfExperience} years
             </li>
           </ul>
 
@@ -39,7 +54,7 @@ const DoctorsCardList = ({ doctor }) => {
               href="#"
               className="hover:text-M-primary-color transition-all duration-300 capitalize"
             >
-              {doctor.name}
+              {name}
             </Link>
           </h3>
 
@@ -50,7 +65,7 @@ const DoctorsCardList = ({ doctor }) => {
               width="24"
               className="text-M-heading-color shrink-0 relative top-[5px]"
             />
-            {doctor.qualifications}
+            {academicQualification}
           </p>
 
           {/* Location */}
@@ -60,18 +75,28 @@ const DoctorsCardList = ({ doctor }) => {
               width="24"
               className="text-M-heading-color"
             />
-            {doctor.hospital}
+            Mukti Hospital
           </p>
         </div>
 
         {/* Right Section (Availability & Booking) */}
         <div className="txt-left lg:text-center">
-          <h4 className="font-jost font-bold text-base text-M-heading-color">
-            {doctor.availability.days}
-          </h4>
-          <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
-            {doctor.availability.time}
-          </p>
+        {doctor.schedule && doctor.schedule.length > 0 ? (
+            doctor.schedule.map((slot, index) => (
+              <div key={index}> 
+                <h4 className="font-jost font-bold text-base text-M-heading-color">
+                  {slot.day} :{" "}
+                </h4>
+                <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
+                  {slot.startTime} - {slot.endTime}
+                </p>
+              </div>
+            ))
+          ) : (
+            <h4 className="font-jost font-bold text-base text-red-500">
+              Not Available
+            </h4>
+          )}
           <Button
             linkHref="#"
             buttonText="Book An Appointment"
