@@ -30,10 +30,17 @@ export const fetchDoctors = async () => {
 // ✅ Fetch a specific doctor by slug
 export const fetchDoctorBySlug = async (slug) => {
   try {
-    const response = await apiClient.get(`/api/doctor/${slug}`);
+    if (!slug) {
+      console.warn("⚠️ Missing slug parameter.");
+      return null;
+    }
+    const response = await apiClient.get(`/api/doctor/slug/${slug}`);
+
+    console.log("✅ Doctor Data:", response.data);
+
     return response.data || null;
   } catch (error) {
-    console.error("Error fetching doctor:", error);
+    console.error(`❌ Error fetching doctor (${slug}):`, error.response?.data || error.message);
     return null;
   }
 };
