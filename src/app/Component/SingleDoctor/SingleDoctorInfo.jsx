@@ -86,6 +86,14 @@ const tabs = [
     { name: "Location", id: "location" },
   ];
 
+    // Toggle visibility based on section id
+    const toggleSection = (id) => {
+        setOpenSections((prev) => ({
+          ...prev,
+          [id]: !prev[id], // Toggle the specific section's visibility
+        }));
+      };
+
   // Accordion Toggle Function
   const toggleAccordion = (index) => {
     console.log(index);
@@ -697,17 +705,25 @@ const tabs = [
                   Available For Appointment
                 </h3>
                 <div>
-                  <ul className="flex flex-wrap py-4 gap-3">
-                    <li className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-block rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center">
-                      8.30 AM - 4:30 PM
-                    </li>
-                    <li className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-block rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center">
-                      8.30 AM - 4:30 PM
-                    </li>
-                    <li className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-block rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center">
-                      8.30 AM - 4:30 PM
-                    </li>
-                  </ul>
+                <ul className="flex flex-wrap py-4 gap-3">
+                    {doctorData.schedule.map((item, index) => {
+                        const convertTo12HourFormat = (time) => {
+                        const [hours, minutes] = time.split(":").map(Number);
+                        const period = hours >= 12 ? "PM" : "AM";
+                        const formattedHours = hours % 12 || 12;
+                        return `${formattedHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+                        };
+
+                        return (
+                        <li
+                            key={index}
+                            className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-block rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center"
+                        >
+                            {convertTo12HourFormat(item.startTime)} - {convertTo12HourFormat(item.endTime)}
+                        </li>
+                        );
+                    })}
+                </ul>
                   <Link
                     href={"tel:+8801601666893"}
                     className="flex items-center gap-3 justify-center py-3 px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white  text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color uppercase"
