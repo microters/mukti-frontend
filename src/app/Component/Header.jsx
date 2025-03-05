@@ -1,90 +1,100 @@
-"use client"
+"use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/utils/i18n";
 
 const Header = () => {
-
+  const { t } = useTranslation();
+  const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
     event.preventDefault();
-    setOpenIndex(openIndex === index ? null : index); 
+    setOpenIndex(openIndex === index ? null : index);
   };
-
-  const handleLanguageChange = (e) => {
-    const language = e.target.value;
-    console.log(language); // For debugging purposes
-    i18n.changeLanguage(language); 
-};
-
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
-  }
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    const newPath = lng === "en" ? "/" : `/${lng}`;
+    window.history.pushState(null, "", newPath);
+  };
+
+  if (!isMounted) return null;
 
   const menuItems = [
-    { label: "HOME", href: "/", hasSubMenu: false },
+    { label: t("header.home"), href: "/", hasSubMenu: false },
     {
-      label: "FIND A DOCTOR",
+      label: t("header.findDoctor"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Search by Specialty", href: "#" },
-        { label: "Search by Name", href: "#" },
-        { label: "Book an Appointment", href: "#" },
+        { label: t("header.searchSpecialty"), href: "#" },
+        { label: t("header.searchName"), href: "#" },
+        { label: t("header.bookAppointment"), href: "#" },
       ],
     },
     {
-      label: "PATIENT CARE",
+      label: t("header.patientCare"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Health Packages", href: "#" },
-        { label: "Medical Services", href: "#" },
-        { label: "Emergency Services", href: "#" },
+        { label: t("header.healthPackages"), href: "#" },
+        { label: t("header.medicalServices"), href: "#" },
+        { label: t("header.emergencyServices"), href: "#" },
       ],
     },
     {
-      label: "DEPARTMENT",
+      label: t("header.department"),
       href: "#",
       hasSubMenu: true,
       subMenus: [
-        { label: "Cardiology", href: "#" },
-        { label: "Neurology", href: "#" },
-        { label: "Orthopedics", href: "#" },
-        { label: "Cardiology", href: "#" },
-        { label: "Neurology", href: "#" },
-        { label: "Orthopedics", href: "#" },
+        { label: t("header.cardiology"), href: "#" },
+        { label: t("header.neurology"), href: "#" },
+        { label: t("header.orthopedics"), href: "#" },
       ],
     },
-    { label: "About Us", href: "#", hasSubMenu: false },
-    { label: "News & Media", href: "#", hasSubMenu: false },
+    { label: t("header.doctor"), href: "http://localhost:3000/doctor", hasSubMenu: false },
+    { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
+    { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
   ];
-  
 
   return (
     <div>
       <div className="bg-M-heading-color">
         <div className="container mx-auto px-2 py-4 flex justify-between items-center gap-3">
           <Link href="/">
-            <Image src={Logo} alt="logo" width={200} className="w-32 sm:w-auto" />
+            <Image
+              src={Logo}
+              alt="logo"
+              width={200}
+              className="w-32 sm:w-auto"
+            />
           </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
               <li className="">
                 <Link
-                  href={'/signin'}
+                  href={"/signin"}
                   className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
                 >
                   <Icon icon="uiw:login" width="15" />
-                  <span>Sign In</span>
+                  <span>{t("header.signIn")}</span>
                 </Link>
               </li>
               <li className="hidden lg:block">
@@ -104,10 +114,12 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer" onChange={handleLanguageChange}
-                          >
-                    <option value="en">English</option>
-                    <option value="bn">Bangla</option>
+                  <select
+                    className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
+                    onChange={(e) => changeLanguage(e.target.value)}
+                  >
+                    <option value="en">{t("header.english")}</option>
+                    <option value="bn">{t("header.bangla")}</option>
                   </select>
                 </div>
               </li>
@@ -168,57 +180,66 @@ const Header = () => {
         </div>
       </nav>
 
-
       {/* Mobile Menu */}
       <div className="container mx-auto px-2 py-3 flex lg:hidden justify-between items-center relative">
-          <button onClick={toggleMenu}><Icon icon={openMenu ? "mingcute:close-line" : "mynaui:menu"} width="30" /></button>
-          <Link
-            href={"#"}
-            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
-          >
-            Appointment <Icon icon="basil:arrow-right-solid" width="24" />
-          </Link>
+        <button onClick={toggleMenu}>
+          <Icon
+            icon={openMenu ? "mingcute:close-line" : "mynaui:menu"}
+            width="30"
+          />
+        </button>
+        <Link
+          href={"#"}
+          className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
+        >
+          Appointment <Icon icon="basil:arrow-right-solid" width="24" />
+        </Link>
 
-          <nav className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-10 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}>
-            <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
-              {menuItems.map((item, index) => (
-                <li key={index} className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}>
-                  <Link
-                    href={item.href}
-                    onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
-                    className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
-                  >
-                    {item.label}
-                    {item.hasSubMenu && (
-                      <Icon
-                        icon="iconamoon:arrow-down-2-bold"
-                        width="20"
-                        className={`ml-1 transition-transform ${openIndex === index ? "rotate-180" : ""}`}
-                      />
-                    )}
-                  </Link>
+        <nav
+          className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
+        >
+          <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
+            {menuItems.map((item, index) => (
+              <li
+                key={index}
+                className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
+              >
+                <Link
+                  href={item.href}
+                  onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
+                  className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
+                >
+                  {item.label}
                   {item.hasSubMenu && (
-                    <ul
-                      className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${
-                        openIndex === index ? "max-h-auto" : "max-h-0"
-                      }`}
-                    >
-                      {item.subMenus.map((subItem, subIndex) => (
-                        <li key={subIndex}>
-                          <Link
-                            href={subItem.href}
-                            className="block pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
-                          >
-                            {subItem.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <Icon
+                      icon="iconamoon:arrow-down-2-bold"
+                      width="20"
+                      className={`ml-1 transition-transform ${openIndex === index ? "rotate-180" : ""}`}
+                    />
                   )}
-                </li>
-              ))}
-            </ul>
-          </nav>
+                </Link>
+                {item.hasSubMenu && (
+                  <ul
+                    className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${
+                      openIndex === index ? "max-h-auto" : "max-h-0"
+                    }`}
+                  >
+                    {item.subMenus.map((subItem, subIndex) => (
+                      <li key={subIndex}>
+                        <Link
+                          href={subItem.href}
+                          className="block pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
+                        >
+                          {subItem.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </div>
   );

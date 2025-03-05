@@ -2,7 +2,6 @@ import React from "react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-
 import searchIcon from "@/assets/images/search.png";
 import departmentIcon from "@/assets/images/department.png";
 import doctorIcon from "@/assets/images/doctor.png";
@@ -67,7 +66,7 @@ const Hero = () => {
                   id="department"
                   className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
-                  <option disabled>Select a Department</option>
+                  <option >Select a Department</option>
                   <option value="cardiology" className="text-M-heading-color">Cardiology</option>
                   <option value="neurology" className="text-M-heading-color">Neurology</option>
                   <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
@@ -81,7 +80,7 @@ const Hero = () => {
                   id="department"
                   className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
-                  <option disabled>Select Doctor.... </option>
+                  <option >Select Doctor.... </option>
                   <option value="cardiology" className="text-M-heading-color">Cardiology</option>
                   <option value="neurology" className="text-M-heading-color">Neurology</option>
                   <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
