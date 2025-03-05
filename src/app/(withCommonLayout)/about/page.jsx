@@ -9,10 +9,8 @@ import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials"
 import { getReviews } from "@/app/api/Reviews/Reviews";
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
 
-const AboutUs = async() => {
-    const [reviews] = await Promise.all([  
-        getReviews()       
-      ]);
+const AboutUs = async () => {
+  const [reviews] = await Promise.all([getReviews()]);
   return (
     <div>
       <CommonHero pageName="About Us" />

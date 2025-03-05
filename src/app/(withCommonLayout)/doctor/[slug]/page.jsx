@@ -210,7 +210,7 @@ const SingleDoctor = () => {
 
             <div className="relative">
               {/* filter List */}
-              <div className="flex gap-6 bg-white px-7 py-6 rounded-md mt-6 border border-M-heading-color/10 lg:sticky top-1">
+              <div className="flex gap-6 bg-white px-7 py-6 rounded-md mt-6 border border-M-heading-color/10 lg:sticky top-1 z-20">
                 <ul className="flex flex-wrap gap-4">
                   {tabs.map((tab) => (
                     <li key={tab.id} className="inline-block">

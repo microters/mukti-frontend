@@ -10,6 +10,8 @@ import shape from "@/assets/images/features-shape3.png";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
+import Counterup from "@/app/Component/Shared/Counter/Counterup";
 
 const Treatments = () => {
   const { t, i18n } = useTranslation();
@@ -27,8 +29,10 @@ const Treatments = () => {
 
   return (
     <div>
+      {/* Hero Area */}
       <CommonHero pageName="Our Treatments" />
 
+      {/* Department Area */}
       <div className="bg-M-section-bg py-24">
         <div className="container">
           {!departments.length ? (
@@ -95,7 +99,31 @@ const Treatments = () => {
         </div>
       </div>
 
-      
+      {/* Appointment Form Area */}
+      <Appointment />
+
+      {/* Counter Up Area */}
+      <div className="py-24">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Counterup
+              target={15}
+              title="Years With You"
+              description="Etiam ante ante, molestie vitae cursus ac, pharetra euismod libero. Etiam ante ante, molestie vitae cursus ac, "
+            />
+            <Counterup
+              target={65}
+              title="Awards"
+              description="Etiam ante ante, molestie vitae cursus ac, pharetra euismod libero. Etiam ante ante, molestie vitae cursus ac, "
+            />
+            <Counterup
+              target={250}
+              title="Doctors"
+              description="tiam ante ante, molestie vitae cursus ac, pharetra euismod libero.Etiam ante ante, molestie vitae cursus ac, pharetra euismod libero."
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
