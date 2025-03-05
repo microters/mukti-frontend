@@ -7,8 +7,11 @@ import Image from "next/image";
 import male from "@/assets/images/male.png";
 import female from "@/assets/images/female.png";
 import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
 
 const DoctorsList = ({ doctors }) => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
   const [isGridView, setIsGridView] = useState(true);
   const [selectedSpecialties, setSelectedSpecialties] = useState({});
   const [isSpecialtiesOpen, setIsSpecialtiesOpen] = useState(true);
