@@ -7,7 +7,6 @@ import Image from "next/image";
 import male from "@/assets/images/male.png";
 import female from "@/assets/images/female.png";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
 
 const DoctorsList = ({ doctors }) => {
   const [isGridView, setIsGridView] = useState(true);
@@ -25,17 +24,21 @@ const DoctorsList = ({ doctors }) => {
   const specialtyOptions = [...new Set(doctors.map(d => d.translations.en.department))];
   const genderOptions = [...new Set(doctors.map(d => d.translations.en.gender))];
 
-  const filteredDoctors = doctors.filter((doctor) => {
-    const specialtyMatch =
-      Object.keys(selectedSpecialties).length === 0 ||  // If no specialties selected, show all
-      selectedSpecialties[doctor.translations.en.department];
-  
-    const genderMatch =
-      Object.keys(selectedGenders).length === 0 || 
-      selectedGenders[doctor.translations.en.gender]; // Otherwise, match selected gender
-  
-    return specialtyMatch && genderMatch; // Ensure both conditions work independently
-  });
+  const filteredDoctors =
+    Object.keys(selectedSpecialties).length === 0 &&
+    Object.keys(selectedGenders).length === 0
+      ? doctors // If no filters, show all doctors
+      : doctors.filter((doctor) => {
+          const specialtyMatch =
+            Object.keys(selectedSpecialties).length === 0 ||
+            selectedSpecialties[doctor.translations.en.department];
+
+          const genderMatch =
+            Object.keys(selectedGenders).length === 0 ||
+            selectedGenders[doctor.translations.en.gender];
+
+          return specialtyMatch && genderMatch;
+        });
   
 
  // ✅ Sorting Logic (applies AFTER filtering)
@@ -98,10 +101,11 @@ useEffect(() => {
       setCurrentPage(1); // Reset to page 1 when filtering
     };
 
-  const resetSelections = () => {
-    setSelectedSpecialties({});
-    setSelectedGenders({});
-  };
+    const resetSelections = () => {
+      setSelectedSpecialties({});
+      setSelectedGenders({});
+      setCurrentPage(1); 
+    };
 
       // Handle Filter Area in Mobile
       useEffect(() => {

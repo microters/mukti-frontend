@@ -74,7 +74,7 @@ const BestDoctors = ({ doctors = [], doctorDepartments = { en: [], bn: [] } }) =
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredDoctors.map((doctor) => {
                   const doctorData = doctor.translations?.[currentLanguage] || {};
-                  const profileLink = doctor.id ? `/doctor/${doctor.id}` : "#";
+                  const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
                   const appointmentLink = doctor.id ? `/book-appointment/${doctor.id}` : "#";
 
                   return (

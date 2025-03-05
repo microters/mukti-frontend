@@ -1,6 +1,7 @@
 {
   "header": {
     "home": "HOME",
+    "doctor": "Doctor",
     "findDoctor": "FIND A DOCTOR",
     "searchSpecialty": "Search by Specialty",
     "searchName": "Search by Name",
