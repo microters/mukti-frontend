@@ -1,6 +1,7 @@
 import Button from "@/app/Component/Shared/Buttons/Button";
 import CommonHero from "@/app/Component/UI/CommonHero";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 import React from "react";
 
 const SingleTreatment = () => {
@@ -61,7 +62,6 @@ const SingleTreatment = () => {
             At Mukti Hospital, we offer a comprehensive range of heart care
             services tailored to meet individual patient needs:
           </p>
-
           <div className="space-y-5">
             <div className="flex gap-4">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
@@ -196,6 +196,7 @@ const SingleTreatment = () => {
             When Should You See a Cardiologist?
           </h3>
           <p className="font-jost font-normal text-M-text-color text-base mb-2">
+            {" "}
             Cardiology is the branch of medicine that focuses on the heart and
             blood vessels. Cardiologists diagnose and treat conditions such as
             heart attacks, high blood pressure, arrhythmias, heart failure, and
@@ -206,9 +207,9 @@ const SingleTreatment = () => {
           <ul className="font-jost font-normal text-base text-M-text-color space-y-2 list-none pl-0 mb-4">
             {symptoms.map((item, index) => {
               return (
-                <li key={index} className="flex items-start gap-3">
+                <li key={index} className="flex items-start gap-2">
                   <Icon
-                    icon="iconoir:check-square-solid"
+                    icon="si:check-square-fill"
                     width="20"
                     height="20"
                     className="text-M-primary-color relative top-[1px]"
@@ -218,9 +219,20 @@ const SingleTreatment = () => {
               );
             })}
           </ul>
-          <p className="font-jost font-normal text-M-text-color text-base mb-2">Early diagnosis can save lives. Don’t wait until it’s too late—book your appointment today!</p>
+          <p className="font-jost font-normal text-M-text-color text-base mb-2">
+            Early diagnosis can save lives. Don’t wait until it’s too late—book
+            your appointment today!
+          </p>
+          <ul className="font-jost font-normal text-base text-M-text-color space-y-2 list-none pl-0 my-5">
+            <li className="flex items-start gap-2"> <Icon icon="lsicon:location-filled" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Visit Mukti Hospital: <Link href="https://maps.app.goo.gl/cQ3GgXfbBXD1LRG28" className="text-black hover:text-M-heading-color transition-all duration-300">Mukti Hospital</Link></li>
+            <li className="flex items-start gap-2"> <Icon icon="material-symbols:wifi-calling-bar-3-rounded" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Call Us: <Link href="tel:01532-884758" className="text-black hover:text-M-heading-color transition-all duration-300">01532-884758</Link></li>
+            <li className="flex items-start gap-2"> <Icon icon="circum:globe" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Website: <Link href="/" className="text-black hover:text-M-heading-color transition-all duration-300">www.muktihospital.com</Link></li>
+          </ul>
+          <p className="font-jost font-normal text-M-text-color text-base">Take the first step towards a healthy heart with Mukti Hospital! ❤️</p>
         </div>
-        <div className="col-span-1">sidebar</div>
+        <div className="col-span-1">
+          Side bar
+        </div>
       </div>
     </div>
   );
