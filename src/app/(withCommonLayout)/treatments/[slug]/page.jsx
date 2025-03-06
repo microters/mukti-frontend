@@ -196,6 +196,7 @@ const SingleTreatment = () => {
             When Should You See a Cardiologist?
           </h3>
           <p className="font-jost font-normal text-M-text-color text-base mb-2">
+            {" "}
             Cardiology is the branch of medicine that focuses on the heart and
             blood vessels. Cardiologists diagnose and treat conditions such as
             heart attacks, high blood pressure, arrhythmias, heart failure, and
@@ -206,9 +207,9 @@ const SingleTreatment = () => {
           <ul className="font-jost font-normal text-base text-M-text-color space-y-2 list-none pl-0 mb-4">
             {symptoms.map((item, index) => {
               return (
-                <li key={index} className="flex items-start gap-3">
+                <li key={index} className="flex items-start gap-2">
                   <Icon
-                    icon="iconoir:check-square-solid"
+                    icon="si:check-square-fill"
                     width="20"
                     height="20"
                     className="text-M-primary-color relative top-[1px]"
@@ -218,7 +219,16 @@ const SingleTreatment = () => {
               );
             })}
           </ul>
-          <p className="font-jost font-normal text-M-text-color text-base mb-2">Early diagnosis can save lives. Don’t wait until it’s too late—book your appointment today!</p>
+          <p className="font-jost font-normal text-M-text-color text-base mb-2">
+            Early diagnosis can save lives. Don’t wait until it’s too late—book
+            your appointment today!
+          </p>
+          <ul className="font-jost font-normal text-base text-M-text-color space-y-2 list-none pl-0 my-5">
+            <li className="flex items-start gap-2"> <Icon icon="lsicon:location-filled" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Visit Mukti Hospital: [Insert Address]</li>
+            <li className="flex items-start gap-2"> <Icon icon="material-symbols:wifi-calling-bar-3-rounded" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Call Us: [Insert Contact Number]</li>
+            <li className="flex items-start gap-2"> <Icon icon="circum:globe" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Website: [Insert Website Link]</li>
+          </ul>
+          <p className="font-jost font-normal text-M-text-color text-base">Take the first step towards a healthy heart with Mukti Hospital! ❤️</p>
         </div>
         <div className="col-span-1">sidebar</div>
       </div>
