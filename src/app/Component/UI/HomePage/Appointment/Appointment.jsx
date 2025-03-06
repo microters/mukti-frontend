@@ -10,7 +10,7 @@ import halfCircle from "@/assets/images/half-circle.png";
 
 const Appointment = () => {
   return (
-    <div className="bg-[url('@/assets/images/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
+    <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
       <Image src={waveShape2} alt="shape1" className="absolute right-0 top-[10%] animate-bounce hidden lg:block" />
       <Image src={waveShape3} alt="shape1" className="absolute left-0 bottom-[30%] animate-pulse hidden lg:block" />
       <Image src={halfCircle} alt="shape1" className="absolute right-[5%] bottom-[15%] animate-spin hidden lg:block" />
