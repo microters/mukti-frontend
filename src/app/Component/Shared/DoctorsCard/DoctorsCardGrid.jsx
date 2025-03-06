@@ -13,11 +13,13 @@ const DoctorsCardGrid = ({ doctor }) => {
     name = "Unknown Doctor",
     department = "N/A",
     yearsOfExperience = "N/A",
-    academicQualification = "N/A"
+    academicQualification = "N/A",
   } = doctorData;
 
   // Set default image if doctor icon is missing
-  const doctorImage = doctor.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}` : "/default-profile-photo.png";
+  const doctorImage = doctor.icon
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
+    : "/default-profile-photo.png";
 
   return (
     <div key={doctor.id} className="h-full">
@@ -76,32 +78,37 @@ const DoctorsCardGrid = ({ doctor }) => {
         </div>
 
         {/* Availability & Booking Section */}
-      <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
-        {doctor.schedule && doctor.schedule.length > 0 ? (
-          doctor.schedule.map((slot, index) => (
-            <h4 key={index} className="font-jost font-bold text-base text-M-heading-color">
-              {slot.day} :{" "}
-              <span className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
-                {slot.startTime} - {slot.endTime}
-              </span>
-            </h4>
-          ))
-        ) : (
-          <h4 className="font-jost font-bold text-base text-red-500">
-            Not Available
-          </h4>
-        )}
+        <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
+          <div className="mt-1 mb-4 space-y-1">
+            {doctor.schedule && doctor.schedule.length > 0 ? (
+              doctor.schedule.map((slot, index) => (
+                <h4
+                  key={index}
+                  className="font-jost font-bold text-base text-M-heading-color"
+                >
+                  {slot.day} :{" "}
+                  <span className=" inline-block font-jost font-normal text-sm text-slate-600">
+                    {slot.startTime} - {slot.endTime}
+                  </span>
+                </h4>
+              ))
+            ) : (
+              <h4 className="font-jost font-bold text-base text-red-500">
+                Not Available
+              </h4>
+            )}
+          </div>
 
-        {/* Booking Button */}
-        <Button
-          linkHref="#"
-          buttonText="Book An Appointment"
-          buttonColor="bg-M-primary-color"
-          textColor="text-white w-full justify-center"
-          borderColor="border-M-primary-color"
-          alignment="center"
-        />
-      </div>
+          {/* Booking Button */}
+          <Button
+            linkHref="#"
+            buttonText="Book An Appointment"
+            buttonColor="bg-M-primary-color"
+            textColor="text-white w-full justify-center"
+            borderColor="border-M-primary-color"
+            alignment="center"
+          />
+        </div>
       </div>
     </div>
   );

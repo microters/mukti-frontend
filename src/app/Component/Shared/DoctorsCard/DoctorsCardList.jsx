@@ -83,13 +83,16 @@ const DoctorsCardList = ({ doctor }) => {
         <div className="txt-left lg:text-center">
         {doctor.schedule && doctor.schedule.length > 0 ? (
             doctor.schedule.map((slot, index) => (
-              <div key={index}> 
-                <h4 className="font-jost font-bold text-base text-M-heading-color">
+              <div key={index} className="mb-2">
+                <h4
+                  key={index}
+                  className="font-jost font-bold text-base text-M-heading-color"
+                >
                   {slot.day} :{" "}
+                  <span className=" inline-block font-jost font-normal text-sm text-slate-600">
+                    {slot.startTime} - {slot.endTime}
+                  </span>
                 </h4>
-                <p className="mt-1 mb-4 inline-block font-jost font-normal text-sm text-slate-600">
-                  {slot.startTime} - {slot.endTime}
-                </p>
               </div>
             ))
           ) : (
