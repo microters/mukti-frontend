@@ -16,6 +16,8 @@ const DoctorsCardList = ({ doctor }) => {
     academicQualification = "N/A"
   } = doctorData;
 
+  const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
+
   // Set default image if doctor icon is missing
   const doctorImage = doctor.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}` : "/default-profile-photo.png";
   return (
@@ -24,13 +26,13 @@ const DoctorsCardList = ({ doctor }) => {
       className="border border-slate-200 mt-8 p-7 flex flex-col lg:flex-row gap-6 rounded-md"
     >
       {/* Doctor Image */}
-      <Image
+      <Link href={profileLink} className="size-32 xl:size-[150px] rounded-full shrink-0 ring ring-M-primary-color/80 overflow-hidden"><Image
         src={doctorImage}
         alt={name}
         width={100}
         height={100}
-        className="size-32 xl:size-[150px] rounded-full shrink-0 ring ring-M-primary-color/80"
-      />
+        className="w-full"
+      /></Link>
 
       <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 items-center">
         {/* Left Section */}
@@ -51,7 +53,7 @@ const DoctorsCardList = ({ doctor }) => {
           {/* Doctor Name */}
           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
             <Link
-              href="#"
+              href={profileLink}
               className="hover:text-M-primary-color transition-all duration-300 capitalize"
             >
               {name}

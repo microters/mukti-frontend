@@ -21,22 +21,36 @@ const DoctorsCardGrid = ({ doctor }) => {
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : "/default-profile-photo.png";
 
+  const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
+
   return (
     <div key={doctor.id} className="h-full">
       <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md ">
         <div>
           {/* Doctor Image */}
-          <Image
+          {/* <Image
             src={doctorImage}
             alt={name}
             width={100}
             height={100}
             className="size-[120px] rounded-full shrink-0 mb-5 ring ring-M-primary-color/80"
-          />
+          /> */}
+          <Link
+            href={profileLink}
+            className="size-[120px] block rounded-full shrink-0 mb-5 ring ring-M-primary-color/80 overflow-hidden"
+          >
+            <Image
+              src={doctorImage}
+              alt={name}
+              width={100}
+              height={100}
+              className="w-full"
+            />
+          </Link>
           {/* Doctor Name */}
           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
             <Link
-              href="#"
+              href={profileLink}
               className="hover:text-M-primary-color transition-all duration-300 capitalize"
             >
               {name}
