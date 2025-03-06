@@ -95,17 +95,27 @@ const DoctorsCardGrid = ({ doctor }) => {
         <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
           <div className="mt-1 mb-4 space-y-1">
             {doctor.schedule && doctor.schedule.length > 0 ? (
-              doctor.schedule.map((slot, index) => (
-                <h4
-                  key={index}
-                  className="font-jost font-bold text-base text-M-heading-color"
-                >
-                  {slot.day} :{" "}
-                  <span className=" inline-block font-jost font-normal text-sm text-slate-600">
-                    {slot.startTime} - {slot.endTime}
-                  </span>
-                </h4>
-              ))
+              doctor.schedule.map((slot, index) => {
+                // Convert time to 12-hour format using toLocaleTimeString
+                const formatTime = (time) =>
+                  new Date(`1970-01-01T${time}:00`).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  });
+
+                return (
+                  <h4
+                    key={index}
+                    className="font-jost font-bold text-base text-M-heading-color"
+                  >
+                    {slot.day} :{" "}
+                    <span className="inline-block font-jost font-normal text-sm text-slate-600">
+                      {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                    </span>
+                  </h4>
+                );
+              })
             ) : (
               <h4 className="font-jost font-bold text-base text-red-500">
                 Not Available

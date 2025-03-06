@@ -13,26 +13,33 @@ const DoctorsCardList = ({ doctor }) => {
     name = "Unknown Doctor",
     department = "N/A",
     yearsOfExperience = "N/A",
-    academicQualification = "N/A"
+    academicQualification = "N/A",
   } = doctorData;
 
   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
 
   // Set default image if doctor icon is missing
-  const doctorImage = doctor.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}` : "/default-profile-photo.png";
+  const doctorImage = doctor.icon
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
+    : "/default-profile-photo.png";
   return (
     <div
       key={doctor.id}
       className="border border-slate-200 mt-8 p-7 flex flex-col lg:flex-row gap-6 rounded-md"
     >
       {/* Doctor Image */}
-      <Link href={profileLink} className="size-32 xl:size-[150px] rounded-full shrink-0 ring ring-M-primary-color/80 overflow-hidden"><Image
-        src={doctorImage}
-        alt={name}
-        width={100}
-        height={100}
-        className="w-full"
-      /></Link>
+      <Link
+        href={profileLink}
+        className="size-32 xl:size-[150px] rounded-full shrink-0 ring ring-M-primary-color/80 overflow-hidden"
+      >
+        <Image
+          src={doctorImage}
+          alt={name}
+          width={100}
+          height={100}
+          className="w-full"
+        />
+      </Link>
 
       <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 items-center">
         {/* Left Section */}
@@ -83,20 +90,30 @@ const DoctorsCardList = ({ doctor }) => {
 
         {/* Right Section (Availability & Booking) */}
         <div className="txt-left lg:text-center">
-        {doctor.schedule && doctor.schedule.length > 0 ? (
-            doctor.schedule.map((slot, index) => (
-              <div key={index} className="mb-2">
-                <h4
-                  key={index}
-                  className="font-jost font-bold text-base text-M-heading-color"
-                >
-                  {slot.day} :{" "}
-                  <span className=" inline-block font-jost font-normal text-sm text-slate-600">
-                    {slot.startTime} - {slot.endTime}
-                  </span>
-                </h4>
-              </div>
-            ))
+          {doctor.schedule && doctor.schedule.length > 0 ? (
+            doctor.schedule.map((slot, index) => {
+              // Convert time to 12-hour format using toLocaleTimeString
+              const formatTime = (time) =>
+                new Date(`1970-01-01T${time}:00`).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                });
+
+              return (
+                <div key={index} className="mb-2">
+                  <h4
+                    key={index}
+                    className="font-jost font-bold text-base text-M-heading-color"
+                  >
+                    {slot.day} :{" "}
+                    <span className=" inline-block font-jost font-normal text-sm text-slate-600">
+                      {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                    </span>
+                  </h4>
+                </div>
+              );
+            })
           ) : (
             <h4 className="font-jost font-bold text-base text-red-500">
               Not Available
