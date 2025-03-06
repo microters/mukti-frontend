@@ -14,7 +14,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <div className="bg-[url(../../public//assets/heroBG.png)] bg-cover bg-top">
+    <div className="bg-[url(../../public/assets/heroBG.png)] bg-cover bg-top">
       <div className="pt-[60px] lg:pt-[180px] pb-20 md:pb-32 lg:pb-[300px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
         <Image
