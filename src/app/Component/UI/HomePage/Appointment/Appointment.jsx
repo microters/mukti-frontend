@@ -1,12 +1,12 @@
 import React from "react";
 import appointment from "@/assets/images/appointment.png";
 import Image from "next/image";
-import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 
 // Assets
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
+import AppointmentForm from "@/app/Component/Shared/AppointmentForm/AppointmentForm";
 
 const Appointment = () => {
   return (
@@ -20,55 +20,7 @@ const Appointment = () => {
             <h2 className="text-2xl font-semibold text-[#24285B] mb-6 text-center">
               Book Appointment
             </h2>
-            <form className="space-y-5">
-              <div>
-                <select className="appointment-input-field">
-                  <option>Select Department</option>
-                  <option>Cardiology</option>
-                  <option>Dermatology</option>
-                  <option>Neurology</option>
-                </select>
-              </div>
-              <div>
-                <select className="appointment-input-field">
-                  <option>Select Doctor</option>
-                  <option>Dr. Nahidul Islam</option>
-                  <option>Dr. Sarah Khan</option>
-                  <option>Dr. Emily Clark</option>
-                </select>
-              </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  className="appointment-input-field"
-                />
-              </div>
-              <div>
-                <input
-                  type="tel"
-                  placeholder="Phone Numbers"
-                  className="appointment-input-field"
-                />
-              </div>
-              <div>
-                <input
-                  type="date"
-                  placeholder="mm/dd/yyyy"
-                  className="appointment-input-field"
-                />
-              </div>
-              <FormButton
-                buttonText="Appointment Now"
-                buttonColor="bg-M-heading-color"
-                textColor="text-white"
-                borderColor="border-M-heading-color"
-                padding="py-3 px-8"
-                fontSize="text-xs sm:text-lg"
-                icons="iconamoon:arrow-right-2-light"
-                alignment="text-center"
-              />
-            </form>
+              <AppointmentForm buttonColors="bg-M-primary-color" />
           </div>
         </div>
 

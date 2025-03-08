@@ -1,8 +1,12 @@
+import AppointmentForm from "@/app/Component/Shared/AppointmentForm/AppointmentForm";
 import Button from "@/app/Component/Shared/Buttons/Button";
 import CommonHero from "@/app/Component/UI/CommonHero";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import React from "react";
+
+import drImage from "@/assets/images/doctorProfile2.png";
+import Image from "next/image";
 
 const SingleTreatment = () => {
   // symptoms List
@@ -20,8 +24,8 @@ const SingleTreatment = () => {
     <div>
       <CommonHero pageName="Cardiologist" />
 
-      <div className="container grid grid-cols-3 pb-16 gap-10 relative -mt-20">
-        <div className="col-span-2 shadow-md bg-white py-8 px-8 rounded-md">
+      <div className="container grid grid-cols-1 lg:grid-cols-3 pb-16 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 ">
+        <div className="col-span-2 shadow-md bg-white py-8 px-4 md:px-8 rounded-md">
           <h3 className="text-2xl mb-3">
             Cardiologist Services at Mukti Hospital
           </h3>
@@ -63,7 +67,7 @@ const SingleTreatment = () => {
             services tailored to meet individual patient needs:
           </p>
           <div className="space-y-5">
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col md:flex-row">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
                 <Icon icon="fa-regular:hospital" width="24" />
               </div>
@@ -83,7 +87,7 @@ const SingleTreatment = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col md:flex-row">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
                 <Icon icon="fa-regular:hospital" width="24" />
               </div>
@@ -107,7 +111,7 @@ const SingleTreatment = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col md:flex-row">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
                 <Icon icon="fa-regular:hospital" width="24" />
               </div>
@@ -126,7 +130,7 @@ const SingleTreatment = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col md:flex-row">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
                 <Icon icon="fa-regular:hospital" width="24" />
               </div>
@@ -143,7 +147,7 @@ const SingleTreatment = () => {
                 </ul>
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-col md:flex-row">
               <div className="size-14 bg-M-primary-color text-white rounded-full flex items-center justify-center shrink-0">
                 <Icon icon="fa-regular:hospital" width="24" />
               </div>
@@ -224,14 +228,135 @@ const SingleTreatment = () => {
             your appointment today!
           </p>
           <ul className="font-jost font-normal text-base text-M-text-color space-y-2 list-none pl-0 my-5">
-            <li className="flex items-start gap-2"> <Icon icon="lsicon:location-filled" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Visit Mukti Hospital: <Link href="https://maps.app.goo.gl/cQ3GgXfbBXD1LRG28" className="text-black hover:text-M-heading-color transition-all duration-300">Mukti Hospital</Link></li>
-            <li className="flex items-start gap-2"> <Icon icon="material-symbols:wifi-calling-bar-3-rounded" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Call Us: <Link href="tel:01532-884758" className="text-black hover:text-M-heading-color transition-all duration-300">01532-884758</Link></li>
-            <li className="flex items-start gap-2"> <Icon icon="circum:globe" width="18" height="18" className="shrink-0 relative top-[1px] text-M-primary-color" /> Website: <Link href="/" className="text-black hover:text-M-heading-color transition-all duration-300">www.muktihospital.com</Link></li>
+            <li className="flex items-start gap-2 text-sm md:text-base">
+              {" "}
+              <Icon
+                icon="lsicon:location-filled"
+                width="18"
+                height="18"
+                className="shrink-0 relative top-[1px] text-M-primary-color"
+              />{" "}
+              Visit Mukti Hospital:{" "}
+              <Link
+                href="https://maps.app.goo.gl/cQ3GgXfbBXD1LRG28"
+                className="text-black hover:text-M-heading-color transition-all duration-300"
+              >
+                Mukti Hospital
+              </Link>
+            </li>
+            <li className="flex items-start gap-2 text-sm md:text-base">
+              {" "}
+              <Icon
+                icon="material-symbols:wifi-calling-bar-3-rounded"
+                width="18"
+                height="18"
+                className="shrink-0 relative top-[1px] text-M-primary-color"
+              />{" "}
+              Call Us:{" "}
+              <Link
+                href="tel:01532-884758"
+                className="text-black hover:text-M-heading-color transition-all duration-300"
+              >
+                01532-884758
+              </Link>
+            </li>
+            <li className="flex items-start gap-2 text-sm md:text-base">
+              {" "}
+              <Icon
+                icon="circum:globe"
+                width="18"
+                height="18"
+                className="shrink-0 relative top-[1px] text-M-primary-color"
+              />{" "}
+              Website:{" "}
+              <Link
+                href="/"
+                className="text-black hover:text-M-heading-color transition-all duration-300"
+              >
+                www.muktihospital.com
+              </Link>
+            </li>
           </ul>
-          <p className="font-jost font-normal text-M-text-color text-base">Take the first step towards a healthy heart with Mukti Hospital! ❤️</p>
+          <p className="font-jost font-normal text-M-text-color text-base">
+            Take the first step towards a healthy heart with Mukti Hospital! ❤️
+          </p>
         </div>
-        <div className="col-span-1">
-          Side bar
+        <div className="col-span-1 space-y-6">
+          <div className="bg-M-heading-color px-5 py-8 rounded-md">
+            <h3 className="text-2xl mb-4 text-white text-center">
+              Request for Appointment
+            </h3>
+            <AppointmentForm />
+          </div>
+          <div className="border border-M-text-color/20 rounded-md p-5">
+            <h3 className="text-2xl mb-6 text-center border-b border-M-text-color/20 pb-3">
+              Best Cardiologist
+            </h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div className="bg-white shadow-md rounded-md p-5 text-center border border-M-text-color/20">
+                <div className="size-20 overflow-hidden rounded-full mx-auto border-2 border-M-primary-color mb-5">
+                  <Image src={drImage} alt="dr Image" />
+                </div>
+                <h4>
+                  <Link
+                    href="#"
+                    className="text-lg font-semibold font-jost text-black"
+                  >
+                    Dr. Towkib Tanvir
+                  </Link>
+                </h4>
+                <h6 className="border border-M-primary-color rounded-md py-1 px-3 inline-flex font-jost fold-bold text-base text-M-text-color my-2">
+                  Pulmonology
+                </h6>
+                <p className="text-M-text-color text-base text-left font-normal font-jost flex items-start gap-2 md:basis-80 mb-5">
+                  <Icon
+                    icon="oui:index-open"
+                    width="24"
+                    className="text-M-heading-color shrink-0 relative top-1"
+                  />
+                  <span>MDS - Periodontology and Periodontology and…</span>
+                </p>
+                <Link
+                  href="#"
+                  passHref
+                  className="bg-[#E8EEF4] block w-full py-3 px-3 font-jost font-bold text-M-heading-color rounded-md transition-all duration-300 hover:bg-M-primary-color hover:text-white"
+                >
+                  Book An Appointment
+                </Link>
+              </div>
+              <div className="bg-white shadow-md rounded-md p-5 text-center border border-M-text-color/20">
+                <div className="size-20 overflow-hidden rounded-full mx-auto border-2 border-M-primary-color mb-5">
+                  <Image src={drImage} alt="dr Image" />
+                </div>
+                <h4>
+                  <Link
+                    href="#"
+                    className="text-lg font-semibold font-jost text-black"
+                  >
+                    Dr. Towkib Tanvir
+                  </Link>
+                </h4>
+                <h6 className="border border-M-primary-color rounded-md py-1 px-3 inline-flex font-jost fold-bold text-base text-M-text-color my-2">
+                  Pulmonology
+                </h6>
+                <p className="text-M-text-color text-base text-left font-normal font-jost flex items-start gap-2 md:basis-80 mb-5">
+                  <Icon
+                    icon="oui:index-open"
+                    width="24"
+                    className="text-M-heading-color shrink-0 relative top-1"
+                  />
+                  <span>MDS - Periodontology and Periodontology and…</span>
+                </p>
+                <Link
+                  href="#"
+                  passHref
+                  className="bg-[#E8EEF4] block w-full py-3 px-3 font-jost font-bold text-M-heading-color rounded-md transition-all duration-300 hover:bg-M-primary-color hover:text-white"
+                >
+                  Book An Appointment
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
