@@ -10,6 +10,7 @@ import halfCircle from "@/assets/images/half-circle.png";
 import appointment from "@/assets/images/appointment.png";
 import { getDepartments } from "@/app/api/Category/Category";
 import { fetchDoctors } from "@/app/api/doctor";
+import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();

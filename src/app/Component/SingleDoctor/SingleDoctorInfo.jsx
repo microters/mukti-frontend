@@ -284,7 +284,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                           href="#"
                           className="text-M-primary-color text-base font-jost font-normal bg-M-primary-color/5 rounded-md px-4 py-2 inline-flex gap-2 items-center hover:bg-M-primary-color hover:text-white transition-all duration-300"
                         >
-                          {item.name}
+                          {item}
                           <Icon icon="icons8:plus" width="20" height="20" />
                         </Link>
                       </li>
