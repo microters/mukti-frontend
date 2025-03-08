@@ -82,21 +82,24 @@ const Appointment = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/patient/appointment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // ✅ Secure API Key
-          "Authorization": `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN || ""}`, // (Optional)
-        },
-        body: JSON.stringify({
-          departmentId,
-          doctorId,
-          day,
-          patientName,
-          phone,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/patient/appointment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // ✅ Secure API Key
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN || ""}`, // (Optional)
+          },
+          body: JSON.stringify({
+            departmentId,
+            doctorId,
+            day,
+            patientName,
+            phone,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorMessage = await response.text();
@@ -104,8 +107,13 @@ const Appointment = () => {
       }
 
       alert(t("appointment_success"));
-      setFormData({ departmentId: "", doctorId: "", day: "", patientName: "", phone: "" });
-
+      setFormData({
+        departmentId: "",
+        doctorId: "",
+        day: "",
+        patientName: "",
+        phone: "",
+      });
     } catch (error) {
       console.error("❌ Error booking appointment:", error);
       alert(`${t("appointment_failed")}: ${error.message}`);
@@ -114,9 +122,21 @@ const Appointment = () => {
 
   return (
     <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
-      <Image src={waveShape2} alt="shape1" className="absolute right-0 top-[10%] animate-bounce hidden lg:block" />
-      <Image src={waveShape3} alt="shape1" className="absolute left-0 bottom-[30%] animate-pulse hidden lg:block" />
-      <Image src={halfCircle} alt="shape1" className="absolute right-[5%] bottom-[15%] animate-spin hidden lg:block" />
+      <Image
+        src={waveShape2}
+        alt="shape1"
+        className="absolute right-0 top-[10%] animate-bounce hidden lg:block"
+      />
+      <Image
+        src={waveShape3}
+        alt="shape1"
+        className="absolute left-0 bottom-[30%] animate-pulse hidden lg:block"
+      />
+      <Image
+        src={halfCircle}
+        alt="shape1"
+        className="absolute right-[5%] bottom-[15%] animate-spin hidden lg:block"
+      />
 
       <div className="container flex justify-between items-center gap-20 py-24">
         <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
@@ -128,12 +148,19 @@ const Appointment = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Department Selection */}
               <div>
-                <select name="departmentId" value={formData.departmentId} onChange={handleChange} className="appointment-input-field" required>
+                <select
+                  name="departmentId"
+                  value={formData.departmentId}
+                  onChange={handleChange}
+                  className="appointment-input-field"
+                  required
+                >
                   <option value="">{t("selectDepartment")}</option>
                   {departments.length > 0 ? (
                     departments.map((department) => (
                       <option key={department.id} value={department.id}>
-                        {department.translations[currentLanguage]?.name || department.name}
+                        {department.translations[currentLanguage]?.name ||
+                          department.name}
                       </option>
                     ))
                   ) : (
@@ -144,12 +171,19 @@ const Appointment = () => {
 
               {/* Doctor Selection */}
               <div>
-                <select name="doctorId" value={formData.doctorId} onChange={handleDoctorChange} className="appointment-input-field" required>
+                <select
+                  name="doctorId"
+                  value={formData.doctorId}
+                  onChange={handleDoctorChange}
+                  className="appointment-input-field"
+                  required
+                >
                   <option value="">{t("selectDoctor")}</option>
                   {doctors.length > 0 ? (
                     doctors.map((doctor) => (
                       <option key={doctor.id} value={doctor.id}>
-                        {doctor.translations[currentLanguage]?.name || doctor.name}
+                        {doctor.translations[currentLanguage]?.name ||
+                          doctor.name}
                       </option>
                     ))
                   ) : (
@@ -161,7 +195,13 @@ const Appointment = () => {
               {/* Available Days (Only after selecting a doctor) */}
               {selectedDoctor && (
                 <div>
-                  <select name="day" value={formData.day} onChange={handleChange} className="appointment-input-field" required>
+                  <select
+                    name="day"
+                    value={formData.day}
+                    onChange={handleChange}
+                    className="appointment-input-field"
+                    required
+                  >
                     <option value="">{t("selectDay")}</option>
                     {availableDates.map((slot) => (
                       <option key={slot.id} value={slot.day}>
@@ -174,16 +214,41 @@ const Appointment = () => {
 
               {/* Patient Name */}
               <div>
-                <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} placeholder={t("patientName")} className="appointment-input-field" required />
+                <input
+                  type="text"
+                  name="patientName"
+                  value={formData.patientName}
+                  onChange={handleChange}
+                  placeholder={t("patientName")}
+                  className="appointment-input-field"
+                  required
+                />
               </div>
 
               {/* Phone Number */}
               <div>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={t("phoneNumber")} className="appointment-input-field" required />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder={t("phoneNumber")}
+                  className="appointment-input-field"
+                  required
+                />
               </div>
 
               {/* Submit Button */}
-              <FormButton buttonText={t("appointmentNow")} buttonColor="bg-M-heading-color" textColor="text-white" borderColor="border-M-heading-color" padding="py-3 px-8" fontSize="text-xs sm:text-lg" icons="iconamoon:arrow-right-2-light" alignment="text-center" />
+              <FormButton
+                buttonText={t("appointmentNow")}
+                buttonColor="bg-M-heading-color"
+                textColor="text-white"
+                borderColor="border-M-heading-color"
+                padding="py-3 px-8"
+                fontSize="text-xs sm:text-lg"
+                icons="iconamoon:arrow-right-2-light"
+                alignment="text-center"
+              />
             </form>
           </div>
         </div>
