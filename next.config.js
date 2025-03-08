@@ -6,10 +6,10 @@ const nextConfig = {
 
   // Image optimization settings
   images: {
-    domains: ['placehold.co', 'localhost', 'example.com'],
+    domains: ['placehold.co', 'localhost', 'example.com', 'api.muktihospital.com'],
     remotePatterns: [
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'localhost',
         port: '5000',
         pathname: '/uploads/**',
@@ -18,6 +18,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'example.com',
         pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.muktihospital.com',
+        pathname: '/**', // Adjust this if images are in a specific folder (e.g., `/uploads/**`)
       },
     ],
   },
