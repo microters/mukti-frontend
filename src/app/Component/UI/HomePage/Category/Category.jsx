@@ -10,7 +10,10 @@ import Button from "@/app/Component/Shared/Buttons/Button";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 
+
 const Category = ({ departments }) => {
+  console.log(departments);
+  
   const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
 
