@@ -45,7 +45,7 @@ const DoctorsList = ({ doctors }) => {
   
 
  // ✅ Sorting Logic (applies AFTER filtering)
- const sortedDoctors = [...filteredDoctors].sort((a, b) => {
+  const sortedDoctors = [...filteredDoctors].sort((a, b) => {
   const nameA = a.translations.en.name.toLowerCase();
   const nameB = b.translations.en.name.toLowerCase();
   const experienceA = parseInt(a.translations.en.yearsOfExperience) || 0;
