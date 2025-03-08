@@ -757,5 +757,4 @@ const SingleDoctorInfo = ({ doctor }) => {
     </div>
   );
 };
-
 export default SingleDoctorInfo;

@@ -109,7 +109,7 @@ const BestDoctors = ({ doctors = [], doctorDepartments = { en: [], bn: [] } }) =
 
                           {/* Doctor Name */}
                           <h3 className="text-[#323290] text-xl font-jost font-bold mb-4">
-                            <Link href={profileLink} className="hover:text-M-primary-color transition-all duration-300 capitalize">
+                            <Link href={profileLink} prefetch={true} className="hover:text-M-primary-color transition-all duration-300 capitalize">
                               {doctorData.name || t("doctors.noNameAvailable")}
                             </Link>
                           </h3>

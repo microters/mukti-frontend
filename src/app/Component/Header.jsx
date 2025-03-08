@@ -141,6 +141,7 @@ const Header = () => {
               >
                 <Link
                   href={item.href}
+                  prefetch={true}
                   className="font-jost font-medium h-full text-M-heading-color text-xs lg:text-sm xl:text-base uppercase flex items-center hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                 >
                   {item.label}
