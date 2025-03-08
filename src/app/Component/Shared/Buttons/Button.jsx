@@ -12,7 +12,7 @@ const Button = ({
   borderColor = "border-white",
   fontSize = "text-base",
   icons = "",
-  alignment="text-left"
+  alignment = "text-left",
 }) => {
   return (
     <div className={`${alignment}`}>

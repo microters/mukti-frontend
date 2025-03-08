@@ -19,5 +19,3 @@ const SingleDoctorPage = async ({ params }) => {
 };
 
 export default SingleDoctorPage;
-
-
