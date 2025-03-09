@@ -125,9 +125,9 @@ const Diagnostic = () => {
       <div className="bg-[url(../../public/assets/diagnosticHeroBg.png)] bg-cover bg-top">
         <div className="pt-16 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
           <div className="container">
-            <div className="grid grid-cols-2 gap-4 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
               <div>
-                <h1 className="text-white text-[64px] mb-3">
+                <h1 className="text-white text-4xl md:text-[64px] mb-3">
                   Diagnostic Solutions in Mukti Hospital.
                 </h1>
                 <p className="text-white text-base font-jost">
@@ -176,7 +176,7 @@ const Diagnostic = () => {
       {/* Call Area */}
       <div className="py-24">
         <div className="container">
-          <div className="grid grid-cols-3 gap-7">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-7">
             <div className="bg-M-heading-color p-6 rounded-md grid-cols-1">
               <h3 className="text-white text-2xl capitalize">
                 Request a Callback
@@ -219,8 +219,8 @@ const Diagnostic = () => {
                 />
               </form>
             </div>
-            <div className="col-span-2 bg-M-section-bg p-12 rounded-md">
-              <h2 className="text-5xl text-M-heading-color">
+            <div className="col-span-2 bg-M-section-bg py-6 px-4 md:p-12 rounded-md">
+              <h2 className="text-2xl md:text-3xl lg:text-5xl text-M-heading-color">
                 The Right Care. Right Now.
               </h2>
               <p className="font-jost font-normal text-base text-M-text-color mt-4">
@@ -311,7 +311,7 @@ const Diagnostic = () => {
               ))}
             </ul>
             {/* Tab Content */}
-            <div className="grid grid-cols-4 gap-6 mt-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
               {activeTabContent?.tests.map((items, index) => (
                 <DiagnosticPlanCard
                   key={index}

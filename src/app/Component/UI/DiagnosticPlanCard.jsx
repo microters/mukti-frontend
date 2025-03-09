@@ -14,7 +14,7 @@ const DiagnosticPlanCard = ({
 }) => {
   return (
     <div className="rounded-md bg-white overflow-hidden flex justify-between flex-col h-full">
-      <div className="bg-M-primary-color text-center px-4 pt-6 relative before:absolute before:bottom-0 before:left-0 before:w-full before:h-12 before:bg-white before:z-0 ">
+      <div className="bg-M-primary-color text-center px-4 pt-6 relative before:absolute before:-bottom-[1px] before:left-0 before:w-full before:h-12 before:bg-white before:z-0 ">
         <h3 className="text-xl text-white mb-4">{test_name}</h3>
         <span className="flex justify-center items-center size-24 rounded-full bg-white mx-auto relative z-20 shadow-md">
           <Image src={imageSrc} alt={test_name} width={48} />
