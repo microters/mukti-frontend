@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import SectionHeading from "../Shared/SectionHeading/SectionHeading";
 import Image from "next/image";
-
 import img1 from "@/assets/images/about-img22.png";
 
 const WhoWeAre = () => {
@@ -26,7 +25,6 @@ const WhoWeAre = () => {
         "To be a global leader in healthcare by setting new standards in medical excellence, patient care, and research, ensuring a healthier future for all.",
     },
   ];
-
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   return (
