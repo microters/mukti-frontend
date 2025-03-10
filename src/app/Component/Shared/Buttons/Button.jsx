@@ -7,9 +7,11 @@ const Button = ({
   linkHref = "#",
   buttonText = "Learn More",
   buttonColor = "bg-blue-500",
+  buttonHoverColor = "hover:bg-M-heading-color",
   textColor = "text-white",
   padding = "py-4 px-6",
   borderColor = "border-white",
+  borderHoverColor = "hover:border-M-heading-color",
   fontSize = "text-base",
   icons = "",
   alignment = "text-left",
@@ -17,7 +19,7 @@ const Button = ({
   return (
     <div className={`${alignment}`}>
       <Link
-        className={`inline-flex gap-4 ${buttonColor} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase hover:bg-M-heading-color hover:border-M-heading-color transition-all duration-300`}
+        className={`inline-flex gap-4 ${buttonColor} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase ${buttonHoverColor} ${borderHoverColor} transition-all duration-300`}
         href={linkHref}
       >
         {buttonText}

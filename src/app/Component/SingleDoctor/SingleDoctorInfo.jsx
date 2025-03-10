@@ -112,13 +112,13 @@ const SingleDoctorInfo = ({ doctor }) => {
           <div className="lg:col-span-3">
             <div className="flex flex-col md:flex-row gap-6 bg-white shadow-md px-4 md:px-7 py-6 rounded-md">
               <div className="w-full h-32 max-w-32 rounded-full border-2 border-M-primary-color overflow-hidden">
-              <Image
-                src={doctorData?.icon}
-                width={100}
-                height={100}
-                alt="dr image"
-                className="w-full"
-              />
+                <Image
+                  src={doctorData?.icon}
+                  width={100}
+                  height={100}
+                  alt="dr image"
+                  className="w-full"
+                />
               </div>
               <div className="w-full">
                 <div className="flex flex-wrap gap-3 items-start justify-between w-full border-b border-M-primary-color/20 pb-4">
@@ -284,7 +284,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                           href="#"
                           className="text-M-primary-color text-base font-jost font-normal bg-M-primary-color/5 rounded-md px-4 py-2 inline-flex gap-2 items-center hover:bg-M-primary-color hover:text-white transition-all duration-300"
                         >
-                          {item.name}
+                          {item}
                           <Icon icon="icons8:plus" width="20" height="20" />
                         </Link>
                       </li>
@@ -605,7 +605,7 @@ const SingleDoctorInfo = ({ doctor }) => {
               </div>
             </div>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-8 relative">
             <div className="bg-M-heading-color p-6 px-6 rounded-md">
               <h3 className="text-white text-xl font-semibold pb-2 border-b border-M-primary-color/20">
                 Basic Information
@@ -703,7 +703,36 @@ const SingleDoctorInfo = ({ doctor }) => {
               </div>
             </div>
             <div className="border border-M-heading-color/20 p-6 px-6 rounded-md">
-              <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20">
+              <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b text-center border-M-primary-color/20">
+                Visiting Fee
+              </h3>
+              <div className="mt-4">
+                <h5 className="text-base text-M-heading-color font-jost font-semibold">
+                Appointment:
+                </h5>
+                <p className="text-base text-M-text-color font-jost">
+                  Fee : {doctorData.appointmentFee} Tk
+                </p>
+              </div>
+              <div className="mt-4">
+                <h5 className="text-base text-M-heading-color font-jost font-semibold">
+                  Same Condition Follow-Up:
+                </h5>
+                <p className="text-base text-M-text-color font-jost">
+                  Fee : {doctorData.followUpFee} TK
+                </p>
+              </div>
+              <div className="mt-4">
+                <h5 className="text-base text-M-heading-color font-jost font-semibold">
+                Specialist Consultation:
+                </h5>
+                <p className="text-base text-M-text-color font-jost">
+                  Fee : {doctorData.followUpFee} TK
+                </p>
+              </div>
+            </div>
+            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md sticky top-1">
+              <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20 text-center">
                 Available For Appointment
               </h3>
               <div>

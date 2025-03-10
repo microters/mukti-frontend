@@ -6,6 +6,7 @@ const FormButton = ({
   buttonText = "Learn More",
   buttonColor = "bg-blue-500",
   textColor = "text-white",
+  hoverTextColor = "hover:text-white",
   padding = "py-4 px-6",
   borderColor = "border-white",
   fontSize = "text-base",
@@ -16,7 +17,7 @@ const FormButton = ({
   return (
     <div className={`${alignment}`}>
       <button type="submit"
-        className={`inline-flex justify-center gap-4 ${buttonColor} ${buttonWidth} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase hover:bg-M-primary-color hover:border-M-primary-color transition-all duration-300`}
+        className={`inline-flex justify-center gap-4 ${buttonColor} ${buttonWidth} rounded-md ${padding} ${textColor} font-medium ${fontSize} font-jost border-2 ${borderColor} items-center uppercase hover:bg-M-primary-color hover:border-M-primary-color ${hoverTextColor} transition-all duration-300`}
       >
         {buttonText}
         {icons && (

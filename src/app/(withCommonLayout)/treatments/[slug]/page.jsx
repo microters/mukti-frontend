@@ -23,8 +23,7 @@ const SingleTreatment = () => {
   return (
     <div>
       <CommonHero pageName="Cardiologist" />
-
-      <div className="container grid grid-cols-1 lg:grid-cols-3 pb-16 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 ">
+      <div className="container grid grid-cols-1 lg:grid-cols-3 pb-24 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 ">
         <div className="col-span-2 shadow-md bg-white py-8 px-4 md:px-8 rounded-md">
           <h3 className="text-2xl mb-3">
             Cardiologist Services at Mukti Hospital
@@ -47,6 +46,7 @@ const SingleTreatment = () => {
             icons="iconamoon:arrow-right-2-thin"
             buttonColor="bg-M-primary-color/80"
           />
+          {/* Definition */}
           <h3 className="text-2xl mt-5 mb-3">What is Cardiology?</h3>
           <p className="font-jost font-normal text-M-text-color text-base mb-5">
             Cardiology is the branch of medicine that focuses on the heart and
@@ -61,6 +61,7 @@ const SingleTreatment = () => {
             cardiologist can help prevent serious complications and ensure your
             heart stays healthy.
           </p>
+          {/* Services */}
           <h3 className="text-2xl mt-5 mb-3">Our Cardiology Services</h3>
           <p className="font-jost font-normal text-M-text-color text-base mb-5">
             At Mukti Hospital, we offer a comprehensive range of heart care
@@ -171,8 +172,8 @@ const SingleTreatment = () => {
               </div>
             </div>
           </div>
-          {/* Definition */}
-          <h3 className="text-2xl mt-5 mb-3">What is Cardiology?</h3>
+          {/* Why Choose Us */}
+          <h3 className="text-2xl mt-5 mb-3">Why Choose Mukti Hospital for Cardiology Care?</h3>
           <p className="font-jost font-normal text-M-text-color text-base mb-5">
             Cardiology is the branch of medicine that focuses on the heart and
             blood vessels. Cardiologists diagnose and treat conditions such as
@@ -281,13 +282,16 @@ const SingleTreatment = () => {
             Take the first step towards a healthy heart with Mukti Hospital! ❤️
           </p>
         </div>
+        {/* Sidebar */}
         <div className="col-span-1 space-y-6">
+          {/* Appointment Forms */}
           <div className="bg-M-heading-color px-5 py-8 rounded-md">
             <h3 className="text-2xl mb-4 text-white text-center">
               Request for Appointment
             </h3>
             <AppointmentForm />
           </div>
+          {/* Relative Doctors */}
           <div className="border border-M-text-color/20 rounded-md p-5">
             <h3 className="text-2xl mb-6 text-center border-b border-M-text-color/20 pb-3">
               Best Cardiologist

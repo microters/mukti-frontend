@@ -1,5 +1,4 @@
 import React from "react";
-import FormButton from "../Buttons/FormButton";
 import { Icon } from "@iconify/react";
 
 const AppointmentForm = () => {
