@@ -1,24 +1,26 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // Use next router for redirection
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 
-// Assets
+// Assets and API calls
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
 import appointment from "@/assets/images/appointment.png";
 import { getDepartments } from "@/app/api/Category/Category";
 import { fetchDoctors } from "@/app/api/doctor";
+import FormButton from "@/app/Component/Shared/Buttons/FormButton";
+import { useAuth } from "@/app/utils/AuthContext";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en"; // Default language
 
-  // ✅ State for data & form
-  const [departments, setDepartments] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [availableDates, setAvailableDates] = useState([]);
+  const [departments, setDepartments] = useState([]); // State for departments
+  const [doctors, setDoctors] = useState([]); // State for doctors
+  const [availableDates, setAvailableDates] = useState([]); // State for available dates
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [formData, setFormData] = useState({
     departmentId: "",
@@ -28,52 +30,70 @@ const Appointment = () => {
     phone: "",
   });
 
-  // ✅ Fetch Departments
+  const { user, loading } = useAuth(); // Get user data from AuthContext
+  const [userLoading, setUserLoading] = useState(true); // Loading state for user data
+
+
+  // Check authentication and redirect if not authenticated
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const token = localStorage.getItem("authToken");
+  //     if (!token) {
+  //       window.location.href = "/signin"; // Redirect to sign-in page
+  //       return;
+  //     }
+  //   }
+  // }, );
+
+  // Fetch Departments
   useEffect(() => {
-    const fetchDepartments = async () => {
+    const fetchDepartmentsData = async () => {
       try {
         const data = await getDepartments();
-        console.log("Fetched Departments:", data);
-        setDepartments(data || []);
+        setDepartments(data || []); // Ensure data is an array
       } catch (error) {
         console.error("❌ Error fetching departments:", error);
       }
     };
-    fetchDepartments();
+    fetchDepartmentsData();
   }, []);
 
-  // ✅ Fetch Doctors
+  // Fetch Doctors
   useEffect(() => {
-    const fetchDoctor = async () => {
+    const fetchDoctorsData = async () => {
       try {
         const data = await fetchDoctors();
-        console.log("Fetched Doctors:", data);
-        setDoctors(data || []);
+        setDoctors(data || []); // Ensure data is an array
       } catch (error) {
         console.error("❌ Error fetching doctors:", error);
       }
     };
-    fetchDoctor();
+    fetchDoctorsData();
   }, []);
 
-  // ✅ Handle Input Change
+  // Handle Input Change for form data
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle Doctor Selection & Fetch Available Days
+  // Handle Doctor Selection & Fetch Available Days
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
     const doctor = doctors.find((doc) => doc.id === doctorId);
 
     setSelectedDoctor(doctor || null);
-    setAvailableDates(doctor ? doctor.schedule : []);
+    setAvailableDates(doctor ? doctor.schedule : []); // Set available dates based on selected doctor
     setFormData({ ...formData, doctorId, day: "" });
   };
 
-  // ✅ Handle Form Submission
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      window.location.href = "/signin"; // Redirect to sign-in page
+      return;
+    }
+
     const { departmentId, doctorId, day, patientName, phone } = formData;
 
     if (!departmentId || !doctorId || !day || !patientName || !phone) {
@@ -88,8 +108,8 @@ const Appointment = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // ✅ Secure API Key
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN || ""}`, // (Optional)
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API Key
+            
           },
           body: JSON.stringify({
             departmentId,
@@ -120,21 +140,23 @@ const Appointment = () => {
     }
   };
 
+
+
   return (
     <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
       <Image
         src={waveShape2}
-        alt="shape1"
+        alt="wave shape"
         className="absolute right-0 top-[10%] animate-bounce hidden lg:block"
       />
       <Image
         src={waveShape3}
-        alt="shape1"
+        alt="wave shape"
         className="absolute left-0 bottom-[30%] animate-pulse hidden lg:block"
       />
       <Image
         src={halfCircle}
-        alt="shape1"
+        alt="half circle"
         className="absolute right-[5%] bottom-[15%] animate-spin hidden lg:block"
       />
 
@@ -217,7 +239,7 @@ const Appointment = () => {
                 <input
                   type="text"
                   name="patientName"
-                  value={formData.patientName}
+                  value={user?.name || formData.patientName}
                   onChange={handleChange}
                   placeholder={t("patientName")}
                   className="appointment-input-field"
@@ -230,7 +252,7 @@ const Appointment = () => {
                 <input
                   type="tel"
                   name="phone"
-                  value={formData.phone}
+                  value={user?.mobile || formData.phone}
                   onChange={handleChange}
                   placeholder={t("phoneNumber")}
                   className="appointment-input-field"
