@@ -8,10 +8,8 @@ import Link from "next/link";
 import AppointmentForm from "@/app/Component/Shared/AppointmentForm/AppointmentForm";
 import DiagnosticPlanCard from "@/app/Component/UI/DiagnosticPlanCard";
 
-import dimg1 from "@/assets/images/dimg1.png";
 import dimg2 from "@/assets/images/dimg2.png";
 import dimg3 from "@/assets/images/dimg3.png";
-import dimg4 from "@/assets/images/dimg4.png";
 
 const SingleDiagnostic = () => {
   const DiagnosticTabContent = [
@@ -43,8 +41,6 @@ const SingleDiagnostic = () => {
       bookingLink: "/booking/vitamin-d",
     },
   ];
-
-  console.log(DiagnosticTabContent);
 
   return (
     <div>
