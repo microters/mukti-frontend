@@ -150,7 +150,8 @@ const Blog = () => {
             </ul>
           </div>
           <div className="col-span-1">
-            
+            {/* Search Area */}
+            <div>Search Area</div>
           </div>
         </div>
       </div>
