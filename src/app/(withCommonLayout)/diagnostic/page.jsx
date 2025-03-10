@@ -165,7 +165,7 @@ const Diagnostic = () => {
                 <Image
                   src={heroImag}
                   alt="Hero Image"
-                  className="w-full max-w-[550px] ml-auto"
+                  className="w-full max-w-[550px] lg:ml-auto mx-auto lg:mr-0 "
                 />
               </div>
             </div>
@@ -176,7 +176,7 @@ const Diagnostic = () => {
       {/* Call Area */}
       <div className="py-24">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-7">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-7 items-start">
             <div className="bg-M-heading-color p-6 rounded-md grid-cols-1">
               <h3 className="text-white text-2xl capitalize">
                 Request a Callback
@@ -245,9 +245,7 @@ const Diagnostic = () => {
               </p>
               <p className="font-jost font-normal text-base text-M-text-color mt-4">
                 Day can't. Very living lesser multiply the herb, fly. Brought
-                over us seasons, gathered bring spirit whose upon years fruitful
-                third dominion cattle midst night morning bring.Day can't. Very
-                living lesser multiply the herb.
+                over us seasons, gathered bring spirit.
               </p>
 
               <div className="mt-5 py-5 border-t border-M-heading-color/20">
@@ -291,7 +289,7 @@ const Diagnostic = () => {
 
           <div className="mt-10">
             {/* Tab List */}
-            <ul className="bg-[#F9FAFB] py-3 px-4 flex items-center justify-center gap-6 max-w-[600px] mx-auto rounded-md ">
+            <ul className="bg-[#F9FAFB] py-3 px-4 flex flex-wrap items-center justify-center  sm:gap-6 max-w-[600px] mx-auto rounded-md ">
               {DiagnosticTabContent.map((tab, index) => (
                 <li key={tab.id} className="relative">
                   <button
@@ -305,7 +303,7 @@ const Diagnostic = () => {
                     {tab.label}
                   </button>
                   {index < DiagnosticTabContent.length - 1 && (
-                    <span className="w-[1px] h-1/2 border-l border-dashed border-M-text-color absolute -right-3 top-1/2 -translate-y-1/2"></span>
+                    <span className="w-[1px] h-1/2 border-l border-dashed border-M-text-color absolute -right-3 top-1/2 -translate-y-1/2 hidden sm:inline-block"></span>
                   )}
                 </li>
               ))}
