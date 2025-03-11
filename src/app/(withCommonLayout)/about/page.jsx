@@ -1,7 +1,7 @@
 import React from "react";
 
 import CommonHero from "@/app/Component/UI/CommonHero";
-import About from "@/app/Component/UI/HomePage/About/About";
+// import About from "@/app/Component/UI/HomePage/About/About";
 import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
 import WhyChooseUs from "@/app/Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
 import AppointmentProcess from "@/app/Component/UI/HomePage/AppointmentProcess/AppointmentProcess";
@@ -14,7 +14,7 @@ const AboutUs = async () => {
   return (
     <div>
       <CommonHero pageName="About Us" />
-      <About />
+      {/* <About /> */}
       <Appointment />
       <WhoWeAre />
       <WhyChooseUs />
