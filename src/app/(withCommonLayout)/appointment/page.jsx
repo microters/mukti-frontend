@@ -1,4 +1,3 @@
-import React from "react";
 import CommonHero from "@/app/Component/UI/CommonHero";
 import AppointmentForm from "@/app/Component/Shared/AppointmentForm/AppointmentForm";
 
