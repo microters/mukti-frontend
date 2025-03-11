@@ -8,6 +8,7 @@ const apiClient = axios.create({
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
     "Content-Type": "application/json",
   },
+  cache: "no-store"
 });
 
 // ✅ Fetch all doctors

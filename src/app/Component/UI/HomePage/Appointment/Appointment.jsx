@@ -10,6 +10,7 @@ import halfCircle from "@/assets/images/half-circle.png";
 import appointment from "@/assets/images/appointment.png";
 import { getDepartments } from "@/app/api/Category/Category";
 import { fetchDoctors } from "@/app/api/doctor";
+import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
@@ -89,7 +90,7 @@ const Appointment = () => {
           headers: {
             "Content-Type": "application/json",
             "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // ✅ Secure API Key
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN || ""}`, // (Optional)
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_AUTH_TOKEN || ""}`,
           },
           body: JSON.stringify({
             departmentId,

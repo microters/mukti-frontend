@@ -1,5 +1,5 @@
-import I18nProvider from "./Component/I18nProvider";
 import "./globals.css";
+import { AuthProvider } from "./utils/AuthContext";
 
 
 export const metadata = {
@@ -11,7 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <I18nProvider>{children}</I18nProvider>
+      <AuthProvider>
+        {children}
+        </AuthProvider>
       </body>
     </html>
   );
