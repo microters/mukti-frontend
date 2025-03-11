@@ -11,7 +11,6 @@ export async function fetchClient(endpoint, options = {}) {
         "x-api-key": API_KEY,
         ...options.headers,
       },
-      cache: "no-store", // Always get fresh data
       ...options,
     });
 
