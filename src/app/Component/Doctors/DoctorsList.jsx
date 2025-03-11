@@ -180,7 +180,7 @@ const DoctorsList = ({ doctors }) => {
             {/* CTA Start */}
             <div className="bg-M-heading-color px-5 py-7 rounded-lg">
               <h3 className="text-2xl font-bold text-white mb-2">
-                Can't find what are you looking for?
+                Can't find what are you looking fors?
               </h3>
               <h5 className="text-base font-normal text-slate-200 mb-6">
                 Fill this form for callback from us.

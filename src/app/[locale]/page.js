@@ -1,3 +1,4 @@
+// Language change file
 export default function LocaleHome({ params }) {
     return (
       <div>
