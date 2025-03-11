@@ -3,6 +3,9 @@ const path = require('path');
 
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  },
 
   // Image optimization settings
   images: {
@@ -28,11 +31,11 @@ const nextConfig = {
   },
 
   // Internationalization (i18n) settings
-  i18n: {
-    locales: ['en', 'bn'], // Supported locales
-    defaultLocale: 'en', // Default locale
-    localeDetection: false, // Disable automatic locale detection
-  },
+  // i18n: {
+  //   locales: ['en', 'bn'], // Supported locales
+  //   defaultLocale: 'en', // Default locale
+  //   localeDetection: false, // Disable automatic locale detection
+  // },
 
   // Enable trailing slash in URLs (useful for static hosting)
   trailingSlash: true, // This helps keep `/bn` from breaking

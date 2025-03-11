@@ -533,11 +533,9 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie"; // ✅ Import js-cookie
-import logo from "../../assets/images/logo-black.png";
 import bgImage from "@/assets/images/authBG.png";
 import Image from "next/image";
-import { loginUser, sendOtp } from "../utils/api";
+import { loginUser, sendOtp } from "../../utils/api";
 
 const Login = () => {
   const [mobile, setMobile] = useState("88");

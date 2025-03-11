@@ -11,20 +11,17 @@ const apiClient = axios.create({
 });
 
 // ✅ Fetch all departments
-export const fetchDepartments = async () => {
+export const fetchReviews = async () => {
   try {
-    const response = await apiClient.get("/api/department");
+    const response = await apiClient.get("/api/reviews");
 
-    console.log("Raw API Response (Departments):", response.data);
+    console.log("Raw API Response (Reviews):", response.data);
 
-    const departments = Array.isArray(response.data) ? response.data : response.data?.departments || [];
+    const reviews = Array.isArray(response.data) ? response.data : response.data?.reviews || [];
 
-    return departments;
+    return reviews;
   } catch (error) {
     console.error("Error fetching departments:", error);
     return [];
   }
 };
-
-
-

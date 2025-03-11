@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import logo from "../../assets/images/logo-black.png";
+import logo from "../../../assets/images/logo-black.png";
 import Link from "next/link";
 
 import bgImage from "@/assets/images/authBG.png";
