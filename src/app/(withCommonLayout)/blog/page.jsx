@@ -62,7 +62,7 @@ const Blog = () => {
     <div>
       <CommonHero pageName="Our Blogs" />
       <div className="container mx-auto px-4 py-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="col-span-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {blogPosts.slice(0, 6).map((post) => (
@@ -80,7 +80,7 @@ const Blog = () => {
                     </Link>
                   </div>
                   <div className="px-5 py-5 space-y-3">
-                    <h3 className="text-xl line-clamp-2">
+                    <h3 className="text-xl line-clamp-2 text-M-heading-color hover:text-M-primary-color transition-all duration-300">
                       <Link href={"#"}>{post.title}</Link>
                     </h3>
                     <p className="bg-[#009650]/10 border-l-2 border-M-primary-color py-3 px-4 rounded text-M-text-color text-sm font-semibold">
@@ -149,9 +149,62 @@ const Blog = () => {
               </li>
             </ul>
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 space-y-6">
             {/* Search Area */}
-            <div>Search Area</div>
+            <div className="bg-M-section-bg p-6 rounded-md">
+              <form className="flex items-center relative">
+                <input
+                  type="text"
+                  placeholder="Search by keyword"
+                  className="font-jost font-normal text-base text-black w-full p-3 pr-10 border-0 outline-none ring-0 ring-M-primary-color/50 focus:ring-1 transition-all duration-300 rounded-sm "
+                />
+                <Icon
+                  icon="clarity:search-line"
+                  width="24"
+                  height="24"
+                  className="right-3 absolute top-1/2 -translate-y-1/2 text-M-text-color"
+                />
+              </form>
+            </div>
+            {/* Most Popular */}
+            <div className="bg-M-section-bg p-6 rounded-md">
+              <h3 className="text-2xl text-black mb-2">Most Popular</h3>
+              {blogPosts.slice(0, 4).map((items) => (
+                <div key={items.id} className="flex items-start gap-4 border-b border-M-text-color/20 py-4 last:border-0 last:pb-0">
+                  <Image
+                    src={items.image}
+                    alt="Blog Image"
+                    className="w-24 shrink-0 rounded-md"
+                  />
+                  <div>
+                    <span className="flex items-center gap-2 text-M-text-color font-jost text-base mb-1">
+                      <Icon
+                        icon="iconoir:chat-lines"
+                        width="18"
+                        height="18"
+                        className="text-M-primary-color/50"
+                      />{" "}
+                      {items.comments} Comments
+                    </span>
+                    <h4>
+                      <Link
+                        href={"#"}
+                        className="text-M-heading-color text-base hover:text-M-primary-color transition-all duration-300"
+                      >
+                        {items.title}
+                      </Link>
+                    </h4>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Category List */}
+            <div className="bg-M-section-bg p-6 rounded-md">
+              <h3 className="text-2xl text-black mb-2">Browse by Category</h3>
+              <ul className="space-y-2">
+                <li><Link className="flex items-center justify-between">Endocrinology <span>02</span></Link></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
