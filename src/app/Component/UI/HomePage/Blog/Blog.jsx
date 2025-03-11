@@ -1,3 +1,4 @@
+"use client"
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
