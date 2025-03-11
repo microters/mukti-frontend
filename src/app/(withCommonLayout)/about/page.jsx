@@ -1,4 +1,4 @@
-import React from "react";
+// app/about/page.js
 
 import CommonHero from "@/app/Component/UI/CommonHero";
 import About from "@/app/Component/UI/HomePage/About/About";
@@ -6,11 +6,15 @@ import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
 import WhyChooseUs from "@/app/Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
 import AppointmentProcess from "@/app/Component/UI/HomePage/AppointmentProcess/AppointmentProcess";
 import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials";
-import { getReviews } from "@/app/api/Reviews/Reviews";
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
+import { getReviews } from "@/app/api/Reviews/Reviews";
 
-const AboutUs = async () => {
-  const [reviews] = await Promise.all([getReviews()]);
+// This is a Server Component. It can fetch data on the server before rendering the page.
+export default async function AboutUs() {
+  // Fetch reviews dynamically from API on the server side
+  const reviews = await getReviews();
+
+  // Return the page structure with the fetched reviews
   return (
     <div>
       <CommonHero pageName="About Us" />
@@ -19,9 +23,8 @@ const AboutUs = async () => {
       <WhoWeAre />
       <WhyChooseUs />
       <AppointmentProcess />
-      <Testimonials reviews={reviews} />
+      <Testimonials reviews={reviews} /> {/* Pass reviews as props */}
     </div>
   );
-};
+}
 
-export default AboutUs;
