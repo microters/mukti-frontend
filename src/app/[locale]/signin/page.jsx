@@ -49,7 +49,7 @@
 //       try {
 //         // Send the login request
 //         const response = await axios.post(
-//           "http://localhost:5000/api/login",
+//           "http://api.muktihospital.com/api/login",
 //           formData
 //         );
 
@@ -76,7 +76,7 @@
 //     const email = formData.email;
 //     try {
 //       const response = await axios.post(
-//         "http://localhost:5000/api/forgot-password",
+//         "http://api.muktihospital.com/api/forgot-password",
 //         { email }
 //       );
 

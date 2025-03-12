@@ -1,7 +1,7 @@
 // import axios from "axios";
 // import Cookies from "js-cookie";
 
-// const API_BASE_URL = "http://localhost:5000/api/auth"; // Backend API URL
+// const API_BASE_URL = "http://api.muktihospital.com/api/auth"; // Backend API URL
 
 // // ✅ Send OTP Request
 // export const sendOtp = async (mobile) => {
@@ -59,14 +59,14 @@
 // };
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api/auth"; // Backend API URL
+const API_BASE_URL = "http://api.muktihospital.com/api/auth"; // Backend API URL
 
 // ✅ Send OTP Request
 export const sendOtp = async (mobile) => {
   try {
-    console.log("🔗 Calling API:", `http://localhost:5000/api/auth/send-otp`);
+    console.log("🔗 Calling API:", `http://api.muktihospital.com/api/auth/send-otp`);
     
-    const response = await axios.post("http://localhost:5000/api/auth/send-otp", {
+    const response = await axios.post("http://api.muktihospital.com/api/auth/send-otp", {
       mobileNumber: mobile,
     });
 
@@ -96,7 +96,7 @@ export const registerUser = async (data) => {
 // ✅ Login User & Store Token in LocalStorage
 export const loginUser = async (data) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/auth/login", data);
+    const response = await axios.post("http://api.muktihospital.com/api/auth/login", data);
     
     if (response.data.token) {
       localStorage.setItem("authToken", response.data.token); // ✅ Store token
