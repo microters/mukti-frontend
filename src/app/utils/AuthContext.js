@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     
     if (token) {
       axios
-        .get('http://localhost:5000/api/auth/profile', {
+        .get('https://api.muktihospital.com/api/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem('authToken', token);
     axios
-      .get('http://localhost:5000/api/auth/profile', {
+      .get('https://api.muktihospital.com/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
         },

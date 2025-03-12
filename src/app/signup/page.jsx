@@ -59,7 +59,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/register",
+        "https://api.muktihospital.com/api/register",
         formData
       );
 
@@ -88,7 +88,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/verify-otp",
+        "https://api.muktihospital.com/api/verify-otp",
         {
           email: storedEmail,
           otp,

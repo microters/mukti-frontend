@@ -34,7 +34,7 @@ const ResetPassword = ({ params }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/forgot-password/reset-password/${token}`,
+        `https://api.muktihospital.com/api/forgot-password/reset-password/${token}`,
         { password }
       );
       setSuccessMessage(response.data.message);
