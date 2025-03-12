@@ -2,37 +2,42 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../utils/AuthContext";
 
 import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
-import { Icon } from "@iconify/react";
-import { useTranslation } from "react-i18next";
-import i18n from "@/utils/i18n";
+import LanguageChanger from "./LanguageChanger";
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
+  const { user, logout } = useAuth();
+  
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
     event.preventDefault();
     setOpenIndex(openIndex === index ? null : index);
   };
+
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    const newPath = lng === "en" ? "/" : `/${lng}`;
-    window.history.pushState(null, "", newPath);
+  const handleLogout = () => {
+    logout(); // Call logout function from context
+    setDropdownOpen(false); // Close the dropdown after logout
   };
 
   if (!isMounted) return null;
@@ -88,9 +93,9 @@ const Header = () => {
           </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
-              <li className="">
+              <li>
                 <Link
-                  href={"/signin"}
+                  href="/signin"
                   className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
                 >
                   <Icon icon="uiw:login" width="15" />
@@ -114,13 +119,7 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select
-                    className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
-                    onChange={(e) => changeLanguage(e.target.value)}
-                  >
-                    <option value="en">{t("header.english")}</option>
-                    <option value="bn">{t("header.bangla")}</option>
-                  </select>
+                  <LanguageChanger/>
                 </div>
               </li>
             </ul>
@@ -129,7 +128,7 @@ const Header = () => {
       </div>
 
       {/* Large Device menu */}
-      <nav className="container mx-auto px-2 py-3 hidden lg:flex gap-4 justify-between ">
+      <nav className="container mx-auto px-2 py-3 hidden lg:flex gap-4 justify-between">
         <div>
           <ul className="flex gap-6 xl:gap-10 h-full">
             {menuItems.map((item, index) => (
@@ -140,7 +139,7 @@ const Header = () => {
                 }`}
               >
                 <Link
-                  href={item.href}
+                  href={item.href || "#"} // Ensure href is never undefined
                   prefetch={true}
                   className="font-jost font-medium h-full text-M-heading-color text-xs lg:text-sm xl:text-base uppercase flex items-center hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                 >
@@ -158,7 +157,7 @@ const Header = () => {
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
-                          href={subItem.href}
+                          href={subItem.href || "#"} // Ensure href is never undefined
                           className="block py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color "
                         >
                           {subItem.label}
@@ -179,6 +178,56 @@ const Header = () => {
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
         </div>
+
+        {/* Profile Section - Will hide when user logs out */}
+        {user && (
+          <div className="relative">
+            <button
+              className="flex items-center gap-3 p-2 rounded-md transition-all"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              {user.profilePhoto ? (
+                <img
+                  src={`http://localhost:5000${user.profilePhoto}`}
+                  alt="User Profile"
+                  className="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <Icon icon="mingcute:user-4-fill" width="24" height="24" />
+              )}
+              <span className="text-sm">{user.name}</span>
+              {dropdownOpen ? (
+                <Icon icon="lsicon:up-outline" width="18" height="18" />
+              ) : (
+                <Icon icon="lsicon:down-filled" width="18" height="18" />
+              )}
+            </button>
+
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                >
+                  <Icon icon="ic:outline-dashboard" width="24" height="24" /> Dashboard
+                </Link>
+                <Link
+                  href="/settings"
+                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                >
+                  <Icon icon="mingcute:user-4-fill" width="24" height="24" /> Profile
+                </Link>
+                <button
+                  onClick={handleLogout} // Use logout function from the context
+                  className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 hover:text-red-600 transition-all"
+                >
+                  <Icon icon="uil:signout" width="24" height="24" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       {/* Mobile Menu */}
@@ -201,12 +250,9 @@ const Header = () => {
         >
           <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
             {menuItems.map((item, index) => (
-              <li
-                key={index}
-                className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
-              >
+              <li key={index} className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}>
                 <Link
-                  href={item.href}
+                  href={item.href || "#"} // Ensure href is never undefined
                   onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
                   className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                 >
@@ -221,14 +267,12 @@ const Header = () => {
                 </Link>
                 {item.hasSubMenu && (
                   <ul
-                    className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? "max-h-auto" : "max-h-0"
-                    }`}
+                    className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-auto" : "max-h-0"}`}
                   >
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
-                          href={subItem.href}
+                          href={subItem.href || "#"} // Ensure href is never undefined
                           className="block pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                         >
                           {subItem.label}
@@ -247,3 +291,4 @@ const Header = () => {
 };
 
 export default Header;
+
