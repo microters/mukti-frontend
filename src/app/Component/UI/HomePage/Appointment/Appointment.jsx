@@ -1,9 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // Use next router for redirection
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-
 
 // Assets and API calls
 import waveShape2 from "@/assets/images/waveShape2.png";
@@ -17,11 +16,11 @@ import { fetchDepartments } from "@/app/api/department";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language || "en"; // Default language
+  const currentLanguage = i18n.language || "en";
 
-  const [departments, setDepartments] = useState([]); // State for departments
-  const [doctors, setDoctors] = useState([]); // State for doctors
-  const [availableDates, setAvailableDates] = useState([]); // State for available dates
+  const [departments, setDepartments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [availableDates, setAvailableDates] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [formData, setFormData] = useState({
     departmentId: "",
@@ -31,27 +30,15 @@ const Appointment = () => {
     phone: "",
   });
 
-  const { user, loading } = useAuth(); // Get user data from AuthContext
-  const [userLoading, setUserLoading] = useState(true); // Loading state for user data
+  // Fallback added to prevent destructuring error
+  const auth = useAuth() || {};
+  const { user, loading } = auth;
 
-
-  // Check authentication and redirect if not authenticated
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     const token = localStorage.getItem("authToken");
-  //     if (!token) {
-  //       window.location.href = "/signin"; // Redirect to sign-in page
-  //       return;
-  //     }
-  //   }
-  // }, );
-
-  // Fetch Departments
   useEffect(() => {
     const fetchDepartmentsData = async () => {
       try {
         const data = await fetchDepartments();
-        setDepartments(data || []); // Ensure data is an array
+        setDepartments(data || []); // নিশ্চিত করুন data array
       } catch (error) {
         console.error("❌ Error fetching departments:", error);
       }
@@ -59,12 +46,11 @@ const Appointment = () => {
     fetchDepartmentsData();
   }, []);
 
-  // Fetch Doctors
   useEffect(() => {
     const fetchDoctorsData = async () => {
       try {
         const data = await fetchDoctors();
-        setDoctors(data || []); // Ensure data is an array
+        setDoctors(data || []); // নিশ্চিত করুন data array
       } catch (error) {
         console.error("❌ Error fetching doctors:", error);
       }
@@ -72,26 +58,22 @@ const Appointment = () => {
     fetchDoctorsData();
   }, []);
 
-  // Handle Input Change for form data
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle Doctor Selection & Fetch Available Days
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
     const doctor = doctors.find((doc) => doc.id === doctorId);
-
     setSelectedDoctor(doctor || null);
-    setAvailableDates(doctor ? doctor.schedule : []); // Set available dates based on selected doctor
+    setAvailableDates(doctor ? doctor.schedule : []);
     setFormData({ ...formData, doctorId, day: "" });
   };
 
-  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      window.location.href = "/signin"; // Redirect to sign-in page
+      window.location.href = "/signin"; // sign-in পৃষ্ঠায় redirect করুন
       return;
     }
 
@@ -109,8 +91,7 @@ const Appointment = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API Key
-            
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify({
             departmentId,
@@ -141,8 +122,6 @@ const Appointment = () => {
     }
   };
 
-
-
   return (
     <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
       <Image
@@ -169,7 +148,6 @@ const Appointment = () => {
             </h2>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
-              {/* Department Selection */}
               <div>
                 <select
                   name="departmentId"
@@ -192,7 +170,6 @@ const Appointment = () => {
                 </select>
               </div>
 
-              {/* Doctor Selection */}
               <div>
                 <select
                   name="doctorId"
@@ -215,7 +192,6 @@ const Appointment = () => {
                 </select>
               </div>
 
-              {/* Available Days (Only after selecting a doctor) */}
               {selectedDoctor && (
                 <div>
                   <select
@@ -235,7 +211,6 @@ const Appointment = () => {
                 </div>
               )}
 
-              {/* Patient Name */}
               <div>
                 <input
                   type="text"
@@ -248,7 +223,6 @@ const Appointment = () => {
                 />
               </div>
 
-              {/* Phone Number */}
               <div>
                 <input
                   type="tel"
@@ -261,7 +235,6 @@ const Appointment = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <FormButton
                 buttonText={t("appointmentNow")}
                 buttonColor="bg-M-heading-color"
@@ -276,7 +249,6 @@ const Appointment = () => {
           </div>
         </div>
 
-        {/* Image Section */}
         <div className="hidden lg:block w-1/2">
           <Image src={appointment} alt="appointment" />
         </div>
