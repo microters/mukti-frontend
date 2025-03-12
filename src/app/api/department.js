@@ -10,25 +10,23 @@ const apiClient = axios.create({
   },
 });
 
-// ✅ Fetch all departments
-export const fetchDepartments = async () => {
+// Fetching departments based on the locale
+export const fetchDepartments = async (locale) => {
   try {
-    const response = await apiClient.get("/api/department");
-
-    console.log("Raw API Response (Departments):", response.data);
+    const response = await apiClient.get("/api/department", {
+      headers: {
+        'X-Locale': locale, // Send locale as header to fetch correct language data
+      },
+    });
 
     const departments = Array.isArray(response.data) ? response.data : response.data?.departments || [];
 
-    return departments.map((dept) => ({
-      id: dept.id,
-      en: dept.translations?.en?.name || "Unknown Department",
-      bn: dept.translations?.bn?.name || "অজানা বিভাগ",
-      icon: dept.icon ? `${API_BASE_URL}${dept.icon}` : "/default-department.png",
-    }));
+    return departments;
   } catch (error) {
     console.error("Error fetching departments:", error);
-    return [];
+    return [];  // Return empty array in case of error
   }
 };
+
 
 

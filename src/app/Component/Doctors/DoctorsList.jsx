@@ -25,8 +25,9 @@ const DoctorsList = ({ doctors }) => {
 
   // ✅ Extract unique specialties & genders from API data
   const specialtyOptions = [
-    ...new Set(doctors.map((d) => d.translations.en.department)),
+    ...new Set(doctors.map((d) => d.translations[currentLanguage]?.department)),
   ];
+  
   const genderOptions = [
     ...new Set(doctors.map((d) => d.translations.en.gender)),
   ];
@@ -61,20 +62,21 @@ const DoctorsList = ({ doctors }) => {
     }
 
     const specialtyMatch =
-      !hasSelectedSpecialties ||
-      selectedSpecialties[doctor.translations.en.department];
-    const genderMatch =
-      !hasSelectedGenders || selectedGenders[doctor.translations.en.gender];
+    !hasSelectedSpecialties ||
+    selectedSpecialties[doctor.translations[currentLanguage]?.department];
 
-    return specialtyMatch && genderMatch;
+  const genderMatch =
+    !hasSelectedGenders || selectedGenders[doctor.translations[currentLanguage]?.gender];
+
+  return specialtyMatch && genderMatch;
   });
 
   // ✅ Sorting Logic (applies AFTER filtering)
   const sortedDoctors = [...filteredDoctors].sort((a, b) => {
-    const nameA = a.translations.en.name.toLowerCase();
-    const nameB = b.translations.en.name.toLowerCase();
-    const experienceA = parseInt(a.translations.en.yearsOfExperience) || 0;
-    const experienceB = parseInt(b.translations.en.yearsOfExperience) || 0;
+    const nameA = a.translations[currentLanguage]?.name.toLowerCase();
+    const nameB = b.translations[currentLanguage]?.name.toLowerCase();
+    const experienceA = parseInt(a.translations[currentLanguage]?.yearsOfExperience) || 0;
+    const experienceB = parseInt(b.translations[currentLanguage]?.yearsOfExperience) || 0;
 
     switch (sortOption) {
       case "name-asc":

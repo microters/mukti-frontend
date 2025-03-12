@@ -1,26 +1,27 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"; // Use next router for redirection
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+
 
 // Assets and API calls
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
-import appointmentImg from "@/assets/images/appointment.png";
-import { getDepartments } from "@/app/api/Category/Category";
+import appointment from "@/assets/images/appointment.png";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-import { useAuth } from "@/app/utils/AuthContext";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
+import { fetchDepartments } from "@/app/api/department";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
-  const currentLanguage = i18n.language || "en";
+  const currentLanguage = i18n.language || "en"; // Default language
 
-  const [departments, setDepartments] = useState([]);
-  const [doctors, setDoctors] = useState([]);
-  const [availableDates, setAvailableDates] = useState([]);
+  const [departments, setDepartments] = useState([]); // State for departments
+  const [doctors, setDoctors] = useState([]); // State for doctors
+  const [availableDates, setAvailableDates] = useState([]); // State for available dates
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [formData, setFormData] = useState({
     departmentId: "",
@@ -30,25 +31,27 @@ const Appointment = () => {
     phone: "",
   });
 
-  const { user } = useAuth();
+  const { user, loading } = useAuth(); // Get user data from AuthContext
+  const [userLoading, setUserLoading] = useState(true); // Loading state for user data
 
-  // Pre-fill patient details if available
-  useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        patientName: user.name || "",
-        phone: user.mobile || "",
-      }));
-    }
-  }, [user]);
+
+  // Check authentication and redirect if not authenticated
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     const token = localStorage.getItem("authToken");
+  //     if (!token) {
+  //       window.location.href = "/signin"; // Redirect to sign-in page
+  //       return;
+  //     }
+  //   }
+  // }, );
 
   // Fetch Departments
   useEffect(() => {
     const fetchDepartmentsData = async () => {
       try {
-        const data = await getDepartments();
-        setDepartments(data || []);
+        const data = await fetchDepartments();
+        setDepartments(data || []); // Ensure data is an array
       } catch (error) {
         console.error("❌ Error fetching departments:", error);
       }
@@ -61,7 +64,7 @@ const Appointment = () => {
     const fetchDoctorsData = async () => {
       try {
         const data = await fetchDoctors();
-        setDoctors(data || []);
+        setDoctors(data || []); // Ensure data is an array
       } catch (error) {
         console.error("❌ Error fetching doctors:", error);
       }
@@ -69,30 +72,31 @@ const Appointment = () => {
     fetchDoctorsData();
   }, []);
 
-  // Handle input changes for form fields
+  // Handle Input Change for form data
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle doctor selection
+  // Handle Doctor Selection & Fetch Available Days
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
     const doctor = doctors.find((doc) => doc.id === doctorId);
+
     setSelectedDoctor(doctor || null);
-    setAvailableDates(doctor ? doctor.schedule : []);
-    setFormData((prev) => ({ ...prev, doctorId, day: "" }));
+    setAvailableDates(doctor ? doctor.schedule : []); // Set available dates based on selected doctor
+    setFormData({ ...formData, doctorId, day: "" });
   };
 
-  // Handle form submission
+  // Handle Form Submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!user) {
-      window.location.href = "/signin";
+      window.location.href = "/signin"; // Redirect to sign-in page
       return;
     }
 
     const { departmentId, doctorId, day, patientName, phone } = formData;
+
     if (!departmentId || !doctorId || !day || !patientName || !phone) {
       alert(t("please_fill_all_fields"));
       return;
@@ -105,7 +109,8 @@ const Appointment = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Secure API Key
+            
           },
           body: JSON.stringify({
             departmentId,
@@ -135,6 +140,8 @@ const Appointment = () => {
       alert(`${t("appointment_failed")}: ${error.message}`);
     }
   };
+
+
 
   return (
     <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
@@ -208,7 +215,7 @@ const Appointment = () => {
                 </select>
               </div>
 
-              {/* Available Days */}
+              {/* Available Days (Only after selecting a doctor) */}
               {selectedDoctor && (
                 <div>
                   <select
@@ -233,7 +240,7 @@ const Appointment = () => {
                 <input
                   type="text"
                   name="patientName"
-                  value={formData.patientName}
+                  value={user?.name || formData.patientName}
                   onChange={handleChange}
                   placeholder={t("patientName")}
                   className="appointment-input-field"
@@ -246,7 +253,7 @@ const Appointment = () => {
                 <input
                   type="tel"
                   name="phone"
-                  value={formData.phone}
+                  value={user?.mobile || formData.phone}
                   onChange={handleChange}
                   placeholder={t("phoneNumber")}
                   className="appointment-input-field"
@@ -271,7 +278,7 @@ const Appointment = () => {
 
         {/* Image Section */}
         <div className="hidden lg:block w-1/2">
-          <Image src={appointmentImg} alt="appointment" />
+          <Image src={appointment} alt="appointment" />
         </div>
       </div>
     </div>

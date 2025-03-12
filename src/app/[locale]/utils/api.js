@@ -1,7 +1,7 @@
 // import axios from "axios";
 // import Cookies from "js-cookie";
 
-// const API_BASE_URL = "https://api.muktihospital.com/api/auth"; // Backend API URL
+// const API_BASE_URL = " https://api.muktihospital.com/api/auth"; // Backend API URL
 
 // // ✅ Send OTP Request
 // export const sendOtp = async (mobile) => {

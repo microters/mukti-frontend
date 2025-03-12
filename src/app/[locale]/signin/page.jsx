@@ -49,7 +49,7 @@
 //       try {
 //         // Send the login request
 //         const response = await axios.post(
-//           "https://api.muktihospital.com/api/login",
+//           "http://api.muktihospital.com/api/login",
 //           formData
 //         );
 
@@ -76,7 +76,7 @@
 //     const email = formData.email;
 //     try {
 //       const response = await axios.post(
-//         "https://api.muktihospital.com/api/forgot-password",
+//         "http://api.muktihospital.com/api/forgot-password",
 //         { email }
 //       );
 
@@ -533,8 +533,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie"; // ✅ Import js-cookie
-import logo from "../../assets/images/logo-black.png";
 import bgImage from "@/assets/images/authBG.png";
 import Image from "next/image";
 import { loginUser, sendOtp } from "../utils/api";

@@ -1,19 +1,24 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import Button from "../Buttons/Button";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 const DoctorsCardGrid = ({ doctor }) => {
-  if (!doctor || !doctor.translations) return null;
+  console.log("doctor card", doctor)
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
 
-  // Extract English translation (or fallback to default values)
-  const doctorData = doctor.translations["en"] || {};
+  if (!doctor || !doctor.translations) return null;
+  const doctorData = doctor.translations[currentLanguage] || {};
   const {
-    name = "Unknown Doctor",
-    department = "N/A",
-    yearsOfExperience = "N/A",
-    academicQualification = "N/A",
+    name = t("Unknown Doctor"),
+    department = t("N/A"),
+    yearsOfExperience = t("N/A"),
+    academicQualification = t("N/A"),
   } = doctorData;
 
   // Set default image if doctor icon is missing
@@ -28,13 +33,6 @@ const DoctorsCardGrid = ({ doctor }) => {
       <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md ">
         <div>
           {/* Doctor Image */}
-          {/* <Image
-            src={doctorImage}
-            alt={name}
-            width={100}
-            height={100}
-            className="size-[120px] rounded-full shrink-0 mb-5 ring ring-M-primary-color/80"
-          /> */}
           <Link
             href={profileLink}
             className="size-[120px] block rounded-full shrink-0 mb-5 ring ring-M-primary-color/80 overflow-hidden"
