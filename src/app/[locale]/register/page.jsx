@@ -317,7 +317,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { registerUser, sendOtp } from "../utils/api";
+import { registerUser, sendOtp } from "../../utils/api";
 import Link from "next/link";
 import logo from "@/assets/images/logo-black.png";
 import backgroundImage from "@/assets/images/authBG.png";

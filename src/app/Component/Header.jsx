@@ -4,19 +4,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../utils/AuthContext";
 
 import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import LanguageChanger from "./LanguageChanger";
+import { useAuth } from "../utils/AuthContext";
 
 const Header = () => {
+  const { user, logout } = useAuth();
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  const { user, logout } = useAuth();
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -188,7 +188,7 @@ const Header = () => {
             >
               {user.profilePhoto ? (
                 <img
-                  src={`http://localhost:5000${user.profilePhoto}`}
+                  src={`http://api.muktihospital.com${user.profilePhoto}`}
                   alt="User Profile"
                   className="w-8 h-8 rounded-full"
                 />

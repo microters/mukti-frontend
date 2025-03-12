@@ -10,10 +10,10 @@ import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
 import appointment from "@/assets/images/appointment.png";
-import { getDepartments } from "@/app/api/Category/Category";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import { useAuth } from "@/app/utils/AuthContext";
+import { fetchDepartments } from "@/app/api/department";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
@@ -50,7 +50,7 @@ const Appointment = () => {
   useEffect(() => {
     const fetchDepartmentsData = async () => {
       try {
-        const data = await getDepartments();
+        const data = await fetchDepartments();
         setDepartments(data || []); // Ensure data is an array
       } catch (error) {
         console.error("❌ Error fetching departments:", error);

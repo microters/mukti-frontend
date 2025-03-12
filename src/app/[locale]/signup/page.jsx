@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import logo from "../../assets/images/logo-black.png";
+import logo from "../../../assets/images/logo-black.png";
 import Link from "next/link";
 
 import bgImage from "@/assets/images/authBG.png";
@@ -59,7 +59,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/register",
+        "http://api.muktihospital.com/api/register",
         formData
       );
 
@@ -88,7 +88,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/verify-otp",
+        "http://api.muktihospital.com/api/verify-otp",
         {
           email: storedEmail,
           otp,

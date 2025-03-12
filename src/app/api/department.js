@@ -21,29 +21,12 @@ export const fetchDepartments = async (locale) => {
 
     const departments = Array.isArray(response.data) ? response.data : response.data?.departments || [];
 
-    const translations = departments.map((dept) => {
-      // Log translations to inspect structure
-      const name = dept.translations?.[locale]?.name || dept.translations?.['en']?.name || "Unknown Department";
-      const description = dept.translations?.[locale]?.description || dept.translations?.['en']?.description || "";
-
-      return {
-        id: dept.id,
-        name: name,
-        description: description,
-        icon: dept.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}` : "/default-department.png",
-      };
-    });
-
-    return translations;  // Return the translated departments
+    return departments;
   } catch (error) {
     console.error("Error fetching departments:", error);
     return [];  // Return empty array in case of error
   }
 };
-
-
-
-
 
 
 

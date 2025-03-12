@@ -1,4 +1,3 @@
-import React from "react";
 
 import CommonHero from "@/app/Component/UI/CommonHero";
 import About from "@/app/Component/UI/HomePage/About/About";
@@ -10,7 +9,7 @@ import { getReviews } from "@/app/api/Reviews/Reviews";
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
 
 const AboutUs = async () => {
-  const [reviews] = await Promise.all([getReviews()]);
+    const reviews = await getReviews();
   return (
     <div>
       <CommonHero pageName="About Us" />
