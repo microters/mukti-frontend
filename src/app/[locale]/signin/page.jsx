@@ -535,7 +535,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import bgImage from "@/assets/images/authBG.png";
 import Image from "next/image";
-import { loginUser, sendOtp } from "../../utils/api";
+import { loginUser, sendOtp } from "../utils/api";
 
 const Login = () => {
   const [mobile, setMobile] = useState("88");

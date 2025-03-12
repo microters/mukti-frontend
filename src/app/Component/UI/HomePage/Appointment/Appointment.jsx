@@ -12,7 +12,7 @@ import halfCircle from "@/assets/images/half-circle.png";
 import appointment from "@/assets/images/appointment.png";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-import { useAuth } from "@/app/utils/AuthContext";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import { fetchDepartments } from "@/app/api/department";
 
 const Appointment = () => {

@@ -1,6 +1,6 @@
 import { dir } from "i18next";
 import i18nConfig from "../../../i18nConfig";
-import { AuthProvider } from "../utils/AuthContext";
+import { AuthProvider } from "./utils/AuthContext";
 import initTranslations from "@/i18n";
 import TranslationsProvider from "../Component/TranslationProvider";
 import Header from "../Component/Header";

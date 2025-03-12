@@ -9,7 +9,7 @@ import callIcon from "@/assets/images/phone2.png";
 import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
 import LanguageChanger from "./LanguageChanger";
-import { useAuth } from "../utils/AuthContext";
+import { useAuth } from "../[locale]/utils/AuthContext";
 
 const Header = () => {
   const { user, logout } = useAuth();
