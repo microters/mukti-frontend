@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
-import Skeleton from "react-loading-skeleton";
 import shape from "@/assets/images/features-shape3.png";
 import Link from "next/link";
 import Button from "@/app/Component/Shared/Buttons/Button";
