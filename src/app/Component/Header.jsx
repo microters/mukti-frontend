@@ -73,7 +73,7 @@ const Header = () => {
         { label: t("header.orthopedics"), href: "#" },
       ],
     },
-    { label: t("header.doctor"), href: "http://localhost:3000/doctor", hasSubMenu: false },
+    { label: t("header.doctor"), href: "/doctor", hasSubMenu: false },
     { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
     { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
   ];
