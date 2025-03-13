@@ -33,16 +33,17 @@ export default function LanguageChanger() {
       );
     }
 
+    // Ensure the page is refreshed to reflect the language change
     router.refresh();
   };
 
   return (
     <select
-        className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
-        onChange={handleChange} value={currentLocale}
-        >
-        <option value="en">English</option>
-        <option value="bn">Bangla</option>
-   </select>
+      className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
+      onChange={handleChange} value={currentLocale}
+    >
+      <option value="en">English</option>
+      <option value="bn">Bangla</option>
+    </select>
   );
 }

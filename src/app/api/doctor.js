@@ -14,21 +14,8 @@ const apiClient = axios.create({
 // ✅ Fetch all doctors with language
 export const fetchDoctors = async (language = 'en') => {
   try {
-    console.log(`Fetching doctors for language: ${language}`);
-
     const response = await apiClient.get(`/api/doctor?lang=${language}`);
-    
-    console.log("Raw API Response:", response.data); // ✅ Log API response to check data format
-
     const doctors = Array.isArray(response.data) ? response.data : response.data?.doctors || [];
-
-    console.log("Processed Doctors Data:", doctors); // ✅ Log processed doctors array
-
-    // Debug individual doctor translations
-    doctors.forEach((doctor, index) => {
-      console.log(`Doctor #${index + 1} (${doctor.id}) translations:`, doctor.translations);
-    });
-
     return doctors;
   } catch (error) {
     console.error("Error fetching doctors:", error);
@@ -38,23 +25,29 @@ export const fetchDoctors = async (language = 'en') => {
 
 
 
-// ✅ Fetch a specific doctor by slug
-export const fetchDoctorBySlug = async (slug) => {
+// ✅ Fetch a specific doctor by slug with language support
+export const fetchDoctorBySlug = async (slug, language = 'en') => {
   try {
     if (!slug) {
       console.warn("⚠️ Missing slug parameter.");
       return null;
     }
-    const response = await apiClient.get(`/api/doctor/slug/${slug}`);
 
+    // Make the API call with the slug and language parameter
+    const response = await apiClient.get(`/api/doctor/slug/${slug}?lang=${language}`);
+
+    // Log the fetched doctor data (for debugging purposes)
     console.log("✅ Doctor Data:", response.data);
 
-    return response.data || null;
+    return response.data || null; // Return the doctor data if available
   } catch (error) {
+    // Log the error message in case of failure
     console.error(`❌ Error fetching doctor (${slug}):`, error.response?.data || error.message);
-    return null;
+    return null; // Return null if an error occurs
   }
 };
+
+
 
 // ✅ Create a new doctor
 // export const createDoctor = async (doctorData) => {
@@ -88,3 +81,4 @@ export const fetchDoctorBySlug = async (slug) => {
 //     return false;
 //   }
 // };
+

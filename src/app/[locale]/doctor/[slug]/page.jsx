@@ -7,15 +7,18 @@ const SingleDoctorPage = async ({ params }) => {
 
   if (!slug) return notFound();
 
-  const doctor = await fetchDoctorBySlug(slug);
+  // Fetch doctor data based on slug and current language
+  const doctor = await fetchDoctorBySlug(slug); // Make sure this function handles language too
 
   if (!doctor) return notFound();
 
   return (
     <div>
+      {/* Pass the fetched doctor data to SingleDoctorInfo */}
       <SingleDoctorInfo key={doctor.id} doctor={doctor} />
     </div>
   );
 };
 
 export default SingleDoctorPage;
+
