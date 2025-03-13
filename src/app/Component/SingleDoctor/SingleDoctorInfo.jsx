@@ -65,6 +65,8 @@ const SingleDoctorInfo = ({ doctor }) => {
       : [],
   };
 
+  console.log(doctorData.treatments)
+
   const maxWords = 100;
   // Ensure doctorData.shortBio exists before splitting
   const wordsArray = doctorData.shortBio ? doctorData.shortBio.split(" ") : [];

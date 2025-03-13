@@ -8,11 +8,11 @@ import Image from "next/image";
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
-import appointmentImg from "@/assets/images/appointment.png";
-import { getDepartments } from "@/app/api/Category/Category";
+import appointment from "@/assets/images/appointment.png";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-import { useAuth } from "@/app/utils/AuthContext";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
+import { fetchDepartments } from "@/app/api/department";
 
 const Appointment = () => {
   const { t, i18n } = useTranslation();
@@ -30,25 +30,15 @@ const Appointment = () => {
     phone: "",
   });
 
-  const { user } = useAuth();
+  // Fallback added to prevent destructuring error
+  const auth = useAuth() || {};
+  const { user, loading } = auth;
 
-  // Pre-fill patient details if available
-  useEffect(() => {
-    if (user) {
-      setFormData((prev) => ({
-        ...prev,
-        patientName: user.name || "",
-        phone: user.mobile || "",
-      }));
-    }
-  }, [user]);
-
-  // Fetch Departments
   useEffect(() => {
     const fetchDepartmentsData = async () => {
       try {
-        const data = await getDepartments();
-        setDepartments(data || []);
+        const data = await fetchDepartments();
+        setDepartments(data || []); // নিশ্চিত করুন data array
       } catch (error) {
         console.error("❌ Error fetching departments:", error);
       }
@@ -56,12 +46,11 @@ const Appointment = () => {
     fetchDepartmentsData();
   }, []);
 
-  // Fetch Doctors
   useEffect(() => {
     const fetchDoctorsData = async () => {
       try {
         const data = await fetchDoctors();
-        setDoctors(data || []);
+        setDoctors(data || []); // নিশ্চিত করুন data array
       } catch (error) {
         console.error("❌ Error fetching doctors:", error);
       }
@@ -69,30 +58,27 @@ const Appointment = () => {
     fetchDoctorsData();
   }, []);
 
-  // Handle input changes for form fields
   const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle doctor selection
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
     const doctor = doctors.find((doc) => doc.id === doctorId);
     setSelectedDoctor(doctor || null);
     setAvailableDates(doctor ? doctor.schedule : []);
-    setFormData((prev) => ({ ...prev, doctorId, day: "" }));
+    setFormData({ ...formData, doctorId, day: "" });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!user) {
-      window.location.href = "/signin";
+      window.location.href = "/signin"; // sign-in পৃষ্ঠায় redirect করুন
       return;
     }
 
     const { departmentId, doctorId, day, patientName, phone } = formData;
+
     if (!departmentId || !doctorId || !day || !patientName || !phone) {
       alert(t("please_fill_all_fields"));
       return;
@@ -162,7 +148,6 @@ const Appointment = () => {
             </h2>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
-              {/* Department Selection */}
               <div>
                 <select
                   name="departmentId"
@@ -185,7 +170,6 @@ const Appointment = () => {
                 </select>
               </div>
 
-              {/* Doctor Selection */}
               <div>
                 <select
                   name="doctorId"
@@ -208,7 +192,6 @@ const Appointment = () => {
                 </select>
               </div>
 
-              {/* Available Days */}
               {selectedDoctor && (
                 <div>
                   <select
@@ -228,12 +211,11 @@ const Appointment = () => {
                 </div>
               )}
 
-              {/* Patient Name */}
               <div>
                 <input
                   type="text"
                   name="patientName"
-                  value={formData.patientName}
+                  value={user?.name || formData.patientName}
                   onChange={handleChange}
                   placeholder={t("patientName")}
                   className="appointment-input-field"
@@ -241,12 +223,11 @@ const Appointment = () => {
                 />
               </div>
 
-              {/* Phone Number */}
               <div>
                 <input
                   type="tel"
                   name="phone"
-                  value={formData.phone}
+                  value={user?.mobile || formData.phone}
                   onChange={handleChange}
                   placeholder={t("phoneNumber")}
                   className="appointment-input-field"
@@ -254,7 +235,6 @@ const Appointment = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <FormButton
                 buttonText={t("appointmentNow")}
                 buttonColor="bg-M-heading-color"
@@ -269,9 +249,8 @@ const Appointment = () => {
           </div>
         </div>
 
-        {/* Image Section */}
         <div className="hidden lg:block w-1/2">
-          <Image src={appointmentImg} alt="appointment" />
+          <Image src={appointment} alt="appointment" />
         </div>
       </div>
     </div>

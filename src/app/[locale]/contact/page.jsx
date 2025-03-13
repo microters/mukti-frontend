@@ -1,5 +1,4 @@
 import Image from "next/image";
-import React from "react";
 import Link from "next/link";
 import CommonHero from "@/app/Component/UI/CommonHero";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";

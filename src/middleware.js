@@ -1,21 +1,12 @@
-import { NextResponse } from 'next/server';
+import { i18nRouter } from 'next-i18n-router';
+import i18nConfig from '../i18nConfig';
 
 export function middleware(request) {
-  const { pathname } = request.nextUrl;
-
-  if (pathname === '/') {
-    return NextResponse.next();
-  }
-
-  if (pathname.startsWith('/bn')) {
-    request.headers.set('x-i18n-lang', 'bn');
-  } else {
-    request.headers.set('x-i18n-lang', 'en');
-  }
-
-  return NextResponse.next();
+  return i18nRouter(request, i18nConfig);
 }
 
+// applies this middleware only to files in the app directory
 export const config = {
-  matcher: '/:path*',
+  matcher: '/((?!api|static|.*\\..*|_next).*)'
 };
+

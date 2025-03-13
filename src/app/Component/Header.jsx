@@ -4,19 +4,18 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
-import i18n from "@/utils/i18n";
-import { useAuth } from "../utils/AuthContext";
 
 import callIcon from "@/assets/images/phone2.png";
-import mailIcon from "@/assets/images/mail.png";
 import Logo from "@/assets/images/logo-white.png";
+import LanguageChanger from "./LanguageChanger";
+import { useAuth } from "../[locale]/utils/AuthContext";
 
 const Header = () => {
+  const { user, logout } = useAuth();
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  const { user, logout } = useAuth(); // Use the useAuth hook to get user and logout function
   
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -34,11 +33,6 @@ const Header = () => {
     setOpenMenu(!openMenu);
   };
 
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-    const newPath = lng === "en" ? "/" : `/${lng}`;
-    window.history.pushState(null, "", newPath);
-  };
 
   const handleLogout = () => {
     logout(); // Call logout function from context
@@ -51,13 +45,8 @@ const Header = () => {
     { label: t("header.home"), href: "/", hasSubMenu: false },
     {
       label: t("header.findDoctor"),
-      href: "#",
-      hasSubMenu: true,
-      subMenus: [
-        { label: t("header.searchSpecialty"), href: "#" },
-        { label: t("header.searchName"), href: "#" },
-        { label: t("header.bookAppointment"), href: "#" },
-      ],
+      href: "/doctor",
+      hasSubMenu: false,
     },
     {
       label: t("header.patientCare"),
@@ -79,9 +68,9 @@ const Header = () => {
         { label: t("header.orthopedics"), href: "#" },
       ],
     },
-    { label: t("header.doctor"), href: "http://localhost:3000/doctor", hasSubMenu: false },
-    { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
-    { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
+    { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
+    { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
+    { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
 
   return (
@@ -124,13 +113,7 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <select
-                    className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer"
-                    onChange={(e) => changeLanguage(e.target.value)}
-                  >
-                    <option value="en">{t("header.english")}</option>
-                    <option value="bn">{t("header.bangla")}</option>
-                  </select>
+                  <LanguageChanger/>
                 </div>
               </li>
             </ul>
@@ -199,7 +182,7 @@ const Header = () => {
             >
               {user.profilePhoto ? (
                 <img
-                  src={`http://localhost:5000${user.profilePhoto}`}
+                  src={`http://api.muktihospital.com${user.profilePhoto}`}
                   alt="User Profile"
                   className="w-8 h-8 rounded-full"
                 />
@@ -217,7 +200,7 @@ const Header = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
                 <Link
-                  href="/profile"
+                  href="https://dashboard-mukti.netlify.app/"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
                   <Icon icon="ic:outline-dashboard" width="24" height="24" /> Dashboard
@@ -302,3 +285,4 @@ const Header = () => {
 };
 
 export default Header;
+

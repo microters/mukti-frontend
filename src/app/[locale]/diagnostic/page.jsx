@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
@@ -13,6 +12,7 @@ import dimg2 from "@/assets/images/dimg2.png";
 import dimg3 from "@/assets/images/dimg3.png";
 import dimg4 from "@/assets/images/dimg4.png";
 import WhyChooseUs from "@/app/Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
+import { useState } from "react";
 
 const Diagnostic = () => {
   const DiagnosticTabContent = [

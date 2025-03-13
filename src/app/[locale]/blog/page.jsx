@@ -1,6 +1,4 @@
 import CommonHero from "@/app/Component/UI/CommonHero";
-import React from "react";
-
 // Assets
 import blogImg1 from "@/assets/images/blog1.png";
 import blogImg2 from "@/assets/images/blog2.jpg";
