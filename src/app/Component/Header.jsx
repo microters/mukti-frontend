@@ -45,13 +45,8 @@ const Header = () => {
     { label: t("header.home"), href: "/", hasSubMenu: false },
     {
       label: t("header.findDoctor"),
-      href: "#",
-      hasSubMenu: true,
-      subMenus: [
-        { label: t("header.searchSpecialty"), href: "#" },
-        { label: t("header.searchName"), href: "#" },
-        { label: t("header.bookAppointment"), href: "#" },
-      ],
+      href: "/doctor",
+      hasSubMenu: false,
     },
     {
       label: t("header.patientCare"),
@@ -73,9 +68,9 @@ const Header = () => {
         { label: t("header.orthopedics"), href: "#" },
       ],
     },
-    { label: t("header.doctor"), href: "/doctor", hasSubMenu: false },
-    { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
-    { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
+    { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
+    { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
+    { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
 
   return (
@@ -205,7 +200,7 @@ const Header = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
                 <Link
-                  href="/profile"
+                  href="https://dashboard-mukti.netlify.app/"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
                   <Icon icon="ic:outline-dashboard" width="24" height="24" /> Dashboard

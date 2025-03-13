@@ -11,14 +11,23 @@ const apiClient = axios.create({
   cache: "no-store"
 });
 
-// ✅ Fetch all doctors
-export const fetchDoctors = async () => {
+// ✅ Fetch all doctors with language
+export const fetchDoctors = async (language = 'en') => {
   try {
-    const response = await apiClient.get("/api/doctor");
+    console.log(`Fetching doctors for language: ${language}`);
+
+    const response = await apiClient.get(`/api/doctor?lang=${language}`);
     
-    console.log("Raw API Response:", response.data);
+    console.log("Raw API Response:", response.data); // ✅ Log API response to check data format
 
     const doctors = Array.isArray(response.data) ? response.data : response.data?.doctors || [];
+
+    console.log("Processed Doctors Data:", doctors); // ✅ Log processed doctors array
+
+    // Debug individual doctor translations
+    doctors.forEach((doctor, index) => {
+      console.log(`Doctor #${index + 1} (${doctor.id}) translations:`, doctor.translations);
+    });
 
     return doctors;
   } catch (error) {
@@ -26,6 +35,7 @@ export const fetchDoctors = async () => {
     return [];
   }
 };
+
 
 
 // ✅ Fetch a specific doctor by slug

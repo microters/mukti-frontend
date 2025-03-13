@@ -8,13 +8,12 @@ import shape from "@/assets/images/features-shape3.png";
 import Link from "next/link";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
-const Category = ({ departments }) => {
-  console.log(departments)
+const Category = ({ departments, locale }) => {
   const { t, i18n } = useTranslation();
 
-  const currentLanguage = i18n.language || "en";
+  const currentLanguage = locale || i18n.language || "en"; // Use the passed locale or fallback to i18n language
 
-  if (!departments.length) {
+  if (!departments || departments.length === 0) {
     return <div className="min-h-[200px] bg-gray-100 animate-pulse"></div>;
   }
 
@@ -28,8 +27,13 @@ const Category = ({ departments }) => {
           {/* Mapping over departments */}
           {departments.map((department) => {
             const departmentIcon = department.icon
-            ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${department.icon}`
-            : "/default-profile-photo.png";
+              ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${department.icon}`
+              : "/default-profile-photo.png";
+
+            // Get department name and description based on the current language
+            const departmentName = department.translations[currentLanguage]?.name || department.translations.en.name;
+            const departmentDescription = department.translations[currentLanguage]?.description || department.translations.en.description;
+
             return (
               <div key={department.id} className="bg-white group text-center py-8 px-6 rounded-lg overflow-hidden relative">
                 <Image
@@ -40,7 +44,7 @@ const Category = ({ departments }) => {
                 <div className="flex items-center justify-center size-20 mx-auto mb-3">
                   <Image
                     src={departmentIcon}
-                    alt={department.translations[currentLanguage]?.name || "Department"}
+                    alt={departmentName || "Department"}
                     width={80}
                     height={80}
                     className="object-cover"
@@ -49,7 +53,7 @@ const Category = ({ departments }) => {
                 </div>
                 {/* Department Name */}
                 <h3 className="text-xl text-M-heading-color font-bold font-jost">
-                  {department.translations[currentLanguage]?.name || "Department"}
+                  {departmentName}
                 </h3>
   
                 <Link
