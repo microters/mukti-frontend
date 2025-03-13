@@ -15,7 +15,7 @@ export const fetchDoctors = async () => {
   try {
     const response = await apiClient.get("/api/doctor");
     
-    console.log("Raw API Response:", response.data);
+    // console.log("Raw API Response:", response.data);
 
     const doctors = Array.isArray(response.data) ? response.data : response.data?.doctors || [];
 
@@ -36,7 +36,7 @@ export const fetchDoctorBySlug = async (slug) => {
     }
     const response = await apiClient.get(`/api/doctor/slug/${slug}`);
 
-    console.log("✅ Doctor Data:", response.data);
+    // console.log("✅ Doctor Data:", response.data);
 
     return response.data || null;
   } catch (error) {

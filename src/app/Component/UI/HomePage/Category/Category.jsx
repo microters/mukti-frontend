@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 
 const Category = ({ departments }) => {
-  console.log(departments);
+  // console.log(departments);
   
   const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);

@@ -23,7 +23,7 @@ export default async function HomePage() {
   ]);
 
   const { doctors, departments: doctorDepartments } = doctorsData;
-  console.log(doctors);
+  // console.log(doctors);
 
   return (
     <div>
