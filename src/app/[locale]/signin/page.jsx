@@ -585,7 +585,7 @@ const handleLogin = async (e) => {
       toast.success("Login successful!");
 
       // URL এর মাধ্যমে token পাঠানো
-      window.location.href = `https://mukti-frontend.vercel.app?token=${response.token}`;
+      window.location.href = `https://dashboard-mukti.netlify.app?token=${response.token}`;
     } else {
       toast.error("Login failed. No token received.");
     }
