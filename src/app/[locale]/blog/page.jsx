@@ -182,7 +182,7 @@ const Blog = () => {
               </li>
 
               {/* Page Numbers */}
-              {[1, 2, 3, 4, 5].map((index) => (
+              {[1, 2, 3].map((index) => (
                 <li
                   key={index}
                   className="size-11 inline-flex items-center justify-center cursor-pointer rounded-full font-jost font-bold hover:bg-M-primary-color hover:text-white transition-all duration-300 text-M-primary-color bg-M-primary-color/10 shrink-0"
