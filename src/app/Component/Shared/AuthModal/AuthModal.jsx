@@ -1,15 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "@/assets/images/logo-black.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 
-const AuthModal = () => {
-  const [activeTab, setActiveTab] = useState("signIn"); // Track the active tab
-  const [showModal, setShowModal] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState("+880 ");
+const AuthModal = ({ showModal, setShowModal }) => {
+  const [activeTab, setActiveTab] = useState("signIn");
+  // const [showModal, setShowModal] = useState(true);
   const [isValid, setIsValid] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState("+880 ");
+  const [fullName, setFullName] = useState("");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab); // Set active tab
@@ -18,6 +19,19 @@ const AuthModal = () => {
   const handleCloseModal = () => {
     setShowModal(false); // Close the modal
   };
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      document.body.style.overflow = "auto"; // Reset on unmount
+    };
+  }, [showModal]); // Run when `showModal` changes
 
   if (!showModal) {
     return null; // If modal is closed, don't render the component
@@ -106,6 +120,8 @@ const AuthModal = () => {
                       id="fName"
                       required
                       placeholder="Your Name"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
                       className="border border-M-text-color outline-none focus:ring-1 focus:ring-M-primary-color/80 focus:border-M-primary-color transition-all duration-300 block w-full px-3 py-2 rounded-md"
                     />
                   </div>

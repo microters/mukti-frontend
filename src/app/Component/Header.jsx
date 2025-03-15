@@ -20,6 +20,7 @@ const Header = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Manage modal state here
 
   useEffect(() => {
     setIsMounted(true);
@@ -28,7 +29,8 @@ const Header = () => {
       try {
         const deptData = await fetchDepartments(i18n.language); // Fetch department data with API key
         const formattedDepartments = deptData.map((dept) => ({
-          label: dept.translations[i18n.language]?.name || dept.translations.en.name,
+          label:
+            dept.translations[i18n.language]?.name || dept.translations.en.name,
           href: `/department/${dept.id}`,
         }));
         setDepartments(formattedDepartments);
@@ -173,6 +175,7 @@ const Header = () => {
 
           <button
             // href="/signin"
+            onClick={() => setShowModal(true)}
             className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
             <Icon icon="uiw:login" width="15" />
@@ -241,12 +244,22 @@ const Header = () => {
             width="30"
           />
         </button>
-        <Link
-          href={"#"}
-          className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
-        >
-          Appointment <Icon icon="basil:arrow-right-solid" width="24" />
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href={"#"}
+            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            Appointment <Icon icon="basil:arrow-right-solid" width="24" />
+          </Link>
+
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            <Icon icon="uiw:login" width="15" />
+            <span>{t("header.signIn")}</span>
+          </button>
+        </div>
 
         <nav
           className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
@@ -294,7 +307,10 @@ const Header = () => {
       </div>
 
       {/* Authentication modal */}
-      <AuthModal />
+      {/* <AuthModal /> */}
+      {showModal && (
+        <AuthModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </div>
   );
 };
