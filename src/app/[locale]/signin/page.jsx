@@ -581,11 +581,15 @@ const handleLogin = async (e) => {
   try {
     const response = await loginUser({ mobile, otp });
     if (response.token) {
-      localStorage.setItem("authToken", response.token); // Token save localStorage-এ
+      localStorage.setItem("authToken", response.token);
       toast.success("Login successful!");
 
-      // URL এর মাধ্যমে token পাঠানো
-      window.location.href = `https://dashboard-mukti.netlify.app?token=${response.token}`;
+      // environment অনুযায়ী URL নির্ধারণ
+      const redirectUrl = window.location.hostname === "localhost" 
+        ? "http://localhost:3001" 
+        : "https://dashboard-mukti.netlify.app";
+
+      window.location.href = `${redirectUrl}?token=${response.token}`;
     } else {
       toast.error("Login failed. No token received.");
     }
