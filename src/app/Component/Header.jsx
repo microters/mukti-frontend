@@ -10,19 +10,35 @@ import Logo from "@/assets/images/logo-white.png";
 import LanguageChanger from "./LanguageChanger";
 import { useAuth } from "../[locale]/utils/AuthContext";
 import AuthModal from "./Shared/AuthModal/AuthModal";
+import { fetchDepartments } from "../api/department";
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
+  const [departments, setDepartments] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    const loadDepartments = async () => {
+      try {
+        const deptData = await fetchDepartments(i18n.language); // Fetch department data with API key
+        const formattedDepartments = deptData.map((dept) => ({
+          label: dept.translations[i18n.language]?.name || dept.translations.en.name,
+          href: `/department/${dept.id}`,
+        }));
+        setDepartments(formattedDepartments);
+      } catch (error) {
+        console.error("❌ Failed to load departments:", error);
+      }
+    };
+
+    loadDepartments();
+  }, [i18n.language]); // Refetch when language changes
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
@@ -35,19 +51,15 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    logout(); // Call logout function from context
-    setDropdownOpen(false); // Close the dropdown after logout
+    logout();
+    setDropdownOpen(false);
   };
 
   if (!isMounted) return null;
 
   const menuItems = [
     { label: t("header.home"), href: "/", hasSubMenu: false },
-    {
-      label: t("header.findDoctor"),
-      href: "/doctor",
-      hasSubMenu: false,
-    },
+    { label: t("header.findDoctor"), href: "/doctor", hasSubMenu: false },
     {
       label: t("header.patientCare"),
       href: "#",
@@ -62,11 +74,7 @@ const Header = () => {
       label: t("header.department"),
       href: "#",
       hasSubMenu: true,
-      subMenus: [
-        { label: t("header.cardiology"), href: "#" },
-        { label: t("header.neurology"), href: "#" },
-        { label: t("header.orthopedics"), href: "#" },
-      ],
+      subMenus: departments, // Dynamic department list
     },
     { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
     { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },

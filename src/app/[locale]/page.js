@@ -19,16 +19,6 @@ export default async function HomePage() {
   const doctorDepartments = await fetchDepartments();  // Fetch the departments list
   const doctorReviews = await fetchReviews();  // Fetch reviews for doctors
 
-  // Create an array of unique departments from the doctor data
-  // const departments = [
-  //   ...new Set(
-  //     doctors.map(
-  //       (doctor) =>
-  //         doctor.translations?.en?.department || doctor.translations?.[i18n.language]?.department
-  //     )
-  //   ),
-  // ];
-
   return (
     <div>
       <Hero />

@@ -37,7 +37,8 @@
       "bookAppointment": "Book An Appointment"
     },
     "appointment":{
-         "bookAppointment": "Book Appointment"
+         "bookAppointment": "Book Appointment",
+         "appointmentNow": "Appointment Now"
       }
   }
   

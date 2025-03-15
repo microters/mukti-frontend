@@ -37,6 +37,7 @@
         "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন"
       },
       "appointment":{
-         "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন"
+         "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন",
+         "appointmentNow": "অ্যাপয়েন্টমেন্ট এখনই"
       }
   }

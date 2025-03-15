@@ -236,7 +236,7 @@ const Appointment = () => {
               </div>
 
               <FormButton
-                buttonText={t("appointmentNow")}
+                buttonText={t("appointment.appointmentNow")}
                 buttonColor="bg-M-heading-color"
                 textColor="text-white"
                 borderColor="border-M-heading-color"
