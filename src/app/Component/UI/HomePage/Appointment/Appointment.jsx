@@ -144,7 +144,7 @@ const Appointment = () => {
         <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
           <div className="w-full relative z-10 bg-white py-8 px-4 md:p-8 rounded-lg md:rounded-[40px] shadow-lg">
             <h2 className="text-2xl font-semibold text-[#24285B] mb-6 text-center">
-              {t("bookAppointment")}
+              {t("appointment.bookAppointment")}
             </h2>
 
             <form className="space-y-5" onSubmit={handleSubmit}>

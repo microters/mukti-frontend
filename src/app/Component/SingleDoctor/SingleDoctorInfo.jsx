@@ -329,7 +329,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                       : "max-h-0 py-0"
                   }`}
                 >
-                  {doctorData.awards.map((award, index) => (
+                  {doctorData.awards?.map((award, index) => (
                     <div key={index} className="flex gap-5">
                       <Image
                         src={badge}

@@ -35,6 +35,9 @@
       "noNameAvailable": "No Name Available",
       "noQualification": "N/A",
       "bookAppointment": "Book An Appointment"
-    }
+    },
+    "appointment":{
+         "bookAppointment": "Book Appointment"
+      }
   }
   

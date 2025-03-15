@@ -9,10 +9,13 @@ import Link from "next/link";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
 const Category = ({ departments, locale }) => {
+  console.log("Departments passed to Category:", departments); // Debug the departments prop
+  console.log("Current locale in Category:", locale); // 
   const { t, i18n } = useTranslation();
 
   const currentLanguage = locale || i18n.language || "en"; // Use the passed locale or fallback to i18n language
 
+  // If departments are empty, return a loading state or placeholder
   if (!departments || departments.length === 0) {
     return <div className="min-h-[200px] bg-gray-100 animate-pulse"></div>;
   }
@@ -26,6 +29,7 @@ const Category = ({ departments, locale }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mt-10 mb-10">
           {/* Mapping over departments */}
           {departments.map((department) => {
+            // Set department icon, using fallback image if not available
             const departmentIcon = department.icon
               ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${department.icon}`
               : "/default-profile-photo.png";
@@ -67,7 +71,7 @@ const Category = ({ departments, locale }) => {
           })}
         </div>
 
-        {/* Button */}
+        {/* Button for all services */}
         <Button
           linkHref={`/${currentLanguage === 'bn' ? 'bn/' : ''}services`}
           buttonText={t('category.allServices')}
