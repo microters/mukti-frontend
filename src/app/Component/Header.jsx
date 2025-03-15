@@ -9,19 +9,38 @@ import callIcon from "@/assets/images/phone2.png";
 import Logo from "@/assets/images/logo-white.png";
 import LanguageChanger from "./LanguageChanger";
 import { useAuth } from "../[locale]/utils/AuthContext";
+import AuthModal from "./Shared/AuthModal/AuthModal";
+import { fetchDepartments } from "../api/department";
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
+  const [departments, setDepartments] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Manage modal state here
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+
+    const loadDepartments = async () => {
+      try {
+        const deptData = await fetchDepartments(i18n.language); // Fetch department data with API key
+        const formattedDepartments = deptData.map((dept) => ({
+          label:
+            dept.translations[i18n.language]?.name || dept.translations.en.name,
+          href: `/department/${dept.id}`,
+        }));
+        setDepartments(formattedDepartments);
+      } catch (error) {
+        console.error("❌ Failed to load departments:", error);
+      }
+    };
+
+    loadDepartments();
+  }, [i18n.language]); // Refetch when language changes
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
@@ -33,26 +52,16 @@ const Header = () => {
     setOpenMenu(!openMenu);
   };
 
-
   const handleLogout = () => {
-    logout(); // Call logout function from context
-    setDropdownOpen(false); // Close the dropdown after logout
+    logout();
+    setDropdownOpen(false);
   };
 
   if (!isMounted) return null;
 
   const menuItems = [
     { label: t("header.home"), href: "/", hasSubMenu: false },
-    {
-      label: t("header.findDoctor"),
-      href: "#",
-      hasSubMenu: true,
-      subMenus: [
-        { label: t("header.searchSpecialty"), href: "#" },
-        { label: t("header.searchName"), href: "#" },
-        { label: t("header.bookAppointment"), href: "#" },
-      ],
-    },
+    { label: t("header.findDoctor"), href: "/doctor", hasSubMenu: false },
     {
       label: t("header.patientCare"),
       href: "#",
@@ -67,15 +76,11 @@ const Header = () => {
       label: t("header.department"),
       href: "#",
       hasSubMenu: true,
-      subMenus: [
-        { label: t("header.cardiology"), href: "#" },
-        { label: t("header.neurology"), href: "#" },
-        { label: t("header.orthopedics"), href: "#" },
-      ],
+      subMenus: departments, // Dynamic department list
     },
-    { label: t("header.doctor"), href: "/doctor", hasSubMenu: false },
-    { label: t("header.aboutUs"), href: "#", hasSubMenu: false },
-    { label: t("header.newsMedia"), href: "#", hasSubMenu: false },
+    { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
+    { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
+    { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
 
   return (
@@ -92,15 +97,6 @@ const Header = () => {
           </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
-              <li>
-                <Link
-                  href="/signin"
-                  className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
-                >
-                  <Icon icon="uiw:login" width="15" />
-                  <span>{t("header.signIn")}</span>
-                </Link>
-              </li>
               <li className="hidden lg:block">
                 <Link
                   href={"tel:+880 1601 666-893"}
@@ -118,7 +114,7 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <LanguageChanger/>
+                  <LanguageChanger />
                 </div>
               </li>
             </ul>
@@ -169,13 +165,22 @@ const Header = () => {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="flex gap-4 items-center">
           <Link
             href={"#"}
-            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color "
+            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
+
+          <button
+            // href="/signin"
+            onClick={() => setShowModal(true)}
+            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            <Icon icon="uiw:login" width="15" />
+            <span>{t("header.signIn")}</span>
+          </button>
         </div>
 
         {/* Profile Section - Will hide when user logs out */}
@@ -205,16 +210,18 @@ const Header = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
                 <Link
-                  href="/profile"
+                  href="https://dashboard-mukti.netlify.app/"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
-                  <Icon icon="ic:outline-dashboard" width="24" height="24" /> Dashboard
+                  <Icon icon="ic:outline-dashboard" width="24" height="24" />{" "}
+                  Dashboard
                 </Link>
                 <Link
                   href="/settings"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
-                  <Icon icon="mingcute:user-4-fill" width="24" height="24" /> Profile
+                  <Icon icon="mingcute:user-4-fill" width="24" height="24" />{" "}
+                  Profile
                 </Link>
                 <button
                   onClick={handleLogout} // Use logout function from the context
@@ -237,19 +244,32 @@ const Header = () => {
             width="30"
           />
         </button>
-        <Link
-          href={"#"}
-          className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
-        >
-          Appointment <Icon icon="basil:arrow-right-solid" width="24" />
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href={"#"}
+            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            Appointment <Icon icon="basil:arrow-right-solid" width="24" />
+          </Link>
+
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            <Icon icon="uiw:login" width="15" />
+            <span>{t("header.signIn")}</span>
+          </button>
+        </div>
 
         <nav
           className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
         >
           <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
             {menuItems.map((item, index) => (
-              <li key={index} className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}>
+              <li
+                key={index}
+                className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
+              >
                 <Link
                   href={item.href || "#"} // Ensure href is never undefined
                   onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
@@ -285,9 +305,14 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+
+      {/* Authentication modal */}
+      {/* <AuthModal /> */}
+      {showModal && (
+        <AuthModal showModal={showModal} setShowModal={setShowModal} />
+      )}
     </div>
   );
 };
 
 export default Header;
-

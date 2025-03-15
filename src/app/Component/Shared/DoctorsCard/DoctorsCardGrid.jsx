@@ -11,6 +11,7 @@ const DoctorsCardGrid = ({ doctor }) => {
   console.log("doctor card", doctor)
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
+  console.log(currentLanguage)
 
   if (!doctor || !doctor.translations) return null;
   const doctorData = doctor.translations[currentLanguage] || {};

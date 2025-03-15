@@ -1,28 +1,27 @@
 {
     "header": {
-      "home": "HOME",
-      "doctor": "Doctor",
-      "findDoctor": "FIND A DOCTOR",
-      "searchSpecialty": "Search by Specialty",
-      "searchName": "Search by Name",
-      "bookAppointment": "Book an Appointment",
-      "patientCare": "PATIENT CARE",
-      "healthPackages": "Health Packages",
-      "medicalServices": "Medical Services",
-      "emergencyServices": "Emergency Services",
-      "department": "DEPARTMENT",
-      "cardiology": "Cardiology",
-      "neurology": "Neurology",
-      "orthopedics": "Orthopedics",
-      "aboutUs": "About Us",
-      "newsMedia": "News & Media",
-      "signIn": "Sign In",
-      "appointment": "Appointment",
-      "callNow": "Call Now",
-      "language": "Language",
-      "english": "English",
-      "bangla": "Bangla"
-    },
+    "home": "HOME",
+    "findDoctor": "FIND A DOCTOR",
+    "bookAppointment": "Book an Appointment",
+    "patientCare": "PATIENT CARE",
+    "healthPackages": "Health Packages",
+    "medicalServices": "Medical Services",
+    "emergencyServices": "Emergency Services",
+    "department": "DEPARTMENT",
+    "cardiology": "Cardiology",
+    "neurology": "Neurology",
+    "orthopedics": "Orthopedics",
+    "treatment": "Treatments",
+    "diagnostic": "Diagnostic",
+    "aboutUs": "About Us",
+    "newsMedia": "News & Media",
+    "signIn": "Sign In",
+    "appointment": "Appointment",
+    "callNow": "Call Now",
+    "language": "Language",
+    "english": "English",
+    "bangla": "Bangla"
+  },
     "category": {
       "title": "Browse by Specialist",
       "subtitle": "Category",
@@ -36,6 +35,10 @@
       "noNameAvailable": "No Name Available",
       "noQualification": "N/A",
       "bookAppointment": "Book An Appointment"
-    }
+    },
+    "appointment":{
+         "bookAppointment": "Book Appointment",
+         "appointmentNow": "Appointment Now"
+      }
   }
   
