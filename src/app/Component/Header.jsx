@@ -9,6 +9,7 @@ import callIcon from "@/assets/images/phone2.png";
 import Logo from "@/assets/images/logo-white.png";
 import LanguageChanger from "./LanguageChanger";
 import { useAuth } from "../[locale]/utils/AuthContext";
+import AuthModal from "./Shared/AuthModal/AuthModal";
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -16,7 +17,7 @@ const Header = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
-  
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,6 @@ const Header = () => {
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-
 
   const handleLogout = () => {
     logout(); // Call logout function from context
@@ -87,15 +87,6 @@ const Header = () => {
           </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
-              <li>
-                <Link
-                  href="/signin"
-                  className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:bg-M-primary-color transition-all duration-300"
-                >
-                  <Icon icon="uiw:login" width="15" />
-                  <span>{t("header.signIn")}</span>
-                </Link>
-              </li>
               <li className="hidden lg:block">
                 <Link
                   href={"tel:+880 1601 666-893"}
@@ -113,7 +104,7 @@ const Header = () => {
                     width="20"
                     className="text-white"
                   />
-                  <LanguageChanger/>
+                  <LanguageChanger />
                 </div>
               </li>
             </ul>
@@ -164,13 +155,21 @@ const Header = () => {
             ))}
           </ul>
         </div>
-        <div>
+        <div className="flex gap-4 items-center">
           <Link
             href={"#"}
-            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color "
+            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
+
+          <button
+            // href="/signin"
+            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
+          >
+            <Icon icon="uiw:login" width="15" />
+            <span>{t("header.signIn")}</span>
+          </button>
         </div>
 
         {/* Profile Section - Will hide when user logs out */}
@@ -203,13 +202,15 @@ const Header = () => {
                   href="https://dashboard-mukti.netlify.app/"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
-                  <Icon icon="ic:outline-dashboard" width="24" height="24" /> Dashboard
+                  <Icon icon="ic:outline-dashboard" width="24" height="24" />{" "}
+                  Dashboard
                 </Link>
                 <Link
                   href="/settings"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
                 >
-                  <Icon icon="mingcute:user-4-fill" width="24" height="24" /> Profile
+                  <Icon icon="mingcute:user-4-fill" width="24" height="24" />{" "}
+                  Profile
                 </Link>
                 <button
                   onClick={handleLogout} // Use logout function from the context
@@ -244,7 +245,10 @@ const Header = () => {
         >
           <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
             {menuItems.map((item, index) => (
-              <li key={index} className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}>
+              <li
+                key={index}
+                className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
+              >
                 <Link
                   href={item.href || "#"} // Ensure href is never undefined
                   onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
@@ -280,9 +284,11 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+
+      {/* Authentication modal */}
+      <AuthModal />
     </div>
   );
 };
 
 export default Header;
-
