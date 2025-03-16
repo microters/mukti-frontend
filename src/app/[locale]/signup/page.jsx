@@ -1,346 +1,327 @@
 "use client";
-import { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Icon } from "@iconify/react";
+import React, { useEffect, useState } from "react";
+import logo from "@/assets/images/logo-black.png";
 import Image from "next/image";
-import logo from "../../../assets/images/logo-black.png";
 import Link from "next/link";
-
-import bgImage from "@/assets/images/authBG.png";
+import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerUser, sendOtp, loginUser } from "@/app/[locale]/utils/api";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
 
 const Register = () => {
-  const [showOtp, setShowOtp] = useState(false);
-  const [otp, setOtp] = useState(""); // Store OTP entered by the user
+  const { login } = useAuth();
+  const [activeTab, setActiveTab] = useState("signIn");
+  const [isValid, setIsValid] = useState(true);
+  const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // For password visibility toggle
-  const [agreeTerms, setAgreeTerms] = useState(false); // For Terms & Conditions checkbox
-  const [error, setError] = useState(""); // Store error messages
-  const router = useRouter();
 
-  // Form Data
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
+    mobile: "",
+    otp: "",
   });
 
-  // Validation Errors
-  const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    phoneNumber: false,
-    password: false,
-    otp: false,
-  });
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isFormValid =
-    Object.values(errors).every((err) => err === false) && agreeTerms;
-
-  // Handle Input Change
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
-
-    // Validation
-    setErrors({
-      ...errors,
-      [id]: id === "email" ? !emailRegex.test(value) : value.trim() === "",
-    });
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    setOtpSent(false); // Reset OTP state when switching tabs
   };
 
-  // 🔹 **Register User and Send OTP**
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  // Handle input change for all form fields
+  const handleChange = (e) => {
+    let { name, value } = e.target;
 
-    try {
-      const response = await axios.post(
-        "http://api.muktihospital.com/api/register",
-        formData
-      );
-
-      if (response.status === 200) {
-        setShowOtp(true);
-        localStorage.setItem("otp", response.data.otp); // Store OTP temporarily for debugging
-        localStorage.setItem("email", formData.email);
+    if (name === "mobile") {
+      // Ensure mobile number starts with "88"
+      if (!value.startsWith("88")) {
+        value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
       }
+
+      // Allow only numeric values
+      value = value.replace(/\D/g, ""); // Remove any non-numeric characters
+
+      // Limit length to 13 digits (format: 8801XXXXXXXX)
+      if (value.length > 13) {
+        value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
+      }
+
+      // Validation: Check if the phone number is complete (13 digits including 88 prefix)
+      const isValidPhoneNumber = value.length === 13;
+      setIsValid(isValidPhoneNumber);
+    }
+
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle Send OTP
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+
+    if (formData.mobile.length < 10) {
+      toast.error("Enter a valid mobile number");
+      return;
+    }
+
+    // Mobile number already has 88 prefix in formData
+    const mobileNumber = formData.mobile;
+
+    setLoading(true);
+    try {
+      await sendOtp(mobileNumber);
+      setOtpSent(true);
+      toast.success("OTP sent successfully!");
     } catch (error) {
-      setError(error.response?.data?.message || "Registration error.");
+      toast.error("Failed to send OTP. Try again.");
     }
     setLoading(false);
   };
 
-  // 🔹 **Verify OTP and Complete Registration**
-  const handleOtpSubmit = async (e) => {
+  // Handle Login
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
 
-    const storedEmail = localStorage.getItem("email");
-    if (!storedEmail || !otp) {
-      setError("Missing OTP or Email. Please register again.");
+    if (formData.otp.length !== 6) {
+      toast.error("Enter a valid 6-digit OTP");
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await axios.post(
-        "http://api.muktihospital.com/api/verify-otp",
-        {
-          email: storedEmail,
-          otp,
-        }
-      );
+      // Get token from login API
+      const response = await loginUser({
+        mobile: formData.mobile,
+        otp: formData.otp,
+      });
 
-      if (response.status === 200) {
-        alert("OTP verified successfully! Redirecting...");
-        localStorage.removeItem("otp");
-        localStorage.removeItem("email");
-        router.push("/signin");
+      // Check if response contains token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Logged in successfully!");
+        // Close modal
+        setShowModal(false);
+        window.location.href = "/";
+      } else {
+        throw new Error("No authentication token received");
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Invalid OTP. Try again.");
+      toast.error(error.response?.data?.error || "Login failed");
+      console.error("Login error:", error);
+    }
+    setLoading(false);
+  };
+
+  // Handle Registration
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (formData.otp.length !== 6) {
+      toast.error("Enter a valid 6-digit OTP");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Mobile number already has 88 prefix in formData
+      const mobileNumber = formData.mobile;
+
+      // Register user and get response with token
+      const response = await registerUser({
+        name: formData.name,
+        mobile: mobileNumber,
+        otp: formData.otp,
+      });
+
+      // Check if registration returns a token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Registered and logged in successfully!");
+        window.location.href = "/";
+        // Close modal
+        setShowModal(false);
+      } else {
+        // If registration doesn't return a token, switch to sign in tab
+        toast.success("Registered successfully! Please sign in now.");
+        setOtpSent(false);
+        setActiveTab("signIn");
+        // Reset form data
+        setFormData({
+          name: "",
+          mobile: "",
+          otp: "",
+        });
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Registration failed");
+      console.error("Registration error:", error);
     }
     setLoading(false);
   };
 
   return (
-    <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-      <div className="hidden md:flex justify-center items-center p-8">
-        {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
-        <Image className="mx-auto hidden md:block" src={bgImage} alt="Logo" />
-      </div>
-      <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
-        <div className="text-center space-y-3">
-          <Link href="/"><Image className="mx-auto mb-10" src={logo} alt="Logo" /></Link>
-          <h1 className="text-4xl text-black font-jost font-bold">
-            {showOtp ? "Verify OTP" : "Sign Up"}
-          </h1>
-          <p className="text-base text-slate-400 font-poppins">
-            {showOtp
-              ? "Enter the OTP sent to your email."
-              : "Create an account to get started."}
-          </p>
-          {error && <p className="text-red-500">{error}</p>}
+    <div className="block w-full py-10 md:py-24 px-2">
+      <div className="max-w-96 mx-auto w-full p-6 md:p-8 bg-white rounded-lg overflow-y-auto shadow border border-M-primary-color/10">
+        <div className="relative">
+          <Link href="/">
+            <Image src={logo} alt="logo" width={200} className="mx-auto" />
+          </Link>
         </div>
 
-        {showOtp ? (
-          // ✅ OTP Form
-          <form className="mt-8 space-y-4" onSubmit={handleOtpSubmit}>
+        {/* Tab Navigation - Hide when OTP verification is active */}
+        {!otpSent && (
+          <ul className="grid grid-cols-2 border-b border-gray-200 mt-4 font-jost font-medium text-lg text-M-text-color">
+            <li>
+              <Link
+                href={"/signin"}
+                className=" w-full block cursor-pointer py-2 px-4 text-center"
+              >
+                Sign In
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={"/register"}
+                className=" w-full block cursor-pointer py-2 px-4 text-center border-b-4 border-M-primary-color text-M-primary-color font-medium"
+              >
+                Sign Up
+              </Link>
+            </li>
+          </ul>
+        )}
+
+        {/* Tab Content */}
+        <div className="mt-4">
+          {/* OTP Verification Screen (Shows for both sign in and sign up) */}
+          {otpSent ? (
             <div>
-              <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
-                OTP
-              </label>
-              <input
-                type="text"
-                id="otp"
-                placeholder="Enter Your OTP"
-                className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                  errors.otp ? "border-red-500" : "border-slate-500"
-                }`}
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 rounded-md bg-M-primary-color text-white hover:bg-M-heading-color transition-all duration-300"
-            >
-              {loading ? "Verifying..." : "Verify OTP"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowOtp(false)}
-              className="w-full py-2 text-base text-slate-600 font-jost font-normal hover:text-slate-950 transition-all duration-300"
-            >
-              Back to Sign Up
-            </button>
-          </form>
-        ) : (
-          // ✅ Registration Form
-          <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-            {/* Name Input */}
-            <div>
-              <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
-                Name
-              </label>
-              <div className="relative">
+              <h2 className="text-2xl text-center font-jost font-bold mb-4">
+                Verify OTP
+              </h2>
+              <p className="text-center text-slate-400 mb-4">
+                Enter the OTP sent to your{" "}
+                {activeTab === "signUp" ? "email" : "phone"}.
+              </p>
+              <form
+                onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
+                className="space-y-4"
+              >
                 <input
                   type="text"
-                  id="name"
-                  placeholder="Enter Your Name"
-                  className={`py-2 h-[48px] border w-full rounded-md focus:outline-none px-4 transition-all duration-300 ${
-                    errors.name ? "border-red-500" : "border-slate-500"
-                  }`}
-                  value={formData.name}
+                  name="otp"
+                  value={formData.otp}
                   onChange={handleChange}
+                  placeholder="Enter OTP"
+                  className="w-full p-3 border rounded-lg focus:ring focus:ring-M-primary-color/80 focus:border-M-primary-color"
+                  required
                 />
-                {errors.name && (
-                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
-                    <Icon icon="proicons:alert-circle" width="20" />
-                  </div>
-                )}
-              </div>
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-2">Name is required</p>
-              )}
+                <button
+                  type="submit"
+                  className="w-full bg-M-primary-color text-white p-3 rounded-md hover:bg-M-heading-color transition-all duration-300"
+                  disabled={loading}
+                >
+                  {loading
+                    ? "Verifying..."
+                    : activeTab === "signUp"
+                      ? "Verify & Register"
+                      : "Verify & Login"}
+                </button>
+              </form>
+              {/* Resend OTP */}
+              <p className="text-center mt-4 text-sm">
+                Didn't receive OTP?{" "}
+                <button
+                  onClick={handleSendOtp}
+                  className="text-M-primary-color hover:underline"
+                >
+                  Resend OTP
+                </button>
+              </p>
             </div>
-
-            {/* Email Input */}
+          ) : (
+            // Sign Up Tab
             <div>
-              <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
-                Email
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter Your Email"
-                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                    errors.email ? "border-red-500" : "border-slate-500"
-                  }`}
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-                {errors.email && (
-                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
-                    <Icon icon="proicons:alert-circle" width="20" />
-                  </div>
-                )}
-              </div>
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-2">
-                  Enter a valid email address
-                </p>
-              )}
-            </div>
-
-            {/* Phone Input */}
-            <div>
-              <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
-                Phone
-              </label>
-              <div className="relative">
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  placeholder="Enter Your Phone Number"
-                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                    errors.phoneNumber ? "border-red-500" : "border-slate-500"
-                  }`}
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                />
-                {errors.phoneNumber && (
-                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
-                    <Icon icon="proicons:alert-circle" width="20" />
-                  </div>
-                )}
-              </div>
-              {errors.phoneNumber && (
-                <p className="text-red-500 text-sm mt-2">
-                  Phone number is required
-                </p>
-              )}
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="text-slate-800 mb-2 font-jost font-medium text-base block">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter Your Password"
-                  className={`px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none transition-all duration-300 ${
-                    errors.password ? "border-red-500" : "border-slate-500"
-                  }`}
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-                {errors.password ? (
-                  <div className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-red-500">
-                    <Icon icon="proicons:alert-circle" width="20" />
-                  </div>
-                ) : (
-                  <div
-                    className="flex text-xl absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
+              <form onSubmit={handleSendOtp} className="space-y-4">
+                {/* Name */}
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block font-jost text-base font-medium text-gray-700"
                   >
-                    <Icon
-                      icon={showPassword ? "mdi:eye" : "mdi:eye-off"}
-                      width="24"
+                    Full Name{" "}
+                    <span className="text-M-secondary-color text-lg">*</span>
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      required
+                      placeholder="Your Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="border border-M-text-color outline-none focus:ring-1 focus:ring-M-primary-color/80 focus:border-M-primary-color transition-all duration-300 block w-full px-3 py-2 rounded-md"
                     />
                   </div>
-                )}
-              </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-2">
-                  Password is required
-                </p>
-              )}
-            </div>
-
-            {/* Terms and Conditions Checkbox */}
-            <div className=" relative">
-              <input
-                type="checkbox"
-                id="agreement"
-                className="hidden peer"
-                checked={agreeTerms}
-                onChange={() => setAgreeTerms(!agreeTerms)}
-              />
-              <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
-                <Icon
-                  icon="mynaui:check"
-                  width="24"
-                  className="text-slate-100"
-                />
-              </span>
-              <label
-                htmlFor="agreement"
-                className="cursor-pointer font-jost font-normal text-base text-slate-400 relative z-10 pl-6"
-              >
-                You accept our{" "}
+                </div>
+                {/* Phone Number */}
+                <div>
+                  <label
+                    htmlFor="mobile"
+                    className="block text-base font-medium text-gray-700"
+                  >
+                    Phone Number{" "}
+                    <span className="text-M-secondary-color text-lg">*</span>
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center space-x-1">
+                      <Icon
+                        icon="twemoji:flag-bangladesh"
+                        width="18"
+                        height="18"
+                      />
+                      <span className="text-black font-medium">+</span>
+                    </div>
+                    <input
+                      type="tel"
+                      name="mobile"
+                      id="mobile"
+                      autoComplete="tel"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      required
+                      placeholder="8801XXXXXXXX"
+                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
+                      maxLength="13"
+                    />
+                  </div>
+                </div>
+                <Link href={'/signin'}
+                  className="text-base text-M-heading-color font-jost font-medium cursor-pointer inline-block"
+                >
+                  Back to Sign In
+                </Link>
+                <button
+                  type="submit"
+                  className="bg-M-primary-color text-base text-white font-jost font-medium w-full py-3 px-4 mt-5 rounded-md hover:bg-M-heading-color transition-all duration-300"
+                  disabled={loading}
+                >
+                  {loading ? "Sending..." : "SEND CODE"}
+                </button>
+              </form>
+              <p className="font-jost font-normal text-base text-M-text-color text-center mt-4">
+                By continuing, you agree to Mukti Hospital's{" "}
                 <Link href={"#"} className="text-M-heading-color">
-                  Terms and Conditions
+                  Conditions of Use
                 </Link>{" "}
                 and{" "}
                 <Link href={"#"} className="text-M-heading-color">
-                  Privacy Policy
+                  Privacy Policy.
                 </Link>
-              </label>
+              </p>
             </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={!isFormValid}
-              className={`w-full py-2 rounded-md transition-all duration-300 ${
-                isFormValid
-                  ? "bg-M-primary-color text-white hover:bg-M-heading-color"
-                  : "bg-M-primary-color/50 text-white cursor-not-allowed"
-              }`}
-            >
-              {loading ? "Processing..." : "Sign Up"}
-            </button>
-          </form>
-        )}
-
-        <p className="text-center font-jost font-normal text-base text-M-text-color mt-4 uppercase">
-          Already Registered?{" "}
-          <Link
-            href="signin"
-            className="text-M-heading-color font-medium hover:underline"
-          >
-            Sign In
-          </Link>
-        </p>
+          )}
+        </div>
       </div>
     </div>
   );
