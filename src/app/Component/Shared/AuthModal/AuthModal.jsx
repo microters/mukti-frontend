@@ -29,6 +29,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
     setShowModal(false);
   };
 
+  // Controlling body overflow when modal is open
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -52,7 +53,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
     if (name === "mobile") {
         // Ensure mobile number starts with "88"
         if (!value.startsWith("88")) {
-            value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
+            value = "88" + value.replace(/^88/,""); // If the user does not enter "88", automatically add it
         }
 
         // Allow only numeric values
@@ -275,7 +276,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                         width="18"
                         height="18"
                       />
-                      <span className="text-gray-500 font-medium">+</span>
+                      <span className="text-black font-medium">+</span>
                     </div>
                     <input
                       type="tel"
@@ -286,7 +287,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                       onChange={handleChange}
                       required
                       placeholder="8801XXXXXXXX"
-                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-16 rounded-md`}
+                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
                       maxLength="13"
                     />
                   </div>
@@ -336,7 +337,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                         width="18"
                         height="18"
                       />
-                      <span className="text-gray-500 font-medium">+</span>
+                      <span className="text-black font-medium">+</span>
                     </div>
                     <input
                       type="tel"
@@ -347,7 +348,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                       onChange={handleChange}
                       required
                       placeholder="8801XXXXXXXX"
-                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-16 rounded-md`}
+                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
                       maxLength="13"
                     />
                   </div>
