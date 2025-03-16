@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
@@ -11,10 +12,25 @@ import injectionIcon from "@/assets/images/injection.png";
 import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { fetchDepartments } from "@/app/api/department";
 
-const Hero = () => {
+const Hero = ({heroSection}) => {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
+  const { prefix, title, backgroundImage } = heroSection?.translations[currentLanguage] || {};
+  const heroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${backgroundImage.replace(/\\/g, '/')}`;
+  const [departments, setDepartments] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchDepartments(currentLanguage);
+      setDepartments(data);
+    };
+    fetchData();
+  }, [currentLanguage]);
+
   return (
-    <div className="bg-[url(../../public/assets/heroBG.png)] bg-cover bg-top">
+    <div className="bg-cover bg-top" style={{ backgroundImage: `url(${heroImage})` }}>
       <div className="pt-[60px] lg:pt-[180px] pb-20 md:pb-32 lg:pb-[300px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
         <Image
@@ -44,10 +60,10 @@ const Hero = () => {
         />
         <div className="container mx-auto text-center">
           <span className="font-jost font-medium leading-4 tracking-wider text-base text-white mb-4 block uppercase">
-            Welcome to Mukti Hospital
+            {prefix}
           </span>
           <h1 className="font-jost font-bold !leading-[1.4] text-3xl md:text-6xl text-white max-w-[724px] mx-auto tracking-[4px] ">
-            We Take Care Of Your Healthy Health.
+            {title}
           </h1>
           <form className="mt-8 bg-white/10 p-4 rounded-md">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-between items-center bg-white px-8 py-7 lg:py-3 rounded-md">
@@ -67,10 +83,11 @@ const Hero = () => {
                   className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
                   <option >Select a Department</option>
-                  <option value="cardiology" className="text-M-heading-color">Cardiology</option>
-                  <option value="neurology" className="text-M-heading-color">Neurology</option>
-                  <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
-                  <option value="pediatrics" className="text-M-heading-color">Pediatrics</option>
+                  {departments.map((department) => (
+                    <option key={department.id} value={department.id}>
+                      {department.translations[currentLanguage]?.name || department.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-center gap-2">

@@ -1,39 +1,26 @@
+'use client'
+import React from "react";
+import { useTranslation } from "react-i18next"; 
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import Image from "next/image";
-import React from "react";
 
 // Assets
-import Aicon1 from "@/assets/images/ap1.png";
-import Aicon2 from "@/assets/images/ap2.png";
-import Aicon3 from "@/assets/images/ap3.png";
 import shape from "@/assets/images/arrow.png";
 
-const features = [
-  {
-    id: 1,
-    icon: Aicon1,
-    title: "Search Best Online Professional",
-  },
-  {
-    id: 2,
-    icon: Aicon2,
-    title: "View Professional Profile",
-  },
-  {
-    id: 3,
-    icon: Aicon3,
-    title: "Get Instant Doctor Appointment",
-  },
-];
+const AppointmentProcess = ({ appointmentProcess }) => {
+  const { t, i18n } = useTranslation(); 
+  const currentLanguage = i18n.language || 'en';
 
-const AppointmentProcess = () => {
+  // Extract the translations for the current language
+  const features = appointmentProcess?.translations?.[currentLanguage] || [];
+
   return (
     <div className="py-24 bg-M-section-bg">
       <div className="container">
         <SectionHeading
-          heading="Appointment Process"
+          heading={t("appointmentProcess.title")} 
           align="center"
-          subtitle="How we works?"
+          subtitle={t("appointmentProcess.subtitle")}
         />
         <div className="relative">
           <Image
@@ -42,18 +29,19 @@ const AppointmentProcess = () => {
             className="absolute left-1/2 top-[15%] -translate-x-1/2 z-0 w-[60%] hidden md:block"
           />
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7 z-10 relative">
-            {features.map((feature) => (
-              <div key={feature.id} className="text-center group">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center group">
                 <div className="w-60 h-56 flex items-center justify-center bg-white mx-auto rounded-3xl mb-10">
                   <Image
-                    src={feature.icon}
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon}`}
                     width={150}
-                    alt={`icon${feature.id}`}
+                    height={150}
+                    alt={`icon${index}`}
                     className="group-hover:animate-shake"
                   />
                 </div>
                 <h3 className="font-bold text-lg sm:text-xl text-M-heading-color max-w-48 mx-auto">
-                  {feature.title}
+                  {feature.title}  {/* Translated title */}
                 </h3>
               </div>
             ))}
