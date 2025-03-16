@@ -20,7 +20,7 @@ const Header = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false); // Manage modal state here
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -31,8 +31,10 @@ const Header = () => {
         const formattedDepartments = deptData.map((dept) => ({
           label:
             dept.translations[i18n.language]?.name || dept.translations.en.name,
+          depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
           href: `/department/${dept.id}`,
         }));
+
         setDepartments(formattedDepartments);
       } catch (error) {
         console.error("❌ Failed to load departments:", error);
@@ -82,6 +84,7 @@ const Header = () => {
     { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
     { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
+  console.log("hello " + departments.length);
 
   return (
     <div>
@@ -123,20 +126,20 @@ const Header = () => {
       </div>
 
       {/* Large Device menu */}
-      <nav className="container mx-auto px-2 py-3 hidden lg:flex gap-4 justify-between">
+      <nav className="container mx-auto px-2 hidden lg:flex gap-4 justify-between relative">
         <div>
           <ul className="flex gap-6 xl:gap-10 h-full">
             {menuItems.map((item, index) => (
               <li
                 key={index}
-                className={`relative group before:w-[1px] before:h-1/3 before:bg-[#D2D6FF] before:-right-3 xl:before:-right-5 before:top-1/2 before:-translate-y-1/2 before:absolute last:before:hidden ${
+                className={`group ${item.subMenus?.length > 8 ? "" : "relative"}  ${
                   item.hasSubMenu ? "hasSubMenus" : ""
                 }`}
               >
                 <Link
                   href={item.href || "#"} // Ensure href is never undefined
                   prefetch={true}
-                  className="font-jost font-medium h-full text-M-heading-color text-xs lg:text-sm xl:text-base uppercase flex items-center hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
+                  className="font-jost font-medium h-full text-M-heading-color text-xs lg:text-sm xl:text-base uppercase flex items-center hover:text-M-primary-color active:text-M-primary-color transition-all duration-300 relative before:w-[1px] before:h-1/3 before:bg-[#D2D6FF] before:-right-3 xl:before:-right-5 before:top-1/2 before:-translate-y-1/2 before:absolute group-last:before:hidden py-7"
                 >
                   {item.label}
                   {item.hasSubMenu && (
@@ -148,23 +151,32 @@ const Header = () => {
                   )}
                 </Link>
                 {item.hasSubMenu && (
-                    <ul
-                    className={`w-full absolute top-full left-0 bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md hidden group-hover:block z-10 ${
-                      item.subMenus.length > 8 ? "max-w-[800px] grid grid-cols-4 gap-4" : "w-56"
+                  <ul
+                    className={`absolute top-full bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md hidden  z-10 ${
+                      item.subMenus.length > 8
+                        ? "w-[1320px] grid grid-cols-4 gap-x-4 group-hover:grid left-1/2 -translate-x-1/2 p-3"
+                        : "w-56 group-hover:block left-0"
                     }`}
                   >
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
                           href={subItem.href || "#"} // Ensure href is never undefined
-                          className="block py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color"
+                          className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
                         >
+                          {subItem.depIcon && (
+                            <Image
+                              src={subItem.depIcon}
+                              alt="huy"
+                              width={20}
+                              height={20}
+                            />
+                          )}{" "}
                           {subItem.label}
                         </Link>
                       </li>
                     ))}
                   </ul>
-                  
                 )}
               </li>
             ))}
@@ -350,9 +362,17 @@ const Header = () => {
                       <li key={subIndex}>
                         <Link
                           href={subItem.href || "#"} // Ensure href is never undefined
-                          className="block pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
+                          className="flex items-center gap-3 pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                         >
-                          {subItem.label}
+                          {subItem.depIcon && (
+                            <Image
+                              src={subItem.depIcon}
+                              alt="huy"
+                              width={20}
+                              height={20}
+                            />
+                          )}{" "}
+                          {subItem.label} {subItem.label}
                         </Link>
                       </li>
                     ))}

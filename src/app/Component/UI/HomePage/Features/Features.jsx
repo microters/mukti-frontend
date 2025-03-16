@@ -4,45 +4,45 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 
 // Import images
-import rkShape1 from "@/assets/images/features-shape4.png";
-import rkShape2 from "@/assets/images/features-shape3.png";
-import rkShape3 from "@/assets/images/features-shape2.png";
-import rkShape4 from "@/assets/images/features-shape1.png";
-import rkImg1 from "@/assets/images/medical-icon.png";
-import rkImg2 from "@/assets/images/meeting-table.png";
-import rkImg3 from "@/assets/images/user-icon.png";
-import rkImg4 from "@/assets/images/call-icon.png";
+import mhShape1 from "@/assets/images/features-shape4.png";
+import mhShape2 from "@/assets/images/features-shape3.png";
+import mhShape3 from "@/assets/images/features-shape2.png";
+import mhShape4 from "@/assets/images/features-shape1.png";
+import mhImg1 from "@/assets/images/medical-icon.png";
+import mhImg2 from "@/assets/images/meeting-table.png";
+import mhImg3 from "@/assets/images/user-icon.png";
+import mhImg4 from "@/assets/images/call-icon.png";
 
 const Features = () => {
   // Array of data for cards
   const cardData = [
     {
-      shapeImage: rkShape1,
-      mainImage: rkImg1,
+      shapeImage: mhShape1,
+      mainImage: mhImg1,
       title: "Appointment With",
       subtitle: "Nearest Hospital",
       color: "#D91656",
       link: "#"
     },
     {
-      shapeImage: rkShape2,
-      mainImage: rkImg2,
+      shapeImage: mhShape2,
+      mainImage: mhImg2,
       title: "Live Discus With",
       subtitle: "Doctor",
       color: "#009650",
       link: "#"
     },
     {
-      shapeImage: rkShape4,
-      mainImage: rkImg3,
+      shapeImage: mhShape4,
+      mainImage: mhImg3,
       title: "Appointment With Top",
       subtitle: "Nearest Hospital",
       color: "#FFBE3C",
       link: "#"
     },
     {
-      shapeImage: rkShape3,
-      mainImage: rkImg4,
+      shapeImage: mhShape3,
+      mainImage: mhImg4,
       title: "24/7 Active Support",
       subtitle: "Help Support",
       color: "#01ACD2",
