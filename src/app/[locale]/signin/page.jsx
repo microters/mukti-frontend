@@ -57,7 +57,7 @@ const handleLogin = async (e) => {
       // environment অনুযায়ী URL নির্ধারণ
       const redirectUrl = window.location.hostname === "localhost" 
         ? "http://localhost:3001" 
-        : "https://dashboar-muktidigital.netlify.app";
+        : "https://dashboard-muktidigital.netlify.app";
 
       window.location.href = `${redirectUrl}?token=${response.token}`;
     } else {
