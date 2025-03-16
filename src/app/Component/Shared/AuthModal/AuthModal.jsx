@@ -7,13 +7,15 @@ import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerUser, sendOtp, loginUser } from "@/app/[locale]/utils/api";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
 
 const AuthModal = ({ showModal, setShowModal }) => {
+  const { login } = useAuth(); // Get login function from AuthContext
   const [activeTab, setActiveTab] = useState("signIn");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -29,6 +31,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
     setShowModal(false);
   };
 
+  // Controlling body overflow when modal is open
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = "hidden";
@@ -50,22 +53,22 @@ const AuthModal = ({ showModal, setShowModal }) => {
     let { name, value } = e.target;
 
     if (name === "mobile") {
-        // Ensure mobile number starts with "88"
-        if (!value.startsWith("88")) {
-            value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
-        }
+      // Ensure mobile number starts with "88"
+      if (!value.startsWith("88")) {
+        value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
+      }
 
-        // Allow only numeric values
-        value = value.replace(/\D/g, ""); // Remove any non-numeric characters
+      // Allow only numeric values
+      value = value.replace(/\D/g, ""); // Remove any non-numeric characters
 
-        // Limit length to 13 digits (format: 8801XXXXXXXX)
-        if (value.length > 13) {
-            value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
-        }
-        
-        // Validation: Check if the phone number is complete (13 digits including 88 prefix)
-        const isValidPhoneNumber = value.length === 13;
-        setIsValid(isValidPhoneNumber);
+      // Limit length to 13 digits (format: 8801XXXXXXXX)
+      if (value.length > 13) {
+        value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
+      }
+
+      // Validation: Check if the phone number is complete (13 digits including 88 prefix)
+      const isValidPhoneNumber = value.length === 13;
+      setIsValid(isValidPhoneNumber);
     }
 
     setFormData({ ...formData, [name]: value });
@@ -74,12 +77,12 @@ const AuthModal = ({ showModal, setShowModal }) => {
   // Handle Send OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    
+
     if (formData.mobile.length < 10) {
       toast.error("Enter a valid mobile number");
       return;
     }
-    
+
     // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
 
@@ -105,17 +108,25 @@ const AuthModal = ({ showModal, setShowModal }) => {
 
     setLoading(true);
     try {
-      await loginUser({
+      // Get token from login API
+      const response = await loginUser({
         mobile: formData.mobile,
         otp: formData.otp,
       });
-      toast.success("Logged in successfully!");
-      // Redirect or close modal as needed
-      setShowModal(false);
-      // Optional: redirect to a specific page
-      // window.location.href = "/dashboard";
+      
+      // Check if response contains token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Logged in successfully!");
+        // Close modal
+        setShowModal(false);
+      } else {
+        throw new Error("No authentication token received");
+      }
     } catch (error) {
       toast.error(error.response?.data?.error || "Login failed");
+      console.error("Login error:", error);
     }
     setLoading(false);
   };
@@ -133,24 +144,36 @@ const AuthModal = ({ showModal, setShowModal }) => {
     try {
       // Mobile number already has 88 prefix in formData
       const mobileNumber = formData.mobile;
-      
-      await registerUser({
+
+      // Register user and get response with token
+      const response = await registerUser({
         name: formData.name,
         mobile: mobileNumber,
         otp: formData.otp,
       });
       
-      toast.success("Registered successfully! You can now log in.");
-      setOtpSent(false);
-      setActiveTab("signIn");
-      // Reset form data
-      setFormData({
-        name: "",
-        mobile: "",
-        otp: "",
-      });
+      // Check if registration returns a token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Registered and logged in successfully!");
+        // Close modal
+        setShowModal(false);
+      } else {
+        // If registration doesn't return a token, switch to sign in tab
+        toast.success("Registered successfully! Please sign in now.");
+        setOtpSent(false);
+        setActiveTab("signIn");
+        // Reset form data
+        setFormData({
+          name: "",
+          mobile: "",
+          otp: "",
+        });
+      }
     } catch (error) {
       toast.error(error.response?.data?.error || "Registration failed");
+      console.error("Registration error:", error);
     }
     setLoading(false);
   };
@@ -202,9 +225,13 @@ const AuthModal = ({ showModal, setShowModal }) => {
                 Verify OTP
               </h2>
               <p className="text-center text-slate-400 mb-4">
-                Enter the OTP sent to your {activeTab === "signUp" ? "email" : "phone"}.
+                Enter the OTP sent to your{" "}
+                {activeTab === "signUp" ? "email" : "phone"}.
               </p>
-              <form onSubmit={activeTab === "signUp" ? handleRegister : handleLogin} className="space-y-4">
+              <form
+                onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
+                className="space-y-4"
+              >
                 <input
                   type="text"
                   name="otp"
@@ -219,7 +246,11 @@ const AuthModal = ({ showModal, setShowModal }) => {
                   className="w-full bg-M-primary-color text-white p-3 rounded-md hover:bg-M-heading-color transition-all duration-300"
                   disabled={loading}
                 >
-                  {loading ? "Verifying..." : activeTab === "signUp" ? "Verify & Register" : "Verify & Login"}
+                  {loading
+                    ? "Verifying..."
+                    : activeTab === "signUp"
+                      ? "Verify & Register"
+                      : "Verify & Login"}
                 </button>
               </form>
               {/* Resend OTP */}
@@ -275,7 +306,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                         width="18"
                         height="18"
                       />
-                      <span className="text-gray-500 font-medium">+</span>
+                      <span className="text-black font-medium">+</span>
                     </div>
                     <input
                       type="tel"
@@ -286,7 +317,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                       onChange={handleChange}
                       required
                       placeholder="8801XXXXXXXX"
-                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-16 rounded-md`}
+                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
                       maxLength="13"
                     />
                   </div>
@@ -336,7 +367,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                         width="18"
                         height="18"
                       />
-                      <span className="text-gray-500 font-medium">+</span>
+                      <span className="text-black font-medium">+</span>
                     </div>
                     <input
                       type="tel"
@@ -347,7 +378,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                       onChange={handleChange}
                       required
                       placeholder="8801XXXXXXXX"
-                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-16 rounded-md`}
+                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
                       maxLength="13"
                     />
                   </div>

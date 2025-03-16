@@ -66,7 +66,7 @@ const Hero = ({heroSection}) => {
             {title}
           </h1>
           <form className="mt-8 bg-white/10 p-4 rounded-md">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-between items-center bg-white px-8 py-7 lg:py-3 rounded-md">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-10 justify-between items-center bg-white px-8 py-7 lg:py-3 rounded-md">
               <div className="flex items-center gap-2 relative before:hidden lg:before:block before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
                 <Image src={searchIcon} alt="searchIcon" className="w-6" />
                 <input
@@ -97,11 +97,19 @@ const Hero = ({heroSection}) => {
                   id="department"
                   className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
                 >
-                  <option >Select Doctor.... </option>
-                  <option value="cardiology" className="text-M-heading-color">Cardiology</option>
-                  <option value="neurology" className="text-M-heading-color">Neurology</option>
-                  <option value="orthopedics" className="text-M-heading-color">Orthopedics</option>
-                  <option value="pediatrics" className="text-M-heading-color">Pediatrics</option>
+                  <option>Select Doctor.... </option>
+                  <option value="cardiology" className="text-M-heading-color">
+                    Cardiology
+                  </option>
+                  <option value="neurology" className="text-M-heading-color">
+                    Neurology
+                  </option>
+                  <option value="orthopedics" className="text-M-heading-color">
+                    Orthopedics
+                  </option>
+                  <option value="pediatrics" className="text-M-heading-color">
+                    Pediatrics
+                  </option>
                 </select>
               </div>
               <FormButton
@@ -120,13 +128,22 @@ const Hero = ({heroSection}) => {
               Popular Search:
             </h6>
             <div className="flex flex-wrap gap-4">
-              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
+              <Link
+                href={"#"}
+                className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300"
+              >
                 Psychiatry
               </Link>
-              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
+              <Link
+                href={"#"}
+                className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300"
+              >
                 Pharmacy
               </Link>
-              <Link href={'#'} className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300">
+              <Link
+                href={"#"}
+                className="inline-block text-white text-base font-jost font-normal border border-white py-2 px-4 leading-4 hover:bg-M-primary-color transition-all duration-300"
+              >
                 Diagnostics
               </Link>
             </div>
