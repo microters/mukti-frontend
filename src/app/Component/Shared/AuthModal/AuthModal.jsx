@@ -7,8 +7,10 @@ import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerUser, sendOtp, loginUser } from "@/app/[locale]/utils/api";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
 
 const AuthModal = ({ showModal, setShowModal }) => {
+  const { login } = useAuth(); // Get login function from AuthContext
   const [activeTab, setActiveTab] = useState("signIn");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
@@ -106,17 +108,25 @@ const AuthModal = ({ showModal, setShowModal }) => {
 
     setLoading(true);
     try {
-      await loginUser({
+      // Get token from login API
+      const response = await loginUser({
         mobile: formData.mobile,
         otp: formData.otp,
       });
-      toast.success("Logged in successfully!");
-      // Redirect or close modal as needed
-      setShowModal(false);
-      // Optional: redirect to a specific page
-      // window.location.href = "/dashboard";
+      
+      // Check if response contains token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Logged in successfully!");
+        // Close modal
+        setShowModal(false);
+      } else {
+        throw new Error("No authentication token received");
+      }
     } catch (error) {
       toast.error(error.response?.data?.error || "Login failed");
+      console.error("Login error:", error);
     }
     setLoading(false);
   };
@@ -135,23 +145,35 @@ const AuthModal = ({ showModal, setShowModal }) => {
       // Mobile number already has 88 prefix in formData
       const mobileNumber = formData.mobile;
 
-      await registerUser({
+      // Register user and get response with token
+      const response = await registerUser({
         name: formData.name,
         mobile: mobileNumber,
         otp: formData.otp,
       });
-
-      toast.success("Registered successfully! You can now log in.");
-      setOtpSent(false);
-      setActiveTab("signIn");
-      // Reset form data
-      setFormData({
-        name: "",
-        mobile: "",
-        otp: "",
-      });
+      
+      // Check if registration returns a token
+      if (response && response.token) {
+        // Use login function from AuthContext to update the global auth state
+        login(response.token);
+        toast.success("Registered and logged in successfully!");
+        // Close modal
+        setShowModal(false);
+      } else {
+        // If registration doesn't return a token, switch to sign in tab
+        toast.success("Registered successfully! Please sign in now.");
+        setOtpSent(false);
+        setActiveTab("signIn");
+        // Reset form data
+        setFormData({
+          name: "",
+          mobile: "",
+          otp: "",
+        });
+      }
     } catch (error) {
       toast.error(error.response?.data?.error || "Registration failed");
+      console.error("Registration error:", error);
     }
     setLoading(false);
   };
