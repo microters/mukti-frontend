@@ -17,13 +17,13 @@ import aboutShape2 from "@/assets/images/aboutShape2.png";
 
 const About = () => {
   return (
-    <div className="container py-[100px] flex flex-wrap lg:flex-nowrap gap-10 items-center relative">
+    <div className="container py-12 lg:py-[100px] flex flex-wrap lg:flex-nowrap gap-10 items-center relative">
       <Image src={aboutObject} alt="about" className="hidden xl:block absolute right-0 bottom-[10%] -z-10 animate-spin" />
       <div className="w-full max-w-[500px] mx-auto lg:w-5/12 space-y-6 relative before:size-8 before:bg-M-secondary-color before:rounded-md before:rotate-45 before:absolute before:top-[50%] before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-[-1]">
         <Image src={aboutShape2} alt="about" className="absolute left-0 top-6 -z-10 animate-spin hidden md:inline-block" />
         <Image src={aboutShape1} alt="about" className="absolute left-0 bottom-[7%] -z-10 hidden md:inline-block" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-baseline">
-          <Image src={aboutimage1} alt="about" className="pt-10 pl-10" />
+          <Image src={aboutimage1} alt="about" className="md:pt-10 md:pl-10 w-full" />
           <Image src={aboutimage2} alt="about" className="h-full" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start px-5">

@@ -51,7 +51,7 @@ const Features = () => {
   ];
 
   return (
-    <div className="bg-[#EBF7F6] py-[100px]">
+    <div className="bg-[#EBF7F6] py-12 lg:py-[100px]">
       <div className="container grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
         {/* Loop through cardData array */}
         {cardData.map((card, index) => (
