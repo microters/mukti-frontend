@@ -148,18 +148,23 @@ const Header = () => {
                   )}
                 </Link>
                 {item.hasSubMenu && (
-                  <ul className="w-56 absolute top-full left-0 bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md hidden group-hover:block z-10">
+                    <ul
+                    className={`w-full absolute top-full left-0 bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md hidden group-hover:block z-10 ${
+                      item.subMenus.length > 8 ? "max-w-[800px] grid grid-cols-4 gap-4" : "w-56"
+                    }`}
+                  >
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
                           href={subItem.href || "#"} // Ensure href is never undefined
-                          className="block py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color "
+                          className="block py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color"
                         >
                           {subItem.label}
                         </Link>
                       </li>
                     ))}
                   </ul>
+                  
                 )}
               </li>
             ))}
@@ -307,7 +312,6 @@ const Header = () => {
       </div>
 
       {/* Authentication modal */}
-      {/* <AuthModal /> */}
       {showModal && (
         <AuthModal showModal={showModal} setShowModal={setShowModal} />
       )}

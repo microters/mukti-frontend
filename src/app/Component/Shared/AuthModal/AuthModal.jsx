@@ -13,7 +13,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -51,22 +51,22 @@ const AuthModal = ({ showModal, setShowModal }) => {
     let { name, value } = e.target;
 
     if (name === "mobile") {
-        // Ensure mobile number starts with "88"
-        if (!value.startsWith("88")) {
-            value = "88" + value.replace(/^88/,""); // If the user does not enter "88", automatically add it
-        }
+      // Ensure mobile number starts with "88"
+      if (!value.startsWith("88")) {
+        value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
+      }
 
-        // Allow only numeric values
-        value = value.replace(/\D/g, ""); // Remove any non-numeric characters
+      // Allow only numeric values
+      value = value.replace(/\D/g, ""); // Remove any non-numeric characters
 
-        // Limit length to 13 digits (format: 8801XXXXXXXX)
-        if (value.length > 13) {
-            value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
-        }
-        
-        // Validation: Check if the phone number is complete (13 digits including 88 prefix)
-        const isValidPhoneNumber = value.length === 13;
-        setIsValid(isValidPhoneNumber);
+      // Limit length to 13 digits (format: 8801XXXXXXXX)
+      if (value.length > 13) {
+        value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
+      }
+
+      // Validation: Check if the phone number is complete (13 digits including 88 prefix)
+      const isValidPhoneNumber = value.length === 13;
+      setIsValid(isValidPhoneNumber);
     }
 
     setFormData({ ...formData, [name]: value });
@@ -75,12 +75,12 @@ const AuthModal = ({ showModal, setShowModal }) => {
   // Handle Send OTP
   const handleSendOtp = async (e) => {
     e.preventDefault();
-    
+
     if (formData.mobile.length < 10) {
       toast.error("Enter a valid mobile number");
       return;
     }
-    
+
     // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
 
@@ -134,13 +134,13 @@ const AuthModal = ({ showModal, setShowModal }) => {
     try {
       // Mobile number already has 88 prefix in formData
       const mobileNumber = formData.mobile;
-      
+
       await registerUser({
         name: formData.name,
         mobile: mobileNumber,
         otp: formData.otp,
       });
-      
+
       toast.success("Registered successfully! You can now log in.");
       setOtpSent(false);
       setActiveTab("signIn");
@@ -203,9 +203,13 @@ const AuthModal = ({ showModal, setShowModal }) => {
                 Verify OTP
               </h2>
               <p className="text-center text-slate-400 mb-4">
-                Enter the OTP sent to your {activeTab === "signUp" ? "email" : "phone"}.
+                Enter the OTP sent to your{" "}
+                {activeTab === "signUp" ? "email" : "phone"}.
               </p>
-              <form onSubmit={activeTab === "signUp" ? handleRegister : handleLogin} className="space-y-4">
+              <form
+                onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
+                className="space-y-4"
+              >
                 <input
                   type="text"
                   name="otp"
@@ -220,7 +224,11 @@ const AuthModal = ({ showModal, setShowModal }) => {
                   className="w-full bg-M-primary-color text-white p-3 rounded-md hover:bg-M-heading-color transition-all duration-300"
                   disabled={loading}
                 >
-                  {loading ? "Verifying..." : activeTab === "signUp" ? "Verify & Register" : "Verify & Login"}
+                  {loading
+                    ? "Verifying..."
+                    : activeTab === "signUp"
+                      ? "Verify & Register"
+                      : "Verify & Login"}
                 </button>
               </form>
               {/* Resend OTP */}
