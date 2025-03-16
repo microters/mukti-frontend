@@ -146,8 +146,8 @@ const BestDoctors = ({ doctors }) => {
                           </h3>
 
                           {/* Academic Qualification */}
-                          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2">
-                            <Icon icon="oui:index-open" width="24" className="text-M-heading-color" />
+                          <p className="text-M-text-color text-base font-normal font-jost flex items-start gap-2">
+                            <Icon icon="oui:index-open" width="24" className="text-M-heading-color shrink-0 relative top-[3px]" />
                             {doctorData.academicQualification || t("doctors.noQualification")}
                           </p>
 

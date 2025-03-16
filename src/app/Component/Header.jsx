@@ -206,7 +206,7 @@ const Header = () => {
           {user && (
             <div className="relative">
               <button
-                className="flex items-center gap-3 p-2 rounded-md transition-all"
+                className="flex items-center gap-3 rounded-md transition-all border border-M-primary-color/80 py-[11px] px-2"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {user.profilePhoto ? (
@@ -218,35 +218,31 @@ const Header = () => {
                 ) : (
                   <Icon icon="mingcute:user-4-fill" width="24" height="24" className="text-M-heading-color" />
                 )}
-                <span className="text-sm font-medium">{user.name}</span>
-                {dropdownOpen ? (
-                  <Icon icon="lsicon:up-outline" width="18" height="18" />
-                ) : (
-                  <Icon icon="lsicon:down-filled" width="18" height="18" />
-                )}
+                <span className="text-sm font-medium truncate text-ellipsis w-16">{user.name}</span>
+                <Icon icon="lsicon:up-outline" width="18" height="18" className={`transition-all duration-300 ${dropdownOpen ? "" : "rotate-180"}`} />
               </button>
 
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-[200px] bg-M-section-bg rounded-md shadow-lg overflow-hidden z-50 border-b-2 border-t-2 border-M-primary-color">
                   <Link
                     href="https://dashboard-mukti.netlify.app/"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
                   >
-                    <Icon icon="ic:outline-dashboard" width="24" height="24" />{" "}
+                    <Icon icon="ic:outline-dashboard" width="24" height="24"  className="shrink-0"/>{" "}
                     Dashboard
                   </Link>
                   <Link
                     href="/settings"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
                   >
-                    <Icon icon="mingcute:user-4-fill" width="24" height="24" />{" "}
+                    <Icon icon="mingcute:user-4-fill" width="24" height="24" className="shrink-0" />{" "}
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout} // Use logout function from the context
-                    className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 hover:text-red-600 transition-all"
+                    className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
                   >
-                    <Icon icon="uil:signout" width="24" height="24" />
+                    <Icon icon="uil:signout" width="24" height="24" className="shrink-0" />
                     Logout
                   </button>
                 </div>
@@ -306,25 +302,25 @@ const Header = () => {
 
         {/* Mobile dropdown for user */}
         {user && dropdownOpen && (
-          <div className="absolute right-0 top-14 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-50">
-            <div className="px-4 py-2 border-b border-gray-200">
+          <div className="absolute right-2 top-full w-48 bg-white rounded-md shadow-lg overflow-hidden z-50 border-t-2 border-b-2 border-M-primary-color">
+            <div className="px-4 py-2 border-b border-gray-200 font-jost text-base">
               <p className="font-medium">{user.name}</p>
             </div>
             <Link
               href="https://dashboard-mukti.netlify.app/"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all"
+              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
             >
               <Icon icon="ic:outline-dashboard" width="20" height="20" /> Dashboard
             </Link>
             <Link
               href="/settings"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all"
+              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
             >
               <Icon icon="mingcute:user-4-fill" width="20" height="20" /> Profile
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 transition-all"
+              className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
             >
               <Icon icon="uil:signout" width="20" height="20" /> Logout
             </button>
