@@ -170,6 +170,7 @@ const Header = () => {
             ))}
           </ul>
         </div>
+        
         <div className="flex gap-4 items-center">
           <Link
             href={"#"}
@@ -178,67 +179,69 @@ const Header = () => {
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
-          <button
-            // href="/signin"
-            onClick={() => setShowModal(true)}
-            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
-          >
-            <Icon icon="uiw:login" width="15" />
-            <span>{t("header.signIn")}</span>
-          </button>
-        </div>
-
-        {/* Profile Section - Will hide when user logs out */}
-        {user && (
-          <div className="relative">
+          {/* Conditional rendering for sign-in button */}
+          {!user && (
             <button
-              className="flex items-center gap-3 p-2 rounded-md transition-all"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
+              onClick={() => setShowModal(true)}
+              className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
             >
-              {user.profilePhoto ? (
-                <img
-                  src={`http://api.muktihospital.com${user.profilePhoto}`}
-                  alt="User Profile"
-                  className="w-8 h-8 rounded-full"
-                />
-              ) : (
-                <Icon icon="mingcute:user-4-fill" width="24" height="24" />
-              )}
-              <span className="text-sm">{user.name}</span>
-              {dropdownOpen ? (
-                <Icon icon="lsicon:up-outline" width="18" height="18" />
-              ) : (
-                <Icon icon="lsicon:down-filled" width="18" height="18" />
-              )}
+              <Icon icon="uiw:login" width="15" />
+              <span>{t("header.signIn")}</span>
             </button>
+          )}
 
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
-                <Link
-                  href="https://dashboard-mukti.netlify.app/"
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
-                >
-                  <Icon icon="ic:outline-dashboard" width="24" height="24" />{" "}
-                  Dashboard
-                </Link>
-                <Link
-                  href="/settings"
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
-                >
-                  <Icon icon="mingcute:user-4-fill" width="24" height="24" />{" "}
-                  Profile
-                </Link>
-                <button
-                  onClick={handleLogout} // Use logout function from the context
-                  className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 hover:text-red-600 transition-all"
-                >
-                  <Icon icon="uil:signout" width="24" height="24" />
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+          {/* User Profile Section - Show only when user is logged in */}
+          {user && (
+            <div className="relative">
+              <button
+                className="flex items-center gap-3 p-2 rounded-md transition-all"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                {user.profilePhoto ? (
+                  <img
+                    src={`http://api.muktihospital.com${user.profilePhoto}`}
+                    alt="User Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                ) : (
+                  <Icon icon="mingcute:user-4-fill" width="24" height="24" className="text-M-heading-color" />
+                )}
+                <span className="text-sm font-medium">{user.name}</span>
+                {dropdownOpen ? (
+                  <Icon icon="lsicon:up-outline" width="18" height="18" />
+                ) : (
+                  <Icon icon="lsicon:down-filled" width="18" height="18" />
+                )}
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-[100%] bg-gray-100 rounded-md shadow-lg overflow-hidden z-50">
+                  <Link
+                    href="https://dashboard-mukti.netlify.app/"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                  >
+                    <Icon icon="ic:outline-dashboard" width="24" height="24" />{" "}
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/settings"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-200 transition-all"
+                  >
+                    <Icon icon="mingcute:user-4-fill" width="24" height="24" />{" "}
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout} // Use logout function from the context
+                    className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 hover:text-red-600 transition-all"
+                  >
+                    <Icon icon="uil:signout" width="24" height="24" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -257,14 +260,64 @@ const Header = () => {
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
-          <button
-            onClick={() => setShowModal(true)}
-            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
-          >
-            <Icon icon="uiw:login" width="15" />
-            <span>{t("header.signIn")}</span>
-          </button>
+          {/* Conditional rendering for sign-in button on mobile */}
+          {!user && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
+            >
+              <Icon icon="uiw:login" width="15" />
+              <span>{t("header.signIn")}</span>
+            </button>
+          )}
+
+          {/* User profile on mobile */}
+          {user && (
+            <button
+              className="flex items-center gap-2 p-2 rounded-md"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              {user.profilePhoto ? (
+                <img
+                  src={`http://api.muktihospital.com${user.profilePhoto}`}
+                  alt="User Profile"
+                  className="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <div className="bg-M-primary-color p-2 rounded-full">
+                  <Icon icon="mingcute:user-4-fill" width="20" height="20" className="text-white" />
+                </div>
+              )}
+            </button>
+          )}
         </div>
+
+        {/* Mobile dropdown for user */}
+        {user && dropdownOpen && (
+          <div className="absolute right-0 top-14 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-50">
+            <div className="px-4 py-2 border-b border-gray-200">
+              <p className="font-medium">{user.name}</p>
+            </div>
+            <Link
+              href="https://dashboard-mukti.netlify.app/"
+              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all"
+            >
+              <Icon icon="ic:outline-dashboard" width="20" height="20" /> Dashboard
+            </Link>
+            <Link
+              href="/settings"
+              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all"
+            >
+              <Icon icon="mingcute:user-4-fill" width="20" height="20" /> Profile
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-4 py-2 w-full text-left text-red-400 hover:bg-red-100 transition-all"
+            >
+              <Icon icon="uil:signout" width="20" height="20" /> Logout
+            </button>
+          </div>
+        )}
 
         <nav
           className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
