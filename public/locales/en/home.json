@@ -1,5 +1,5 @@
 {
-    "header": {
+  "header": {
     "home": "HOME",
     "findDoctor": "FIND A DOCTOR",
     "bookAppointment": "Book an Appointment",
@@ -22,23 +22,39 @@
     "english": "English",
     "bangla": "Bangla"
   },
-    "category": {
-      "title": "Browse by Specialist",
-      "subtitle": "Category",
-      "allServices": "All Services"
-    },
-    "doctors": {
-      "topRated": "Top Rated Specialists",
-      "meetProfessionals": "MEET OUR PROFESSIONALS",
-      "noDoctorsAvailable": "No doctors available for {department}.",
-      "unknownDepartment": "Unknown",
-      "noNameAvailable": "No Name Available",
-      "noQualification": "N/A",
-      "bookAppointment": "Book An Appointment"
-    },
-    "appointment":{
-         "bookAppointment": "Book Appointment",
-         "appointmentNow": "Appointment Now"
-      }
+  "category": {
+    "title": "Browse by Specialist",
+    "subtitle": "Category",
+    "allServices": "All Services"
+  },
+  "about": {
+    "yearExperience": "Year Experience",
+    "learnMore": "Learn More"
+  },
+  "doctors": {
+    "topRated": "Top Rated Specialists",
+    "meetProfessionals": "MEET OUR PROFESSIONALS",
+    "noDoctorsAvailable": "No doctors available for {department}.",
+    "unknownDepartment": "Unknown",
+    "noNameAvailable": "No Name Available",
+    "noQualification": "N/A",
+    "bookAppointment": "Book An Appointment"
+  },
+  "appointment": {
+    "bookAppointment": "Book Appointment",
+    "appointmentNow": "Appointment Now",
+    "selectDepartment": "Select Department",
+    "selectDoctor": "Select Doctor",
+    "selectDay": "Select Day",
+    "patientName": "Patient's Name",
+    "phoneNumber": "Phone Number"
+  },
+  "testimonials": {
+    "title": "What Client’s Say?",
+    "subtitle": "Testimonials"
+  },
+  "appointmentProcess": {
+    "title": "Appointment Process",
+    "subtitle": "How We Work?"
   }
-  
+}

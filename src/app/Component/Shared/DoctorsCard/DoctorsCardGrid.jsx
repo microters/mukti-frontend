@@ -27,6 +27,7 @@ const DoctorsCardGrid = ({ doctor }) => {
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : "/default-profile-photo.png";
 
+
   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
 
   return (

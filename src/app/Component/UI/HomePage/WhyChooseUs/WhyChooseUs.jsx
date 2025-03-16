@@ -1,74 +1,63 @@
-import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
-import Image from "next/image";
+'use client'
 import React from "react";
-
-import iconImg from "@/assets/images/ww1.png";
-import iconImg2 from "@/assets/images/ww2.png";
-import iconImg3 from "@/assets/images/ww3.png";
-import iconImg4 from "@/assets/images/ww4.png";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import shapeimg from "@/assets/images/wwShape.png";
-import wwImage from "@/assets/images/wwImg.png";
+import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 
-const data = [
-  {
-    icon: iconImg,
-    title: "Patient-Centered Care",
-    description: "Emphasize your commitment to patient well-being",
-  },
-  {
-    icon: iconImg2,
-    title: "Emergency Support",
-    description: "Emphasize your commitment to patient well-being",
-  },
-  {
-    icon: iconImg3,
-    title: "Expertise and Experience",
-    description: "Emphasize your commitment to patient well-being",
-  },
-  {
-    icon: iconImg4,
-    title: "24/7 hour Emergency Call",
-    description: "Emphasize your commitment to patient well-being",
-  },
-];
+const WhyChooseUs = ({ whyChooseUsSection }) => {
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
 
-const WhyChooseUs = () => {
+  // Extract the translations for the current language
+  const translations = whyChooseUsSection?.translations?.[currentLanguage] || {};
+  
+  // Destructure translations for easier use
+  const { title, subtitle, description, services, image } = translations;
+  console.log(services)
+
   return (
     <div className="container py-24">
       <div className="grid grid-cols-1 items-center lg:grid-cols-2 gap-10">
         <div className="relative bg-M-heading-color rounded-lg px-10 pt-14 box-border">
-            <Image src={wwImage} alt="wwImage" className="z-10 mx-auto" />
-            <Image src={shapeimg} alt="wwImage" className="absolute left-0 bottom-0 z-0" />
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${image}`}
+            width={500}
+            height={500}
+            alt="whyChooseUsImage"
+            className="z-10 mx-auto"
+          />
+           <Image src={shapeimg} alt="wwImage" className="absolute left-0 bottom-0 z-0" />
         </div>
         <div>
           <SectionHeading
-            subtitle="WHy Choose Us"
-            heading="Why Our Patients Recommend Us"
+            subtitle={subtitle}
+            heading={title}
             align="left"
           />
           <p className="text-M-text-color max-w-full lg:max-w-[525px] mt-4">
-            We provide the special tips and advice’s of heath care treatment and high level of best technology involve in the our hospital.We provide the special tips and advice’s of heath care treatment.
+            {description}
           </p>
 
           <div className="max-w-full lg:max-w-[525px] space-y-6 mt-7">
-            {data.map((item, index) => (
+            {services && services.map((item, index) => (
               <div
                 key={index}
                 className="flex gap-4 border border-[#615EFC]/20 p-5 rounded-lg hover:border-[#615EFC] transition-all duration-300"
               >
                 <Image
-                  src={item.icon}
-                  alt={item.title}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.serviceIcon}`}
+                  alt={item.serviceTitle}
                   width={50}
-                  height={50} 
+                  height={50}
                   className="shrink-0 w-12 h-14"
                 />
                 <div>
                   <h4 className="font-bold font-jost text-xl text-M-heading-color">
-                    {item.title}
+                    {item.serviceTitle}
                   </h4>
                   <p className="font-jost font-normal text-base text-M-text-color">
-                    {item.description}
+                    {item.serviceDescription}
                   </p>
                 </div>
               </div>

@@ -11,12 +11,18 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
+import { useTranslation } from "react-i18next";
 
 const Testimonials = ({ reviews }) => {
+    const { t, i18n } = useTranslation();
   return (
     <div className="py-[100px]">
     <div className="container mx-auto px-4">
-      <SectionHeading subtitle="Testimonials" heading="What client’s say?" align="center" />
+      <SectionHeading 
+        subtitle={t("testimonials.subtitle")}
+        heading={t("testimonials.title")}
+        align="center" 
+      />
     <div className="mt-10">
       <Swiper
         slidesPerView={3}

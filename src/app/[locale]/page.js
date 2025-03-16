@@ -12,30 +12,41 @@ import Appointment from "../Component/UI/HomePage/Appointment/Appointment";
 import Blog from "../Component/UI/HomePage/Blog/Blog";
 import { fetchReviews } from "../api/review";
 import Testimonials from "../Component/UI/HomePage/Testimonials/Testimonials";
+import { fetchDynamicData } from "../api/dynamicHome,";
 
 export default async function HomePage() {
   // Fetching doctors and departments data
   const doctors = await fetchDoctors();  // Fetch all doctors
   const doctorDepartments = await fetchDepartments();  // Fetch the departments list
   const doctorReviews = await fetchReviews();  // Fetch reviews for doctors
+  const dynamicData = await fetchDynamicData();
+
+   // Extract home data
+  const heroSection = dynamicData.heroSection;
+  const featuresSection = dynamicData.featuresSection
+  const aboutSection = dynamicData.aboutSection
+  const appointmentSection=dynamicData.appointmentSection
+  const whyChooseUsSection = dynamicData.whyChooseUsSection
+  const downloadAppSection = dynamicData.downloadAppSection
+  const appointmentProcess = dynamicData.appointmentProcess
+
 
   return (
     <div>
-      <Hero />
-      <Features />
-      <About />
+      <Hero heroSection={heroSection}/>
+      <Features featuresSection={featuresSection}/>
+      <About aboutSection={aboutSection}/>
       <Category departments={doctorDepartments} />
-
       {/* Pass doctors and departments to BestDoctors component */}
       <BestDoctors
         doctors={doctors}
       />
 
-      <Appointment />
-      <WhyChooseUs />
-      <MobileApp />
+      <Appointment appointmentSection={appointmentSection} />
+      <WhyChooseUs whyChooseUsSection={whyChooseUsSection}/>
+      <MobileApp downloadAppSection={downloadAppSection}/>
       <Testimonials reviews={doctorReviews} />
-      <AppointmentProcess />
+      <AppointmentProcess appointmentProcess={appointmentProcess}/>
       <Blog />
     </div>
   );

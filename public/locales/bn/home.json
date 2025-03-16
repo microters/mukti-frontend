@@ -22,22 +22,39 @@
     "english": "ইংরেজি",
     "bangla": "বাংলা"
   },
-    "category": {
-      "title": "বিশেষজ্ঞ দ্বারা অনুসন্ধান করুন",
-      "subtitle": "বিভাগ",
-      "allServices": "সমস্ত পরিষেবা"
-    },
-      "doctors": {
-        "topRated": "শীর্ষ রেটেড বিশেষজ্ঞ",
-        "meetProfessionals": "আমাদের পেশাদারদের সাথে পরিচিত হন",
-        "noDoctorsAvailable": "{department} এর জন্য কোনো ডাক্তার পাওয়া যায়নি।",
-        "unknownDepartment": "অজানা",
-        "noNameAvailable": "কোন নাম নেই",
-        "noQualification": "N/A",
-        "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন"
-      },
-      "appointment":{
-         "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন",
-         "appointmentNow": "অ্যাপয়েন্টমেন্ট এখনই"
-      }
+  "category": {
+    "title": "বিশেষজ্ঞ দ্বারা অনুসন্ধান করুন",
+    "subtitle": "বিভাগ",
+    "allServices": "সমস্ত পরিষেবা"
+  },
+  "about": {
+    "yearExperience": "বছরের অভিজ্ঞতা",
+    "learnMore": "আরও জানুন"
+  },
+  "doctors": {
+    "topRated": "শীর্ষ রেটেড বিশেষজ্ঞ",
+    "meetProfessionals": "আমাদের পেশাদারদের সাথে পরিচিত হন",
+    "noDoctorsAvailable": "{department} এর জন্য কোনো ডাক্তার পাওয়া যায়নি।",
+    "unknownDepartment": "অজানা",
+    "noNameAvailable": "কোন নাম নেই",
+    "noQualification": "N/A",
+    "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন"
+  },
+  "appointment": {
+    "bookAppointment": "অ্যাপয়েন্টমেন্ট বুক করুন",
+    "appointmentNow": "অ্যাপয়েন্টমেন্ট এখনই",
+    "selectDepartment": "বিভাগ নির্বাচন করুন",
+    "selectDoctor": "ডাক্তার নির্বাচন করুন",
+    "selectDay": "দিন নির্বাচন করুন",
+    "patientName": "রোগীর নাম",
+    "phoneNumber": "ফোন নম্বর"
+  },
+  "testimonials": {
+    "title": "ক্লায়েন্টরা কী বলছেন?",
+    "subtitle": "প্রশংসাপত্র"
+  },
+  "appointmentProcess": {
+    "title": "অ্যাপয়েন্টমেন্ট প্রক্রিয়া",
+    "subtitle": "কীভাবে আমরা কাজ করি?"
   }
+}

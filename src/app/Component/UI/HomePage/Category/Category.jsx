@@ -19,7 +19,6 @@ const Category = ({ departments, locale }) => {
   if (!departments || departments.length === 0) {
     return <div className="min-h-[200px] bg-gray-100 animate-pulse"></div>;
   }
-
   return (
     <div className="bg-[#E6F5F3] py-[100px] px-[10px]">
       <div className="container">
@@ -36,7 +35,6 @@ const Category = ({ departments, locale }) => {
 
             // Get department name and description based on the current language
             const departmentName = department.translations[currentLanguage]?.name || department.translations.en.name;
-            const departmentDescription = department.translations[currentLanguage]?.description || department.translations.en.description;
 
             return (
               <div key={department.id} className="bg-white group text-center py-8 px-6 rounded-lg overflow-hidden relative">

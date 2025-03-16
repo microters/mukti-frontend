@@ -16,10 +16,13 @@ import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import { fetchDepartments } from "@/app/api/department";
 import { toast } from "react-toastify";
-
-const Appointment = () => {
+const Appointment = ({appointmentSection}) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
+
+  const translations = appointmentSection?.translations?.[currentLanguage] || {};
+  const {image}= translations;
+  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}`;
   const ticketRef = useRef(null);
 
   const [departments, setDepartments] = useState([]);
@@ -220,7 +223,7 @@ const Appointment = () => {
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <select name="departmentId" value={formData.departmentId} onChange={handleChange} className="appointment-input-field" required>
-                  <option value="">{t("selectDepartment")}</option>
+                  <option value="">{t("appointment.selectDepartment")}</option>
                   {departments.map((department) => (
                     <option key={department.id} value={department.id}>
                       {department.translations[currentLanguage]?.name || department.name}
@@ -231,7 +234,7 @@ const Appointment = () => {
 
               <div>
                 <select name="doctorId" value={formData.doctorId} onChange={handleDoctorChange} className="appointment-input-field" required>
-                  <option value="">{t("selectDoctor")}</option>
+                  <option value="">{t("appointment.selectDoctor")}</option>
                   {doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
                       {doctor.translations[currentLanguage]?.name || doctor.name}
@@ -243,7 +246,7 @@ const Appointment = () => {
               {selectedDoctor && (
                 <div>
                   <select name="day" value={formData.day} onChange={handleChange} className="appointment-input-field" required>
-                    <option value="">{t("selectDay")}</option>
+                    <option value="">{t("appointment.selectDay")}</option>
                     {availableDates.map((slot) => (
                       <option key={slot.id} value={slot.day}>
                         {slot.day} ({slot.startTime} - {slot.endTime})
@@ -254,20 +257,20 @@ const Appointment = () => {
               )}
 
               <div>
-                <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} placeholder={t("patientName")} className="appointment-input-field" required />
+                <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} placeholder={t("appointment.patientName")} className="appointment-input-field" required />
               </div>
 
               <div>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={t("phoneNumber")} className="appointment-input-field" required />
+                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={t("appointment.phoneNumber")} className="appointment-input-field" required />
               </div>
 
-              <FormButton buttonText={t("appointmentNow")} buttonColor="bg-M-heading-color" textColor="text-white" />
+              <FormButton buttonText={t("appointment.appointmentNow")} buttonColor="bg-M-heading-color" textColor="text-white" />
             </form>
           </div>
         </div>
 
         <div className="hidden lg:block w-1/2">
-          <Image src={appointment} alt="appointment" />
+          <Image src={appointmentImage} width={500} height={500} style={{width: "100%"}} alt="appointment" />
         </div>
       </div>
 
