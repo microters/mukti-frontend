@@ -13,7 +13,7 @@ import AuthModal from "./Shared/AuthModal/AuthModal";
 import { fetchDepartments } from "../api/department";
 
 const Header = () => {
-  const { user, logout, loading } = useAuth();
+  const { user, logout } = useAuth();
   const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [departments, setDepartments] = useState([]);
@@ -179,12 +179,8 @@ const Header = () => {
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
-          {/* Show loading indicator while auth state is being checked */}
-          {loading ? (
-            <div className="bg-M-primary-color/80 font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-4 py-3 inline-flex items-center justify-center">
-              <Icon icon="eos-icons:loading" width="20" className="animate-spin" />
-            </div>
-          ) : !user && (
+          {/* Conditional rendering for sign-in button */}
+          {!user && (
             <button
               onClick={() => setShowModal(true)}
               className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
@@ -264,12 +260,8 @@ const Header = () => {
             Appointment <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
-          {/* Show loading indicator while auth state is being checked on mobile */}
-          {loading ? (
-            <div className="bg-M-primary-color/80 font-jost font-medium uppercase rounded-md text-xs text-white px-3 py-3 inline-flex items-center justify-center">
-              <Icon icon="eos-icons:loading" width="18" className="animate-spin" />
-            </div>
-          ) : !user && (
+          {/* Conditional rendering for sign-in button on mobile */}
+          {!user && (
             <button
               onClick={() => setShowModal(true)}
               className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
