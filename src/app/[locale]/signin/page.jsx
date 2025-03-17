@@ -99,10 +99,13 @@ const Signin = () => {
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
         login(response.token);
+        localStorage.setItem("authToken", response.token); // Token save localStorage-এ
+    
         toast.success("Logged in successfully!");
         
         // Redirect to homepage
-        router.push("https://dashboard-muktidigital.netlify.app/");
+        window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
+
       } else {
         throw new Error("No authentication token received");
       }
