@@ -25,7 +25,7 @@ const WhyChooseUs = ({ whyChooseUsSection }) => {
   const formattedImage = formatImagePath(image);
   
   return (
-    <div className="container py-24">
+    <div className="container py-12 lg:py-24">
       <div className="grid grid-cols-1 items-center lg:grid-cols-2 gap-10">
         <div className="relative bg-M-heading-color rounded-lg px-10 pt-14 box-border">
           {formattedImage ? (

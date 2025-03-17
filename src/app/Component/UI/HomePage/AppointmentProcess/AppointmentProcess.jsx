@@ -24,7 +24,7 @@ const AppointmentProcess = ({ appointmentProcess }) => {
   };
 
   return (
-    <div className="py-24 bg-M-section-bg">
+    <div className="py-12 lg:py-24 bg-M-section-bg">
       <div className="container">
         <SectionHeading
           heading={t("appointmentProcess.title")} 

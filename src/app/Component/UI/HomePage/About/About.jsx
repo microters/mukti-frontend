@@ -1,6 +1,6 @@
-'use client'
+"use client";
 import React from "react";
-import { useTranslation } from "react-i18next";  // Import useTranslation hook
+import { useTranslation } from "react-i18next"; // Import useTranslation hook
 import Image from "next/image";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import Button from "@/app/Component/Shared/Buttons/Button";
@@ -16,15 +16,20 @@ const About = ({ aboutSection }) => {
 
   // Extract the translations for the current language
   const translations = aboutSection?.translations?.[currentLanguage] || {};
-  
+
   // Destructure translations for easier use
-  const { title, subtitle, description, experience, services, images } = translations;
-  const formattedImages = images?.map(image => image.replace(/\\/g, '/'));
+  const { title, subtitle, description, experience, services, images } =
+    translations;
+  const formattedImages = images?.map((image) => image.replace(/\\/g, "/"));
 
   return (
     <div className="container py-12 lg:py-[100px] flex flex-wrap lg:flex-nowrap gap-10 items-center relative">
-      <Image src={aboutObject} alt="about" className="hidden xl:block absolute right-0 bottom-[10%] -z-10 animate-spin" />
-      
+      <Image
+        src={aboutObject}
+        alt="about"
+        className="hidden xl:block absolute right-0 bottom-[10%] -z-10 animate-spin"
+      />
+
       <div className="w-full max-w-[500px] mx-auto lg:w-5/12 space-y-6 relative before:size-8 before:bg-M-secondary-color before:rounded-md before:rotate-45 before:absolute before:top-[50%] before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-[-1]">
         <Image src={aboutShape2} alt="about shape" className="absolute left-0 top-6 -z-10 animate-spin hidden md:inline-block" />
         <Image src={aboutShape1} alt="about shape" className="absolute left-0 bottom-[7%] -z-10 hidden md:inline-block" />

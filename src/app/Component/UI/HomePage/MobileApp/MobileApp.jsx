@@ -25,7 +25,7 @@ const MobileApp = ({ downloadAppSection }) => {
   const formattedImage = image ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}` : null;
 
   return (
-    <div className="bg-[#323290] py-24 relative">
+    <div className="bg-[#323290] py-12 lg:py-24 relative">
       <Image src={shape4} alt="shape4" className="absolute right-0 top-0 z-0 hidden md:block" />
       <div className="container">
         <div className="grid grid-cols-1 items-center lg:grid-cols-2 gap-0">

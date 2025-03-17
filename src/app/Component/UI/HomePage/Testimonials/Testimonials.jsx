@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 const Testimonials = ({ reviews }) => {
     const { t, i18n } = useTranslation();
   return (
-    <div className="py-[100px]">
+    <div className="py-12 lg:py-24">
     <div className="container mx-auto px-4">
       <SectionHeading 
         subtitle={t("testimonials.subtitle")}
