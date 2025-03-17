@@ -102,7 +102,7 @@ const Signin = () => {
         toast.success("Logged in successfully!");
         
         // Redirect to homepage
-        router.push("/");
+        router.push("https://dashboard-muktidigital.netlify.app/");
       } else {
         throw new Error("No authentication token received");
       }
