@@ -28,6 +28,8 @@ const Features = ({ featuresSection }) => {
         {features.map((feature, index) => {
           const shapeImage = shapeImages[index % shapeImages.length];
           const icon = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon}`;
+          console.log(icon);
+          
 
           return (
             <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative group">
