@@ -22,7 +22,9 @@ const Appointment = ({appointmentSection}) => {
 
   const translations = appointmentSection?.translations?.[currentLanguage] || {};
   const {image}= translations;
-  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}`;
+  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${ image.replace(/\\/g, '/')}`;
+  console.log(appointmentImage);
+  
   const ticketRef = useRef(null);
 
   const [departments, setDepartments] = useState([]);
