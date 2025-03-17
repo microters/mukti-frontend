@@ -57,7 +57,7 @@ const blogPosts = [
 
 const Blog = () => {
   return (
-    <div className="py-24">
+    <div className="py-12 lg:py-24">
       <div className="container">
         <SectionHeading
           subtitle="From the Blog"

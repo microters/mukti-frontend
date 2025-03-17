@@ -15,7 +15,7 @@ const AppointmentProcess = ({ appointmentProcess }) => {
   const features = appointmentProcess?.translations?.[currentLanguage] || [];
 
   return (
-    <div className="py-24 bg-M-section-bg">
+    <div className="py-12 lg:py-24 bg-M-section-bg">
       <div className="container">
         <SectionHeading
           heading={t("appointmentProcess.title")} 
@@ -40,7 +40,7 @@ const AppointmentProcess = ({ appointmentProcess }) => {
                     className="group-hover:animate-shake"
                   />
                 </div>
-                <h3 className="font-bold text-lg sm:text-xl text-M-heading-color max-w-48 mx-auto">
+                <h3 className="font-bold text-lg sm:text-xl text-M-heading-color md:max-w-48 mx-auto">
                   {feature.title}  {/* Translated title */}
                 </h3>
               </div>
