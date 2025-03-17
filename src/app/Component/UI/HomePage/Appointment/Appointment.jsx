@@ -10,7 +10,6 @@ import { saveAs } from "file-saver";
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
-import appointment from "@/assets/images/appointment.png";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
@@ -198,7 +197,7 @@ const Appointment = ({appointmentSection}) => {
   };
 
   return (
-    <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
+    <div className="bg-[url('/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
       <Image
         src={waveShape2}
         alt="wave shape"
