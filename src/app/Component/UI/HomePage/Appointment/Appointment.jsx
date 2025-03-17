@@ -22,7 +22,9 @@ const Appointment = ({appointmentSection}) => {
 
   const translations = appointmentSection?.translations?.[currentLanguage] || {};
   const {image}= translations;
-  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}`;
+  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${ image.replace(/\\/g, '/')}`;
+  console.log(appointmentImage);
+  
   const ticketRef = useRef(null);
 
   const [departments, setDepartments] = useState([]);
@@ -213,7 +215,7 @@ const Appointment = ({appointmentSection}) => {
         className="absolute right-[5%] bottom-[15%] animate-spin hidden lg:block"
       />
 
-      <div className="container flex justify-between items-center gap-20 py-24">
+      <div className="container flex justify-between items-center gap-20 py-12 lg:py-24">
         <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
           <div className="w-full relative z-10 bg-white py-8 px-4 md:p-8 rounded-lg md:rounded-[40px] shadow-lg">
             <h2 className="text-2xl font-semibold text-[#24285B] mb-6 text-center">

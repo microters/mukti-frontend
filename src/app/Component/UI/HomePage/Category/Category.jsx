@@ -20,7 +20,7 @@ const Category = ({ departments, locale }) => {
     return <div className="min-h-[200px] bg-gray-100 animate-pulse"></div>;
   }
   return (
-    <div className="bg-[#E6F5F3] py-[100px] px-[10px]">
+    <div className="bg-[#E6F5F3] py-12 lg:py-[100px] px-[10px]">
       <div className="container">
         {/* Section Heading */}
         <SectionHeading align="center" heading={t('category.title')} subtitle={t('category.subtitle')} />

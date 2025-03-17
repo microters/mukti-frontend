@@ -48,7 +48,7 @@ const BestDoctors = ({ doctors }) => {
   }, [activeDepartment, doctors, currentLanguage]);
 
   return (
-    <div className="py-[100px]">
+    <div className="py-12 lg:py-[100px]">
       <div className="container">
         <SectionHeading
           heading={t("doctors.topRated")}
