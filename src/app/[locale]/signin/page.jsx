@@ -98,9 +98,9 @@ const Signin = () => {
       // Check if response contains token
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
-        login(response.token);
+        
         localStorage.setItem("authToken", response.token); // Token save localStorage-এ
-    
+        login(response.token);
         toast.success("Logged in successfully!");
         
         // Redirect to homepage
