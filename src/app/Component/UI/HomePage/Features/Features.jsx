@@ -27,7 +27,10 @@ const Features = ({ featuresSection }) => {
         {/* Loop through features data and render each card dynamically */}
         {features.map((feature, index) => {
           const shapeImage = shapeImages[index % shapeImages.length];
-          const icon = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon}`;
+          const formattedIcon = feature.icon ? 
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon.replace(/\\/g, '/')}` : 
+          null;
+      
 
           return (
             <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative group">
@@ -37,7 +40,7 @@ const Features = ({ featuresSection }) => {
                 className="absolute top-0 left-0 rounded-s-md"
               />
               <Image
-                src={icon}
+                src={formattedIcon}
                 width={96}
                 height={96}
                 alt="Main image"
