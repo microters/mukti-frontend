@@ -32,12 +32,12 @@ const DoctorsCardGrid = ({ doctor }) => {
 
   return (
     <div key={doctor.id} className="h-full">
-      <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md ">
+      <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md text-center">
         <div>
           {/* Doctor Image */}
           <Link
             href={profileLink}
-            className="size-[120px] block rounded-full shrink-0 mb-5 ring ring-M-primary-color/80 overflow-hidden"
+            className="size-[120px] block rounded-full shrink-0 mb-5 ring ring-M-primary-color/80 overflow-hidden mx-auto"
           >
             <Image
               src={doctorImage}
@@ -58,7 +58,7 @@ const DoctorsCardGrid = ({ doctor }) => {
           </h3>
 
           {/* Academic Qualification */}
-          <p className="text-M-text-color text-base font-normal font-jost flex gap-2">
+          <p className="text-M-text-color text-base font-normal font-jost flex gap-2 justify-center">
             <Icon
               icon="oui:index-open"
               width="24"
@@ -68,7 +68,7 @@ const DoctorsCardGrid = ({ doctor }) => {
           </p>
 
           {/* Location */}
-          <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
+          <p className="text-M-text-color text-base font-normal font-jost flex items-center justify-center gap-2 mt-2 capitalize">
             <Icon
               icon="mdi:location-on-outline"
               width="24"
@@ -77,7 +77,7 @@ const DoctorsCardGrid = ({ doctor }) => {
             Mukti Hospital
           </p>
 
-          <ul className="flex flex-wrap items-center gap-4 mt-5">
+          <ul className="flex flex-wrap items-center justify-center gap-4 mt-5">
             {/* Department */}
             <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
               {department}
@@ -93,7 +93,8 @@ const DoctorsCardGrid = ({ doctor }) => {
 
         {/* Availability & Booking Section */}
         <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
-          <div className="mt-1 mb-4 space-y-1">
+          <div className="mb-4 space-y-2">
+            <h4 className="mb-3 font-jost text-lg text-black">Weekly Schedule</h4>
             {doctor.schedule && doctor.schedule.length > 0 ? (
               doctor.schedule.map((slot, index) => {
                 // Convert time to 12-hour format using toLocaleTimeString
@@ -107,7 +108,7 @@ const DoctorsCardGrid = ({ doctor }) => {
                 return (
                   <h4
                     key={index}
-                    className="font-jost font-bold text-base text-M-heading-color"
+                    className="font-jost font-bold text-base text-black flex items-center justify-between gap-3 bg-M-section-bg/50 py-2 px-3 rounded-md"
                   >
                     {slot.day} :{" "}
                     <span className="inline-block font-jost font-normal text-sm text-slate-600">

@@ -88,7 +88,7 @@ export default function LanguageChanger() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg overflow-hidden z-10 transition-all duration-200 divide-y font-jost">
+        <div className="absolute right-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg overflow-hidden z-10 transition-all duration-200 divide-y font-jost">
           {languages.map((lang) => (
             <div
               key={lang.id}
@@ -96,7 +96,7 @@ export default function LanguageChanger() {
                 setSelectedLanguage(lang);
                 setIsOpen(false);
               }}
-              className="flex items-center gap-2 px-2 md:px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer transition-all duration-200"
+              className="flex items-center gap-2 px-2 md:px-4 py-2 hover:bg-gray-200 cursor-pointer transition-all duration-200"
             >
               <span className="text-lg">
                 {" "}

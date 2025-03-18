@@ -240,7 +240,7 @@ const DoctorsList = ({ doctors }) => {
                   <Icon icon="solar:alt-arrow-down-linear" width="24" />
                 </span>
               </h3>
-              <ul className="px-4 transition-all duration-300 overflow-hidden">
+              <ul className={`px-4 transition-all duration-300 overflow-hidden ${isSpecialtiesOpen ? "h-auto" : "h-0"}`}>
                 {specialtyOptions.map((item) => (
                   <li
                     key={item}
@@ -275,7 +275,7 @@ const DoctorsList = ({ doctors }) => {
             <div className="border border-M-primary-color/5 rounded-md overflow-hidden">
               <h3
                 onClick={() => setIsGendersOpen(!isGendersOpen)}
-                className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full"
+                className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full cursor-pointer"
               >
                 Gender
                 <span>
