@@ -427,7 +427,7 @@ const Header = () => {
                                 height={20}
                               />
                             )}{" "}
-                            {subItem.label} {subItem.label}
+                            {subItem.label}
                           </Link>
                         </li>
                       ))}

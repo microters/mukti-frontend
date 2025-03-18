@@ -65,16 +65,16 @@ const SingleDoctorInfo = ({ doctor }) => {
       : [],
   };
 
-  console.log(doctorData.treatments)
+  // console.log(doctorData.treatments)
 
   const maxWords = 100;
   // Ensure doctorData.shortBio exists before splitting
   const wordsArray = doctorData.shortBio ? doctorData.shortBio.split(" ") : [];
 
   // Log the words array for debugging
-  console.log("Short Bio Words Array:", wordsArray);
+  // console.log("Short Bio Words Array:", wordsArray);
 
-  console.log("Formatted Doctor Data:", doctorData);
+  // console.log("Formatted Doctor Data:", doctorData);
 
   const tabs = [
     { name: "Short Bio", id: "shortBio" },
@@ -738,6 +738,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                 </Link>
               </div>
             </div>
+            {/* Visiting Fee */}
             <div className="border border-M-heading-color/20 p-6 px-6 rounded-md">
               <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b text-center border-M-primary-color/20">
                 Visiting Fee

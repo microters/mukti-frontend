@@ -84,3 +84,27 @@ h4 {
 .swiper-rtl .swiper-button-next {
   left: 0 !important;
 }
+
+/* React Calender */
+.react-calendar {
+  width: 100% !important;
+  max-width: 350px !important;
+  @apply !font-jost !border !border-M-heading-color/20 rounded-md p-3 shadow
+}
+
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus,
+.react-calendar__tile--active {
+  @apply !bg-M-primary-color rounded-full 
+}
+
+.react-calendar__tile--now {
+  @apply !bg-M-primary-color/10 rounded-full !text-M-primary-color
+}
+
+.react-calendar button {
+  @apply !rounded-full
+}
+
+abbr:where([title]) {
+  text-decoration: none !important;
+}
