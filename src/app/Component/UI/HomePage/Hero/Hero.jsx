@@ -32,6 +32,7 @@ const Hero = ({ heroSection }) => {
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [allDoctors, setAllDoctors] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +41,7 @@ const Hero = ({ heroSection }) => {
       const doctorData = await fetchDoctors(currentLanguage);
       setDoctors(doctorData);
       setFilteredDoctors(doctorData);
+      setAllDoctors(doctorData);
     };
     fetchData();
   }, [currentLanguage]);
@@ -69,6 +71,13 @@ const Hero = ({ heroSection }) => {
       toast.info("Please select a doctor after choosing a department.", { position: "top-right" });
     } else {
       setDoctors(filteredDoctors);
+    }
+  };
+
+  const handleDoctorFieldFocus = () => {
+    if (!selectedDepartment) {
+      setDoctors(allDoctors);
+      setFilteredDoctors(allDoctors);
     }
   };
 
@@ -195,7 +204,7 @@ const Hero = ({ heroSection }) => {
               </div>
               <div className="flex items-center gap-2">
                 <Image src={doctorIcon} alt="searchIcon" className="w-6" />
-                <select name="doctor" id="doctor" className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color" value={selectedDoctor} onChange={(e) => setSelectedDoctor(e.target.value)}>
+                <select name="doctor" id="doctor" className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color" value={selectedDoctor} onChange={(e) => setSelectedDoctor(e.target.value)}   onFocus={handleDoctorFieldFocus}>
                   <option value="">Select Doctor...</option>
                   {doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>

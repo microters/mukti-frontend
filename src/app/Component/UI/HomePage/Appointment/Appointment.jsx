@@ -10,20 +10,72 @@ import { saveAs } from "file-saver";
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
-import appointment from "@/assets/images/appointment.png";
 import { fetchDoctors } from "@/app/api/doctor";
 import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import { fetchDepartments } from "@/app/api/department";
 import { toast } from "react-toastify";
+
+// Helper function to format time in Bangladeshi format (12-hour with AM/PM)
+const formatTimeToBD = (timeString, language = 'en') => {
+  try {
+    // Parse time (expecting format like "14:30:00" or "14:30")
+    const timeParts = timeString.split(':');
+    let hours = parseInt(timeParts[0], 10);
+    const minutes = parseInt(timeParts[1], 10);
+    
+    // Convert to 12-hour format
+    const ampm = hours >= 12 ? (language === 'bn' ? 'অপরাহ্ন' : 'PM') : (language === 'bn' ? 'পূর্বাহ্ন' : 'AM');
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Convert 0 to 12
+    
+    // Format the time with leading zeros for minutes
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    
+    // Convert to Bangla numerals if language is Bengali
+    if (language === 'bn') {
+      const englishToBanglaDigits = {
+        '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
+        '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+      };
+      
+      const banglaHours = hours.toString().split('').map(digit => englishToBanglaDigits[digit] || digit).join('');
+      const banglaMinutes = formattedMinutes.toString().split('').map(digit => englishToBanglaDigits[digit] || digit).join('');
+      
+      return `${banglaHours}:${banglaMinutes} ${ampm}`;
+    }
+    
+    return `${hours}:${formattedMinutes} ${ampm}`;
+  } catch (error) {
+    console.error("Error formatting time:", error);
+    return timeString; // Return original time string in case of error
+  }
+};
+
+// Helper function to format day names in Bangla
+const getDayName = (day, language = 'en') => {
+  if (language !== 'bn') return day;
+  
+  const dayTranslations = {
+    'Monday': 'সোমবার',
+    'Tuesday': 'মঙ্গলবার',
+    'Wednesday': 'বুধবার',
+    'Thursday': 'বৃহস্পতিবার',
+    'Friday': 'শুক্রবার',
+    'Saturday': 'শনিবার',
+    'Sunday': 'রবিবার'
+  };
+  
+  return dayTranslations[day] || day;
+};
+
 const Appointment = ({appointmentSection}) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
   const translations = appointmentSection?.translations?.[currentLanguage] || {};
   const {image}= translations;
-  const appointmentImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${ image.replace(/\\/g, '/')}`;
-  console.log(appointmentImage);
+  const appointmentImage = image ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}` : appointment;
   
   const ticketRef = useRef(null);
 
@@ -81,7 +133,6 @@ const Appointment = ({appointmentSection}) => {
   }, []);
 
   const handleChange = (e) => {
-    console.log(`Field changed: ${e.target.name}, New Value: "${e.target.value}"`);
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     
     if (e.target.name === "departmentId") {
@@ -92,9 +143,7 @@ const Appointment = ({appointmentSection}) => {
 
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
-    console.log("Selected Doctor ID:", doctorId);
     const doctor = doctors.find((doc) => doc.id === doctorId);
-    console.log("Doctor Found:", doctor);
     setSelectedDoctor(doctor || null);
     setAvailableDates(doctor ? doctor.schedule : []);
     setFormData((prev) => ({ ...prev, doctorId, day: "" }));
@@ -123,9 +172,6 @@ const Appointment = ({appointmentSection}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("📌 Form Data Before Submission:", formData);
-    console.log("Phone field value:", `"${formData.phone}"`);
 
     const { departmentId, doctorId, day, patientName, phone } = formData;
 
@@ -161,6 +207,9 @@ const Appointment = ({appointmentSection}) => {
 
       const appointmentData = await response.json();
       
+      // Find the selected day/time slot
+      const selectedSlot = availableDates.find(slot => slot.day === formData.day);
+      
       // Create appointment details for the success modal
       const appointmentDetails = {
         id: appointmentData.id || Math.random().toString(36).substr(2, 9),
@@ -168,10 +217,10 @@ const Appointment = ({appointmentSection}) => {
         phone: formData.phone,
         doctorName: selectedDoctor ? (selectedDoctor.translations[currentLanguage]?.name || selectedDoctor.name) : "",
         departmentName: selectedDepartment ? (selectedDepartment.translations[currentLanguage]?.name || selectedDepartment.name) : "",
-        day: formData.day,
-        timeSlot: availableDates.find(slot => slot.day === formData.day) 
-          ? `${availableDates.find(slot => slot.day === formData.day).startTime} - ${availableDates.find(slot => slot.day === formData.day).endTime}`
-          : "",
+        day: currentLanguage === 'bn' ? getDayName(formData.day, 'bn') : formData.day,
+        timeSlot: selectedSlot ? 
+          `${formatTimeToBD(selectedSlot.startTime, currentLanguage)} - ${formatTimeToBD(selectedSlot.endTime, currentLanguage)}` : 
+          "",
         date: new Date().toISOString().split('T')[0]
       };
       
@@ -198,7 +247,7 @@ const Appointment = ({appointmentSection}) => {
   };
 
   return (
-    <div className="bg-[url('../../public/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
+    <div className="bg-[url('/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
       <Image
         src={waveShape2}
         alt="wave shape"
@@ -251,7 +300,7 @@ const Appointment = ({appointmentSection}) => {
                     <option value="">{t("appointment.selectDay")}</option>
                     {availableDates.map((slot) => (
                       <option key={slot.id} value={slot.day}>
-                        {slot.day} ({slot.startTime} - {slot.endTime})
+                        {currentLanguage === 'bn' ? getDayName(slot.day, 'bn') : slot.day} ({formatTimeToBD(slot.startTime, currentLanguage)} - {formatTimeToBD(slot.endTime, currentLanguage)})
                       </option>
                     ))}
                   </select>
@@ -272,7 +321,14 @@ const Appointment = ({appointmentSection}) => {
         </div>
 
         <div className="hidden lg:block w-1/2">
-          <Image src={appointmentImage} width={500} height={500} style={{width: "100%"}} alt="appointment" />
+          <Image 
+            src={appointmentImage} 
+            width={500} 
+            height={500} 
+            style={{width: "100%"}} 
+            alt="appointment"
+            unoptimized={true}
+          />
         </div>
       </div>
 
@@ -298,7 +354,7 @@ const Appointment = ({appointmentSection}) => {
             >
               <div className="flex justify-between items-center mb-3">
                 <div>
-                  <h4 className="font-bold text-[#24285B] text-lg">Hospital Name</h4>
+                  <h4 className="font-bold text-[#24285B] text-lg">Mukti Hospital</h4>
                   <p className="text-gray-600 text-sm">Your Health, Our Priority</p>
                 </div>
                 <div className="bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded">

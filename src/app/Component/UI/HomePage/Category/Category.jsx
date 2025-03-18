@@ -9,16 +9,19 @@ import Link from "next/link";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
 const Category = ({ departments, locale }) => {
-  console.log("Departments passed to Category:", departments); // Debug the departments prop
-  console.log("Current locale in Category:", locale); // 
+  console.log("Departments passed to Category:", departments); // Debugging
+  console.log("Current locale in Category:", locale); // Debugging
+  
   const { t, i18n } = useTranslation();
+  const currentLanguage = locale || i18n.language || "en"; 
 
-  const currentLanguage = locale || i18n.language || "en"; // Use the passed locale or fallback to i18n language
+  // Show only the first 12 departments
+  const displayedDepartments = departments?.slice(0, 12) || [];
 
-  // If departments are empty, return a loading state or placeholder
   if (!departments || departments.length === 0) {
     return <div className="min-h-[200px] bg-gray-100 animate-pulse"></div>;
   }
+
   return (
     <div className="bg-[#E6F5F3] py-12 lg:py-[100px] px-[10px]">
       <div className="container">
@@ -27,7 +30,7 @@ const Category = ({ departments, locale }) => {
 
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mt-10 mb-10">
           {/* Mapping over departments */}
-          {departments.map((department) => {
+          {displayedDepartments.map((department) => {
             // Set department icon, using fallback image if not available
             const departmentIcon = department.icon
               ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${department.icon}`
