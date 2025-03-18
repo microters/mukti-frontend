@@ -55,7 +55,7 @@ const Register = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "http://localhost:3001";
+        window.location.href = "https://dashboard-muktidigital.netlify.app";
       }, 1000);
     }
   }, []);
@@ -114,7 +114,7 @@ const Register = () => {
       // Check if the user exists first (only for signup tab)
       try {
         // Make an API call to check if user exists
-        const response = await fetch(`http://localhost:5000/api/auth/check-user?mobile=${mobileNumber}`, {
+        const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -193,7 +193,7 @@ const Register = () => {
         // Show loading overlay and redirect
         setIsRedirecting(true);
         setTimeout(() => {
-          window.location.href = `http://localhost:3001?token=${response.token}`;
+          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
         }, 1000);
       } else {
         // If registration doesn't return a token, try to login directly
@@ -210,7 +210,7 @@ const Register = () => {
             
             setIsRedirecting(true);
             setTimeout(() => {
-              window.location.href = `http://localhost:3001?token=${loginResponse.token}`;
+              window.location.href = `https://dashboard-muktidigital.netlify.app?token=${loginResponse.token}`;
             }, 1000);
           } else {
             toast.success("Registered successfully! Please sign in now.");

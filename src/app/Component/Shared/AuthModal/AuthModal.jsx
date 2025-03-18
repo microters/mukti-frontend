@@ -92,7 +92,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
       if (activeTab === "signUp") {
         try {
           // Make an API call to check if user exists
-          const response = await fetch(`http://localhost:5000/api/auth/check-user?mobile=${mobileNumber}`, {
+          const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
