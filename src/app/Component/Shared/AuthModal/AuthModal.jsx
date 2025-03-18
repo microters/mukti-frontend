@@ -88,11 +88,49 @@ const AuthModal = ({ showModal, setShowModal }) => {
 
     setLoading(true);
     try {
+      // Check if the user exists first (only for signup tab)
+      if (activeTab === "signUp") {
+        try {
+          // Make an API call to check if user exists
+          const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          const data = await response.json();
+          
+          // If user exists, show warning and don't send OTP
+          if (response.ok && data.exists) {
+       
+            toast.info("This number is already registered. Redirecting to sign in.");
+
+          setActiveTab("signIn");
+            setLoading(false);
+            return;
+          }
+        } catch (error) {
+          console.log("Error checking user existence:", error);
+          // Continue with OTP sending even if check fails
+        }
+      }
+
+      // Send OTP
       await sendOtp(mobileNumber);
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {
-      toast.error("Failed to send OTP. Try again.");
+      // Check for specific error messages from the server about existing users
+      if (
+        error.response?.data?.message?.toLowerCase().includes("already exists") ||
+        error.response?.data?.error?.toLowerCase().includes("already exists") ||
+        error.response?.status === 409 // Conflict status often used for "already exists"
+      ) {
+        toast.warning("This number is already registered. Please use sign in instead.");
+      } else {
+        toast.error("Failed to send OTP. Try again.");
+      }
     }
     setLoading(false);
   };
@@ -145,35 +183,90 @@ const AuthModal = ({ showModal, setShowModal }) => {
       // Mobile number already has 88 prefix in formData
       const mobileNumber = formData.mobile;
 
-      // Register user and get response with token
-      const response = await registerUser({
-        name: formData.name,
+      console.log("Attempting to register with:", {
+        name: formData.name, 
         mobile: mobileNumber,
-        otp: formData.otp,
+        otpLength: formData.otp.length
       });
-      
-      // Check if registration returns a token
-      if (response && response.token) {
-        // Use login function from AuthContext to update the global auth state
-        login(response.token);
-        toast.success("Registered and logged in successfully!");
-        // Close modal
-        setShowModal(false);
-      } else {
-        // If registration doesn't return a token, switch to sign in tab
-        toast.success("Registered successfully! Please sign in now.");
-        setOtpSent(false);
-        setActiveTab("signIn");
-        // Reset form data
-        setFormData({
-          name: "",
-          mobile: "",
-          otp: "",
+
+      // First check if we can log in directly (user might already exist)
+      try {
+        const loginResponse = await loginUser({
+          mobile: mobileNumber,
+          otp: formData.otp,
         });
+        
+        if (loginResponse && loginResponse.token) {
+          // User already exists and login successful
+          login(loginResponse.token);
+          toast.success("Login successful!");
+          setShowModal(false);
+          return; // Exit the function
+        }
+      } catch (loginError) {
+        console.log("Login before registration failed, continuing with registration");
+      }
+
+      // TEMPORARY SOLUTION WHILE SERVER IS HAVING ISSUES
+      // Instead of actual registration, show a registration error
+      try {
+        const registerResponse = await registerUser({
+          name: formData.name,
+          mobile: mobileNumber,
+          otp: formData.otp,
+        });
+        
+        console.log("Registration response:", registerResponse);
+        
+        // If registration somehow succeeds, attempt login
+        const loginResponse = await loginUser({
+          mobile: mobileNumber,
+          otp: formData.otp,
+        });
+        
+        if (loginResponse && loginResponse.token) {
+          login(loginResponse.token);
+          toast.success("Registration and login successful!");
+          setShowModal(false);
+        }
+      } catch (registerError) {
+        console.error("Registration error:", registerError);
+        
+        // HERE IS THE TEMPORARY FIX FOR SERVER ERRORS
+        // Check if this is a 500 server error
+        if (registerError.response && registerError.response.status === 500) {
+          // Try to login anyway - the user might already exist despite the 500 error
+          try {
+            const loginResponse = await loginUser({
+              mobile: mobileNumber,
+              otp: formData.otp,
+            });
+            
+            if (loginResponse && loginResponse.token) {
+              login(loginResponse.token);
+              toast.success("Login successful!");
+              setShowModal(false);
+              return; // Exit early if login works
+            }
+          } catch (finalLoginError) {
+            // If all attempts fail, show specific error message
+            toast.error("Registration failed. Please try again later or contact support.");
+            console.error("All authentication attempts failed");
+          }
+        } else {
+          // For other error types, show the specific error
+          const errorMessage = 
+            registerError.response?.data?.message || 
+            registerError.response?.data?.error || 
+            registerError.message || 
+            "Registration failed";
+          
+          toast.error(errorMessage);
+        }
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || "Registration failed");
-      console.error("Registration error:", error);
+      console.error("Unexpected error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
     setLoading(false);
   };

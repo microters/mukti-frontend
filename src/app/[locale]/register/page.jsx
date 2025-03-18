@@ -1,205 +1,3 @@
-// "use client";
-// import { useState } from "react";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import { registerUser, sendOtp } from "../utils/api";
-// import Link from "next/link";
-// import logo from "@/assets/images/logo-black.png";
-// import backgroundImage from "@/assets/images/authBG.png";
-// import Image from "next/image";
-
-// const Register = () => {
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     mobile: "",
-//     otp: "",
-//   });
-
-//   const [otpSent, setOtpSent] = useState(false);
-//   const [loading, setLoading] = useState(false);
-
-//   // ✅ Handle Input Change
-//   const handleChange = (e) => {
-//     let { name, value } = e.target;
-
-//     if (name === "mobile") {
-//         // Ensure mobile number starts with "88"
-//         if (!value.startsWith("88")) {
-//             value = "88" + value.replace(/^88/, ""); // If the user does not enter "88", automatically add it
-//         }
-
-//         // Allow only numeric values
-//         value = value.replace(/\D/g, ""); // Remove any non-numeric characters
-
-//         // Limit length to 13 digits (format: 8801XXXXXXXX)
-//         if (value.length > 13) {
-//             value = value.slice(0, 13); // Restrict the mobile number length to 13 digits
-//         }
-//     }
-
-//     // Update the state with the new value
-//     setFormData({ ...formData, [name]: value });
-// };
-
-
-//   // ✅ Handle Send OTP
-//   const handleSendOtp = async (e) => {
-//     e.preventDefault();
-
-//     if (formData.mobile.length < 10) {
-//       toast.error("Enter a valid mobile number");
-//       return;
-//     }
-
-//     setLoading(true);
-//     try {
-//       await sendOtp(formData.mobile);
-//       setOtpSent(true);
-//       toast.success("OTP sent successfully!");
-//     } catch (error) {
-//       toast.error("Failed to send OTP. Try again.");
-//     }
-//     setLoading(false);
-//   };
-
-//   // ✅ Handle Registration
-//   const handleRegister = async (e) => {
-//     e.preventDefault();
-
-//     if (formData.otp.length !== 6) {
-//       toast.error("Enter a valid 6-digit OTP");
-//       return;
-//     }
-
-//     setLoading(true);
-//     try {
-//       await registerUser({
-//         name: formData.name,
-//         mobile: formData.mobile,
-//         otp: formData.otp,
-//       });
-//       toast.success("Registered successfully! You can now log in.");
-//       window.location.href = "/login";
-//     } catch (error) {
-//       toast.error(error.response?.data?.error || "Registration failed");
-//     }
-//     setLoading(false);
-//   };
-
-//   return (
-//     <div className="w-full h-screen overflow-auto grid grid-cols-1 md:grid-cols-2">
-//       <div className="hidden md:flex justify-center items-center p-8">
-//         {/* <Image className="mx-auto hidden md:block" src={logo} alt="Logo" /> */}
-//         <Image
-//           className="mx-auto hidden md:block"
-//           src={backgroundImage}
-//           alt="Logo"
-//         />
-//       </div>
-//       <div className="max-w-[500px] w-full px-5 py-8 flex flex-col justify-center mx-auto">
-//         <Image className="block mx-auto md:hidden" src={logo} alt="Logo" />
-//         <div className="text-center space-y-3">
-//           <h1 className="text-4xl text-black font-jost font-bold">
-//             {otpSent ? "Verify OTP" : "Sign Up"}
-//           </h1>
-//           <p className="text-base text-slate-400 font-poppins">
-//             {otpSent
-//               ? "Enter the OTP sent to your email."
-//               : "Create an account to get started."}
-//           </p>
-//         </div>
-//         {/* OTP Form */}
-//         {!otpSent ? (
-//           <form onSubmit={handleSendOtp} className="space-y-4">
-//             <label
-//               htmlFor="name"
-//               className="text-slate-800 font-jost font-medium text-base block"
-//             >
-//               Full Name
-//             </label>
-//             <input
-//               type="text"
-//               name="name"
-//               value={formData.name}
-//               onChange={handleChange}
-//               placeholder="Full Name"
-//               className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
-//               required
-//             />
-//             <label
-//               htmlFor="phone"
-//               className="text-slate-800  font-jost font-medium text-base block"
-//             >
-//               Phone
-//             </label>
-//             <input
-//               type="tel"
-//               name="mobile"
-//               value={formData.mobile}
-//               onChange={handleChange}
-//               placeholder="8801XXXXXXXX"
-//               className="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300"
-//               maxLength="13"
-//               required
-//             />
-
-//             <button
-//               type="submit"
-//               className="w-full bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition"
-//               disabled={loading}
-//             >
-//               {loading ? "Sending..." : "Send OTP"}
-//             </button>
-//           </form>
-//         ) : (
-//           <form onSubmit={handleRegister} className="space-y-4">
-//             <input
-//               type="text"
-//               name="otp"
-//               value={formData.otp}
-//               onChange={handleChange}
-//               placeholder="Enter OTP"
-//               className="w-full p-3 border rounded-lg focus:ring focus:ring-green-300"
-//               required
-//             />
-//             <button
-//               type="submit"
-//               className="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition"
-//               disabled={loading}
-//             >
-//               {loading ? "Verifying..." : "Verify & Register"}
-//             </button>
-//           </form>
-//         )}
-//         <p className="text-center mt-4 font-jost font-normal text-base text-M-text-color uppercase">
-//           Already Registered?{" "}
-//           <Link
-//             href={"/signin"}
-//             className="text-M-heading-color font-medium hover:underline"
-//           >
-//             Sign In
-//           </Link>
-//         </p>
-//         {/* Resend OTP */}
-//         {otpSent && (
-//           <p className="text-center mt-4 text-sm">
-//             Didn't receive OTP?{" "}
-//             <button
-//               onClick={handleSendOtp}
-//               className="text-blue-500 hover:underline"
-//             >
-//               Resend OTP
-//             </button>
-//           </p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Register;
-
-
 "use client";
 import React, { useEffect, useState } from "react";
 import logo from "@/assets/images/logo-black.png";
@@ -210,24 +8,63 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerUser, sendOtp, loginUser } from "@/app/[locale]/utils/api";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
+import { useRouter } from "next/navigation";
+
+// Loading Component
+const LoadingOverlay = () => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90">
+    <div className="flex flex-col items-center">
+      <div className="animate-spin">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="50" 
+          height="50" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          className="text-M-primary-color"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+      </div>
+      <p className="mt-4 text-M-primary-color font-medium">
+        Redirecting to Dashboard...
+      </p>
+    </div>
+  </div>
+);
 
 const Register = () => {
+  const router = useRouter(); // Initialize router
   const { login } = useAuth();
-  const [activeTab, setActiveTab] = useState("signIn");
+  const [activeTab, setActiveTab] = useState("signUp");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      // Show loading overlay
+      setIsRedirecting(true);
+      
+      // Redirect to dashboard after a short delay to show loading
+      setTimeout(() => {
+        window.location.href = "https://dashboard-muktidigital.netlify.app";
+      }, 1000);
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
     otp: "",
   });
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    setOtpSent(false); // Reset OTP state when switching tabs
-  };
 
   // Handle input change for all form fields
   const handleChange = (e) => {
@@ -259,6 +96,11 @@ const Register = () => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
 
+    if (!formData.name.trim()) {
+      toast.error("Please enter your full name");
+      return;
+    }
+
     if (formData.mobile.length < 10) {
       toast.error("Enter a valid mobile number");
       return;
@@ -269,46 +111,53 @@ const Register = () => {
 
     setLoading(true);
     try {
+      // Check if the user exists first (only for signup tab)
+      try {
+        // Make an API call to check if user exists
+        const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const data = await response.json();
+        
+        // If user exists, show warning and redirect to sign in page
+        if (response.ok && data.exists) {
+          toast.warning("This number is already registered. Redirecting to sign in.");
+          
+          setTimeout(() => {
+            router.push('/signin');
+          }, 1500);
+          
+          setLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.log("Error checking user existence:", error);
+        // Continue with OTP sending even if check fails
+      }
+
+      // Send OTP
       await sendOtp(mobileNumber);
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {
-      toast.error("Failed to send OTP. Try again.");
-    }
-    setLoading(false);
-  };
-
-  // Handle Login
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    if (formData.otp.length !== 6) {
-      toast.error("Enter a valid 6-digit OTP");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Get token from login API
-      const response = await loginUser({
-        mobile: formData.mobile,
-        otp: formData.otp,
-      });
-
-      // Check if response contains token
-      if (response && response.token) {
-        // Use login function from AuthContext to update the global auth state
-        login(response.token);
-        toast.success("Logged in successfully!");
-        // Close modal
-        setShowModal(false);
-        window.location.href = "/";
+      // Check for specific error messages from the server about existing users
+      if (
+        error.response?.data?.message?.toLowerCase().includes("already registered") ||
+        error.response?.data?.error?.toLowerCase().includes("already exists") ||
+        error.response?.status === 409 // Conflict status often used for "already exists"
+      ) {
+        toast.warning("This number is already registered. Redirecting to sign in.");
+        
+        setTimeout(() => {
+          router.push('/signin');
+        }, 1500);
       } else {
-        throw new Error("No authentication token received");
+        toast.error("Failed to send OTP. Try again.");
       }
-    } catch (error) {
-      toast.error(error.response?.data?.error || "Login failed");
-      console.error("Login error:", error);
     }
     setLoading(false);
   };
@@ -337,29 +186,69 @@ const Register = () => {
       // Check if registration returns a token
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
+        localStorage.setItem("authToken", response.token); // Token save localStorage-এ
         login(response.token);
         toast.success("Registered and logged in successfully!");
-        window.location.href = "/";
-        // Close modal
-        setShowModal(false);
+        
+        // Show loading overlay and redirect
+        setIsRedirecting(true);
+        setTimeout(() => {
+          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
+        }, 1000);
       } else {
-        // If registration doesn't return a token, switch to sign in tab
-        toast.success("Registered successfully! Please sign in now.");
-        setOtpSent(false);
-        setActiveTab("signIn");
-        // Reset form data
-        setFormData({
-          name: "",
-          mobile: "",
-          otp: "",
-        });
+        // If registration doesn't return a token, try to login directly
+        try {
+          const loginResponse = await loginUser({
+            mobile: mobileNumber,
+            otp: formData.otp
+          });
+          
+          if (loginResponse && loginResponse.token) {
+            localStorage.setItem("authToken", loginResponse.token);
+            login(loginResponse.token);
+            toast.success("Registered and logged in successfully!");
+            
+            setIsRedirecting(true);
+            setTimeout(() => {
+              window.location.href = `https://dashboard-muktidigital.netlify.app?token=${loginResponse.token}`;
+            }, 1000);
+          } else {
+            toast.success("Registered successfully! Please sign in now.");
+            setTimeout(() => {
+              router.push('/signin');
+            }, 1500);
+          }
+        } catch (loginError) {
+          console.error("Auto-login error:", loginError);
+          toast.success("Registered successfully! Please sign in now.");
+          setTimeout(() => {
+            router.push('/signin');
+          }, 1500);
+        }
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || "Registration failed");
-      console.error("Registration error:", error);
+      // Check if error indicates user already exists
+      if (
+        error.response?.data?.error?.toLowerCase().includes("already registered") ||
+        error.response?.status === 409
+      ) {
+        toast.warning("This number is already registered. Redirecting to sign in.");
+        
+        setTimeout(() => {
+          router.push('/signin');
+        }, 1500);
+      } else {
+        toast.error(error.response?.data?.error || "Registration failed");
+        console.error("Registration error:", error);
+      }
     }
     setLoading(false);
   };
+
+  // If redirecting, show loading overlay
+  if (isRedirecting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <div className="block w-full py-10 md:py-24 px-2">
@@ -376,7 +265,7 @@ const Register = () => {
             <li>
               <Link
                 href={"/signin"}
-                className=" w-full block cursor-pointer py-2 px-4 text-center"
+                className="w-full block cursor-pointer py-2 px-4 text-center"
               >
                 Sign In
               </Link>
@@ -384,7 +273,7 @@ const Register = () => {
             <li>
               <Link
                 href={"/register"}
-                className=" w-full block cursor-pointer py-2 px-4 text-center border-b-4 border-M-primary-color text-M-primary-color font-medium"
+                className="w-full block cursor-pointer py-2 px-4 text-center border-b-4 border-M-primary-color text-M-primary-color font-medium"
               >
                 Sign Up
               </Link>
@@ -401,11 +290,10 @@ const Register = () => {
                 Verify OTP
               </h2>
               <p className="text-center text-slate-400 mb-4">
-                Enter the OTP sent to your{" "}
-                {activeTab === "signUp" ? "email" : "phone"}.
+                Enter the OTP sent to your phone.
               </p>
               <form
-                onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
+                onSubmit={handleRegister}
                 className="space-y-4"
               >
                 <input
@@ -422,11 +310,7 @@ const Register = () => {
                   className="w-full bg-M-primary-color text-white p-3 rounded-md hover:bg-M-heading-color transition-all duration-300"
                   disabled={loading}
                 >
-                  {loading
-                    ? "Verifying..."
-                    : activeTab === "signUp"
-                      ? "Verify & Register"
-                      : "Verify & Login"}
+                  {loading ? "Verifying..." : "Verify & Register"}
                 </button>
               </form>
               {/* Resend OTP */}
