@@ -25,7 +25,7 @@ const Category = ({ departments, locale }) => {
         {/* Section Heading */}
         <SectionHeading align="center" heading={t('category.title')} subtitle={t('category.subtitle')} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mt-10 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mt-10 mb-10">
           {/* Mapping over departments */}
           {departments.map((department) => {
             // Set department icon, using fallback image if not available
@@ -37,7 +37,7 @@ const Category = ({ departments, locale }) => {
             const departmentName = department.translations[currentLanguage]?.name || department.translations.en.name;
 
             return (
-              <div key={department.id} className="bg-white group text-center py-8 px-6 rounded-lg overflow-hidden relative">
+              <div key={department.id} className="bg-white group text-center py-8 px-3 md:px-6 rounded-lg overflow-hidden relative">
                 <Image
                   src={shape}
                   alt="Shape"
@@ -54,7 +54,7 @@ const Category = ({ departments, locale }) => {
                   />
                 </div>
                 {/* Department Name */}
-                <h3 className="text-xl text-M-heading-color font-bold font-jost">
+                <h3 className="text-base md:text-lg text-M-heading-color font-bold font-jost break-words">
                   {departmentName}
                 </h3>
   

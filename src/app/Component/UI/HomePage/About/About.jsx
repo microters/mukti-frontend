@@ -30,11 +30,11 @@ const About = ({ aboutSection }) => {
         className="hidden xl:block absolute right-0 bottom-[10%] -z-10 animate-spin"
       />
 
-      <div className="w-full max-w-[500px] mx-auto lg:w-5/12 space-y-6 relative before:size-8 before:bg-M-secondary-color before:rounded-md before:rotate-45 before:absolute before:top-[50%] before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-[-1]">
+      <div className="w-full max-w-[500px] mx-auto lg:w-5/12 md:space-y-6 relative before:size-0 lg:before:size-8 before:bg-M-secondary-color before:rounded-md before:rotate-45 before:absolute before:top-[50%] before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-[-1]">
         <Image src={aboutShape2} alt="about shape" className="absolute left-0 top-6 -z-10 animate-spin hidden md:inline-block" />
         <Image src={aboutShape1} alt="about shape" className="absolute left-0 bottom-[7%] -z-10 hidden md:inline-block" />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-baseline">
+        <div className="grid-cols-1 md:grid-cols-2 gap-6 items-baseline hidden md:grid">
           {formattedImages?.[2] ? (
             <Image 
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[2]}`} 
@@ -55,11 +55,11 @@ const About = ({ aboutSection }) => {
               height={600} 
               style={{ width: "100%" }} 
               alt="about image" 
-              className="h-full"
+              className="h-full hidden md:block"
               unoptimized={true}
             />
           ) : (
-            <div className="bg-gray-200 h-64 w-full"></div>
+            <div className="bg-gray-200 h-64 w-full hidden md:block"></div>
           )}
         </div>
 
@@ -71,11 +71,11 @@ const About = ({ aboutSection }) => {
               height={600} 
               style={{ width: "100%" }} 
               alt="about image" 
-              className="pb-10 pl-5"
+              className="pb-10 pl-5 hidden md:block"
               unoptimized={true}
             />
           ) : (
-            <div className="pb-10 pl-5 bg-gray-200 h-64 w-full"></div>
+            <div className="pb-10 pl-5 bg-gray-200 h-64 w-full hidden md:block"></div>
           )}
           <div className="border border-M-primary-color h-[calc(100%-20px)] flex items-center justify-center rounded-3xl rounded-br-none relative before:w-full before:h-full before:absolute before:bg-[#E6F5F3] before:-top-[10px] before:-left-[10px] before:rounded-3xl before:rounded-br-none before:-z-10 ml-3 mt-2"> 
             <div className="text-center relative py-20">

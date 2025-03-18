@@ -101,7 +101,7 @@ const BestDoctors = ({ doctors }) => {
                       key={doctor.id}
                       className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between"
                     >
-                      <div className="flex py-7 px-6 gap-7">
+                      <div className="flex flex-col md:flex-row py-7 px-6 gap-7">
                         {/* Doctor Image */}
                         <div className="border-2 border-transparent w-24 h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
                           <Image

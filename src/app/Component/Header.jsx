@@ -84,7 +84,12 @@ const Header = () => {
     { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
     { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
-  console.log("hello " + departments.length);
+  
+  const handleNavigation = (href) => {
+    setOpenMenu(false);
+    setOpenIndex(null);
+    router.push(href);
+  };
 
   return (
     <div>
@@ -103,7 +108,7 @@ const Header = () => {
               <li className="hidden lg:block">
                 <Link
                   href={"tel:+880 1601 666-893"}
-                  className="flex gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 py-1 rounded-md font-jost font-normal text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300"
+                  className="flex gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 py-1 rounded-md font-jost font-normal text-base text-white hover:border-M-primary-color transition-all duration-300"
                 >
                   <Image src={callIcon} alt="call" width={20} />
                   <span>+880 1601 666-893</span>
@@ -111,14 +116,14 @@ const Header = () => {
               </li>
               <li>
                 {/* Language switcher */}
-                <div className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300">
+                {/* <div className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300">
                   <Icon
                     icon="fluent:globe-20-regular"
                     width="20"
                     className="text-white"
                   />
+                </div> */}
                   <LanguageChanger />
-                </div>
               </li>
             </ul>
           </div>
@@ -215,7 +220,7 @@ const Header = () => {
           {user && (
             <div className="relative">
               <button
-                className="flex items-center gap-3 rounded-md transition-all border border-M-primary-color/80 py-[10px] px-2"
+                className="flex items-center gap-3 rounded-md transition-all border border-M-primary-color/80 py-[7px] px-2"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 {user.profilePhoto ? (
@@ -288,83 +293,6 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      {/* <div className="container mx-auto px-2 py-3 flex lg:hidden justify-between items-center relative">
-        <button onClick={toggleMenu}>
-          <Icon
-            icon={openMenu ? "mingcute:close-line" : "mynaui:menu"}
-            width="30"
-          />
-        </button>
-        <div className="flex items-center gap-3">
-          <Link
-            href={"#"}
-            className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
-          >
-            Appointment <Icon icon="basil:arrow-right-solid" width="24" />
-          </Link>
-
-          <button
-            onClick={() => setShowModal(true)}
-            className="bg-M-primary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-3 lg:px-4 lg:py-3 inline-flex gap-2 items-center transition-all duration-300 hover:bg-M-heading-color"
-          >
-            <Icon icon="uiw:login" width="15" />
-            <span>{t("header.signIn")}</span>
-          </button>
-        </div>
-
-        <nav
-          className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
-        >
-          <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
-            {menuItems.map((item, index) => (
-              <li
-                key={index}
-                className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
-              >
-                <Link
-                  href={item.href || "#"} // Ensure href is never undefined
-                  onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
-                  className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
-                >
-                  {item.label}
-                  {item.hasSubMenu && (
-                    <Icon
-                      icon="iconamoon:arrow-down-2-bold"
-                      width="20"
-                      className={`ml-1 transition-transform ${openIndex === index ? "rotate-180" : ""}`}
-                    />
-                  )}
-                </Link>
-                {item.hasSubMenu && (
-                  <ul
-                    className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-auto" : "max-h-0"}`}
-                  >
-                    {item.subMenus.map((subItem, subIndex) => (
-                      <li key={subIndex}>
-                        <Link
-                          href={subItem.href || "#"} // Ensure href is never undefined
-                          className="flex items-center gap-3 pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
-                        >
-                          {subItem.depIcon && (
-                            <Image
-                              src={subItem.depIcon}
-                              alt="huy"
-                              width={20}
-                              height={20}
-                            />
-                          )}{" "}
-                          {subItem.label} {subItem.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div> */}
       {/* Mobile Menu */}
       <div className="border-b border-M-text-color/10">
         <div className="container mx-auto px-2 py-3 flex lg:hidden justify-between items-center relative">
@@ -468,8 +396,7 @@ const Header = () => {
                   className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
                 >
                   <Link
-                    href={item.href || "#"} // Ensure href is never undefined
-                    onClick={(e) => toggleSubMenu(index, item.hasSubMenu, e)}
+                    href={item.href || "#"} onClick={(e) => item.hasSubMenu ? toggleSubMenu(index, item.hasSubMenu, e) : handleNavigation(item.href)}
                     className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                   >
                     {item.label}
