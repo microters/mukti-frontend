@@ -6,9 +6,36 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { registerUser, sendOtp, loginUser } from "@/app/[locale]/utils/api";
+import { sendOtp, loginUser } from "@/app/[locale]/utils/api";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
-import { useRouter } from "next/navigation"; // Import Next.js router for navigation
+import { useRouter } from "next/navigation";
+
+// Loading Component
+const LoadingOverlay = () => (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90">
+    <div className="flex flex-col items-center">
+      <div className="animate-spin">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="50" 
+          height="50" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          className="text-M-primary-color"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+        </svg>
+      </div>
+      <p className="mt-4 text-M-primary-color font-medium">
+        Redirecting to Dashboard...
+      </p>
+    </div>
+  </div>
+);
 
 const Signin = () => {
   const router = useRouter(); // Initialize router
@@ -17,17 +44,26 @@ const Signin = () => {
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // Check if user is already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      // Show loading overlay
+      setIsRedirecting(true);
+      
+      // Redirect to dashboard after a short delay to show loading
+      setTimeout(() => {
+        window.location.href = "http://localhost:3001";
+      }, 1000);
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
-    name: "",
     mobile: "",
     otp: "",
   });
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    setOtpSent(false); // Reset OTP state when switching tabs
-  };
 
   // Handle input change for all form fields
   const handleChange = (e) => {
@@ -98,14 +134,15 @@ const Signin = () => {
       // Check if response contains token
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
-        
         localStorage.setItem("authToken", response.token); // Token save localStorage-এ
         login(response.token);
         toast.success("Logged in successfully!");
         
-        // Redirect to homepage
-        window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
-
+        // Show loading overlay and redirect
+        setIsRedirecting(true);
+        setTimeout(() => {
+          window.location.href = `http://localhost:3001?token=${response.token}`;
+        }, 1000);
       } else {
         throw new Error("No authentication token received");
       }
@@ -116,53 +153,10 @@ const Signin = () => {
     setLoading(false);
   };
 
-  // Handle Registration
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
-    if (formData.otp.length !== 6) {
-      toast.error("Enter a valid 6-digit OTP");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // Mobile number already has 88 prefix in formData
-      const mobileNumber = formData.mobile;
-
-      // Register user and get response with token
-      const response = await registerUser({
-        name: formData.name,
-        mobile: mobileNumber,
-        otp: formData.otp,
-      });
-
-      // Check if registration returns a token
-      if (response && response.token) {
-        // Use login function from AuthContext to update the global auth state
-        login(response.token);
-        toast.success("Registered and logged in successfully!");
-        
-        // Redirect to homepage
-        router.push("/");
-      } else {
-        // If registration doesn't return a token, switch to sign in tab
-        toast.success("Registered successfully! Please sign in now.");
-        setOtpSent(false);
-        setActiveTab("signIn");
-        // Reset form data
-        setFormData({
-          name: "",
-          mobile: "",
-          otp: "",
-        });
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.error || "Registration failed");
-      console.error("Registration error:", error);
-    }
-    setLoading(false);
-  };
+  // If redirecting, show loading overlay
+  if (isRedirecting) {
+    return <LoadingOverlay />;
+  }
 
   return (
     <div className="block w-full py-10 md:py-24 px-2">
@@ -204,11 +198,10 @@ const Signin = () => {
                 Verify OTP
               </h2>
               <p className="text-center text-slate-400 mb-4">
-                Enter the OTP sent to your{" "}
-                {activeTab === "signUp" ? "email" : "phone"}.
+                Enter the OTP sent to your phone.
               </p>
               <form
-                onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
+                onSubmit={handleLogin}
                 className="space-y-4"
               >
                 <input
@@ -225,11 +218,7 @@ const Signin = () => {
                   className="w-full bg-M-primary-color text-white p-3 rounded-md hover:bg-M-heading-color transition-all duration-300"
                   disabled={loading}
                 >
-                  {loading
-                    ? "Verifying..."
-                    : activeTab === "signUp"
-                      ? "Verify & Register"
-                      : "Verify & Login"}
+                  {loading ? "Verifying..." : "Verify & Login"}
                 </button>
               </form>
               {/* Resend OTP */}
