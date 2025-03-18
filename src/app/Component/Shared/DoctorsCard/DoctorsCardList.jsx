@@ -41,7 +41,7 @@ const DoctorsCardList = ({ doctor }) => {
         />
       </Link>
 
-      <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 items-center">
+      <div className="grid grid-cols-1 w-full lg:w-auto lg:grid-cols-2 gap-10 ">
         {/* Left Section */}
         <div className="flex-1 relative before:hidden lg:before:block before:w-[1px] before:h-1/4 before:bg-slate-300 before:absolute before:-right-5 before:top-1/2 before:-translate-y-1/2">
           <ul className="flex flex-wrap items-center gap-4 mb-5">
@@ -90,6 +90,7 @@ const DoctorsCardList = ({ doctor }) => {
 
         {/* Right Section (Availability & Booking) */}
         <div className="txt-left lg:text-center">
+          <h4 className="mb-3 font-jost text-lg text-black">Weekly Schedule</h4>
           {doctor.schedule && doctor.schedule.length > 0 ? (
             doctor.schedule.map((slot, index) => {
               // Convert time to 12-hour format using toLocaleTimeString
@@ -104,7 +105,7 @@ const DoctorsCardList = ({ doctor }) => {
                 <div key={index} className="mb-2">
                   <h4
                     key={index}
-                    className="font-jost font-bold text-base text-M-heading-color"
+                    className="font-jost font-bold text-base text-black flex items-center justify-between gap-3 bg-M-section-bg/50 py-2 px-3 rounded-md"
                   >
                     {slot.day} :{" "}
                     <span className=" inline-block font-jost font-normal text-sm text-slate-600">
@@ -126,7 +127,7 @@ const DoctorsCardList = ({ doctor }) => {
             textColor="text-white"
             borderColor="border-M-primary-color"
             alignment="center"
-            padding="py-2 px-3 xl:py-3 xl:px-5"
+            padding="py-2 px-3 xl:py-3 xl:px-5 mt-2"
           />
         </div>
       </div>
