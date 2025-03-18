@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import DoctorsCardGrid from "@/app/Component/Shared/DoctorsCard/DoctorsCardGrid";
 import DoctorsCardList from "@/app/Component/Shared/DoctorsCard/DoctorsCardList";
 import Image from "next/image";
@@ -22,6 +22,10 @@ const DoctorsList = ({ doctors }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const itemsPerPage = 4;
+  const [ulHeightSpecialty, setUlHeightSpecialty] = useState(0);
+  const [ulHeightGender, setUlHeightGender] = useState(0);
+  const ulRefSpecialty = useRef(null);
+  const ulRefGender = useRef(null);
 
   // ✅ Extract unique specialties & genders from API data
   const specialtyOptions = [
@@ -32,21 +36,15 @@ const DoctorsList = ({ doctors }) => {
     ...new Set(doctors.map((d) => d.translations.en.gender)),
   ];
 
-  // const filteredDoctors =
-  //   Object.keys(selectedSpecialties).length === 0 &&
-  //   Object.keys(selectedGenders).length === 0
-  //     ? doctors // If no filters, show all doctors
-  //     : doctors.filter((doctor) => {
-  //         const specialtyMatch =
-  //           Object.keys(selectedSpecialties).length === 0 ||
-  //           selectedSpecialties[doctor.translations.en.department];
-
-  //         const genderMatch =
-  //           Object.keys(selectedGenders).length === 0 ||
-  //           selectedGenders[doctor.translations.en.gender];
-
-  //         return specialtyMatch && genderMatch;
-  //       });
+  // Measure height of the UL element
+  useEffect(() => {
+    if (ulRefSpecialty.current) {
+      setUlHeightSpecialty(ulRefSpecialty.current.scrollHeight);
+    }
+    if (ulRefGender.current) {
+      setUlHeightGender(ulRefGender.current.scrollHeight);
+    }
+  }, [specialtyOptions, genderOptions]);
 
   const filteredDoctors = doctors.filter((doctor) => {
     const hasSelectedSpecialties = Object.keys(selectedSpecialties).some(
@@ -62,21 +60,24 @@ const DoctorsList = ({ doctors }) => {
     }
 
     const specialtyMatch =
-    !hasSelectedSpecialties ||
-    selectedSpecialties[doctor.translations[currentLanguage]?.department];
+      !hasSelectedSpecialties ||
+      selectedSpecialties[doctor.translations[currentLanguage]?.department];
 
-  const genderMatch =
-    !hasSelectedGenders || selectedGenders[doctor.translations[currentLanguage]?.gender];
+    const genderMatch =
+      !hasSelectedGenders ||
+      selectedGenders[doctor.translations[currentLanguage]?.gender];
 
-  return specialtyMatch && genderMatch;
+    return specialtyMatch && genderMatch;
   });
 
   // ✅ Sorting Logic (applies AFTER filtering)
   const sortedDoctors = [...filteredDoctors].sort((a, b) => {
     const nameA = a.translations[currentLanguage]?.name.toLowerCase();
     const nameB = b.translations[currentLanguage]?.name.toLowerCase();
-    const experienceA = parseInt(a.translations[currentLanguage]?.yearsOfExperience) || 0;
-    const experienceB = parseInt(b.translations[currentLanguage]?.yearsOfExperience) || 0;
+    const experienceA =
+      parseInt(a.translations[currentLanguage]?.yearsOfExperience) || 0;
+    const experienceB =
+      parseInt(b.translations[currentLanguage]?.yearsOfExperience) || 0;
 
     switch (sortOption) {
       case "name-asc":
@@ -237,10 +238,14 @@ const DoctorsList = ({ doctors }) => {
               >
                 Specialty
                 <span>
-                  <Icon icon="solar:alt-arrow-down-linear" width="24" />
+                  <Icon icon="solar:alt-arrow-down-linear" width="24" className={`transition-all duration-300 ${isSpecialtiesOpen ? "-rotate-180" : "" } `} />
                 </span>
               </h3>
-              <ul className={`px-4 transition-all duration-300 overflow-hidden ${isSpecialtiesOpen ? "h-auto" : "h-0"}`}>
+              <ul
+                ref={ulRefSpecialty}
+                className="px-4 transition-all duration-300 overflow-hidden"
+                style={{ height: isSpecialtiesOpen ? `${ulHeightSpecialty}px` : "0px" }}
+              >
                 {specialtyOptions.map((item) => (
                   <li
                     key={item}
@@ -252,7 +257,7 @@ const DoctorsList = ({ doctors }) => {
                     }`}
                   >
                     <span className="flex gap-3 items-center font-jost font-normal">
-                      {item}
+                       {item}
                     </span>
                     {selectedSpecialties[item] ? (
                       <Icon
@@ -279,11 +284,13 @@ const DoctorsList = ({ doctors }) => {
               >
                 Gender
                 <span>
-                  <Icon icon="solar:alt-arrow-down-linear" width="24" />
+                  <Icon icon="solar:alt-arrow-down-linear" width="24" className={`transition-all duration-300 ${isGendersOpen ? "-rotate-180" : "" } `} />
                 </span>
               </h3>
               <ul
-                className={`px-4 transition-all duration-300 overflow-hidden ${isGendersOpen ? "h-auto" : "h-0"}`}
+                ref={ulRefGender}
+                className="px-4 transition-all duration-300 overflow-hidden"
+                style={{ height: isGendersOpen ? `${ulHeightGender}px` : "0px" }}
               >
                 {genderOptions.map((item) => (
                   <li
