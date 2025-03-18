@@ -1,5 +1,4 @@
 'use client'
-
 import Image from "next/image";
 import React from "react";
 import Skeleton from "react-loading-skeleton";
@@ -59,7 +58,7 @@ const Treatment = ({ departments }) => {
                       alt={department.translations[i18n.language]?.name}
                       width={80}
                       height={80}
-                      className="rounded-full object-cover"
+                      className="object-cover"
                       unoptimized
                     />
                   </div>
