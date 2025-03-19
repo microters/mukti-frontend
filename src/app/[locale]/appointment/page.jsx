@@ -85,6 +85,10 @@ const Appointment = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // formatShortWeekdays = () => {
+  //   value => ['S', 'M', 'T', 'W', 'T', 'F', 'S'][value.getDay()]
+  // }
+
   return (
     <div>
       <CommonHero pageName="Appointment" />
@@ -249,7 +253,7 @@ const Appointment = () => {
                         onChange={onChange}
                         value={value}
                         minDate={new Date()}
-                        formatShortWeekday={this.formatShortWeekdays}
+                        formatShortWeekday={this.formatShortWeekday}
                         tileDisabled={
                           ({ date, view }) =>
                             view === "month" &&
