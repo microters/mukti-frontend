@@ -28,6 +28,26 @@ export const fetchDepartments = async (language = 'en') => {
   }
 };
 
+// ✅ Fetch a specific department by slug with language support
+export const fetchDepartmentBySlug = async (slug, language = 'en') => {
+  try {
+    if (!slug) {
+      console.warn("⚠️ Missing slug parameter.");
+      return null;
+    }
+
+    // Make the API call with the slug and language parameter
+    const response = await apiClient.get(`/api/department/slug/${slug}?lang=${language}`);
+    console.log(response.data)
+
+    return response.data || null; // Return the department data if available
+  } catch (error) {
+    // Log the error message in case of failure
+    console.error(`❌ Error fetching department (${slug}):`, error.response?.data || error.message);
+    return null; // Return null if an error occurs
+  }
+};
+
 
 
 

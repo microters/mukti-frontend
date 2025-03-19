@@ -1,15 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-
-import searchIcon from "@/assets/images/search.png";
-import departmentIcon from "@/assets/images/department.png";
-import doctorIcon from "@/assets/images/doctor.png";
 import tabletIcon from "@/assets/images/tablet.png";
 import injectionIcon from "@/assets/images/injection.png";
 import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
 import Link from "next/link";
+import SearchField from "../Shared/SearchField/SearchField";
 
 const HeroInnerPage = () => {
   return (
@@ -53,71 +49,7 @@ const HeroInnerPage = () => {
           <h1 className="font-jost font-bold !leading-[1.4] text-3xl md:text-6xl text-white max-w-[724px] mx-auto tracking-[4px] ">
             Doctors List
           </h1>
-          <form className="mt-8 bg-white/10 p-4 rounded-md">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-between items-center bg-white px-8 py-7 lg:py-3 rounded-md">
-              <div className="flex items-center gap-2 relative before:hidden lg:before:block before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
-                <Image src={searchIcon} alt="searchIcon" className="w-6" />
-                <input
-                  type="text"
-                  placeholder="Search Specialties..."
-                  className="font-jost font-normal text-base outline-none ring-0 w-full"
-                />
-              </div>
-              <div className="flex items-center gap-2 relative before:hidden lg:before:block before:absolute before:w-[1px] before:h-full before:bg-slate-300 before:-right-[15px]">
-                <Image src={departmentIcon} alt="searchIcon" className="w-6" />
-                <select
-                  name="department"
-                  id="department"
-                  className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
-                >
-                  <option value="N/A">Select a Department</option>
-                  <option value="cardiology" className="text-M-heading-color">
-                    Cardiology
-                  </option>
-                  <option value="neurology" className="text-M-heading-color">
-                    Neurology
-                  </option>
-                  <option value="orthopedics" className="text-M-heading-color">
-                    Orthopedics
-                  </option>
-                  <option value="pediatrics" className="text-M-heading-color">
-                    Pediatrics
-                  </option>
-                </select>
-              </div>
-              <div className="flex items-center gap-2">
-                <Image src={doctorIcon} alt="searchIcon" className="w-6" />
-                <select
-                  name="department"
-                  id="department"
-                  className="w-full outline-none ring-0 py-2 cursor-pointer text-M-text-color"
-                >
-                  <option value="N/A">Select Doctor.... </option>
-                  <option value="cardiology" className="text-M-heading-color">
-                    Cardiology
-                  </option>
-                  <option value="neurology" className="text-M-heading-color">
-                    Neurology
-                  </option>
-                  <option value="orthopedics" className="text-M-heading-color">
-                    Orthopedics
-                  </option>
-                  <option value="pediatrics" className="text-M-heading-color">
-                    Pediatrics
-                  </option>
-                </select>
-              </div>
-              <FormButton
-                buttonText="Submit"
-                buttonColor="bg-M-secondary-color"
-                textColor="text-white"
-                borderColor="bg-M-secondary-color"
-                padding="py-3 px-8 lg:w-auto"
-                fontSize="text-lg"
-                alignment="text-center md:text-right"
-              />
-            </div>
-          </form>
+          <SearchField/>
         </div>
       </div>
     </div>

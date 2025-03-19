@@ -35,10 +35,7 @@ export const fetchDoctorBySlug = async (slug, language = 'en') => {
 
     // Make the API call with the slug and language parameter
     const response = await apiClient.get(`/api/doctor/slug/${slug}?lang=${language}`);
-
-    // Log the fetched doctor data (for debugging purposes)
-    console.log("✅ Doctor Data:", response.data);
-
+    
     return response.data || null; // Return the doctor data if available
   } catch (error) {
     // Log the error message in case of failure
