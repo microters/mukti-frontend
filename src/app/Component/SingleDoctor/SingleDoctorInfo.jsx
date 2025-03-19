@@ -65,16 +65,16 @@ const SingleDoctorInfo = ({ doctor }) => {
       : [],
   };
 
-  console.log(doctorData.treatments)
+  // console.log(doctorData.treatments)
 
   const maxWords = 100;
   // Ensure doctorData.shortBio exists before splitting
   const wordsArray = doctorData.shortBio ? doctorData.shortBio.split(" ") : [];
 
   // Log the words array for debugging
-  console.log("Short Bio Words Array:", wordsArray);
+  // console.log("Short Bio Words Array:", wordsArray);
 
-  console.log("Formatted Doctor Data:", doctorData);
+  // console.log("Formatted Doctor Data:", doctorData);
 
   const tabs = [
     { name: "Short Bio", id: "shortBio" },
@@ -105,14 +105,14 @@ const SingleDoctorInfo = ({ doctor }) => {
   return (
     <div>
       {/* Hero Area */}
-      <div className="bg-[url(../../public/assets/inner-hero-bg.jpg)] bg-cover bg-top">
+      <div className="bg-[url(../../public/assets/inner-hero-bg.jpg)] bg-cover bg-top hidden md:block ">
         <div className="h-96 px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative"></div>
       </div>
 
-      <div className="container pb-24 relative -mt-24 z-20">
+      <div className="container pb-10 md:pb-24 relative pt-10 md:-mt-24 z-20">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
-            <div className="flex flex-col md:flex-row gap-6 bg-white shadow-md px-4 md:px-7 py-6 rounded-md">
+            <div className="flex flex-col md:flex-row gap-6 bg-white shadow border border-M-text-color/10 px-4 md:px-7 py-6 rounded-md">
               <div className="w-full h-32 max-w-32 rounded-full border-2 border-M-primary-color overflow-hidden">
                 <Image
                   src={doctorData?.icon}
@@ -170,6 +170,57 @@ const SingleDoctorInfo = ({ doctor }) => {
                     {doctorData.yearsOfExperience} Years Experience
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* Appointment Time */}
+            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md top-1 mt-6 block lg:hidden">
+              <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20 text-center">
+                Available For Appointment
+              </h3>
+              <div>
+                <ul className="flex flex-wrap py-4 gap-3">
+                  {doctorData.schedule.map((item, index) => {
+                    // Convert time to 12-hour format with AM/PM
+                    const convertTo12HourFormat = (time) =>
+                      new Date(`2025-01-01T${time}:00`).toLocaleTimeString(
+                        "en-US",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        }
+                      );
+
+                    // Convert the day to short form (e.g., "Wednesday" to "Wed")
+                    const dayShortForm = {
+                      Sunday: "Sun",
+                      Monday: "Mon",
+                      Tuesday: "Tue",
+                      Wednesday: "Wed",
+                      Thursday: "Thu",
+                      Friday: "Fri",
+                      Saturday: "Sat",
+                    };
+                    const shortDay = dayShortForm[item.day] || item.day;
+                    return (
+                      <li
+                        key={index}
+                        className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-flex flex-wrap justify-center gap-2 rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center"
+                      >
+                        <strong>{shortDay}: </strong>
+                        {convertTo12HourFormat(item.startTime)} -{" "}
+                        {convertTo12HourFormat(item.endTime)}
+                      </li>
+                    );
+                  })}
+                </ul>
+                <Link
+                  href={"tel:+8801601666893"}
+                  className="flex items-center gap-3 justify-center py-3 px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white  text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color uppercase"
+                >
+                  Book Appointment
+                </Link>
               </div>
             </div>
 
@@ -672,24 +723,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-5 mt-6">
-                  {/* Icon */}
-                  <Icon
-                    className="text-M-primary-color shrink-0"
-                    icon="hugeicons:sale-tag-01"
-                    width="36"
-                  />
 
-                  {/* Label and Value */}
-                  <div>
-                    <h5 className="text-base text-white font-jost font-medium">
-                      Appointment Fee
-                    </h5>
-                    <p className="text-white/50 hover:text-white transition-all duration-300">
-                      {doctorData.appointmentFee} Tk
-                    </p>
-                  </div>
-                </div>
               </div>
               <div className="pt-5 mt-5 border-t border-M-primary-color/20">
                 <h3 className="text-white text-xl font-semibold mb-3">
@@ -704,6 +738,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                 </Link>
               </div>
             </div>
+            {/* Visiting Fee */}
             <div className="border border-M-heading-color/20 p-6 px-6 rounded-md">
               <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b text-center border-M-primary-color/20">
                 Visiting Fee
@@ -733,7 +768,8 @@ const SingleDoctorInfo = ({ doctor }) => {
                 </p>
               </div>
             </div>
-            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md sticky top-1">
+            {/* Appointment Time */}
+            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md sticky top-1 hidden lg:block">
               <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20 text-center">
                 Available For Appointment
               </h3>

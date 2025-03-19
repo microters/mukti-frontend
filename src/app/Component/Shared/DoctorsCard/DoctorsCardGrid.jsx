@@ -8,10 +8,10 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
 const DoctorsCardGrid = ({ doctor }) => {
-  console.log("doctor card", doctor)
+  console.log("doctor card", doctor);
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
-  console.log(currentLanguage)
+  console.log(currentLanguage);
 
   if (!doctor || !doctor.translations) return null;
   const doctorData = doctor.translations[currentLanguage] || {};
@@ -26,7 +26,6 @@ const DoctorsCardGrid = ({ doctor }) => {
   const doctorImage = doctor.icon
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : "/default-profile-photo.png";
-
 
   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
 
@@ -89,51 +88,54 @@ const DoctorsCardGrid = ({ doctor }) => {
               {yearsOfExperience} years
             </li>
           </ul>
-        </div>
 
-        {/* Availability & Booking Section */}
-        <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
-          <div className="mb-4 space-y-2">
-            <h4 className="mb-3 font-jost text-lg text-black">Weekly Schedule</h4>
-            {doctor.schedule && doctor.schedule.length > 0 ? (
-              doctor.schedule.map((slot, index) => {
-                // Convert time to 12-hour format using toLocaleTimeString
-                const formatTime = (time) =>
-                  new Date(`1970-01-01T${time}:00`).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  });
-
-                return (
-                  <h4
-                    key={index}
-                    className="font-jost font-bold text-base text-black flex items-center justify-between gap-3 bg-M-section-bg/50 py-2 px-3 rounded-md"
-                  >
-                    {slot.day} :{" "}
-                    <span className="inline-block font-jost font-normal text-sm text-slate-600">
-                      {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
-                    </span>
-                  </h4>
-                );
-              })
-            ) : (
-              <h4 className="font-jost font-bold text-base text-red-500">
-                Not Available
+          {/* Availability & Booking Section */}
+          <div className="text-center border-t border-M-primary-color/20 mt-7 pt-5 w-full">
+            <div className="mb-4 space-y-2">
+              <h4 className="mb-3 font-jost text-lg text-black">
+                Weekly Schedule
               </h4>
-            )}
-          </div>
+              {doctor.schedule && doctor.schedule.length > 0 ? (
+                doctor.schedule.map((slot, index) => {
+                  // Convert time to 12-hour format using toLocaleTimeString
+                  const formatTime = (time) =>
+                    new Date(`1970-01-01T${time}:00`).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    });
 
-          {/* Booking Button */}
-          <Button
-            linkHref="#"
-            buttonText="Book An Appointment"
-            buttonColor="bg-M-primary-color"
-            textColor="text-white w-full justify-center"
-            borderColor="border-M-primary-color"
-            alignment="center"
-          />
+                  return (
+                    <h4
+                      key={index}
+                      className="font-jost font-normal text-base text-black flex items-center justify-between gap-3 bg-M-section-bg/50 py-2 px-3 rounded-md"
+                    >
+                      {slot.day}{" "}
+                      <span className="inline-block font-jost font-normal text-sm text-slate-600">
+                        {formatTime(slot.startTime)} -{" "}
+                        {formatTime(slot.endTime)}
+                      </span>
+                    </h4>
+                  );
+                })
+              ) : (
+                <h4 className="font-jost font-bold text-base text-red-500">
+                  Not Available
+                </h4>
+              )}
+            </div>
+          </div>
         </div>
+
+        {/* Booking Button */}
+        <Button
+          linkHref="#"
+          buttonText="Book An Appointment"
+          buttonColor="bg-M-primary-color"
+          textColor="text-white w-full justify-center"
+          borderColor="border-M-primary-color"
+          alignment="center"
+        />
       </div>
     </div>
   );

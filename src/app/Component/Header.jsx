@@ -182,7 +182,7 @@ const Header = () => {
         </div>
         <div className="flex gap-4 items-center">
           <Link
-            href={"#"}
+            href={"/appointment"}
             className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
             {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />
@@ -298,7 +298,7 @@ const Header = () => {
           </button>
           <div className="flex items-center gap-3">
             <Link
-              href={"#"}
+              href={"/appointment"}
               className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
             >
               {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />

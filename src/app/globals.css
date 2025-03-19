@@ -47,6 +47,16 @@ h4 {
   @apply block border border-M-heading-color/20 text-base text-M-heading-color font-jost font-normal w-full py-3 px-3 outline-none ring-0 rounded-md transition-all duration-300 focus:ring-2 focus:ring-M-heading-color/50;
 }
 
+/* Appointment Page Input */
+.inputField {
+  @apply px-4 py-2 h-[48px] border w-full rounded-md focus:outline-none border-M-text-color/20 text-black transition-all duration-300 ring-0 ring-M-primary-color focus:ring-1;
+}
+
+.textAreaFiled {
+  @apply px-4 py-2 border w-full rounded-md focus:outline-none border-M-text-color/20 text-black transition-all duration-300 ring-0 ring-M-primary-color focus:ring-1;
+}
+
+
 /* Footer Area */
 .footer-menu-list-item {
   @apply text-white text-sm font-poppins font-normal relative transition-all duration-300 hover:text-M-primary-color;
@@ -83,4 +93,37 @@ h4 {
 .swiper-button-prev,
 .swiper-rtl .swiper-button-next {
   left: 0 !important;
+}
+
+/* React Calender */
+.react-calendar {
+  width: 100% !important;
+  max-width: 350px !important;
+  @apply !font-jost !border !border-M-heading-color/20 rounded-md p-3 shadow
+}
+
+.react-calendar__month-view__days__day--weekend {
+  @apply !text-black;
+}
+
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus,
+.react-calendar__tile--active {
+  @apply !bg-M-primary-color rounded-full !text-white
+}
+
+.react-calendar__tile--now {
+  @apply !bg-M-primary-color/10 rounded-full !text-M-primary-color
+}
+
+.react-calendar button {
+  @apply !rounded-full
+}
+
+abbr:where([title]) {
+  text-decoration: none !important;
+}
+
+.react-calendar__tile:disabled {
+  background-color: #ff000005 !important;
+  color: #ff0000 !important;
 }
