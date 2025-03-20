@@ -6,6 +6,7 @@ import blogImg3 from "@/assets/images/blog3.jpg";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import BlogSidebar from "@/app/Component/Shared/BlogSidebar/BlogSidebar";
 
 const blogPosts = [
   {
@@ -201,81 +202,7 @@ const Blog = () => {
             </ul>
           </div>
           <div className="lg:col-span-1 space-y-6">
-            {/* Search Area */}
-            <div className="bg-M-section-bg p-6 rounded-md">
-              <form className="flex items-center relative">
-                <input
-                  type="text"
-                  placeholder="Search by keyword"
-                  className="font-jost font-normal text-base text-black w-full p-3 pr-10 border-0 outline-none ring-0 ring-M-primary-color/50 focus:ring-1 transition-all duration-300 rounded-sm "
-                />
-                <Icon
-                  icon="clarity:search-line"
-                  width="24"
-                  height="24"
-                  className="right-3 absolute top-1/2 -translate-y-1/2 text-M-text-color"
-                />
-              </form>
-            </div>
-            {/* Most Popular */}
-            <div className="bg-M-section-bg p-6 rounded-md">
-              <h3 className="text-2xl text-black mb-2">Most Popular</h3>
-              {blogPosts.slice(0, 4).map((items) => (
-                <div key={items.id} className="flex items-start gap-4 border-b border-M-text-color/20 py-4 last:border-0 last:pb-0">
-                  <Image
-                    src={items.image}
-                    alt="Blog Image"
-                    className="w-24 shrink-0 rounded-md"
-                  />
-                  <div>
-                    <span className="flex items-center gap-2 text-M-text-color font-jost text-base mb-1">
-                      <Icon
-                        icon="iconoir:chat-lines"
-                        width="18"
-                        height="18"
-                        className="text-M-primary-color/50"
-                      />{" "}
-                      {items.comments} Comments
-                    </span>
-                    <h4>
-                      <Link
-                        href={"#"}
-                        className="text-M-heading-color text-base hover:text-M-primary-color transition-all duration-300 line-clamp-2"
-                      >
-                        {items.title}
-                      </Link>
-                    </h4>
-                  </div>
-                </div>
-              ))}
-            </div>
-            {/* Category List */}
-            <div className="bg-M-section-bg p-6 rounded-md">
-              <h3 className="text-2xl text-black mb-2">Browse by Category</h3>
-              <ul className="divide-y mt-4">
-                {Object.keys(categoryCount).map((items,index) =>(
-                  <li key={index} className="first:border-t first:border-M-text-color/10"><Link href={'#'} className="flex items-center justify-between font-jost text-lg text-M-heading-color py-4 hover:text-M-primary-color group transition-all duration-300">{items} <span className="size-7 flex items-center justify-center rounded-full bg-M-primary-color/60 text-white text-sm font-jost font-medium group-hover:bg-M-heading-color transition-all duration-200">{String(categoryCount[items]).padStart(2, '0')}</span></Link></li>
-                ))}
-              </ul>
-            </div>
-            {/* Social Links */}
-            <div className="bg-M-section-bg p-6 rounded-md">
-              <h3 className="text-2xl text-black mb-2">Social Share</h3>
-              <ul className=" flex flex-wrap gap-3 mt-4">
-                {socialLinks.map((items) => (
-                    <li key={items.id}><Link href={items.link}  className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300" ><Icon icon={items.icon} width="24" height="24"/></Link></li>
-                ))}
-              </ul>
-            </div>
-            {/* Tags */}
-            <div className="bg-M-section-bg p-6 rounded-md">
-              <h3 className="text-2xl text-black mb-2">Tags</h3>
-              <ul className=" flex flex-wrap gap-3 mt-4">
-                {uniqueCategories.map((items) => (
-                    <li key={items.id}><Link href={items.link} className="rounded-sm font-jost font-normal px-3 py-2 bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300" >{items.category}</Link></li>
-                ))}
-              </ul>
-            </div>
+              <BlogSidebar />
           </div>
         </div>
       </div>
