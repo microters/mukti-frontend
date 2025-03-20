@@ -74,7 +74,7 @@ const Category = ({ departments, locale }) => {
 
         {/* Button for all services */}
         <Button
-          linkHref={`/${currentLanguage === 'bn' ? 'bn/' : ''}services`}
+          linkHref={`/${currentLanguage === 'bn' ? 'bn/' : ''}treatments`}
           buttonText={t('category.allServices')}
           buttonColor="bg-M-secondary-color"
           textColor="text-white"
