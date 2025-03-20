@@ -78,7 +78,7 @@ const Header = () => {
       label: t("header.department"),
       href: "#",
       hasSubMenu: true,
-      subMenus: departments, // Dynamic department list
+      subMenus: departments,
     },
     { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
     { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
@@ -116,13 +116,6 @@ const Header = () => {
               </li>
               <li>
                 {/* Language switcher */}
-                {/* <div className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-1 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color hover:text-M-primary-color transition-all duration-300">
-                  <Icon
-                    icon="fluent:globe-20-regular"
-                    width="20"
-                    className="text-white"
-                  />
-                </div> */}
                   <LanguageChanger />
               </li>
             </ul>
@@ -192,7 +185,7 @@ const Header = () => {
             href={"/appointment"}
             className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
-            Appointment <Icon icon="basil:arrow-right-solid" width="24" />
+            {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
           {/* Show loading indicator while auth state is being checked */}
@@ -308,7 +301,7 @@ const Header = () => {
               href={"/appointment"}
               className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
             >
-              Appointment <Icon icon="basil:arrow-right-solid" width="24" />
+              {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />
             </Link>
 
             {/* Show loading indicator while auth state is being checked on mobile */}

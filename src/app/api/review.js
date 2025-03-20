@@ -14,9 +14,6 @@ const apiClient = axios.create({
 export const fetchReviews = async () => {
   try {
     const response = await apiClient.get("/api/reviews");
-
-    console.log("Raw API Response (Reviews):", response.data);
-
     const reviews = Array.isArray(response.data) ? response.data : response.data?.reviews || [];
 
     return reviews;

@@ -1,11 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import i18nConfig from "../../../i18nConfig";
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function LanguageChanger() {
   const { i18n } = useTranslation();
@@ -18,72 +17,52 @@ export default function LanguageChanger() {
     { id: "bn", name: "Bangla", flag: "circle-flags:bd" },
   ];
 
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  // Set default selected language
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    languages.find((lang) => lang.id === currentLocale) || languages[0]
+  );
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = (e) => {
-    const newLocale = e.target.value;
+  // Update selected language if the locale changes
+  useEffect(() => {
+    const foundLang = languages.find((lang) => lang.id === currentLocale);
+    if (foundLang) setSelectedLanguage(foundLang);
+  }, [currentLocale]);
 
-    // set cookie for next-i18n-router
-    const days = 30;
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    const expires = date.toUTCString();
-    document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
+  const changeLanguage = (newLocale) => {
+    if (newLocale === currentLocale) return;
 
-    // redirect to the new locale path
+    // Set cookie for next-i18n-router
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=${30 * 24 * 60 * 60}`;
+
+    // Construct the new URL based on the locale configuration
+    let newPath = currentPathname;
     if (
       currentLocale === i18nConfig.defaultLocale &&
       !i18nConfig.prefixDefault
     ) {
-      router.push("/" + newLocale + currentPathname);
+      newPath = `/${newLocale}${currentPathname}`;
     } else {
-      router.push(
-        currentPathname.replace(`/${currentLocale}`, `/${newLocale}`)
-      );
+      newPath = currentPathname.replace(`/${currentLocale}`, `/${newLocale}`);
     }
 
-    // Ensure the page is refreshed to reflect the language change
+    // Navigate to the new path and refresh to apply changes
+    router.push(newPath);
     router.refresh();
   };
 
-  
-
   return (
-    <div className="relative ">
-      {/* <select
-              className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer w-[100px]"
-              onChange={handleChange}
-              value={currentLocale}
-            >
-              <option value="en" className="px-2 py-1">
-                <Icon icon="fluent:globe-20-regular" width="20" className="text-white" />{" "} English
-              </option>
-              <option value="bn">Bangla</option>
-            </select> */}
-
-      {/* <select
-        className="bg-transparent border-none ring-0 focus:ring-0 outline-none cursor-pointer w-[100px]"
-        onChange={handleChange}
-        value={currentLocale}
-      >
-        <option value="en" className="text-gray-700 dark:text-white">🌍 English</option>
-        <option value="bn" className="text-gray-700 dark:text-white">🚩 Bangla</option>
-      </select> */}
-
+    <div className="relative">
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color transition-all duration-300"
+         className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color transition-all duration-300"
       >
         <span className="flex items-center gap-2">
-          <span className="text-lg">
-            {" "}
-            <Icon icon={selectedLanguage.flag} width="16" height="16" />
-          </span>{" "}
+          <Icon icon={selectedLanguage.flag} width="18" height="18" />
           {selectedLanguage.name}
         </span>
-        <Icon icon="ep:arrow-down" width="16" height="16" />
+        <Icon icon="ep:arrow-down" width="18" height="18" />
       </button>
 
       {/* Dropdown Menu */}
@@ -95,13 +74,11 @@ export default function LanguageChanger() {
               onClick={() => {
                 setSelectedLanguage(lang);
                 setIsOpen(false);
+                changeLanguage(lang.id);
               }}
-              className="flex items-center gap-2 px-2 md:px-4 py-2 hover:bg-gray-200 cursor-pointer transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 cursor-pointer transition-all duration-200"
             >
-              <span className="text-lg">
-                {" "}
-                <Icon icon={lang.flag} width="16" height="16" />{" "}
-              </span>{" "}
+              <Icon icon={lang.flag} width="18" height="18" />
               {lang.name}
             </div>
           ))}
