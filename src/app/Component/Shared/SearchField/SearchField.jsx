@@ -17,7 +17,6 @@ const SearchField = () => {
       const router = useRouter();
       const searchBoxRef = useRef(null);
       const currentLanguage = i18n.language || "en";
-    
       const [departments, setDepartments] = useState([]);
       const [doctors, setDoctors] = useState([]);
       const [filteredDoctors, setFilteredDoctors] = useState([]);

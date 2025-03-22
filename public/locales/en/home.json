@@ -38,7 +38,8 @@
     "unknownDepartment": "Unknown",
     "noNameAvailable": "No Name Available",
     "noQualification": "N/A",
-    "bookAppointment": "Book An Appointment"
+    "bookAppointment": "Book An Appointment",
+    "showMore": "Show More"
   },
   "appointment": {
     "bookAppointment": "Book Appointment",

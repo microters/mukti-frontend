@@ -32,7 +32,7 @@ const Header = () => {
           label:
             dept.translations[i18n.language]?.name || dept.translations.en.name,
           depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
-          href: `/treatments/slug/`,
+          href: `/treatments/${dept.slug}`,
         }));
 
         setDepartments(formattedDepartments);

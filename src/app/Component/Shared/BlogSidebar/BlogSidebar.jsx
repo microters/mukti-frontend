@@ -12,7 +12,7 @@ import {
   WhatsappShareButton,
 } from "react-share";
 
-// Function to shuffle an array randomly
+// Always shuffle full list for Popular Blogs
 const shuffleArray = (array) => {
   return array
     .map((value) => ({ value, sort: Math.random() }))
@@ -20,14 +20,14 @@ const shuffleArray = (array) => {
     .map(({ value }) => value);
 };
 
-const BlogSidebar = ({ blogs }) => {
+const BlogSidebar = ({ blogs, searchQuery, setSearchQuery }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
-  const shareUrl = "https://yourwebsite.com"; // Replace with dynamic URL if needed
+  const shareUrl = "https://yourwebsite.com";
   const shareTitle = "Check out this blog!";
 
-  // Count the number of posts for each category
+  // Category count (not filtered by search)
   const categoryCount = blogs.reduce((acc, post) => {
     const categoryName =
       post.translations?.[currentLanguage]?.category?.name || "Uncategorized";
@@ -35,13 +35,12 @@ const BlogSidebar = ({ blogs }) => {
     return acc;
   }, {});
 
-  // Get unique categories
   const uniqueCategories = Object.keys(categoryCount).map((category) => ({
     category,
     count: categoryCount[category],
   }));
 
-  // Shuffle and get random blogs
+  // ✅ Pick random blogs from full list — no search filtering
   const randomBlogs = shuffleArray(blogs).slice(0, 4);
 
   return (
@@ -51,7 +50,9 @@ const BlogSidebar = ({ blogs }) => {
         <form className="flex items-center relative">
           <input
             type="text"
-            placeholder="Search by keyword"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by title or category"
             className="font-jost font-normal text-base text-black w-full p-3 pr-10 border-0 outline-none ring-0 ring-M-primary-color/50 focus:ring-1 transition-all duration-300 rounded-sm"
           />
           <Icon
@@ -63,22 +64,26 @@ const BlogSidebar = ({ blogs }) => {
         </form>
       </div>
 
-      {/* Most Popular (Random Blogs) */}
+      {/* Most Popular (ALWAYS UNFILTERED) */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Most Popular</h3>
-        {randomBlogs.map((post) => (
-          <PopularBlogs key={post.id} post={post} />
-        ))}
+        {randomBlogs.length > 0 ? (
+          randomBlogs.map((post) => (
+            <PopularBlogs key={post.id} post={post} />
+          ))
+        ) : (
+          <p className="text-sm text-gray-500">No blogs found.</p>
+        )}
       </div>
 
-      {/* Category List */}
+      {/*  Category List */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Browse by Category</h3>
         <ul className="divide-y mt-4">
           {uniqueCategories.map((item, index) => (
             <li key={index} className="first:border-t first:border-M-text-color/10">
               <Link
-                href={"#"}
+                href="#"
                 className="flex items-center justify-between font-jost text-lg text-M-heading-color py-4 hover:text-M-primary-color group transition-all duration-300"
               >
                 {item.category}
@@ -91,7 +96,7 @@ const BlogSidebar = ({ blogs }) => {
         </ul>
       </div>
 
-      {/* Social Share using react-share */}
+      {/*  Social Share */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Social Share</h3>
         <div className="flex flex-wrap gap-3 mt-4">
@@ -127,7 +132,7 @@ const BlogSidebar = ({ blogs }) => {
         </div>
       </div>
 
-      {/* Tags */}
+      {/* 🏷 Tags */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Tags</h3>
         <ul className="flex flex-wrap gap-3 mt-4">
