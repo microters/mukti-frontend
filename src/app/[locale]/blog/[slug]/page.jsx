@@ -281,62 +281,174 @@ const singleBlog = () => {
               </p>
 
               {/* Show Commnets Area */}
-              <div className="border border-M-text-color/50 p-6 rounded-lg mt-10" >
+              <div className="border border-M-text-color/50 p-6 rounded-lg mt-10">
                 <h2 className="text-2xl md:text-3xl">02 Comments</h2>
                 <div className="block md:flex items-start gap-4 mt-4 border-t border-M-text-color/20 pt-5">
-                    <Image src={authorImage} alt="User Image" width={50} height={50} className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0" />
-                    <div>
-                        <h4 className="font-normal text-M-heading-color mb-2">Jhone Doe <span className="text-M-text-color">Feb 9, 2023 at 10:23</span>  <span><Link href={'#comments'}>- Reply</Link></span></h4>
-                        <p className="text-M-text-color font-jost">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.</p>
-                    </div>
+                  <Image
+                    src={authorImage}
+                    alt="User Image"
+                    width={50}
+                    height={50}
+                    className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0"
+                  />
+                  <div>
+                    <h4 className="font-normal text-M-heading-color mb-2">
+                      Jhone Doe{" "}
+                      <span className="text-M-text-color">
+                        Feb 9, 2023 at 10:23
+                      </span>{" "}
+                      <span>
+                        <Link href={"#comments"}>- Reply</Link>
+                      </span>
+                    </h4>
+                    <p className="text-M-text-color font-jost">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque at magna ut ante eleifend eleifend.
+                    </p>
+                  </div>
                 </div>
                 <div className="block md:flex items-start gap-4 mt-4 border-t border-M-text-color/20 pt-5 ml-10">
-                    <Image src={authorImage} alt="User Image" width={50} height={50} className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0" />
-                    <div>
-                        <h4 className="font-normal text-M-heading-color mb-2">Jhone Doe <span className="text-M-text-color">Feb 9, 2023 at 10:23</span>  <span><Link href={'#comments'}>- Reply</Link></span></h4>
-                        <p className="text-M-text-color font-jost">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.</p>
-                    </div>
+                  <Image
+                    src={authorImage}
+                    alt="User Image"
+                    width={50}
+                    height={50}
+                    className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0"
+                  />
+                  <div>
+                    <h4 className="font-normal text-M-heading-color mb-2">
+                      Jhone Doe{" "}
+                      <span className="text-M-text-color">
+                        Feb 9, 2023 at 10:23
+                      </span>{" "}
+                      <span>
+                        <Link href={"#comments"}>- Reply</Link>
+                      </span>
+                    </h4>
+                    <p className="text-M-text-color font-jost">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque at magna ut ante eleifend eleifend.
+                    </p>
+                  </div>
                 </div>
                 <div className="block md:flex items-start gap-4 mt-4 border-t border-M-text-color/20 pt-5">
-                    <Image src={authorImage} alt="User Image" width={50} height={50} className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0" />
-                    <div>
-                        <h4 className="font-normal text-M-heading-color mb-2">Jhone Doe <span className="text-M-text-color">Feb 9, 2023 at 10:23</span>  <span><Link href={'#comments'}>- Reply</Link></span></h4>
-                        <p className="text-M-text-color font-jost">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.</p>
-                    </div>
+                  <Image
+                    src={authorImage}
+                    alt="User Image"
+                    width={50}
+                    height={50}
+                    className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0"
+                  />
+                  <div>
+                    <h4 className="font-normal text-M-heading-color mb-2">
+                      Jhone Doe{" "}
+                      <span className="text-M-text-color">
+                        Feb 9, 2023 at 10:23
+                      </span>{" "}
+                      <span>
+                        <Link href={"#comments"}>- Reply</Link>
+                      </span>
+                    </h4>
+                    <p className="text-M-text-color font-jost">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque at magna ut ante eleifend eleifend.
+                    </p>
+                  </div>
                 </div>
                 <div className="block md:flex items-start gap-4 mt-4 border-t border-M-text-color/20 pt-5">
-                    <Image src={authorImage} alt="User Image" width={50} height={50} className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0" />
-                    <div>
-                        <h4 className="font-normal text-M-heading-color mb-2">Jhone Doe <span className="text-M-text-color">Feb 9, 2023 at 10:23</span>  <span><Link href={'#comments'}>- Reply</Link></span></h4>
-                        <p className="text-M-text-color font-jost">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.</p>
-                    </div>
+                  <Image
+                    src={authorImage}
+                    alt="User Image"
+                    width={50}
+                    height={50}
+                    className="shrink-0 rounded-full border-2 border-M-primary-color/50 mb-2 md:mb-0"
+                  />
+                  <div>
+                    <h4 className="font-normal text-M-heading-color mb-2">
+                      Jhone Doe{" "}
+                      <span className="text-M-text-color">
+                        Feb 9, 2023 at 10:23
+                      </span>{" "}
+                      <span>
+                        <Link href={"#comments"}>- Reply</Link>
+                      </span>
+                    </h4>
+                    <p className="text-M-text-color font-jost">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Quisque at magna ut ante eleifend eleifend.
+                    </p>
+                  </div>
                 </div>
               </div>
 
-                {/* Submit Comments area */}
-                <div className="border border-M-text-color/50 p-6 rounded-lg mt-10" id="comments">
-                    <h2 className="text-3xl">Leave a Reply</h2>
-                    <p className="font-jost text-sm text-M-text-color">Your email address will not be published. Required fields are marked <span className="text-M-secondary-color">*</span></p>
+              {/* Submit Comments area */}
+              <div
+                className="border border-M-text-color/50 p-6 rounded-lg mt-10"
+                id="comments"
+              >
+                <h2 className="text-3xl">Leave a Reply</h2>
+                <p className="font-jost text-sm text-M-text-color">
+                  Your email address will not be published. Required fields are
+                  marked <span className="text-M-secondary-color">*</span>
+                </p>
 
-                    <form action="#" className="mt-4">
-                        {/* Comments */}
-                        <div>
-                            <label htmlFor="commnet" className="text-black text-base font-jost mb-2 inline-block">Comment <span className="text-M-secondary-color">*</span></label>
-                            <textarea name="comment" id="commnet" placeholder="Your Message" rows={5} className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none " required></textarea>
-                        </div>
-                        {/* Name */}
-                        <div className="mt-3">
-                            <label htmlFor="name" className="text-black text-base font-jost mb-2 inline-block">Name <span className="text-M-secondary-color">*</span></label>
-                            <input type="text" placeholder="Your Name" required className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none  " />
-                        </div>
-                        {/* Email */}
-                        <div className="mt-3">
-                            <label htmlFor="email" className="text-black text-base font-jost mb-2 inline-block">Email </label>
-                            <input type="email" placeholder="Your Email" className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none  " />
-                        </div>
-                        <button type="submit" className="bg-M-heading-color font-jost font-medium text-white text-base uppercase py-3 px-6 rounded-md mt-6 inline-block hover:bg-M-primary-color transition-all duration-300">Post Comment</button>
-                    </form>
-                </div>
+                <form action="#" className="mt-4">
+                  {/* Comments */}
+                  <div>
+                    <label
+                      htmlFor="commnet"
+                      className="text-black text-base font-jost mb-2 inline-block"
+                    >
+                      Comment <span className="text-M-secondary-color">*</span>
+                    </label>
+                    <textarea
+                      name="comment"
+                      id="commnet"
+                      placeholder="Your Message"
+                      rows={5}
+                      className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none "
+                      required
+                    ></textarea>
+                  </div>
+                  {/* Name */}
+                  <div className="mt-3">
+                    <label
+                      htmlFor="name"
+                      className="text-black text-base font-jost mb-2 inline-block"
+                    >
+                      Name <span className="text-M-secondary-color">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Your Name"
+                      required
+                      className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none  "
+                    />
+                  </div>
+                  {/* Email */}
+                  <div className="mt-3">
+                    <label
+                      htmlFor="email"
+                      className="text-black text-base font-jost mb-2 inline-block"
+                    >
+                      Email{" "}
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Your Email"
+                      className="p-3 w-full bg-M-section-bg border-M-primary-color/20 rounded-md focus:ring-M-primary-color focus:ring ring-0 outline-none  "
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="bg-M-heading-color font-jost font-medium text-white text-base uppercase py-3 px-6 rounded-md mt-6 inline-block hover:bg-M-primary-color transition-all duration-300"
+                  >
+                    Post Comment
+                  </button>
+                </form>
+              </div>
+
+              
 
             </div>
           </div>
