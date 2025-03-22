@@ -37,8 +37,11 @@ export const fetchDepartmentBySlug = async (slug, language = 'en') => {
     }
 
     // Make the API call with the slug and language parameter
-    const response = await apiClient.get(`/api/department/slug/${slug}?lang=${language}`);
-    console.log(response.data)
+    const response = await apiClient.get(`/api/department/slug/${slug}?lang=${language}`, {
+      headers: {
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+      },
+    });
 
     return response.data || null; // Return the department data if available
   } catch (error) {
