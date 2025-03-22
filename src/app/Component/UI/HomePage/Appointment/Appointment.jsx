@@ -15,36 +15,60 @@ import FormButton from "@/app/Component/Shared/Buttons/FormButton";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import { fetchDepartments } from "@/app/api/department";
 import { toast } from "react-toastify";
+import { Icon } from "@iconify/react";
 
 // Helper function to format time in Bangladeshi format (12-hour with AM/PM)
-const formatTimeToBD = (timeString, language = 'en') => {
+const formatTimeToBD = (timeString, language = "en") => {
   try {
     // Parse time (expecting format like "14:30:00" or "14:30")
-    const timeParts = timeString.split(':');
+    const timeParts = timeString.split(":");
     let hours = parseInt(timeParts[0], 10);
     const minutes = parseInt(timeParts[1], 10);
-    
+
     // Convert to 12-hour format
-    const ampm = hours >= 12 ? (language === 'bn' ? 'অপরাহ্ন' : 'PM') : (language === 'bn' ? 'পূর্বাহ্ন' : 'AM');
+    const ampm =
+      hours >= 12
+        ? language === "bn"
+          ? "অপরাহ্ন"
+          : "PM"
+        : language === "bn"
+          ? "পূর্বাহ্ন"
+          : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12; // Convert 0 to 12
-    
+
     // Format the time with leading zeros for minutes
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    
+
     // Convert to Bangla numerals if language is Bengali
-    if (language === 'bn') {
+    if (language === "bn") {
       const englishToBanglaDigits = {
-        '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
-        '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+        0: "০",
+        1: "১",
+        2: "২",
+        3: "৩",
+        4: "৪",
+        5: "৫",
+        6: "৬",
+        7: "৭",
+        8: "৮",
+        9: "৯",
       };
-      
-      const banglaHours = hours.toString().split('').map(digit => englishToBanglaDigits[digit] || digit).join('');
-      const banglaMinutes = formattedMinutes.toString().split('').map(digit => englishToBanglaDigits[digit] || digit).join('');
-      
+
+      const banglaHours = hours
+        .toString()
+        .split("")
+        .map((digit) => englishToBanglaDigits[digit] || digit)
+        .join("");
+      const banglaMinutes = formattedMinutes
+        .toString()
+        .split("")
+        .map((digit) => englishToBanglaDigits[digit] || digit)
+        .join("");
+
       return `${banglaHours}:${banglaMinutes} ${ampm}`;
     }
-    
+
     return `${hours}:${formattedMinutes} ${ampm}`;
   } catch (error) {
     console.error("Error formatting time:", error);
@@ -53,30 +77,33 @@ const formatTimeToBD = (timeString, language = 'en') => {
 };
 
 // Helper function to format day names in Bangla
-const getDayName = (day, language = 'en') => {
-  if (language !== 'bn') return day;
-  
+const getDayName = (day, language = "en") => {
+  if (language !== "bn") return day;
+
   const dayTranslations = {
-    'Monday': 'সোমবার',
-    'Tuesday': 'মঙ্গলবার',
-    'Wednesday': 'বুধবার',
-    'Thursday': 'বৃহস্পতিবার',
-    'Friday': 'শুক্রবার',
-    'Saturday': 'শনিবার',
-    'Sunday': 'রবিবার'
+    Monday: "সোমবার",
+    Tuesday: "মঙ্গলবার",
+    Wednesday: "বুধবার",
+    Thursday: "বৃহস্পতিবার",
+    Friday: "শুক্রবার",
+    Saturday: "শনিবার",
+    Sunday: "রবিবার",
   };
-  
+
   return dayTranslations[day] || day;
 };
 
-const Appointment = ({appointmentSection}) => {
+const Appointment = ({ appointmentSection }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
-  const translations = appointmentSection?.translations?.[currentLanguage] || {};
-  const {image}= translations;
-  const appointmentImage = image ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, '/')}` : appointment;
-  
+  const translations =
+    appointmentSection?.translations?.[currentLanguage] || {};
+  const { image } = translations;
+  const appointmentImage = image
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, "/")}`
+    : appointment;
+
   const ticketRef = useRef(null);
 
   const [departments, setDepartments] = useState([]);
@@ -86,7 +113,7 @@ const Appointment = ({appointmentSection}) => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [appointmentDetails, setAppointmentDetails] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     departmentId: "",
     doctorId: "",
@@ -103,8 +130,8 @@ const Appointment = ({appointmentSection}) => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      patientName: prev.patientName || user?.name || "", 
-      phone: prev.phone || user?.mobile || ""
+      patientName: prev.patientName || user?.name || "",
+      phone: prev.phone || user?.mobile || "",
     }));
   }, [user]);
 
@@ -134,7 +161,7 @@ const Appointment = ({appointmentSection}) => {
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    
+
     if (e.target.name === "departmentId") {
       const department = departments.find((dept) => dept.id === e.target.value);
       setSelectedDepartment(department || null);
@@ -157,11 +184,14 @@ const Appointment = ({appointmentSection}) => {
           backgroundColor: "#ffffff",
           logging: false,
         });
-        
-        canvas.toBlob(function(blob) {
-          saveAs(blob, `appointment-${formData.patientName.replace(/\s+/g, '-')}.png`);
+
+        canvas.toBlob(function (blob) {
+          saveAs(
+            blob,
+            `appointment-${formData.patientName.replace(/\s+/g, "-")}.png`
+          );
         });
-        
+
         toast.success(t("Ticket Downloaded Successfully"));
       } catch (error) {
         console.error("Error downloading ticket:", error);
@@ -177,7 +207,13 @@ const Appointment = ({appointmentSection}) => {
 
     if (!departmentId || !doctorId || !day || !patientName || !phone.trim()) {
       alert(t("please_fill_all_fields"));
-      console.error("❌ Missing fields:", { departmentId, doctorId, day, patientName, phone });
+      console.error("❌ Missing fields:", {
+        departmentId,
+        doctorId,
+        day,
+        patientName,
+        phone,
+      });
       return;
     }
 
@@ -206,28 +242,38 @@ const Appointment = ({appointmentSection}) => {
       }
 
       const appointmentData = await response.json();
-      
+
       // Find the selected day/time slot
-      const selectedSlot = availableDates.find(slot => slot.day === formData.day);
-      
+      const selectedSlot = availableDates.find(
+        (slot) => slot.day === formData.day
+      );
+
       // Create appointment details for the success modal
       const appointmentDetails = {
         id: appointmentData.id || Math.random().toString(36).substr(2, 9),
         patientName: formData.patientName,
         phone: formData.phone,
-        doctorName: selectedDoctor ? (selectedDoctor.translations[currentLanguage]?.name || selectedDoctor.name) : "",
-        departmentName: selectedDepartment ? (selectedDepartment.translations[currentLanguage]?.name || selectedDepartment.name) : "",
-        day: currentLanguage === 'bn' ? getDayName(formData.day, 'bn') : formData.day,
-        timeSlot: selectedSlot ? 
-          `${formatTimeToBD(selectedSlot.startTime, currentLanguage)} - ${formatTimeToBD(selectedSlot.endTime, currentLanguage)}` : 
-          "",
-        date: new Date().toISOString().split('T')[0]
+        doctorName: selectedDoctor
+          ? selectedDoctor.translations[currentLanguage]?.name ||
+            selectedDoctor.name
+          : "",
+        departmentName: selectedDepartment
+          ? selectedDepartment.translations[currentLanguage]?.name ||
+            selectedDepartment.name
+          : "",
+        day:
+          currentLanguage === "bn"
+            ? getDayName(formData.day, "bn")
+            : formData.day,
+        timeSlot: selectedSlot
+          ? `${formatTimeToBD(selectedSlot.startTime, currentLanguage)} - ${formatTimeToBD(selectedSlot.endTime, currentLanguage)}`
+          : "",
+        date: new Date().toISOString().split("T")[0],
       };
-      
+
       setAppointmentDetails(appointmentDetails);
       setShowSuccessModal(true);
       toast.success(t("Appointment Success"));
-      
     } catch (error) {
       console.error("❌ Error booking appointment:", error);
       alert(`${t("appointment_failed")}: ${error.message}`);
@@ -267,36 +313,78 @@ const Appointment = ({appointmentSection}) => {
       <div className="container flex justify-between items-center gap-20 py-12 lg:py-24">
         <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
           <div className="w-full relative z-10 bg-white py-8 px-4 md:p-8 rounded-lg md:rounded-[40px] shadow-lg">
-            <h2 className="text-2xl font-semibold text-[#24285B] mb-6 text-center">
-              {t("appointment.bookAppointment")}
+            <h2 className="text-2xl font-semibold text-[#24285B] mb-2 text-center">
+              Can't find what are you looking for?
             </h2>
+            <p className="font-jost font-normal text-base text-M-text-color text-center mb-6">
+              Fill this form for callback from us.
+            </p>
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} placeholder={t("appointment.patientName")} className="appointment-input-field" required />
+                <input
+                  type="text"
+                  name="patientName"
+                  value={formData.patientName}
+                  onChange={handleChange}
+                  placeholder={t("appointment.patientName")}
+                  className="appointment-input-field"
+                  required
+                />
               </div>
-
               <div>
-                <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder={t("appointment.phoneNumber")} className="appointment-input-field" required />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder={t("appointment.phoneNumber")}
+                  className="appointment-input-field"
+                  required
+                />
               </div>
-
-              <FormButton buttonText={t("appointment.appointmentNow")} buttonColor="bg-M-heading-color" textColor="text-white" />
+              <div>
+                <div className=" relative">
+                  <input
+                    type="checkbox"
+                    id="agreement"
+                    className="hidden peer"
+                  />
+                  <span className="h-4 w-4 border flex-none border-M-text-color/50 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
+                    <Icon
+                      icon="mynaui:check"
+                      width="24"
+                      className="text-slate-100"
+                    />
+                  </span>
+                  <label
+                    htmlFor="agreement"
+                    className="cursor-pointer font-jost font-normal text-base text-M-text-color relative z-10 pl-6"
+                  >
+                    Get updated on whatsapp & accept T&C
+                  </label>
+                </div>
+              </div>
+              <button className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-3 px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
+                {" "}
+                <Icon icon="solar:call-medicine-linear" width="24" /> Request
+                callback
+              </button>
             </form>
           </div>
         </div>
 
         <div className="hidden lg:block w-1/2">
-          <Image 
-            src={appointmentImage} 
-            width={500} 
-            height={500} 
-            style={{width: "100%"}} 
+          <Image
+            src={appointmentImage}
+            width={500}
+            height={500}
+            style={{ width: "100%" }}
             alt="appointment"
             unoptimized={true}
           />
         </div>
       </div>
-     
     </div>
   );
 };
