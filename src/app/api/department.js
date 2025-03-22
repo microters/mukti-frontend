@@ -8,17 +8,13 @@ const apiClient = axios.create({
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
     "Content-Type": "application/json",
   },
+   cache: "no-store"
 });
 
 // Fetching departments based on the locale (using query parameter like in your example)
 export const fetchDepartments = async (language = 'en') => {
   try {
-    const response = await apiClient.get(`/api/department?lang=${language}`, {
-      headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Pass the API key in headers
-      },
-    });
-
+    const response = await apiClient.get(`/api/department?lang=${language}`);
     // Assuming the response data is an array of departments
     const departments = Array.isArray(response.data) ? response.data : response.data?.departments || [];
     return departments;
@@ -37,13 +33,8 @@ export const fetchDepartmentBySlug = async (slug, language = 'en') => {
     }
 
     // Make the API call with the slug and language parameter
-    const response = await apiClient.get(`/api/department/slug/${slug}?lang=${language}`, {
-      headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
-      },
-    });
-
-    return response.data || null; // Return the department data if available
+    const response = await apiClient.get(`/api/department/slug/${slug}?lang=${language}`);
+    return response.data || null;
   } catch (error) {
     // Log the error message in case of failure
     console.error(`❌ Error fetching department (${slug}):`, error.response?.data || error.message);
