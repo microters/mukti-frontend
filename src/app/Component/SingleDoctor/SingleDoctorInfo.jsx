@@ -155,6 +155,12 @@ const SingleDoctorInfo = ({ doctor }) => {
                         {doctorData.designation}, {doctorData.department} <br />
                         Cumilla Medical College Hospital
                       </strong>
+                      <Link
+                        href="#"
+                        className="inline-flex items-center text-M-primary-color mt-2 hover:text-M-heading-color transition-all duration-300 font-jost font-medium"
+                      >
+                        Book An Appointment <Icon icon="iconoir:nav-arrow-right" width="20" height="20" />
+                      </Link>
                     </span>
                   </p>
                   <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2">
@@ -174,57 +180,6 @@ const SingleDoctorInfo = ({ doctor }) => {
                     {doctorData.yearsOfExperience} Years Experience
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Appointment Time */}
-            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md top-1 mt-6 block lg:hidden">
-              <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20 text-center">
-                Available For Appointment
-              </h3>
-              <div>
-                <ul className="flex flex-wrap py-4 gap-3">
-                  {doctorData.schedule.map((item, index) => {
-                    // Convert time to 12-hour format with AM/PM
-                    const convertTo12HourFormat = (time) =>
-                      new Date(`2025-01-01T${time}:00`).toLocaleTimeString(
-                        "en-US",
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: true,
-                        }
-                      );
-
-                    // Convert the day to short form (e.g., "Wednesday" to "Wed")
-                    const dayShortForm = {
-                      Sunday: "Sun",
-                      Monday: "Mon",
-                      Tuesday: "Tue",
-                      Wednesday: "Wed",
-                      Thursday: "Thu",
-                      Friday: "Fri",
-                      Saturday: "Sat",
-                    };
-                    const shortDay = dayShortForm[item.day] || item.day;
-                    return (
-                      <li
-                        key={index}
-                        className="text-sm md:text-base p-3 border border-M-heading-color/20 inline-flex flex-wrap justify-center gap-2 rounded font-jost bg-M-text-color/10 transition-all duration-300 hover:bg-M-heading-color hover:text-white w-full text-center"
-                      >
-                        <strong>{shortDay}: </strong>
-                        {convertTo12HourFormat(item.startTime)} -{" "}
-                        {convertTo12HourFormat(item.endTime)}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Link
-                  href={"tel:+8801601666893"}
-                  className="flex items-center gap-3 justify-center py-3 px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white  text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color uppercase"
-                >
-                  Book Appointment
-                </Link>
               </div>
             </div>
 
@@ -727,7 +682,6 @@ const SingleDoctorInfo = ({ doctor }) => {
                     </p>
                   </div>
                 </div>
-
               </div>
               <div className="pt-5 mt-5 border-t border-M-primary-color/20">
                 <h3 className="text-white text-xl font-semibold mb-3">
@@ -749,7 +703,7 @@ const SingleDoctorInfo = ({ doctor }) => {
               </h3>
               <div className="mt-4">
                 <h5 className="text-base text-M-heading-color font-jost font-semibold">
-                Appointment:
+                  Appointment:
                 </h5>
                 <p className="text-base text-M-text-color font-jost">
                   Fee : {doctorData.appointmentFee} Tk
@@ -765,7 +719,7 @@ const SingleDoctorInfo = ({ doctor }) => {
               </div>
               <div className="mt-4">
                 <h5 className="text-base text-M-heading-color font-jost font-semibold">
-                Specialist Consultation:
+                  Specialist Consultation:
                 </h5>
                 <p className="text-base text-M-text-color font-jost">
                   Fee : {doctorData.followUpFee} TK
@@ -773,7 +727,7 @@ const SingleDoctorInfo = ({ doctor }) => {
               </div>
             </div>
             {/* Appointment Time */}
-            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md sticky top-1 hidden lg:block">
+            <div className="border border-M-heading-color/20 p-6 px-6 rounded-md sticky top-1">
               <h3 className="text-M-heading-color text-xl font-semibold pb-2 border-b border-M-primary-color/20 text-center">
                 Available For Appointment
               </h3>
@@ -815,11 +769,11 @@ const SingleDoctorInfo = ({ doctor }) => {
                   })}
                 </ul>
                 <Link
-        href={appointmentLink}
-        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
-      >
-        Book An Appointment
-      </Link>
+                  href={appointmentLink}
+                  className="flex items-center gap-3 justify-center py-3 px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white  text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color uppercase"
+                >
+                  Book Appointment
+                </Link>
               </div>
             </div>
           </div>

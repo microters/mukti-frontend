@@ -21,28 +21,30 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const currentLanguage = i18n.language || "en";
 
   useEffect(() => {
     setIsMounted(true);
-
+  
     const loadDepartments = async () => {
       try {
-        const deptData = await fetchDepartments(i18n.language); // Fetch department data with API key
+        const deptData = await fetchDepartments(currentLanguage);
         const formattedDepartments = deptData.map((dept) => ({
           label:
-            dept.translations[i18n.language]?.name || dept.translations.en.name,
+            dept.translations?.[currentLanguage]?.name || dept.translations?.en?.name || "Unnamed",
           depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
-          href: `/department/${dept.id}`,
+          href: `/treatments/${dept.slug}`,
         }));
-
+  
         setDepartments(formattedDepartments);
       } catch (error) {
         console.error("❌ Failed to load departments:", error);
       }
     };
-
+  
     loadDepartments();
-  }, [i18n.language]); // Refetch when language changes
+  }, [currentLanguage]); // also update dependency
+  
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
@@ -159,7 +161,7 @@ const Header = () => {
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
-                          href={subItem.href || "#"} // Ensure href is never undefined
+                          href={subItem.href || "/treatments/slug/"}
                           className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
                         >
                           {subItem.depIcon && (
@@ -230,7 +232,7 @@ const Header = () => {
                     className="text-M-heading-color"
                   />
                 )}
-                <span className="text-sm font-medium truncate text-ellipsis w-16">
+                <span className="text-sm text-left capitalize font-medium truncate text-ellipsis w-16">
                   {user.name}
                 </span>
                 <Icon

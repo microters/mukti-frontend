@@ -55,7 +55,7 @@ const Signin = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "https://dashboard-muktidigital.netlify.app";
+        window.location.href = "http://localhost:3001/";
       }, 1000);
     }
   }, []);
@@ -141,7 +141,7 @@ const Signin = () => {
         // Show loading overlay and redirect
         setIsRedirecting(true);
         setTimeout(() => {
-          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
+          window.location.href = `http://localhost:3001?token=${response.token}`;
         }, 1000);
       } else {
         throw new Error("No authentication token received");

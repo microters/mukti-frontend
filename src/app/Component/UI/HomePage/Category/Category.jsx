@@ -62,7 +62,7 @@ const Category = ({ departments, locale }) => {
                 </h3>
   
                 <Link
-                  href={`/${currentLanguage === 'bn' ? 'bn/' : ''}departments/${department.id}`}
+                  href={`/${currentLanguage === 'bn' ? 'bn/' : ''}treatments/slug`}
                   className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] text-M-primary-color rounded-full mt-5 origin-center transition-all duration-300 group-hover:bg-M-secondary-color group-hover:text-white"
                 >
                   <Icon icon="solar:arrow-right-linear" width={24} height={24} />
@@ -74,7 +74,7 @@ const Category = ({ departments, locale }) => {
 
         {/* Button for all services */}
         <Button
-          linkHref={`/${currentLanguage === 'bn' ? 'bn/' : ''}services`}
+          linkHref={`/${currentLanguage === 'bn' ? 'bn/' : ''}treatments`}
           buttonText={t('category.allServices')}
           buttonColor="bg-M-secondary-color"
           textColor="text-white"
