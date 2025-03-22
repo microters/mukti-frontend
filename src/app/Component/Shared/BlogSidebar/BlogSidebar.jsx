@@ -3,6 +3,13 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import React from "react";
 import PopularBlogs from "../BlogCard/PopularBlogs";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
 // Function to shuffle an array randomly
 const shuffleArray = (array) => {
@@ -13,15 +20,11 @@ const shuffleArray = (array) => {
 };
 
 const BlogSidebar = ({ blogs }) => {
-  const currentLanguage = "en"; // Change based on language selection logic
+  const currentLanguage = "en";
 
-  const socialLinks = [
-    { id: 1, icon: "ri:facebook-fill", link: "#" },
-    { id: 2, icon: "ri:twitter-x-fill", link: "#" },
-    { id: 3, icon: "jam:pinterest", link: "#" },
-    { id: 4, icon: "basil:linkedin-outline", link: "#" },
-    { id: 5, icon: "hugeicons:instagram", link: "#" },
-  ];
+  // Replace with dynamic values if needed
+  const shareUrl = "https://yourwebsite.com";
+  const shareTitle = "Check out this blog!";
 
   // Count the number of posts for each category
   const categoryCount = blogs.reduce((acc, post) => {
@@ -86,21 +89,40 @@ const BlogSidebar = ({ blogs }) => {
         </ul>
       </div>
 
-      {/* Social Links */}
+      {/* Social Share */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Social Share</h3>
-        <ul className="flex flex-wrap gap-3 mt-4">
-          {socialLinks.map((item) => (
-            <li key={item.id}>
-              <Link
-                href={item.link}
-                className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300"
-              >
-                <Icon icon={item.icon} width="24" height="24" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-wrap gap-3 mt-4">
+          <FacebookShareButton url={shareUrl} quote={shareTitle}>
+            <div className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300">
+              <Icon icon="ri:facebook-fill" width="24" height="24" />
+            </div>
+          </FacebookShareButton>
+
+          <TwitterShareButton url={shareUrl} title={shareTitle}>
+            <div className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300">
+              <Icon icon="ri:twitter-x-fill" width="24" height="24" />
+            </div>
+          </TwitterShareButton>
+
+          <PinterestShareButton url={shareUrl} media={`${shareUrl}/image.jpg`}>
+            <div className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300">
+              <Icon icon="jam:pinterest" width="24" height="24" />
+            </div>
+          </PinterestShareButton>
+
+          <LinkedinShareButton url={shareUrl}>
+            <div className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300">
+              <Icon icon="basil:linkedin-outline" width="24" height="24" />
+            </div>
+          </LinkedinShareButton>
+
+          <WhatsappShareButton url={shareUrl} title={shareTitle}>
+            <div className="size-12 rounded-full bg-white text-M-text-color flex items-center justify-center hover:bg-M-primary-color hover:text-white transition-all duration-300">
+              <Icon icon="hugeicons:instagram" width="24" height="24" />
+            </div>
+          </WhatsappShareButton>
+        </div>
       </div>
 
       {/* Tags */}
