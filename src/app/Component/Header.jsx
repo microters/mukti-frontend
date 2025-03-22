@@ -230,7 +230,7 @@ const Header = () => {
                     className="text-M-heading-color"
                   />
                 )}
-                <span className="text-sm font-medium truncate text-ellipsis w-16">
+                <span className="text-sm text-left capitalize font-medium truncate text-ellipsis w-16">
                   {user.name}
                 </span>
                 <Icon
