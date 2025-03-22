@@ -1,7 +1,8 @@
-'use client'
+'use client';
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import PopularBlogs from "../BlogCard/PopularBlogs";
 import {
   FacebookShareButton,
@@ -20,15 +21,16 @@ const shuffleArray = (array) => {
 };
 
 const BlogSidebar = ({ blogs }) => {
-  const currentLanguage = "en";
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
 
-  // Replace with dynamic values if needed
-  const shareUrl = "https://yourwebsite.com";
+  const shareUrl = "https://yourwebsite.com"; // Replace with dynamic URL if needed
   const shareTitle = "Check out this blog!";
 
   // Count the number of posts for each category
   const categoryCount = blogs.reduce((acc, post) => {
-    const categoryName = post.translations?.[currentLanguage]?.category?.name || "Uncategorized";
+    const categoryName =
+      post.translations?.[currentLanguage]?.category?.name || "Uncategorized";
     acc[categoryName] = (acc[categoryName] || 0) + 1;
     return acc;
   }, {});
@@ -89,7 +91,7 @@ const BlogSidebar = ({ blogs }) => {
         </ul>
       </div>
 
-      {/* Social Share */}
+      {/* Social Share using react-share */}
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Social Share</h3>
         <div className="flex flex-wrap gap-3 mt-4">
