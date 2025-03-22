@@ -7,19 +7,20 @@ import { Icon } from "@iconify/react";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
+import Button from "@/app/Component/Shared/Buttons/Button";
 
 const BestDoctors = ({ doctors }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
-  const [activeDepartment, setActiveDepartment] = useState("All");
+  const [activeDepartment, setActiveDepartment] = useState("all");
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
 
-  // Extract unique departments
+  // Departments including translated "All"
   const departments = [
-    "All",
+    "all",
     ...new Set(
-      doctors.slice(0,6).map(
+      doctors.map(
         (doc) =>
           doc.translations?.[currentLanguage]?.department ||
           doc.translations?.en?.department ||
@@ -28,9 +29,8 @@ const BestDoctors = ({ doctors }) => {
     ),
   ];
 
-  // Update filtered doctors when department changes
   useEffect(() => {
-    if (activeDepartment === "All") {
+    if (activeDepartment === "all") {
       setFilteredDoctors(doctors);
     } else {
       const filtered = doctors.filter(
@@ -41,9 +41,8 @@ const BestDoctors = ({ doctors }) => {
     }
   }, [activeDepartment, doctors, currentLanguage]);
 
-  // Determine doctors to show (limit to 6 for 'All')
   const displayedDoctors =
-    activeDepartment === "All" ? filteredDoctors.slice(0, 6) : filteredDoctors;
+    activeDepartment === "all" ? filteredDoctors.slice(0, 6) : filteredDoctors;
 
   return (
     <div className="py-12 lg:py-[100px]">
@@ -58,19 +57,24 @@ const BestDoctors = ({ doctors }) => {
         <div className="p-4 mx-auto mt-8">
           <div className="flex-col sm:flex-row flex-wrap flex justify-center space-y-0 md:space-x-6 lg:space-x-12 py-4 px-3 md:px-7 bg-M-heading-color rounded-md">
             {departments.length > 0 ? (
-              departments.map((department, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveDepartment(department)}
-                  className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:w-[1px] before:h-1/2 before:bg-white before:absolute before:top-1/2 before:-right-3 lg:before:-right-6 before:-translate-y-1/2 last:before:hidden md:before:block before:hidden ${
-                    activeDepartment === department
-                      ? "bg-white text-M-heading-color"
-                      : "text-white"
-                  }`}
-                >
-                  {department}
-                </button>
-              ))
+              departments.map((department, index) => {
+                const isAll = department === "all";
+                const displayLabel = isAll ? t("doctors.all") : department;
+
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveDepartment(department)}
+                    className={`px-4 py-2 rounded-md min-w-24 font-semibold font-jost text-base uppercase hover:bg-white hover:text-M-heading-color transition-all duration-500 relative before:w-[1px] before:h-1/2 before:bg-white before:absolute before:top-1/2 before:-right-3 lg:before:-right-6 before:-translate-y-1/2 last:before:hidden md:before:block before:hidden ${
+                      activeDepartment === department
+                        ? "bg-white text-M-heading-color"
+                        : "text-white"
+                    }`}
+                  >
+                    {displayLabel}
+                  </button>
+                );
+              })
             ) : (
               <Skeleton width={150} height={40} count={5} />
             )}
@@ -100,7 +104,6 @@ const BestDoctors = ({ doctors }) => {
                       className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between"
                     >
                       <div className="flex flex-col md:flex-row py-7 px-6 gap-7">
-                        {/* Image */}
                         <div className="border-2 border-transparent w-24 h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
                           <Image
                             src={doctorImage}
@@ -112,7 +115,6 @@ const BestDoctors = ({ doctors }) => {
                           />
                         </div>
 
-                        {/* Info */}
                         <div className="flex-1">
                           <ul className="flex flex-wrap items-center gap-4 mb-5">
                             <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
@@ -154,15 +156,20 @@ const BestDoctors = ({ doctors }) => {
               </div>
             )}
 
-            {/* Show More Button for 'All' */}
-            {activeDepartment === "All" && filteredDoctors.length > 6 && (
+            {/* Show More Button (for All only if more than 6 doctors) */}
+            {activeDepartment === "all" && doctors.length > 6 && (
               <div className="flex justify-center mt-8">
-                <Link
-                  href="/doctor"
-                  className="inline-block px-6 py-3 bg-M-primary-color text-white font-jost font-semibold rounded hover:bg-M-heading-color transition-all duration-300"
-                >
-                  {t("doctors.showMore")}
-                </Link>
+                <Button
+                  linkHref="/doctor"
+                  buttonText={t("doctors.showMore")}
+                  buttonColor="bg-M-secondary-color"
+                  textColor="text-white"
+                  borderColor="border-M-secondary-color"
+                  padding="py-3 px-8"
+                  fontSize="text-lg"
+                  icons="iconamoon:arrow-right-2-light"
+                  alignment="text-center"
+                />
               </div>
             )}
           </div>

@@ -39,7 +39,8 @@
     "noNameAvailable": "No Name Available",
     "noQualification": "N/A",
     "bookAppointment": "Book An Appointment",
-    "showMore": "Show More"
+    "showMore": "Show More",
+    "all": "All"
   },
   "appointment": {
     "bookAppointment": "Book Appointment",
