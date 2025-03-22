@@ -273,41 +273,6 @@ const Appointment = ({appointmentSection}) => {
 
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
-                <select name="departmentId" value={formData.departmentId} onChange={handleChange} className="appointment-input-field" required>
-                  <option value="">{t("appointment.selectDepartment")}</option>
-                  {departments.map((department) => (
-                    <option key={department.id} value={department.id}>
-                      {department.translations[currentLanguage]?.name || department.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <select name="doctorId" value={formData.doctorId} onChange={handleDoctorChange} className="appointment-input-field" required>
-                  <option value="">{t("appointment.selectDoctor")}</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      {doctor.translations[currentLanguage]?.name || doctor.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {selectedDoctor && (
-                <div>
-                  <select name="day" value={formData.day} onChange={handleChange} className="appointment-input-field" required>
-                    <option value="">{t("appointment.selectDay")}</option>
-                    {availableDates.map((slot) => (
-                      <option key={slot.id} value={slot.day}>
-                        {currentLanguage === 'bn' ? getDayName(slot.day, 'bn') : slot.day} ({formatTimeToBD(slot.startTime, currentLanguage)} - {formatTimeToBD(slot.endTime, currentLanguage)})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              <div>
                 <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} placeholder={t("appointment.patientName")} className="appointment-input-field" required />
               </div>
 
@@ -331,96 +296,7 @@ const Appointment = ({appointmentSection}) => {
           />
         </div>
       </div>
-
-      {/* Success Modal */}
-      {showSuccessModal && appointmentDetails && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-[#24285B]">{t("Appointment Success")}</h3>
-              <button 
-                onClick={closeModal} 
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            <div 
-              ref={ticketRef} 
-              className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200 mb-4"
-            >
-              <div className="flex justify-between items-center mb-3">
-                <div>
-                  <h4 className="font-bold text-[#24285B] text-lg">Mukti Hospital</h4>
-                  <p className="text-gray-600 text-sm">Your Health, Our Priority</p>
-                </div>
-                <div className="bg-blue-700 text-white text-xs font-bold px-2 py-1 rounded">
-                  #{appointmentDetails.id}
-                </div>
-              </div>
-              
-              <div className="border-t border-b border-blue-200 py-3 my-3">
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Patient Name")}</p>
-                    <p className="font-medium">{appointmentDetails.patientName}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Phone")}</p>
-                    <p className="font-medium">{appointmentDetails.phone}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Doctor")}</p>
-                    <p className="font-medium">{appointmentDetails.doctorName}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Department")}</p>
-                    <p className="font-medium">{appointmentDetails.departmentName}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Day")}</p>
-                    <p className="font-medium">{appointmentDetails.day}</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs">{t("Time")}</p>
-                    <p className="font-medium">{appointmentDetails.timeSlot}</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-center text-sm">
-                <p className="text-gray-500">{t("Booking Date")}: {appointmentDetails.date}</p>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-amber-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-amber-500 font-medium">{t("Pending")}</span>
-                </div>
-              </div>
-              
-              <div className="mt-3 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-700 text-sm">
-                <p className="font-medium mb-1">{t("Important Note")}:</p>
-                <p>{t("Our team will call you shortly to confirm your appointment and provide your serial number. Please keep your phone accessible.")}</p>
-              </div>
-            </div>
-            
-            <div className="flex justify-center">
-              <button
-                onClick={handleDownloadTicket}
-                className="flex items-center justify-center gap-2 bg-M-primary-color text-white py-2 px-4 rounded hover:bg-M-primary-dark transition duration-200"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                {t("Download Appointment Ticket")}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+     
     </div>
   );
 };
