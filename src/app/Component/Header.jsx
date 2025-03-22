@@ -32,7 +32,7 @@ const Header = () => {
           label:
             dept.translations[i18n.language]?.name || dept.translations.en.name,
           depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
-          href: `/department/${dept.id}`,
+          href: `/treatments/slug/`,
         }));
 
         setDepartments(formattedDepartments);
@@ -159,7 +159,7 @@ const Header = () => {
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
-                          href={subItem.href || "#"} // Ensure href is never undefined
+                          href={subItem.href || "/treatments/slug/"} // Ensure href is never undefined
                           className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
                         >
                           {subItem.depIcon && (

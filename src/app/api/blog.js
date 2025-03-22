@@ -16,7 +16,6 @@ export const fetchBlogs = async (language = 'en') => {
   try {
     const response = await apiClient.get(`/api/blogs?lang=${language}`);
     const blogs = Array.isArray(response.data) ? response.data : response.data?.blogs || [];
-    console.log(blogs)
     return blogs;
   } catch (error) {
     console.error("Error fetching blogs:", error);

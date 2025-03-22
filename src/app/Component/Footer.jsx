@@ -33,12 +33,12 @@ const doctors = [
 ];
 
 const footerMenuItems = [
-  { label: "Find A Doctor", href: "#" },
-  { label: "Medical Services", href: "#" },
-  { label: "Patient Testimonials", href: "#" },
-  { label: "Value Added Services", href: "#" },
-  { label: "Pay Online", href: "#" },
-  { label: "Surgery", href: "#" },
+  { label: "Find A Doctor", href: "/doctor" },
+  { label: "About Us", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Terms & Condition", href: "#" },
 ];
 
 const treatmentList1 = [
@@ -81,42 +81,6 @@ const Footer = () => {
           alt="shape"
           className="hidden md:block absolute right-0 bottom-0 w-36 "
         />
-        {/* <div className="container mx-auto border border-M-text-color/50 rounded-xl p-2 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-8 ">
-          <div className="px-2 py-4 md:p-10 border border-dashed border-white/60 rounded-xl relative before:absolute before:-top-[5] before:left-9 before:w-48 before:bg-M-secondary-color before:h-[10px]">
-            <h3 className="font-jost font-extrabold text-3xl text-white">
-              Emergency call
-            </h3>
-            <div className="flex items-start gap-5 mt-4">
-              <div>
-                <Image
-                  src={callIcon}
-                  alt="Call Icon"
-                  width={24}
-                  className="relative top-2"
-                />
-              </div>
-              <div>
-                <p className="text-base text-white font-jost font-normal mb-1">
-                  Telephone
-                </p>
-                <Link
-                  href="tel:+8801234567890"
-                  className="text-white font-jost font-base text-base"
-                >
-                  +880 123 456 7890
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className='px-2 py-4 md:p-10 border border-dashed border-white/60 rounded-xl relative before:absolute before:-top-[5] before:left-9 before:w-48 before:bg-M-secondary-color before:h-[10px]'>
-                        <h3 className='font-jost font-extrabold text-3xl text-white'>Sign up for Email</h3>
-                        <form className='flex items-center mt-4 border border-white/60 rounded-md overflow-hidden relative'>
-                            <Icon icon="hugeicons:mail-02" width="18" className='text-white absolute left-3 top-1/2 -translate-y-1/2 hidden sm:block' />
-                            <input type='email' placeholder='Enter your email' className='bg-transparent text-white font-jost font-normal w-full py-3 pl-2 md:pl-10 pr-1 ring-0 outline-none'/>
-                            <button type='submit' className='bg-[#39CABB] text-white text-sm md:text-base font-jost font-bold px-2 py-4 md:px-4 md:py-3 uppercase hover:bg-M-primary-color transition-all duration-300 tracking-wide'>Subscribe</button>
-                        </form>
-                    </div>
-        </div> */}
         <div className="container mx-auto pb-20">
           <div className="flex flex-wrap justify-between gap-8">
             <div className="w-[320px]">
@@ -151,15 +115,11 @@ const Footer = () => {
                   </Link>
                 </div>
               </div>
-              {/* <div className='flex space-x-4'>
-                    <Link href='https://play.google.com/store/apps/details?id=com.mukti.hospital' ><Image src={gPlay} alt='logo' width={150}  /></Link>
-                    <Link href='https://play.google.com/store/apps/details?id=com.mukti.hospital' ><Image src={appStore} alt='logo' width={150}  /></Link>
-                </div> */}
             </div>
             {/* Patient Care */}
             <div>
               <h4 className="text-white text-base md:text-xl font-jost font-bold uppercase">
-                Patient Care
+                Quick Links
               </h4>
               <ul className="mt-4 md:mt-6 space-y-4">
                 {footerMenuItems.map((item, index) => (

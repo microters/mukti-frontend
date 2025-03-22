@@ -3,8 +3,12 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
-const BlogCard = ({ post, currentLanguage }) => {
+const BlogCard = ({ post }) => {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
+
   const blogsData = post.translations?.[currentLanguage] || {};
   const blogImage = post.image
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/${post.image}`
