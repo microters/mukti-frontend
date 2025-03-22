@@ -101,7 +101,11 @@ const SingleDoctorInfo = ({ doctor }) => {
 
     setAccordionOpenIndex(accordionOpenIndex === index ? null : index);
   };
-
+  const slug = doctor.slug
+  console.log(slug);
+                
+  const profileLink = `/doctor/${slug}`;
+  const appointmentLink = `/book-appointment/${slug}`;
   return (
     <div>
       {/* Hero Area */}
@@ -811,11 +815,11 @@ const SingleDoctorInfo = ({ doctor }) => {
                   })}
                 </ul>
                 <Link
-                  href={"tel:+8801601666893"}
-                  className="flex items-center gap-3 justify-center py-3 px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white  text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color uppercase"
-                >
-                  Book Appointment
-                </Link>
+        href={appointmentLink}
+        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
+      >
+        Book An Appointment
+      </Link>
               </div>
             </div>
           </div>

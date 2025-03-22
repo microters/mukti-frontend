@@ -94,7 +94,7 @@ const BestDoctors = ({ doctors }) => {
                     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
                     : "/default-profile-photo.png";
                   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
-                  const appointmentLink = doctor.id ? `/book-appointment/${doctor.id}` : "#";
+                  const appointmentLink = doctor.slug ? `/book-appointment/${doctor.slug}` : "#";
 
                   return (
                     <div
