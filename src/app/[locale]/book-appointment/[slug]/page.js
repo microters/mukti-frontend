@@ -33,7 +33,6 @@ const Appointment = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
-  const [value, setValue] = useState(new Date());
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -46,7 +45,7 @@ const Appointment = () => {
   const [verifyingOtp, setVerifyingOtp] = useState(false);
   const [patientExists, setPatientExists] = useState(false);
   const [patientId, setPatientId] = useState(null);
-
+  const [value, setValue] = useState(null);
   // Form data for patient info - pre-fill from user data if available
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -121,15 +120,57 @@ const Appointment = () => {
   const stepLabels = translations.stepLabels;
   const steps = Array.from({ length: stepLabels.length }, (_, index) => index + 1);
 
-  const nextStep = async () => {
-    if (currentStep === 3) {
-      // Before going to verification step, check if patient exists
-      await checkPatientAndSendOTP();
-    } else {
-      if (currentStep < stepLabels.length) setCurrentStep(currentStep + 1);
+  // const nextStep = async () => {
+  //   if (currentStep === 3) {
+  //     // Before going to verification step, check if patient exists
+  //     await checkPatientAndSendOTP();
+  //   } else {
+  //     if (currentStep < stepLabels.length) setCurrentStep(currentStep + 1);
+  //   }
+  // };
+// Updated nextStep function with date validation
+const nextStep = async () => {
+  if (currentStep === 2) {
+    // First check if a date has been selected at all
+    if (!value) {
+      toast.error(language === "bn" 
+        ? "অনুগ্রহ করে একটি তারিখ নির্বাচন করুন" 
+        : "Please select a date first");
+      return;
     }
-  };
-
+    
+    // Get the day of week from the selected date (0 = Sunday, 1 = Monday, etc.)
+    const selectedDayNumber = value.getDay();
+    
+    // Check doctor availability for this specific day
+    const doctorAvailableDays = scheduleWithDayNumbers
+      .filter(item => 
+        item.startTime !== "Closed" && 
+        item.startTime !== "N/A" &&
+        item.endTime !== "Closed" && 
+        item.endTime !== "N/A")
+      .map(item => item.dayNumber);
+    
+    // Simple and direct check: Is this day in the available days list?
+    if (!doctorAvailableDays.includes(selectedDayNumber)) {
+      toast.error(language === "bn" 
+        ? "অনুগ্রহ করে একটি বৈধ তারিখ নির্বাচন করুন যেদিন ডাক্তার উপলব্ধ আছেন" 
+        : "Please select a valid date when the doctor is available");
+      return;
+    }
+    
+    // If we get here, the day is available, so proceed
+    if (currentStep < stepLabels.length) setCurrentStep(currentStep + 1);
+  } 
+  else if (currentStep === 3) {
+    // Before going to verification step, check if patient exists
+    await checkPatientAndSendOTP();
+  } 
+  else {
+    // For other steps, proceed normally
+    if (currentStep < stepLabels.length) setCurrentStep(currentStep + 1);
+  }
+};
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
@@ -1208,76 +1249,152 @@ const handleResendOtp = async () => {
                 </div>
               </div>
             )}
-            {currentStep === 2 && (
-              <div className="mb-10">
-                <div className="rounded-md bg-white">
-                  <h3 className="border-b border-M-text-color/20 p-7 pb-5 text-xl">
-                    {translations.selectDateTime}
-                  </h3>
-                  <div className="p-7 block lg:flex gap-7 space-y-5 lg:space-y-5">
-                    <div className="shrink-0">
-                      <Calendar
-                        onChange={setValue}
-                        value={value}
-                        minDate={new Date()}
-                        tileDisabled={({ date, view }) =>
-                          view === "month" && disabledDays.includes(date.getDay())
-                        }
-                      />
-                    </div>
-                    <div className="w-full rounded-md border border-M-text-color/20 p-5">
-                      <h3 className="text-M-heading-color text-xl font-semibold text-center mb-4">
-                        {translations.availableFor}
-                      </h3>
-                      <div>
-                        <ul className="grid grid-cols-2 gap-3">
-                          {scheduleWithDayNumbers.map((item, index) => {
-                            const convertTo12HourFormat = (time) => {
-                              const isValidTime = /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
-                              if (!isValidTime) return time;
-                              return new Date(`2025-01-01T${time}:00`).toLocaleTimeString("en-US", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
-                              });
-                            };
-                            const dayShortForm = {
-                              Sunday: "Sun",
-                              Monday: "Mon",
-                              Tuesday: "Tue",
-                              Wednesday: "Wed",
-                              Thursday: "Thu",
-                              Friday: "Fri",
-                              Saturday: "Sat",
-                            };
-                            const shortDay = dayShortForm[item.day] || item.day;
-                            const isValidTime = (time) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
-                            const startTimeValid = isValidTime(item.startTime);
-                            const endTimeValid = isValidTime(item.endTime);
-                            return (
-                              <li
-                                key={index}
-                                className={`text-sm md:text-base p-3 border border-M-heading-color/20 inline-flex flex-wrap justify-center gap-2 rounded font-jost w-full text-center uppercase ${
-                                  startTimeValid && endTimeValid
-                                    ? "bg-M-text-color/10"
-                                    : "border-red-500 bg-M-secondary-color text-white"
-                                }`}
-                              >
-                                <strong>{shortDay}: </strong>
-                                {startTimeValid && endTimeValid
-                                  ? `${convertTo12HourFormat(item.startTime)} - ${convertTo12HourFormat(item.endTime)}`
-                                  : convertTo12HourFormat(item.startTime) ||
-                                    convertTo12HourFormat(item.endTime)}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
+{currentStep === 2 && (
+  <div className="mb-10">
+    <div className="rounded-md bg-white">
+      <h3 className="border-b border-M-text-color/20 p-7 pb-5 text-xl">
+        {translations.selectDateTime}
+      </h3>
+      <div className="p-7 block lg:flex gap-7 space-y-5 lg:space-y-5">
+        <div className="shrink-0">
+          <div className="mb-3 text-center">
+            <span className="text-M-primary-color font-medium">
+              {language === "bn" 
+                ? "দয়া করে ডাক্তারের উপলব্ধ দিনগুলি থেকে একটি তারিখ নির্বাচন করুন"
+                : "Please select a date from doctor's available days"}
+            </span>
+          </div>
+          <Calendar
+            onChange={setValue}
+            value={value}
+            minDate={new Date()}
+            tileDisabled={({ date, view }) =>
+              view === "month" && disabledDays.includes(date.getDay())
+            }
+            tileClassName={({ date, view }) => {
+              if (view === 'month') {
+                const dayOfWeek = date.getDay();
+                return !disabledDays.includes(dayOfWeek) 
+                  ? 'bg-green-50 hover:bg-green-100' 
+                  : 'text-gray-400 line-through';
+              }
+            }}
+          />
+          
+          {/* Selected Date Confirmation - Modified to handle null value */}
+          {value ? (
+            <div className="mt-4 p-3 border border-dashed rounded-md border-M-primary-color bg-blue-50">
+              <h4 className="text-center font-medium mb-1 text-M-primary-color">
+                {language === "bn" ? "নির্বাচিত তারিখ" : "Selected Date"}
+              </h4>
+              <p className="text-center text-gray-700 font-medium">
+                {value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </p>
+              
+              {/* Show available/unavailable status */}
+              {(() => {
+                const selectedDayNumber = value.getDay();
+                const isAvailableDay = !disabledDays.includes(selectedDayNumber);
+                
+                return (
+                  <div className={`mt-2 text-center ${isAvailableDay ? 'text-green-600' : 'text-red-600'}`}>
+                    <span className="inline-flex items-center gap-1">
+                      {isAvailableDay ? (
+                        <>
+                          <Icon icon="mdi:check-circle" width="18" />
+                          {language === "bn" ? "ডাক্তার এই দিনে উপলব্ধ আছেন" : "Doctor is available on this day"}
+                        </>
+                      ) : (
+                        <>
+                          <Icon icon="mdi:close-circle" width="18" />
+                          {language === "bn" ? "ডাক্তার এই দিনে উপলব্ধ নেই" : "Doctor is not available on this day"}
+                        </>
+                      )}
+                    </span>
                   </div>
-                </div>
-              </div>
-            )}
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="mt-4 p-3 border border-dashed rounded-md border-red-200 bg-red-50">
+              <p className="text-center text-red-600 font-medium">
+                {language === "bn" 
+                  ? "দয়া করে ক্যালেন্ডার থেকে একটি তারিখ নির্বাচন করুন" 
+                  : "Please select a date from the calendar"}
+              </p>
+            </div>
+          )}
+        </div>
+        
+        <div className="w-full rounded-md border border-M-text-color/20 p-5">
+          <h3 className="text-M-heading-color text-xl font-semibold text-center mb-4">
+            {translations.availableFor}
+          </h3>
+          <div>
+            <ul className="grid grid-cols-2 gap-3">
+              {scheduleWithDayNumbers.map((item, index) => {
+                const convertTo12HourFormat = (time) => {
+                  const isValidTime = /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
+                  if (!isValidTime) return time;
+                  return new Date(`2025-01-01T${time}:00`).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  });
+                };
+                const dayShortForm = {
+                  Sunday: "Sun",
+                  Monday: "Mon",
+                  Tuesday: "Tue",
+                  Wednesday: "Wed",
+                  Thursday: "Thu",
+                  Friday: "Fri",
+                  Saturday: "Sat",
+                };
+                const shortDay = dayShortForm[item.day] || item.day;
+                const isValidTime = (time) => /^([01]\d|2[0-3]):([0-5]\d)$/.test(time);
+                const startTimeValid = isValidTime(item.startTime);
+                const endTimeValid = isValidTime(item.endTime);
+                
+                // Highlight the selected day - modified to handle null value
+                const isSelectedDay = value ? value.getDay() === item.dayNumber : false;
+                
+                return (
+                  <li
+                    key={index}
+                    className={`text-sm md:text-base p-3 border ${isSelectedDay ? 'border-M-primary-color border-2' : 'border-M-heading-color/20'} 
+                      inline-flex flex-wrap justify-center gap-2 rounded font-jost w-full text-center uppercase 
+                      ${startTimeValid && endTimeValid
+                        ? isSelectedDay ? "bg-M-primary-color/10" : "bg-M-text-color/10"
+                        : "border-red-500 bg-M-secondary-color text-white"}`}
+                  >
+                    <strong>{shortDay}: </strong>
+                    {startTimeValid && endTimeValid
+                      ? `${convertTo12HourFormat(item.startTime)} - ${convertTo12HourFormat(item.endTime)}`
+                      : convertTo12HourFormat(item.startTime) ||
+                        convertTo12HourFormat(item.endTime)}
+                    
+                    {/* Show selected indicator */}
+                    {isSelectedDay && (
+                      <span className="w-full text-M-primary-color text-xs mt-1">
+                        {language === "bn" ? "✓ নির্বাচিত" : "✓ Selected"}
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
             {currentStep === 3 && (
               <div className="mb-10">
                 <div className="rounded-md bg-white">
