@@ -105,7 +105,7 @@ const SingleTreatment = ({department, doctors}) => {
   return (
     <div>
       <CommonHero pageName={departmentTranslations.name || "Fallback Title"} />
-      <div className="container shadow-md bg-white py-8 px-4 md:px-8 rounded-md pb-14 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 mb-24">
+      <div className="container shadow-md bg-white py-8 px-4 md:px-8 rounded-md pb-14 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 mb-14">
       <div className="md:col-span-2">
           {/* Doctor filter start */}
           <div className="border border-slate-200 flex flex-wrap gap-3 items-center justify-center lg:justify-between px-5 py-3 rounded-md">
@@ -291,7 +291,7 @@ const SingleTreatment = ({department, doctors}) => {
             </div>
             {/* CTA End */}
         </div>
-        <div className="col-span-2 shadow-md bg-white py-8 px-4 md:px-8 rounded-md">
+        {/* Blog Data */}
           <div className="jodit-description"
             dangerouslySetInnerHTML={{
             __html: departmentTranslations.description || "",
@@ -299,7 +299,6 @@ const SingleTreatment = ({department, doctors}) => {
         />
         </div>
       </div>
-    </div>
   );
 };
 
