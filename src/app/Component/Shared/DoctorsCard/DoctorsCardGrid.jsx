@@ -26,9 +26,10 @@ const DoctorsCardGrid = ({ doctor }) => {
   const doctorImage = doctor.icon
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : "/default-profile-photo.png";
-
+    const slug = doctor.slug
+    console.log(slug);
   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
-
+  const appointmentLink = `/book-appointment/${slug}`;
   return (
     <div key={doctor.id} className="h-full">
       <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md text-center">
@@ -128,14 +129,20 @@ const DoctorsCardGrid = ({ doctor }) => {
         </div>
 
         {/* Booking Button */}
-        <Button
+        {/* <Button
           linkHref="#"
           buttonText="Book An Appointment"
           buttonColor="bg-M-primary-color"
           textColor="text-white w-full justify-center"
           borderColor="border-M-primary-color"
           alignment="center"
-        />
+        /> */}
+        <Link
+        href={appointmentLink}
+        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
+      >
+        Book An Appointment
+      </Link>
       </div>
     </div>
   );

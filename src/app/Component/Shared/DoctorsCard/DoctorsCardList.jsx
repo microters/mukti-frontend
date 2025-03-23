@@ -15,9 +15,10 @@ const DoctorsCardList = ({ doctor }) => {
     yearsOfExperience = "N/A",
     academicQualification = "N/A",
   } = doctorData;
-
+  const slug = doctor.slug
+  console.log(slug);
   const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
-
+  const appointmentLink = `/book-appointment/${slug}`;
   // Set default image if doctor icon is missing
   const doctorImage = doctor.icon
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
@@ -120,15 +121,12 @@ const DoctorsCardList = ({ doctor }) => {
               Not Available
             </h4>
           )}
-          <Button
-            linkHref="#"
-            buttonText="Book An Appointment"
-            buttonColor="bg-M-primary-color"
-            textColor="text-white"
-            borderColor="border-M-primary-color"
-            alignment="center"
-            padding="py-2 px-3 xl:py-3 xl:px-5 mt-2"
-          />
+         <Link
+        href={appointmentLink}
+        className="bg-[#E8EEF4] text-[#00224F] text-lg w-full py-3 px-3 block text-center font-bold font-jost hover:bg-M-primary-color hover:text-white transition-all duration-300"
+      >
+        Book An Appointment
+      </Link>
         </div>
       </div>
     </div>
