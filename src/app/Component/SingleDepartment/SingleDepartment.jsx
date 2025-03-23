@@ -29,7 +29,7 @@ const SingleTreatment = ({department, doctors}) => {
       <CommonHero pageName={departmentTranslations.name || "Fallback Title"} />
       <div className="container grid grid-cols-1 lg:grid-cols-3 pb-24 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 ">
         <div className="col-span-2 shadow-md bg-white py-8 px-4 md:px-8 rounded-md">
-          <div className="jodit-description  space-y-6"
+          <div className="jodit-description"
             dangerouslySetInnerHTML={{
             __html: departmentTranslations.description || "",
             }}
