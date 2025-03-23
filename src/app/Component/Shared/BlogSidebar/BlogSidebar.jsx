@@ -20,14 +20,21 @@ const shuffleArray = (array) => {
     .map(({ value }) => value);
 };
 
-const BlogSidebar = ({ blogs, searchQuery, setSearchQuery }) => {
+const BlogSidebar = ({ blogs = [], searchQuery, setSearchQuery }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
   const shareUrl = "https://yourwebsite.com";
   const shareTitle = "Check out this blog!";
 
-  // Category count (not filtered by search)
+  if (!Array.isArray(blogs) || blogs.length === 0) {
+    return (
+      <div className="p-6 bg-M-section-bg rounded-md">
+        <p className="text-center text-gray-500">No blog data available.</p>
+      </div>
+    );
+  }
+  // Category count
   const categoryCount = blogs.reduce((acc, post) => {
     const categoryName =
       post.translations?.[currentLanguage]?.category?.name || "Uncategorized";
@@ -40,7 +47,6 @@ const BlogSidebar = ({ blogs, searchQuery, setSearchQuery }) => {
     count: categoryCount[category],
   }));
 
-  // ✅ Pick random blogs from full list — no search filtering
   const randomBlogs = shuffleArray(blogs).slice(0, 4);
 
   return (

@@ -127,3 +127,13 @@ abbr:where([title]) {
   background-color: #ff000005 !important;
   color: #ff0000 !important;
 }
+
+/* Jodit Description Style */
+.jodit-description h1,
+.jodit-description h2,
+.jodit-description h3,
+.jodit-description h4{
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4 !important;
+}

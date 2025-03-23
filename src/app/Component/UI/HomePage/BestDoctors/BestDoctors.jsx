@@ -20,7 +20,7 @@ const BestDoctors = ({ doctors }) => {
   const departments = [
     "all",
     ...new Set(
-      doctors.map(
+      doctors.slice(0,6).map(
         (doc) =>
           doc.translations?.[currentLanguage]?.department ||
           doc.translations?.en?.department ||
