@@ -71,7 +71,7 @@ const WhyChooseUs = ({ whyChooseUsSection }) => {
                       alt={item.serviceTitle || `Service ${index + 1}`}
                       width={50}
                       height={50}
-                      className="shrink-0 w-12 h-14"
+                      className="shrink-0 w-12 h-12"
                       unoptimized={true}
                     />
                   ) : (
