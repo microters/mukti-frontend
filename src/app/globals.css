@@ -158,16 +158,3 @@ abbr:where([title]) {
 .jodit-description section {
   @apply  space-y-4;
 }
-.jodit-description ul,
-.jodit-description ol {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
-}
-
-.jodit-description ul {
-  list-style-type: disc;
-}
-
-.jodit-description ol {
-  list-style-type: decimal;
-}
