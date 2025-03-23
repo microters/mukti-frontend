@@ -179,7 +179,7 @@ const DoctorsList = ({ doctors }) => {
       </button>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         {isFilterOpen && (
-          <div className="space-y-8 fixed md:relative bg-white top-0 left-0 w-full overflow-y-scroll md:overflow-y-auto h-screen md:h-auto px-2 py-2 md:p-0 z-50">
+          <div className="space-y-8 fixed md:relative bg-white top-0 left-0 w-full overflow-y-scroll md:overflow-y-auto h-screen md:h-auto px-2 py-2 md:p-0 z-10">
             {/* CTA Start */}
             <div className="bg-M-heading-color px-5 py-7 rounded-lg">
               <h3 className="text-2xl font-bold text-white mb-2">
