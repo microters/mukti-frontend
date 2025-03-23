@@ -1,8 +1,6 @@
 'use client'
 import CommonHero from "@/app/Component/UI/CommonHero";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 import DoctorsCardGrid from "../Shared/DoctorsCard/DoctorsCardGrid";
