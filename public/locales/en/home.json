@@ -58,5 +58,8 @@
   "appointmentProcess": {
     "title": "Appointment Process",
     "subtitle": "How We Work?"
+  },
+  "singleDepartment":{
+    "best": "Best"
   }
 }

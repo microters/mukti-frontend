@@ -129,11 +129,32 @@ abbr:where([title]) {
 }
 
 /* Jodit Description Style */
-.jodit-description h1,
 .jodit-description h2,
 .jodit-description h3,
 .jodit-description h4{
-  font-size: 24px;
   font-weight: 700;
   line-height: 1.4 !important;
+}
+.jodit-description h2{
+  font-size: 32px;
+}
+.jodit-description h3{
+  font-size: 24px;
+}
+.jodit-description h4{
+  font-size: 20px;
+}
+.jodit-description h5{
+  font-size: 16px;
+}
+.jodit-description ul{
+  font-weight: normal!important;
+  line-height: 1.5rem;
+}
+.jodit-description p,
+.jodit-description li{
+  @apply text-M-text-color;
+}
+.jodit-description section {
+  @apply  space-y-4;
 }

@@ -58,5 +58,8 @@
   "appointmentProcess": {
     "title": "অ্যাপয়েন্টমেন্ট প্রক্রিয়া",
     "subtitle": "কীভাবে আমরা কাজ করি?"
+  },
+  "singleDepartment":{
+    "best": "সেরা"
   }
 }

@@ -1,15 +1,14 @@
 'use client'
-import AppointmentForm from "@/app/Component/Shared/AppointmentForm/AppointmentForm";
-import Button from "@/app/Component/Shared/Buttons/Button";
 import CommonHero from "@/app/Component/UI/CommonHero";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const SingleTreatment = ({department, doctors}) => {
 
-    const { i18n } = useTranslation();
+    const { t, i18n } = useTranslation();
     const currentLanguage = i18n.language || "en";
     const departmentTranslations = department?.translations?.[currentLanguage] 
       || department?.translations?.en 
@@ -24,15 +23,13 @@ const SingleTreatment = ({department, doctors}) => {
       return docTranslations.department?.toLowerCase() === departmentName.toLowerCase();
     });
 
+
   return (
     <div>
       <CommonHero pageName={departmentTranslations.name || "Fallback Title"} />
       <div className="container grid grid-cols-1 lg:grid-cols-3 pb-24 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 ">
         <div className="col-span-2 shadow-md bg-white py-8 px-4 md:px-8 rounded-md">
-          <h3 className="text-2xl mb-3">
-            Cardiologist Services at Mukti Hospital
-          </h3>
-          <div className="jodit-description"
+          <div className="jodit-description  space-y-6"
             dangerouslySetInnerHTML={{
             __html: departmentTranslations.description || "",
             }}
@@ -100,7 +97,7 @@ const SingleTreatment = ({department, doctors}) => {
           {/* Relative Doctors */}
           <div className="border border-M-text-color/20 rounded-md p-5">
             <h3 className="text-2xl mb-6 text-center border-b border-M-text-color/20 pb-3">
-              Best {departmentName}
+            {t("singleDepartment.best")} {departmentName}
             </h3>
             <div className="grid grid-cols-1 gap-6">
             {filteredDoctors.length === 0 && (
@@ -115,6 +112,8 @@ const SingleTreatment = ({department, doctors}) => {
                 const doctorImage = doc.icon
                   ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doc.icon}`
                   : "/default-profile-photo.png";
+                  const slug = doc.slug
+                  const appointmentLink = `/book-appointment/${slug}`;
                 return (
                     <div className="bg-white shadow-md rounded-md p-5 text-center border border-M-text-color/20">
                     <div className="size-20 overflow-hidden rounded-full mx-auto border-2 border-M-primary-color mb-5">
@@ -140,11 +139,10 @@ const SingleTreatment = ({department, doctors}) => {
                       <span>{docData.academicQualification || "Academic Qualification"}</span>
                     </p>
                     <Link
-                      href="#"
-                      passHref
+                      href={appointmentLink}
                       className="bg-[#E8EEF4] block w-full py-3 px-3 font-jost font-bold text-M-heading-color rounded-md transition-all duration-300 hover:bg-M-primary-color hover:text-white"
                     >
-                      Book An Appointment
+                      {t("doctors.bookAppointment")}
                     </Link>
                   </div>
                 );
