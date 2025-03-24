@@ -14,16 +14,16 @@ const SingleBlog = ({ blogs }) => {
     const { i18n } = useTranslation();
     const currentLanguage = i18n.language || "en";
   
-    const filteredBlogs = blogs.filter((post) => {
-      const translation = post.translations?.[currentLanguage];
-      if (!translation) return false;
+    // const filteredBlogs = blogs.filter((post) => {
+    //   const translation = post.translations?.[currentLanguage];
+    //   if (!translation) return false;
   
-      const title = translation.title?.toLowerCase() || "";
-      const category = translation.category?.name?.toLowerCase() || "";
-      const query = searchQuery.toLowerCase();
+    //   const title = translation.title?.toLowerCase() || "";
+    //   const category = translation.category?.name?.toLowerCase() || "";
+    //   const query = searchQuery.toLowerCase();
   
-      return title.includes(query) || category.includes(query);
-    });  
+    //   return title.includes(query) || category.includes(query);
+    // });  
 
   return (
     <div>
@@ -467,7 +467,7 @@ const SingleBlog = ({ blogs }) => {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <BlogSidebar 
-              blogs={filteredBlogs}
+              blogs={blogs}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
             />

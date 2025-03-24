@@ -11,6 +11,7 @@ import {
   PinterestShareButton,
   WhatsappShareButton,
 } from "react-share";
+import { useMemo } from "react";
 
 // Always shuffle full list for Popular Blogs
 const shuffleArray = (array) => {
@@ -47,7 +48,9 @@ const BlogSidebar = ({ blogs = [], searchQuery, setSearchQuery }) => {
     count: categoryCount[category],
   }));
 
-  const randomBlogs = shuffleArray(blogs).slice(0, 4);
+  const randomBlogs = useMemo(() => {
+    return shuffleArray(blogs).slice(0, 4);
+  }, [blogs]);
 
   return (
     <div className="space-y-5">

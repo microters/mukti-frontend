@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +14,7 @@ const BestDoctors = ({ doctors }) => {
 
   const [activeDepartment, setActiveDepartment] = useState("all");
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
+  console.log("All doctors:", doctors)
 
   // Departments including translated "All"
   const departments = [
