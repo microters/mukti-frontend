@@ -13,6 +13,7 @@ const PopularBlogs = ({ post }) => {
   const blogImage = post.image
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/${post.image}`
     : "/default-profile-photo.png";
+  const singleBlogLink = blogsData.slug ? `/blog/${blogsData.slug}` : "#";
 
   return (
     <div
@@ -38,7 +39,7 @@ const PopularBlogs = ({ post }) => {
       </span>
       <h4>
         <Link
-          href="#"
+          href={singleBlogLink}
           className="text-M-heading-color text-base hover:text-M-primary-color transition-all duration-300 line-clamp-2"
         >
           {blogsData.title}

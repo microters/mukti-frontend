@@ -13,6 +13,7 @@ const BlogCard = ({ post }) => {
   const blogImage = post.image
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/${post.image}`
     : "/default-profile-photo.png";
+  const singleBlogLink = blogsData.slug ? `/blog/${blogsData.slug}` : "#";
 
   return (
     <div className="shadow-md rounded-xl overflow-hidden">
@@ -29,7 +30,7 @@ const BlogCard = ({ post }) => {
       </div>
       <div className="px-5 py-5 space-y-3">
         <h3 className="text-xl line-clamp-2">
-          <Link href={"#"}>{blogsData.title}</Link>
+          <Link href={singleBlogLink}>{blogsData.title}</Link>
         </h3>
         <p className="bg-[#009650]/10 border-l-2 border-M-primary-color py-3 px-4 rounded text-M-text-color text-sm font-semibold">
           {blogsData.category?.name}

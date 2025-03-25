@@ -2,7 +2,7 @@ import BlogCard from "@/app/Component/Shared/BlogCard/BlogCard";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import React from "react";
 
-const Blog = ({ blogs }) => {
+const Blog = ({ blogs}) => {
   return (
     <div className="py-12 lg:py-24">
       <div className="container">
