@@ -62,8 +62,9 @@ const FooterProvider = ({ doctors }) => {
   // Map sections from API data
   const patientCareSection = sections.PatientCare;
   const treatmentsSection = sections.Treatments;
+  const quickLinksSection = sections.QuickLinks;
   // Using "QuickLinks" as the Diagnostic section
-  const diagnosticSection = sections.QuickLinks;
+  const diagnosticSection = sections.Diagnostic;
 
   // Sort and slice doctors by experience
   const topDoctorsByExperience = [...doctors]
@@ -129,6 +130,22 @@ const FooterProvider = ({ doctors }) => {
             </div>
 
             {/* Patient Care Section */}
+            {quickLinksSection && (
+              <div>
+                <h4 className="text-white text-base md:text-xl font-jost font-bold uppercase">
+                  {quickLinksSection.title}
+                </h4>
+                <ul className="mt-4 md:mt-6 space-y-4">
+                  {quickLinksSection.links.map((item, index) => (
+                    <li key={index}>
+                      <Link href={item.url} className="footer-menu-list-item">
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {patientCareSection && (
               <div>
                 <h4 className="text-white text-base md:text-xl font-jost font-bold uppercase">
