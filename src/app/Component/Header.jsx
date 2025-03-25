@@ -12,20 +12,83 @@ import { useAuth } from "../[locale]/utils/AuthContext";
 import AuthModal from "./Shared/AuthModal/AuthModal";
 import { fetchDepartments } from "../api/department";
 
+// New function to fetch menu items from API with better error handling
+const fetchMenuItems = async (language) => {
+  try {
+    console.log("Fetching menu items from:", `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/header`);
+    
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/header`, {
+      headers: {
+        'x-api-key': process.env.NEXT_PUBLIC_API_KEY || '',
+        'Accept': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      console.error("API response not OK:", response.status, response.statusText);
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    console.log("Header data received:", data);
+    
+    // Check if data has translations for current language
+    if (data && data.translations && data.translations[language] && data.translations[language].menus) {
+      return {
+        menus: data.translations[language].menus || [],
+        phone: data.translations[language].phone || "+880 1601 666-893",
+        logo: data.logo || null,
+        contactIcon: data.contactIcon || null
+      };
+    }
+    
+    // Fallback to English if the requested language isn't available
+    if (data && data.translations && data.translations.en) {
+      return {
+        menus: data.translations.en.menus || [],
+        phone: data.translations.en.phone || "+880 1601 666-893",
+        logo: data.logo || null,
+        contactIcon: data.contactIcon || null
+      };
+    }
+    
+    return {
+      menus: [],
+      phone: "+880 1601 666-893",
+      logo: null,
+      contactIcon: null
+    };
+      
+  } catch (error) {
+    console.error("❌ Error fetching menu items:", error);
+    return {
+      menus: [],
+      phone: "+880 1601 666-893",
+      logo: null,
+      contactIcon: null
+    };
+  }
+};
+
 const Header = () => {
   const { user, logout, loading } = useAuth();
   const { t, i18n } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [departments, setDepartments] = useState([]);
+  const [apiMenuItems, setApiMenuItems] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [phone, setPhone] = useState("+880 1601 666-893");
+  const [logo, setLogo] = useState(null);
+  const [contactIcon, setContactIcon] = useState(null);
   const currentLanguage = i18n.language || "en";
 
   useEffect(() => {
     setIsMounted(true);
   
+    // Original department loading as in the initial implementation
     const loadDepartments = async () => {
       try {
         const deptData = await fetchDepartments(currentLanguage);
@@ -35,15 +98,80 @@ const Header = () => {
           depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
           href: `/treatments/${dept.slug}`,
         }));
-  
+    
         setDepartments(formattedDepartments);
       } catch (error) {
         console.error("❌ Failed to load departments:", error);
       }
     };
-  
     loadDepartments();
-  }, [currentLanguage]); // also update dependency
+    
+    // New function to load menu items from API
+    const loadMenuItems = async () => {
+      try {
+        const headerData = await fetchMenuItems(currentLanguage);
+        
+        // Set phone, logo and contact icon
+        setPhone(headerData.phone);
+        if (headerData.logo) {
+          setLogo(`${process.env.NEXT_PUBLIC_BACKEND_URL}${headerData.logo}`);
+        }
+        
+        if (headerData.contactIcon) {
+          setContactIcon(`${process.env.NEXT_PUBLIC_BACKEND_URL}${headerData.contactIcon}`);
+        }
+        
+        // Process menu items if available
+        if (headerData.menus && headerData.menus.length > 0) {
+          // Process menu items
+          const processedMenus = headerData.menus
+            .filter(item => item && typeof item === 'object') // Ensure item is a valid object
+            .map(item => {
+              // Skip any menu with "department" in title (we'll add it statically)
+              if (item.title?.toLowerCase().includes("department")) {
+                return null;
+              }
+              
+              // Check if this is a parent menu (no parent value)
+              const isParent = !item.parent || item.parent === "";
+              
+              if (isParent) {
+                // Find all child menus for this parent
+                const childMenus = headerData.menus.filter(child => 
+                  child.parent === item.title && child.status === "active"
+                ).map(child => ({
+                  label: child.title || "",
+                  href: child.link || "#",
+                  buttonTitle: child.buttonTitle || "",
+                  openInNewTab: child.openInNewTab || false
+                }));
+                
+                return {
+                  label: item.title || "",
+                  href: item.link || "#",
+                  hasSubMenu: childMenus.length > 0,
+                  subMenus: childMenus.length > 0 ? childMenus : [],
+                  buttonTitle: item.buttonTitle || "",
+                  openInNewTab: item.openInNewTab || false,
+                  order: item.order || 0,
+                  status: item.status || "active"
+                };
+              }
+              return null;
+            })
+            .filter(item => item !== null && item.status === "active")
+            .sort((a, b) => a.order - b.order);
+          
+          console.log("Processed menu items:", processedMenus);
+          setApiMenuItems(processedMenus);
+        }
+      } catch (menuError) {
+        console.error("Menu loading failed:", menuError);
+      }
+    };
+    
+    loadMenuItems();
+  }, [currentLanguage]);
   
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
@@ -63,9 +191,35 @@ const Header = () => {
 
   if (!isMounted) return null;
 
-  const menuItems = [
+  // Create menu items array with first 2 API items, then department, then rest of API items
+  const menuItems = apiMenuItems.length > 0 
+    ? [
+        // First 2 API items (if available)
+        ...(apiMenuItems.slice(0, 2)),
+        
+        // Static department menu with API-loaded submenu
+        {
+          label: t("header.department"),
+          href: "#",
+          hasSubMenu: true,
+          subMenus: departments,
+        },
+        
+        // Rest of the API menu items (after first 2)
+        ...(apiMenuItems.slice(2))
+      ]
+    : []; // Empty if no API items
+  
+  // If API menus failed to load, use fallback static menus
+  const fallbackMenuItems = [
     { label: t("header.home"), href: "/", hasSubMenu: false },
     { label: t("header.findDoctor"), href: "/doctor", hasSubMenu: false },
+    {
+      label: t("header.department"),
+      href: "#",
+      hasSubMenu: true,
+      subMenus: departments,
+    },
     {
       label: t("header.patientCare"),
       href: "#",
@@ -76,44 +230,49 @@ const Header = () => {
         { label: t("header.emergencyServices"), href: "#" },
       ],
     },
-    {
-      label: t("header.department"),
-      href: "#",
-      hasSubMenu: true,
-      subMenus: departments,
-    },
     { label: t("header.aboutUs"), href: "/about", hasSubMenu: false },
     { label: t("header.treatment"), href: "/treatments", hasSubMenu: false },
     { label: t("header.diagnostic"), href: "/diagnostic", hasSubMenu: false },
   ];
   
+  // Use API menu items and fall back to static ones if API fails
+  const finalMenuItems = apiMenuItems.length > 0 ? menuItems : fallbackMenuItems;
+  
   const handleNavigation = (href) => {
     setOpenMenu(false);
     setOpenIndex(null);
-    router.push(href);
+    // Check if we're in a browser environment before using window
+    if (typeof window !== 'undefined') {
+      window.location.href = href;
+    }
   };
 
   return (
     <div>
       <div className="bg-M-heading-color">
         <div className="container mx-auto px-2 py-4 flex justify-between items-center gap-3">
-          <Link href="/">
-            <Image
-              src={Logo}
-              alt="logo"
-              width={200}
-              className="w-32 sm:w-auto"
-            />
-          </Link>
+        <Link href="/">
+           
+              <img
+                src={logo}
+                alt="logo"
+                width={200}
+                className="w-32 sm:w-52"
+              />
+              </Link>
           <div>
             <ul className="flex flex-wrap gap-4">
               <li className="hidden lg:block">
                 <Link
-                  href={"tel:+880 1601 666-893"}
+                  href={`tel:${phone}`}
                   className="flex gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 py-1 rounded-md font-jost font-normal text-base text-white hover:border-M-primary-color transition-all duration-300"
                 >
-                  <Image src={callIcon} alt="call" width={20} />
-                  <span>+880 1601 666-893</span>
+                  {contactIcon ? (
+                    <img src={contactIcon} alt="call" width={20} />
+                  ) : (
+                    <Image src={callIcon} alt="call" width={20} />
+                  )}
+                  <span>{phone}</span>
                 </Link>
               </li>
               <li>
@@ -129,7 +288,7 @@ const Header = () => {
       <nav className="container mx-auto px-2 hidden lg:flex gap-4 justify-between relative">
         <div>
           <ul className="flex gap-6 xl:gap-10 h-full">
-            {menuItems.map((item, index) => (
+            {finalMenuItems.map((item, index) => (
               <li
                 key={index}
                 className={`group ${item.subMenus?.length > 8 ? "" : "relative"}  ${
@@ -137,8 +296,9 @@ const Header = () => {
                 }`}
               >
                 <Link
-                  href={item.href || "#"} // Ensure href is never undefined
+                  href={item.href || "#"}
                   prefetch={true}
+                  target={item.openInNewTab ? "_blank" : "_self"}
                   className="font-jost font-medium h-full text-M-heading-color text-xs lg:text-sm xl:text-base uppercase flex items-center hover:text-M-primary-color active:text-M-primary-color transition-all duration-300 relative before:w-[1px] before:h-1/3 before:bg-[#D2D6FF] before:-right-3 xl:before:-right-5 before:top-1/2 before:-translate-y-1/2 before:absolute group-last:before:hidden py-7"
                 >
                   {item.label}
@@ -161,13 +321,14 @@ const Header = () => {
                     {item.subMenus.map((subItem, subIndex) => (
                       <li key={subIndex}>
                         <Link
-                          href={subItem.href || "/treatments/slug/"}
+                          href={subItem.href || "#"}
+                          target={subItem.openInNewTab ? "_blank" : "_self"}
                           className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
                         >
                           {subItem.depIcon && (
                             <Image
                               src={subItem.depIcon}
-                              alt="huy"
+                              alt={subItem.label}
                               width={20}
                               height={20}
                             />
@@ -270,7 +431,7 @@ const Header = () => {
                       Profile
                     </Link>
                     <button
-                      onClick={handleLogout} // Use logout function from the context
+                      onClick={handleLogout}
                       className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
                     >
                       <Icon
@@ -386,13 +547,15 @@ const Header = () => {
             className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
           >
             <ul className="flex divide-y-2 flex-col bg-white border-t-2 border-b-2 border-M-primary-color">
-              {menuItems.map((item, index) => (
+              {finalMenuItems.map((item, index) => (
                 <li
                   key={index}
                   className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
                 >
                   <Link
-                    href={item.href || "#"} onClick={(e) => item.hasSubMenu ? toggleSubMenu(index, item.hasSubMenu, e) : handleNavigation(item.href)}
+                    href={item.href || "#"} 
+                    onClick={(e) => item.hasSubMenu ? toggleSubMenu(index, item.hasSubMenu, e) : handleNavigation(item.href)}
+                    target={item.openInNewTab ? "_blank" : "_self"}
                     className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                   >
                     {item.label}
@@ -406,18 +569,19 @@ const Header = () => {
                   </Link>
                   {item.hasSubMenu && (
                     <ul
-                      className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-auto" : "max-h-0"}`}
+                      className={`w-full top-full left-0 bg-white divide-y-2 overflow-hidden transition-all duration-300 ${openIndex === index ? "max-h-[1000px]" : "max-h-0"}`}
                     >
                       {item.subMenus.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <Link
-                            href={subItem.href || "#"} // Ensure href is never undefined
+                            href={subItem.href || "#"}
+                            target={subItem.openInNewTab ? "_blank" : "_self"}
                             className="flex items-center gap-3 pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                           >
                             {subItem.depIcon && (
                               <Image
                                 src={subItem.depIcon}
-                                alt="huy"
+                                alt={subItem.label}
                                 width={20}
                                 height={20}
                               />
