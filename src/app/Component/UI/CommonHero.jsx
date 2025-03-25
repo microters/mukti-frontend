@@ -1,16 +1,20 @@
+'use client'
 import React from "react";
-import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
-
 import tabletIcon from "@/assets/images/tablet.png";
 import injectionIcon from "@/assets/images/injection.png";
 import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
+import { useTranslation } from "react-i18next";
 
-const CommonHero = ({pageName = 'pageName'}) => {
+const CommonHero = ({pageName = 'pageName', aboutPage}) => {
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
+  const { heroImage } = aboutPage?.data?.translations[currentLanguage] || {};
+  const aboutHeroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}${heroImage}`;
   return (
-    <div className="bg-[url(../../public/assets/inner-hero-bg.jpg)] bg-cover bg-top">
+    <div className="bg-cover bg-top" style={{ backgroundImage: `url(${aboutHeroImage})` }}>
       <div className="pt-[80px] lg:pt-[100px] pb-20 md:pb-32 lg:pb-[120px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
         <Image

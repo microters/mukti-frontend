@@ -96,7 +96,7 @@ const About = ({ aboutSection }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-2 max-w-[600px]">
           {/* Render each service dynamically based on `services` */}
           {services && services.length > 0 ? services.map((service, index) => (
-            <div key={index} className="border border-[#323290] rounded-md flex items-center gap-4 overflow-hidden group">
+            <div key={index} className="border border-[#323290] rounded-md pr-3 flex items-center gap-4 overflow-hidden group">
               <div className="w-20 h-16 bg-[#323290]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
                 {service.serviceIcon && (
                   <Image 
@@ -104,7 +104,7 @@ const About = ({ aboutSection }) => {
                     width={36} 
                     height={36} 
                     alt={service.serviceTitle || "service icon"} 
-                    className="group-hover:animate-shake"
+                    className="group-hover:animate-shake shrink-0"
                     unoptimized={true}
                   />
                 )}

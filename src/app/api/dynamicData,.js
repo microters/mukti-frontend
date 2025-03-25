@@ -10,10 +10,21 @@ const apiClient = axios.create({
   cache: "no-store"
 });
 
-// ✅ Fetch all doctors with language
+// ✅ Fetch all dynamic home page data
 export const fetchDynamicData = async (language = 'en') => {
   try {
     const response = await apiClient.get(`api/home?lang=${language}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+};
+
+// Fetch about page data
+export const fetchAboutData = async (language = 'en') => {
+  try {
+    const response = await apiClient.get(`api/about?lang=${language}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
