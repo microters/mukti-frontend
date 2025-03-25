@@ -11,7 +11,7 @@ const FooterProvider = ({ doctors }) => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language || "en";
   // Set the base URL for images from the API
-  const baseUrl = "http://localhost:5000";
+  const baseUrl = "https://api.muktihospital.com";
 
   const [footerData, setFooterData] = useState(null);
   const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ const FooterProvider = ({ doctors }) => {
   useEffect(() => {
     const fetchFooterData = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/footer");
+        const response = await fetch("https://api.muktihospital.com/api/footer");
         console.log("Raw response:", response);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
