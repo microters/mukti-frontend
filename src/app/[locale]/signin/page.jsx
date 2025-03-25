@@ -39,7 +39,7 @@ const LoadingOverlay = () => (
 
 const Signin = () => {
   const router = useRouter(); // Initialize router
-  const { login } = useAuth();
+  const { login,user } = useAuth();
   const [activeTab, setActiveTab] = useState("signIn");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
@@ -102,10 +102,11 @@ const Signin = () => {
 
     // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
+    const userName=user.userName
 
     setLoading(true);
     try {
-      await sendOtp(mobileNumber);
+      await sendOtp(mobileNumber,userName);
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {

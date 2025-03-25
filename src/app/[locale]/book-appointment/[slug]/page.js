@@ -26,6 +26,7 @@ const Appointment = () => {
   // API key and BASE_URL (adjust these as needed)
   const API_KEY = "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079";
   const BASE_URL = "https://api.muktihospital.com/api" || "http://localhost:5000/api";
+  const IMG_URL = "https://api.muktihospital.com" || "http://localhost:5000";
 
   // Determine language from URL path: '/bn/' means Bengali, otherwise English
   const language = pathname.includes("/bn/") ? "bn" : "en";
@@ -582,134 +583,7 @@ ${language === "bn" ? "রেফারেন্স আইডি" : "Reference ID
   );
 };
 
-// Add to calendar options
-const AddToCalendarOptions = ({ appointmentData, language }) => {
-  // Format date for calendar
-  const formatDateForCalendar = (dateString, timeString) => {
-    const [startTime, endTime] = timeString.split(' - ');
-    
-    // Parse the date
-    const date = new Date(dateString);
-    
-    // Parse the start and end times (assuming they are in 12-hour format like "9:00 AM")
-    const parseTime = (timeStr) => {
-      const [time, period] = timeStr.split(' ');
-      const [hours, minutes] = time.split(':');
-      let hour = parseInt(hours);
-      
-      if (period === 'PM' && hour < 12) {
-        hour += 12;
-      } else if (period === 'AM' && hour === 12) {
-        hour = 0;
-      }
-      
-      return {
-        hours: hour,
-        minutes: parseInt(minutes)
-      };
-    };
-    
-    const start = parseTime(startTime);
-    const end = parseTime(endTime);
-    
-    // Create start and end date objects
-    const startDate = new Date(date);
-    startDate.setHours(start.hours, start.minutes);
-    
-    const endDate = new Date(date);
-    endDate.setHours(end.hours, end.minutes);
-    
-    return {
-      start: startDate.toISOString(),
-      end: endDate.toISOString()
-    };
-  };
-  
-  // Function to add to Google Calendar
-  const addToGoogleCalendar = () => {
-    try {
-      const { start, end } = formatDateForCalendar(
-        appointmentData.date, 
-        appointmentData.time
-      );
-      
-      const details = `Doctor: ${appointmentData.doctorName}
-Department: ${appointmentData.department}
-Reference ID: ${appointmentData.referenceId}
-Fee: ${appointmentData.fee}`;
-      
-      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(language === "bn" ? "মুক্তি হাসপাতাল অ্যাপয়েন্টমেন্ট" : "Mukti Hospital Appointment")}&dates=${start.replace(/[-:]/g, '').replace('.000', '')}\/${end.replace(/[-:]/g, '').replace('.000', '')}&details=${encodeURIComponent(details)}&location=${encodeURIComponent("Mukti Hospital")}&sf=true&output=xml`;
-      
-      window.open(url, '_blank');
-    } catch (error) {
-      console.error("Error adding to Google Calendar:", error);
-    }
-  };
-  
-  // Function to add to Apple/iOS Calendar
-  const addToAppleCalendar = () => {
-    try {
-      const { start, end } = formatDateForCalendar(
-        appointmentData.date, 
-        appointmentData.time
-      );
-      
-      const details = `Doctor: ${appointmentData.doctorName}
-Department: ${appointmentData.department}
-Reference ID: ${appointmentData.referenceId}
-Fee: ${appointmentData.fee}`;
-      
-      // Generate an .ics file
-      const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-SUMMARY:${language === "bn" ? "মুক্তি হাসপাতাল অ্যাপয়েন্টমেন্ট" : "Mukti Hospital Appointment"}
-DTSTART:${start.replace(/[-:]/g, '').replace('.000', '')}
-DTEND:${end.replace(/[-:]/g, '').replace('.000', '')}
-LOCATION:Mukti Hospital
-DESCRIPTION:${details.replace(/\n/g, '\\n')}
-STATUS:CONFIRMED
-SEQUENCE:0
-END:VEVENT
-END:VCALENDAR`;
-      
-      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'mukti_hospital_appointment.ics');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error creating Apple Calendar event:", error);
-    }
-  };
-  
-  return (
-    <div className="mt-4 flex flex-wrap gap-2 justify-center">
-      <p className="w-full text-center text-gray-600 text-sm mb-1">
-        {language === "bn" ? "ক্যালেন্ডারে যোগ করুন" : "Add to Calendar"}
-      </p>
-      <button 
-        onClick={addToGoogleCalendar}
-        className="flex items-center gap-1 bg-white border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50"
-      >
-        <Icon icon="flat-color-icons:google" />
-        Google
-      </button>
-      <button 
-        onClick={addToAppleCalendar}
-        className="flex items-center gap-1 bg-white border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50"
-      >
-        <Icon icon="ic:baseline-apple" />
-        Apple
-      </button>
-    </div>
-  );
-};
+
   // Handle OTP input change
   const handleOtpChange = (e) => {
     setOtpCode(e.target.value);
@@ -1054,7 +928,7 @@ const handleResendOtp = async () => {
   const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
   const experience = doctorTranslations?.yearsOfExperience || doctor?.experience || "4";
   const doctorImage = doctor?.icon
-    ? `${BASE_URL}${doctor.icon}`
+    ? `${IMG_URL}${doctor.icon}`
     : "/default-profile-photo.png";
 
   return (
