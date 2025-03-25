@@ -13,7 +13,7 @@ import Blog from "../Component/UI/HomePage/Blog/Blog";
 import { fetchReviews } from "../api/review";
 import Testimonials from "../Component/UI/HomePage/Testimonials/Testimonials";
 import { fetchDynamicData } from "../api/dynamicHome,";
-import { fetchBlogs } from "../api/blog";
+import { fetchBlogs, fetchBlogsBySlug } from "../api/blog";
 
 export default async function HomePage() {
   // Fetching doctors and departments data
@@ -21,6 +21,7 @@ export default async function HomePage() {
   const doctorDepartments = await fetchDepartments();  // Fetch the departments list
   const doctorReviews = await fetchReviews();  // Fetch reviews for doctors
   const blogs = await fetchBlogs()
+  const singleBlogs = await fetchBlogsBySlug()
   const dynamicData = await fetchDynamicData();
 
    // Extract home data
@@ -49,7 +50,7 @@ export default async function HomePage() {
       <MobileApp downloadAppSection={downloadAppSection}/>
       <Testimonials reviews={doctorReviews} />
       <AppointmentProcess appointmentProcess={appointmentProcess}/>
-      <Blog blogs={blogs}/>
+      <Blog blogs={blogs} singleBlogs={singleBlogs}/>
     </div>
   );
 }
