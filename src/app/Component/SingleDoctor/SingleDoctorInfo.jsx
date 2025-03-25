@@ -156,7 +156,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                         Cumilla Medical College Hospital
                       </strong>
                       <Link
-                        href="#"
+                        href={appointmentLink}
                         className="inline-flex items-center text-M-primary-color mt-2 hover:text-M-heading-color transition-all duration-300 font-jost font-medium"
                       >
                         Book An Appointment <Icon icon="iconoir:nav-arrow-right" width="20" height="20" />
