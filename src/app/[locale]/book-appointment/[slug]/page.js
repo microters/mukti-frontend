@@ -1316,7 +1316,7 @@ const handleResendOtp = async () => {
                       </div>
                       <div>
                         <label htmlFor="weight" className="font-jost font-medium text-base text-M-text-color mb-1 block">
-                          {translations.weight}
+                          {translations.weight}<span className="text-yellow-800">(Optional)</span>
                         </label>
                         <input
                           type="text"
@@ -1329,7 +1329,7 @@ const handleResendOtp = async () => {
                       </div>
                       <div>
                         <label htmlFor="age" className="font-jost font-medium text-base text-M-text-color mb-1 block">
-                          {translations.age}
+                          {translations.age}<span className="text-yellow-800">(Optional)</span>
                         </label>
                         <input
                           type="text"
@@ -1342,7 +1342,7 @@ const handleResendOtp = async () => {
                       </div>
                       <div>
                         <label htmlFor="address" className="font-jost font-medium text-base text-M-text-color mb-1 block">
-                          {translations.address}
+                          {translations.address}<span className="text-yellow-800">(Optional)</span>
                         </label>
                         <input
                           type="text"
@@ -1355,7 +1355,7 @@ const handleResendOtp = async () => {
                       </div>
                       <div className="md:col-span-2">
                         <label htmlFor="reason" className="font-jost font-medium text-base text-M-text-color mb-1 block">
-                          {translations.visitReason}
+                          {translations.visitReason}<span className="text-yellow-800">(Optional)</span>
                         </label>
                         <textarea
                           name="reason"

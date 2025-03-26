@@ -39,7 +39,7 @@ const LoadingOverlay = () => (
 
 const Signin = () => {
   const router = useRouter(); // Initialize router
-  const { login,user } = useAuth();
+  const { login } = useAuth();
   const [activeTab, setActiveTab] = useState("signIn");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
@@ -55,7 +55,7 @@ const Signin = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "http://localhost:3001/";
+        window.location.href = "https://dashboard-muktidigital.netlify.app/";
       }, 1000);
     }
   }, []);
@@ -102,11 +102,10 @@ const Signin = () => {
 
     // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
-    const userName=user.userName
 
     setLoading(true);
     try {
-      await sendOtp(mobileNumber,userName);
+      await sendOtp(mobileNumber);
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {
@@ -142,7 +141,7 @@ const Signin = () => {
         // Show loading overlay and redirect
         setIsRedirecting(true);
         setTimeout(() => {
-          window.location.href = `http://localhost:3001?token=${response.token}`;
+          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
         }, 1000);
       } else {
         throw new Error("No authentication token received");
