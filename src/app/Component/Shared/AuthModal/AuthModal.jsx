@@ -156,6 +156,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
         login(response.token);
+        window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
         toast.success("Logged in successfully!");
         // Close modal
         setShowModal(false);
@@ -199,6 +200,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
         if (loginResponse && loginResponse.token) {
           // User already exists and login successful
           login(loginResponse.token);
+          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
           toast.success("Login successful!");
           setShowModal(false);
           return; // Exit the function
