@@ -12,7 +12,7 @@ import Appointment from "../Component/UI/HomePage/Appointment/Appointment";
 import Blog from "../Component/UI/HomePage/Blog/Blog";
 import { fetchReviews } from "../api/review";
 import Testimonials from "../Component/UI/HomePage/Testimonials/Testimonials";
-import { fetchDynamicData } from "../api/dynamicHome,";
+import { fetchDynamicData } from "../api/dynamicData,";
 import { fetchBlogs, fetchBlogsBySlug } from "../api/blog";
 
 export default async function HomePage() {

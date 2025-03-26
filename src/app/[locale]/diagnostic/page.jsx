@@ -1,4 +1,4 @@
-import { fetchDynamicData } from "@/app/api/dynamicHome,";
+import { fetchDynamicData } from "@/app/api/dynamicData,";
 import DiagnosticContent from "@/app/Component/Shared/DiagnosticContent/DiagnosticContent";
 
 const Diagnostic = async () => {

@@ -1,54 +1,16 @@
 'use client'
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import callIcon from "@/assets/images/phone1.png";
 import shape from "@/assets/images/shape.png";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 
-const FooterProvider = ({ doctors }) => {
+const FooterProvider = ({ doctors, footer }) => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language || "en";
-  // Set the base URL for images from the API
-  const baseUrl = "https://api.muktihospital.com";
 
-  const [footerData, setFooterData] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchFooterData = async () => {
-      try {
-        const response = await fetch("https://api.muktihospital.com/api/footer");
-        console.log("Raw response:", response);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Parsed data:", data);
-        // Access the language-specific data from the translations property
-        setFooterData(data.translations[currentLang] || data.translations.en);
-      } catch (err) {
-        console.error("Error fetching footer data:", err);
-        setError(err.message);
-      }
-    };
-
-    fetchFooterData();
-  }, [currentLang]);
-
-  if (error) {
-    return (
-      <div className="bg-red-100 text-red-700 p-4">
-        Error loading footer data: {error}
-      </div>
-    );
-  }
-
-  if (!footerData) {
-    return <div>Loading footer...</div>;
-  }
-
+  // Use the passed footer prop data directly
+  const footerData = footer.translations[currentLang] || footer.translations.en;
   const {
     footerLogo,
     description,
@@ -63,7 +25,7 @@ const FooterProvider = ({ doctors }) => {
   const patientCareSection = sections.PatientCare;
   const treatmentsSection = sections.Treatments;
   const quickLinksSection = sections.QuickLinks;
-  // Using "QuickLinks" as the Diagnostic section
+  // Using "Diagnostic" section as provided
   const diagnosticSection = sections.Diagnostic;
 
   // Sort and slice doctors by experience
@@ -96,7 +58,7 @@ const FooterProvider = ({ doctors }) => {
             <div className="w-[320px]">
               {/* Prepend baseUrl to the footerLogo */}
               <Image 
-                src={`${baseUrl}${footerLogo}`} 
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${footerLogo}`} 
                 alt="logo" 
                 width={200} 
                 height={100} 
@@ -108,7 +70,7 @@ const FooterProvider = ({ doctors }) => {
                 <div>
                   {/* Prepend baseUrl to contact.logo */}
                   <Image
-                    src={`${baseUrl}${contact.logo}`}
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${contact.logo}`}
                     alt="Contact Logo"
                     width={24}
                     height={24}
