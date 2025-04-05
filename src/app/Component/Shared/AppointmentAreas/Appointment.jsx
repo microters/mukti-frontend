@@ -11,10 +11,16 @@ import FormButton from "../Buttons/FormButton";
 import { useTranslation } from "react-i18next";
 
 const Appointment = ({aboutPage}) => {
+  console.log(aboutPage);
+  
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
   const { callbackImage } = aboutPage?.data?.translations[currentLanguage] || {};
+  console.log(callbackImage);
+  
   const mobileAppImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}${callbackImage}`;
+  console.log(mobileAppImage);
+  
   return (
     <div className="bg-[#323290] py-24 px-2 relative">
       <Image

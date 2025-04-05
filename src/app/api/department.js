@@ -15,6 +15,8 @@ const apiClient = axios.create({
 export const fetchDepartments = async (language = 'en') => {
   try {
     const response = await apiClient.get(`/api/department?lang=${language}`);
+    
+    
     // Assuming the response data is an array of departments
     const departments = Array.isArray(response.data) ? response.data : response.data?.departments || [];
     return departments;

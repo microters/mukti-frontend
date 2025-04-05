@@ -77,7 +77,7 @@ const HeaderProvider = ({ header, departments }) => {
         dept.translations?.[currentLanguage]?.name ||
         dept.translations?.en?.name ||
         "Unnamed",
-      href: `/treatments/${dept.slug}`,
+      href: `/department/${dept.slug}`,
       depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
     })),
   };
