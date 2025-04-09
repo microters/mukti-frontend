@@ -226,11 +226,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
       // Mobile number already has 88 prefix in formData
       const mobileNumber = formData.mobile;
 
-      console.log("Attempting to register with:", {
-        name: formData.name, 
-        mobile: mobileNumber,
-        otpLength: formData.otp.length
-      });
+      
 
       // First check if we can log in directly (user might already exist)
       try {
