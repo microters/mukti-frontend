@@ -34,6 +34,8 @@ const SingleDoctorInfo = ({ doctor }) => {
     slug: doctor.slug || "N/A",
     name: translations.name || "Unknown Doctor",
     designation: translations.designation || "N/A",
+    contactNumber: translations.contactNumber || "N/A",
+    contactNumberSerial: translations.contactNumberSerial || "N/A",
     gender: translations.gender || "N/A",
     department: translations.department || "N/A",
     shortBio: translations.shortBio || "No bio available",
@@ -156,7 +158,7 @@ const SingleDoctorInfo = ({ doctor }) => {
                         Cumilla Medical College Hospital
                       </strong>
                       <Link
-                        href="#"
+                        href={appointmentLink}
                         className="inline-flex items-center text-M-primary-color mt-2 hover:text-M-heading-color transition-all duration-300 font-jost font-medium"
                       >
                         Book An Appointment <Icon icon="iconoir:nav-arrow-right" width="20" height="20" />
@@ -637,11 +639,12 @@ const SingleDoctorInfo = ({ doctor }) => {
                       Phone Number
                     </h5>
                     <Link
-                      href="tel: 018778878787"
-                      className="text-white/50 hover:text-white transition-all duration-300"
-                    >
-                      018778878787
-                    </Link>
+  href={`tel:${doctorData?.contactNumber}`}  // Corrected href
+  className="text-white/50 hover:text-white transition-all duration-300"
+>
+  {doctorData?.contactNumber}
+</Link>
+
                   </div>
                 </div>
                 <div className="flex items-start gap-5 mt-6">
@@ -688,11 +691,11 @@ const SingleDoctorInfo = ({ doctor }) => {
                   Contact For Serial
                 </h3>
                 <Link
-                  href={"tel:+8801601666893"}
+                   href={`tel:${doctorData?.contactNumberSerial}`}  // Corrected href
                   className="flex items-center gap-3 justify-center py-3 px-2 xl:px-3 rounded-md bg-M-primary-color border border-M-primary-color text-white text-sm xl:text-base font-jost font-medium w-full transition-all duration-300 hover:bg-M-heading-color"
                 >
                   {" "}
-                  <Image src={callIcon} alt="phone Icon" /> +880 1601 666-893
+                  <Image src={callIcon} alt="phone Icon" /> {doctorData?.contactNumberSerial}
                 </Link>
               </div>
             </div>

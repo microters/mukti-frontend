@@ -38,7 +38,7 @@ const Category = ({ departments, locale }) => {
 
             // Get department name and description based on the current language
             const departmentName = department.translations[currentLanguage]?.name || department.translations.en.name;
-            const profileLink = department.slug ? `/treatments/${department.slug}` : "#";
+            const profileLink = department.slug ? `/department/${department.slug}` : "#";
 
             return (
               <div key={department.id} className="bg-white group text-center py-8 px-3 md:px-6 rounded-lg overflow-hidden relative">
@@ -75,7 +75,7 @@ const Category = ({ departments, locale }) => {
 
         {/* Button for all services */}
         <Button
-          linkHref={`/treatments`}
+          linkHref={`/department`}
           buttonText={t('category.allServices')}
           buttonColor="bg-M-secondary-color"
           textColor="text-white"

@@ -1,29 +1,87 @@
 'use client'
-import React, { useState } from "react";
 import BlogSidebar from "@/app/Component/Shared/BlogSidebar/BlogSidebar";
-import bannerImage from "@/assets/images/singleBlogBannerImage.jpg";
 import authorImage from "@/assets/images/client2.png";
-import singleBlogImage from "@/assets/images/singleBlogImage1.jpg";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
-const SingleBlog = ({ blogs }) => {
-    const [searchQuery, setSearchQuery] = useState("");
+const SingleBlog = ({ blogs, singleBlogs }) => {
     const { i18n } = useTranslation();
     const currentLanguage = i18n.language || "en";
-  
-    const filteredBlogs = blogs.filter((post) => {
-      const translation = post.translations?.[currentLanguage];
-      if (!translation) return false;
-  
-      const title = translation.title?.toLowerCase() || "";
-      const category = translation.category?.name?.toLowerCase() || "";
-      const query = searchQuery.toLowerCase();
-  
-      return title.includes(query) || category.includes(query);
-    });  
+    const translations = singleBlogs.translations[currentLanguage] || singleBlogs.translations["en"];
+    const blogImage = singleBlogs.image
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/uploads/${singleBlogs.image}`
+    : "/default-profile-photo.png";
+
+     const createdAt = new Date(singleBlogs.createdAt);
+
+     // Format the Date to display only the date (e.g., March 24, 2025)
+     const formattedDate = createdAt.toLocaleDateString();
+ 
+     // Format the Time to display only the time (e.g., 12:30 PM)
+     const formattedTime = createdAt.toLocaleTimeString([], {
+         hour: '2-digit',
+         minute: '2-digit',
+         hour12: true, 
+     });
+
+// Function to extract headings without numbers (for Table of Contents)
+const extractHeadings = (content) => {
+  const headingRegex = /<(h2|h3)>(.*?)<\/\1>/g;
+  const headings = [];
+  let match;
+
+  while ((match = headingRegex.exec(content)) !== null) {
+    const headingText = match[2];
+    const id = headingText.replace(/\s+/g, '-').toLowerCase();
+
+    const cleanHeadingText = headingText.replace(
+      /^\d+(?:\.\d+)*[.)]?\s*/,
+      ""
+    );
+
+    headings.push({
+      text: cleanHeadingText,
+      id,
+    });
+  }
+
+  return headings;
+};
+
+
+// Function to add IDs to the content headings
+const addIdsToContent = (content) => {
+    return content.replace(/<(h2|h3)>(.*?)<\/\1>/g, (match, p1, p2) => {
+        const id = p2.replace(/\s+/g, '-').toLowerCase();
+        return `<${p1} id="${id}">${p2}</${p1}>`;
+    });
+};
+
+const [contentWithIds, setContentWithIds] = useState("");
+
+useEffect(() => {
+    // Add IDs to content when the component is mounted
+    const newContent = addIdsToContent(translations?.content || "");
+    setContentWithIds(newContent);
+}, [translations]);
+
+const headings = extractHeadings(translations?.content || []);
+
+  // State for showing/hiding Table of Contents
+  const [isTableOfContentsVisible, setIsTableOfContentsVisible] = useState(true);
+
+  // For the height animation
+  const [tocHeight, setTocHeight] = useState(0);
+  const tocRef = useRef(null);
+
+  useEffect(() => {
+    if (tocRef.current) {
+      setTocHeight(tocRef.current.scrollHeight);
+    }
+  }, [headings, isTableOfContentsVisible]);
 
   return (
     <div>
@@ -32,25 +90,22 @@ const SingleBlog = ({ blogs }) => {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
           <div className="rounded-2xl">
             <Image
-              src={bannerImage}
+              src={blogImage}
               alt="blog Feature Image"
-              width="100%"
-              height="100%"
+              width={600}
+              height={600}
               className="rounded-2xl"
             />
           </div>
           <div className="col-span-2 space-y-4">
             <span className="px-4 py-2 bg-M-heading-color text-sm md:text-base text-white font-jost font-medium uppercase inline-block rounded-md">
-              Pulmonologist
+              {translations.category?.name}
             </span>
             <h1 className="text-2xl md:text-4xl text-white">
-              Having overweight and depression can Pulmonologist.
+              {translations?.title}
             </h1>
             <p className="text-base text-white/80 font-jost">
-              In the tennis world, a number of players whose names have come to
-              symbolize excellence have grown very legendary. From deciding
-              Grand Slam tournaments to shattering new records and transforming
-              the game, these people have irrevocably changed tennis history.
+              {translations?.description}
             </p>
             <ul className="flex flex-wrap items-center gap-x-8 gap-y-2">
               <li className="flex items-center gap-2 font-jost font-medium text-white capitalize">
@@ -65,12 +120,10 @@ const SingleBlog = ({ blogs }) => {
                 By Admin
               </li>
               <li className="flex items-center gap-2 font-jost font-medium text-white capitalize">
-                <Icon icon="oui:token-date" width="30" height="30" /> March 10,
-                2024
+                <Icon icon="oui:token-date" width="30" height="30" /> {formattedDate}
               </li>
               <li className="flex items-center gap-2 font-jost font-medium text-white capitalize">
-                <Icon icon="lucide:alarm-clock" width="24" height="24" /> 12:30
-                PM
+                <Icon icon="lucide:alarm-clock" width="24" height="24" /> {formattedTime}
               </li>
             </ul>
           </div>
@@ -81,220 +134,41 @@ const SingleBlog = ({ blogs }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <div className="">
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Comprehensive Eye Exams
+              {/* Table of Contents */}
+                <div className="border border-slate-200 p-6 rounded-md">
+                    <div className="flex justify-between items-center rounded-md overflow-hidden">
+              <h3
+                onClick={() => setIsTableOfContentsVisible(!isTableOfContentsVisible)}
+                className="text-xl text-white bg-M-primary-color px-5 py-4 flex items-center justify-between gap-5 w-full cursor-pointer"
+              >
+                Table of Contents
+                <span>
+                  <Icon icon="solar:alt-arrow-down-linear" width="24" className={`transition-all duration-300 ${isTableOfContentsVisible ? "-rotate-180" : "" } `} />
+                </span>
               </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                In the tennis world, a number of players whose names have come
-                to symbolize excellence have grown very legendary. From deciding
-                Grand Slam tournaments to shattering new records and
-                transforming the game, these people have irrevocably changed
-                tennis history. Here we will more closely review some of the
-                best tennis players of all times. We will look at their playing
-                techniques, career highlights, and impact on the game generally.
-                This book will help you to appreciate the icons who have shaped
-                tennis into what it is now, regardless of your level of passion
-                for the game or just the beginning.
-              </p>
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Types of Govt. Sites for Link-Building
-              </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                In the tennis world, a number of players whose names have come
-                to symbolize excellence have grown very legendary. From deciding
-                Grand Slam tournaments to shattering new records and
-                transforming the game, these people have irrevocably changed
-                tennis history. Here we will more closely review some of the
-                best tennis players of all times. We will look at their playing
-                techniques, career highlights, and impact on the game generally.
-                This book will help you to appreciate the icons who have shaped
-                tennis into what it is now, regardless of your level of passion
-                for the game or just the beginning.
-              </p>
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Federal Government Sites
-              </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit leo vel erat
-                lacinia, scelerisque malesuada urna condimentum. Pellentesque
-                tincidunt ut eros a interdum. Aenean nibh condimentum. Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit{" "}
-              </p>
-              {/* List */}
-              <ul className="space-y-2">
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Color Customization:</strong>{" "}
-                    Adjust the palette to fit your app's look directly within
-                    After Effects.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Drag-and-Drop:</strong>{" "}
-                     Simple drag-and-drop functionality for your app screenshots
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Color Customization:</strong>{" "}
-                    Adjust the palette to fit your app's look directly within
-                    After Effects.
-                  </span>
-                </li>
-              </ul>
-
-              <Image
-                src={singleBlogImage}
-                alt="blog Image"
-                width="100%"
-                height="100%"
-                className="rounded-md w-full my-4"
-              />
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Federal Government Sites
-              </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit leo vel erat
-                lacinia, scelerisque malesuada urna condimentum. Pellentesque
-                tincidunt ut eros a interdum. Aenean nibh condimentum. Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit{" "}
-              </p>
-
-              {/* Blockquote */}
-              <div className="bg-M-primary-color/60 rounded-xl px-10 py-10 my-6">
-                <p className="relative indent-12 font-jost text-lg text-white">
-                  <Icon
-                    icon="gravity-ui:quote-open"
-                    width="42"
-                    height="42"
-                    className="inline absolute text-white -top-2 left-0"
-                  />
-                  Curious to see the magic for yourself? Dive into the world of
-                  Kirmada. Check out the Kirmada Lifetime Deal and start your
-                  journey towards productivity! Curious to see the magic for
-                  yourself?
-                </p>
-              </div>
-
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Federal Government Sites
-              </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit leo vel erat
-                lacinia, scelerisque malesuada urna condimentum. Pellentesque
-                tincidunt ut eros a interdum. Aenean nibh condimentum. Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit{" "}
-              </p>
-
-              {/* List */}
-              <ul className="space-y-2 mb-5">
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Color Customization:</strong>{" "}
-                    Adjust the palette to fit your app's look directly within
-                    After Effects.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Drag-and-Drop:</strong>{" "}
-                     Simple drag-and-drop functionality for your app screenshots
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 font-jost text-base text-M-text-color">
-                  <span className="text-white w-8 h-8 bg-M-primary-color rounded-full flex items-center justify-center shrink-0">
-                    <Icon
-                      icon="quill:checkmark-double"
-                      width="20"
-                      height="20"
-                    />
-                  </span>{" "}
-                  <span className="mt-1">
-                    <strong className="text-black">Color Customization:</strong>{" "}
-                    Adjust the palette to fit your app's look directly within
-                    After Effects.
-                  </span>
-                </li>
-              </ul>
-
-              <Image
-                src={singleBlogImage}
-                alt="blog Image"
-                width="100%"
-                height="100%"
-                className="rounded-md w-full my-4"
-              />
-
-              <h3 className="text-xl text-M-heading-color mb-3">
-                Federal Government Sites
-              </h3>
-              <p className="text-base text-M-text-color font-jost mb-3">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit leo vel erat
-                lacinia, scelerisque malesuada urna condimentum. Pellentesque
-                tincidunt ut eros a interdum. Aenean nibh condimentum. Lorem
-                ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-                facilisis enim sit amet placerat vestibulum. Sed ut arcu quis
-                nunc pellentesque dapibus a tristique tortor. Ut vulputate erat
-                sit amet placerat consectetur. Donec suscipit{" "}
-              </p>
-
+                    </div>
+                  <div
+                    ref={tocRef}
+                    className="overflow-hidden transition-all duration-300 ease-in-out"
+                    style={{
+                      height: isTableOfContentsVisible ? `${tocHeight}px` : "0px",
+                    }}
+                  >
+                    <ul className="mt-5">
+                  {headings.map((heading, index) => (
+                    <li key={heading.id} className="flex justify-between items-center gap-3 cursor-pointer py-2 border-b border-M-primary-color/10 last:border-0 text-slate-400 font-jost">
+                      <Link href={`#${heading.id}`} scroll={true}>
+                      {index + 1}. {heading.text}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                    </div>
+                </div>
+            <div
+                dangerouslySetInnerHTML={{ __html: contentWithIds || "No content available." }}
+                className="jodit-description mt-5"
+            />
               {/* Show Commnets Area */}
               <div className="border border-M-text-color/50 p-6 rounded-lg mt-10">
                 <h2 className="text-2xl md:text-3xl">02 Comments</h2>
@@ -467,9 +341,8 @@ const SingleBlog = ({ blogs }) => {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <BlogSidebar 
-              blogs={filteredBlogs}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
+              blogs={blogs}
+              hideSearch={true}
             />
           </div>
         </div>

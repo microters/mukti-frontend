@@ -11,6 +11,7 @@ import {
   PinterestShareButton,
   WhatsappShareButton,
 } from "react-share";
+import { useMemo } from "react";
 
 // Always shuffle full list for Popular Blogs
 const shuffleArray = (array) => {
@@ -20,7 +21,7 @@ const shuffleArray = (array) => {
     .map(({ value }) => value);
 };
 
-const BlogSidebar = ({ blogs = [], searchQuery, setSearchQuery }) => {
+const BlogSidebar = ({ blogs = [], departments, searchQuery, setSearchQuery, hideSearch = false }) => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
@@ -47,28 +48,32 @@ const BlogSidebar = ({ blogs = [], searchQuery, setSearchQuery }) => {
     count: categoryCount[category],
   }));
 
-  const randomBlogs = shuffleArray(blogs).slice(0, 4);
+  const randomBlogs = useMemo(() => {
+    return shuffleArray(blogs).slice(0, 4);
+  }, [blogs]);
 
   return (
     <div className="space-y-5">
       {/* Search Area */}
-      <div className="bg-M-section-bg p-6 rounded-md">
-        <form className="flex items-center relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by title or category"
-            className="font-jost font-normal text-base text-black w-full p-3 pr-10 border-0 outline-none ring-0 ring-M-primary-color/50 focus:ring-1 transition-all duration-300 rounded-sm"
-          />
-          <Icon
-            icon="clarity:search-line"
-            width="24"
-            height="24"
-            className="right-3 absolute top-1/2 -translate-y-1/2 text-M-text-color"
-          />
-        </form>
-      </div>
+      {!hideSearch && (
+        <div className="bg-M-section-bg p-6 rounded-md">
+          <form className="flex items-center relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by title or category"
+              className="font-jost font-normal text-base text-black w-full p-3 pr-10 border-0 outline-none ring-0 ring-M-primary-color/50 focus:ring-1 transition-all duration-300 rounded-sm"
+            />
+            <Icon
+              icon="clarity:search-line"
+              width="24"
+              height="24"
+              className="right-3 absolute top-1/2 -translate-y-1/2 text-M-text-color"
+            />
+          </form>
+        </div>
+      )}
 
       {/* Most Popular (ALWAYS UNFILTERED) */}
       <div className="bg-M-section-bg p-6 rounded-md">
@@ -86,7 +91,7 @@ const BlogSidebar = ({ blogs = [], searchQuery, setSearchQuery }) => {
       <div className="bg-M-section-bg p-6 rounded-md">
         <h3 className="text-2xl text-black mb-2">Browse by Category</h3>
         <ul className="divide-y mt-4">
-          {uniqueCategories.map((item, index) => (
+          {uniqueCategories.map((item, index) => (     
             <li key={index} className="first:border-t first:border-M-text-color/10">
               <Link
                 href="#"

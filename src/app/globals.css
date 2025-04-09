@@ -155,6 +155,7 @@ abbr:where([title]) {
 .jodit-description li{
   @apply text-M-text-color;
 }
+.jodit-description,
 .jodit-description section {
   @apply  space-y-4;
 }

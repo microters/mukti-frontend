@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
@@ -7,8 +8,19 @@ import mobileApp from "@/assets/images/about-form.png";
 import shape4 from "@/assets/images/shape4.png";
 import shape5 from "@/assets/images/shape5.png";
 import FormButton from "../Buttons/FormButton";
+import { useTranslation } from "react-i18next";
 
-const Appointment = () => {
+const Appointment = ({aboutPage}) => {
+  console.log(aboutPage);
+  
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
+  const { callbackImage } = aboutPage?.data?.translations[currentLanguage] || {};
+  console.log(callbackImage);
+  
+  const mobileAppImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}${callbackImage}`;
+  console.log(mobileAppImage);
+  
   return (
     <div className="bg-[#323290] py-24 px-2 relative">
       <Image
@@ -20,7 +32,9 @@ const Appointment = () => {
         <div className="grid grid-cols-1 items-center lg:grid-cols-3 space-y-5">
           <div className="relative px-0 md:px-20 col-span-2">
             <Image
-              src={mobileApp}
+              src={mobileAppImage}
+              width={600}
+              height={600}
               alt="mobileApp"
               className="mx-auto relative z-10"
             />

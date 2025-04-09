@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
 import Counterup from "@/app/Component/Shared/Counter/Counterup";
 
-const Treatment = ({ departments }) => {
+const Treatment = ({ departments, aboutPage }) => {
   const { i18n } = useTranslation();
 
   return (
@@ -66,7 +66,7 @@ const Treatment = ({ departments }) => {
                     {department.translations[i18n.language]?.name}
                   </h3>
                   <Link
-                    href={`/treatments/${department.slug}`}
+                    href={`/department/${department.slug}`}
                     className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] text-M-primary-color rounded-full mt-5 origin-center transition-all duration-300 group-hover:bg-M-secondary-color group-hover:text-white"
                   >
                     <Icon
@@ -83,7 +83,7 @@ const Treatment = ({ departments }) => {
       </div>
 
       {/* Appointment Form Area */}
-      <Appointment />
+      <Appointment aboutPage={aboutPage}/>
 
       {/* Counter Up Area */}
       <div className="py-24">
