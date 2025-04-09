@@ -170,6 +170,7 @@ const Header = () => {
                               alt="huy"
                               width={20}
                               height={20}
+                              className="size-5 overflow-hidden"
                             />
                           )}{" "}
                           {subItem.label}
