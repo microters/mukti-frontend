@@ -24,8 +24,8 @@ const Appointment = () => {
   const { user } = useAuth();
 
   const API_KEY = "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079";
-  const BASE_URL = "https://api.muktihospital.com/api" || "http://localhost:5000/api";
-  const IMG_URL = "https://api.muktihospital.com" || "http://localhost:5000";
+  const BASE_URL = "https://api.muktihospital.com/api" || "https://api.muktihospital.com/api";
+  const IMG_URL = "https://api.muktihospital.com" || "https://api.muktihospital.com";
 
   const language = pathname.includes("/bn/") ? "bn" : "en";
   const [downloadFormat, setDownloadFormat] = useState('pdf');

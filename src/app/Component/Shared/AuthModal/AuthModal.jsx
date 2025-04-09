@@ -136,14 +136,47 @@ const AuthModal = ({ showModal, setShowModal }) => {
   };
 
   // Handle Login
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   if (formData.otp.length !== 6) {
+  //     toast.error("Enter a valid 6-digit OTP");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     // Get token from login API
+  //     const response = await loginUser({
+  //       mobile: formData.mobile,
+  //       otp: formData.otp,
+  //     });
+      
+  //     // Check if response contains token
+  //     if (response && response.token) {
+  //       // Use login function from AuthContext to update the global auth state
+  //       login(response.token);
+  //       window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
+  //       toast.success("Logged in successfully!");
+  //       // Close modal
+  //       setShowModal(false);
+  //     } else {
+  //       throw new Error("No authentication token received");
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.error || "Login failed");
+  //     console.error("Login error:", error);
+  //   }
+  //   setLoading(false);
+  // };
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (formData.otp.length !== 6) {
       toast.error("Enter a valid 6-digit OTP");
       return;
     }
-
+  
     setLoading(true);
     try {
       // Get token from login API
@@ -151,15 +184,25 @@ const AuthModal = ({ showModal, setShowModal }) => {
         mobile: formData.mobile,
         otp: formData.otp,
       });
-      
+  
       // Check if response contains token
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
+        localStorage.setItem("authToken", response.token); // Token save localStorage-এ
         login(response.token);
-        window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
         toast.success("Logged in successfully!");
-        // Close modal
-        setShowModal(false);
+        
+        // Show loading overlay and redirect
+        setIsRedirecting(true);
+  
+        // Redirect based on current hostname (local or live)
+        const redirectUrl = window.location.hostname === "localhost"
+          ? `http://localhost:3001?token=${response.token}`  // If localhost, redirect to local site
+          : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;  // Else redirect to live site
+  
+        setTimeout(() => {
+          window.location.href = redirectUrl;
+        }, 1000);
       } else {
         throw new Error("No authentication token received");
       }
@@ -169,7 +212,6 @@ const AuthModal = ({ showModal, setShowModal }) => {
     }
     setLoading(false);
   };
-
   // Handle Registration
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -200,7 +242,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
         if (loginResponse && loginResponse.token) {
           // User already exists and login successful
           login(loginResponse.token);
-          window.location.href = `https://dashboard-muktidigital.netlify.app?token=${response.token}`;
+          window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
           toast.success("Login successful!");
           setShowModal(false);
           return; // Exit the function
