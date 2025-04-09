@@ -30,8 +30,6 @@ const Features = ({ featuresSection }) => {
           const formattedIcon = feature.icon ? 
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon.replace(/\\/g, '/')}` : 
           null;
-      
-
           return (
             <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative group">
               <Image
