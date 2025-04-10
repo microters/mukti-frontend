@@ -73,14 +73,14 @@ const HeaderProvider = ({ header, departments }) => {
     href: "#",
     hasSubMenu: true,
     subMenus: departments.map((dept) => ({
-      label:
-        dept.translations?.[currentLanguage]?.name ||
-        dept.translations?.en?.name ||
-        "Unnamed",
+      label: dept.translations?.[currentLanguage]?.name 
+              || dept.translations?.en?.name 
+              || "Unnamed",
       href: `/department/${dept.slug}`,
-      depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
+      depIcon: dept.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}` : "/path/to/placeholder-image.png", // Placeholder image when icon is null
     })),
   };
+  
 
 const desiredIndex = 3; // index 3 means the 4th position
 let menuItems = [...menuItemsFromHeader];

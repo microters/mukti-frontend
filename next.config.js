@@ -18,16 +18,17 @@ const nextConfig = {
         pathname: '/uploads/**',
       },
       {
-        protocol: "https",
-        hostname: "example.com",
-        pathname: "/images/**",
+        protocol: 'https',
+        hostname: 'example.com',
+        pathname: '/images/**',
       },
       {
         protocol: 'https',
         hostname: 'api.muktihospital.com',
-        pathname: '/**', // Adjust this if images are in a specific folder (e.g., `/uploads/**`)
+        pathname: '/uploads/**',  // Adjust this if your images are in a specific folder
       },
     ],
+    
   },
 
   // Internationalization (i18n) settings
