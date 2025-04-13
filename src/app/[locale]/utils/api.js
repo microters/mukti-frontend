@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://api.muktihospital.com/api/auth"; // আপনার ব্যাকএন্ড URL
+const API_BASE_URL = "http://localhost:5000/api/auth"; // আপনার ব্যাকএন্ড URL
 
 // OTP পাঠানোর ফাংশন
 export const sendOtp = async (mobile) => {

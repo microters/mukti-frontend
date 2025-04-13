@@ -24,8 +24,8 @@ const Appointment = () => {
   const { user } = useAuth();
 
   const API_KEY = "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079";
-  const BASE_URL = "https://api.muktihospital.com/api" || "https://api.muktihospital.com/api";
-  const IMG_URL = "https://api.muktihospital.com" || "https://api.muktihospital.com";
+  const BASE_URL = "http://localhost:5000/api" || "http://localhost:5000/api";
+  const IMG_URL = "http://localhost:5000" || "http://localhost:5000";
 
   const language = pathname.includes("/bn/") ? "bn" : "en";
   const [downloadFormat, setDownloadFormat] = useState('pdf');
@@ -161,11 +161,11 @@ const Appointment = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const generateAppointmentText = (formData, doctor, value, selectedDay, language) => {
+  const generateAppointmentText = (formData, doctor, value, selectedDay, language, appointmentId) => {
     const appointmentDate = value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     });
-
+  
     const formatTime = (time) => {
       if (!time || typeof time !== "string" || !/^\d{2}:\d{2}$/.test(time)) return "N/A";
       const [hours, minutes] = time.split(":");
@@ -174,91 +174,93 @@ const Appointment = () => {
       date.setMinutes(+minutes);
       return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
     };
-
+  
     const timeSlot = (selectedDay && selectedDay.startTime && selectedDay.endTime)
       ? `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`
       : (language === "bn" ? "উপলব্ধ নয়" : "Not Available");
-
+  
     const doctorTranslations = doctor?.translations || {};
     const name = doctorTranslations?.name || doctor?.name;
     const department = doctorTranslations?.department || doctor?.department;
     const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
-
-    const referenceId = `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
-
+  
+    // Use the provided appointmentId
+    const referenceId = appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
+  
     if (language === "bn") {
       return {
         content: `
-অ্যাপয়েন্টমেন্ট বিবরণ
-------------------
-হাসপাতাল: মুক্তি হাসপাতাল
-
-ডাক্তারের তথ্য:
-নাম: ${name}
-বিভাগ: ${department}
-যোগ্যতা: ${academicQualification}
-
-রোগীর তথ্য:
-নাম: ${formData.name}
-ফোন: ${formData.mobile}
-বয়স: ${formData.age || "উল্লেখ নেই"}
-ওজন: ${formData.weight || "উল্লেখ নেই"}
-ঠিকানা: ${formData.address || "উল্লেখ নেই"}
-ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
-
-অ্যাপয়েন্টমেন্ট শেডিউল:
-তারিখ: ${appointmentDate}
-সময়: ${timeSlot}
-ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
-
-নির্দেশনা:
-• অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
-• সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
-• যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
-
-রেফারেন্স আইডি: ${referenceId}
+  অ্যাপয়েন্টমেন্ট বিবরণ
+  ------------------
+  হাসপাতাল: মুক্তি হাসপাতাল
+  
+  ডাক্তারের তথ্য:
+  নাম: ${name}
+  বিভাগ: ${department}
+  যোগ্যতা: ${academicQualification}
+  
+  রোগীর তথ্য:
+  নাম: ${formData.name}
+  ফোন: ${formData.mobile}
+  বয়স: ${formData.age || "উল্লেখ নেই"}
+  ওজন: ${formData.weight || "উল্লেখ নেই"}
+  ঠিকানা: ${formData.address || "উল্লেখ নেই"}
+  ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
+  
+  অ্যাপয়েন্টমেন্ট শেডিউল:
+  তারিখ: ${appointmentDate}
+  সময়: ${timeSlot}
+  ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
+  
+  নির্দেশনা:
+  • অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
+  • সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
+  • যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
+  
+  রেফারেন্স আইডি: ${referenceId}
         `,
         referenceId
       };
     } else {
       return {
         content: `
-APPOINTMENT DETAILS
-------------------
-Hospital: Mukti Hospital
-
-Doctor Information:
-Name: ${name}
-Department: ${department}
-Qualification: ${academicQualification}
-
-Patient Information:
-Name: ${formData.name}
-Phone: ${formData.mobile}
-Age: ${formData.age || "N/A"}
-Weight: ${formData.weight || "N/A"}
-Address: ${formData.address || "N/A"}
-Reason for Visit: ${formData.reason || "N/A"}
-
-Appointment Schedule:
-Date: ${appointmentDate}
-Time: ${timeSlot}
-Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
-
-Instructions:
-• Please arrive 15 minutes before your appointment time
-• Bring any previous medical records if available
-• For any queries, contact: +88 02 XXXX XXXX
-
-Reference ID: ${referenceId}
+  APPOINTMENT DETAILS
+  ------------------
+  Hospital: Mukti Hospital
+  
+  Doctor Information:
+  Name: ${name}
+  Department: ${department}
+  Qualification: ${academicQualification}
+  
+  Patient Information:
+  Name: ${formData.name}
+  Phone: ${formData.mobile}
+  Age: ${formData.age || "N/A"}
+  Weight: ${formData.weight || "N/A"}
+  Address: ${formData.address || "N/A"}
+  Reason for Visit: ${formData.reason || "N/A"}
+  
+  Appointment Schedule:
+  Date: ${appointmentDate}
+  Time: ${timeSlot}
+  Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
+  
+  Instructions:
+  • Please arrive 15 minutes before your appointment time
+  • Bring any previous medical records if available
+  • For any queries, contact: +88 02 XXXX XXXX
+  
+  Reference ID: ${referenceId}
         `,
         referenceId
       };
     }
   };
+  
 
-  const downloadAsText = (formData, doctor, value, selectedDay, language) => {
-    const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language);
+  const downloadAsText = (formData, doctor, value, selectedDay, language, appointmentId) => {
+    const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -272,75 +274,42 @@ Reference ID: ${referenceId}
     }, 100);
     return referenceId;
   };
-
-  const downloadAsPdf = async (formData, doctor, value, selectedDay, language, appointmentCardRef) => {
+  
+  const downloadAsPdf = async (formData, doctor, value, selectedDay, language, appointmentId) => {
     try {
-      if (appointmentCardRef?.current) {
-        const canvas = await html2canvas(appointmentCardRef.current, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-        const imgWidth = 210;
-        const imgHeight = canvas.height * imgWidth / canvas.width;
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        const { referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language);
-        pdf.setFontSize(10);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Reference ID: ${referenceId}`, 10, 287);
-        pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
-        return referenceId;
-      } else {
-        const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language);
-        const pdf = new jsPDF();
-        if (language === "bn" && typeof window !== 'undefined') {
-          try {
-            const fontUrl = 'https://cdn.jsdelivr.net/npm/noto-sans-bengali@15.0.2/NotoSansBengali-Regular.ttf';
-            pdf.addFont(fontUrl, 'NotoSansBengali', 'normal');
-            pdf.setFont('NotoSansBengali');
-          } catch (fontError) {
-            console.error("Error loading Bengali font:", fontError);
-          }
+      const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
+      const pdf = new jsPDF();
+      pdf.setFontSize(22);
+      pdf.setTextColor(0, 51, 102);
+      pdf.text("Mukti Hospital", 105, 20, { align: 'center' });
+      pdf.setFontSize(12);
+      pdf.setTextColor(0, 0, 0);
+  
+      const contentLines = content.split('\n');
+      let y = 30;
+      contentLines.forEach(line => {
+        if (line.includes('------------------')) {
+          pdf.setDrawColor(0, 51, 102);
+          pdf.line(20, y, 190, y);
+          y += 5;
+        } else {
+          pdf.text(line, 20, y);
+          y += 6;
         }
-        pdf.setFontSize(22);
-        pdf.setTextColor(0, 51, 102);
-        pdf.text("Mukti Hospital", 105, 20, { align: 'center' });
-        pdf.setFontSize(12);
-        pdf.setTextColor(0, 0, 0);
-        const contentLines = content.split('\n');
-        let y = 30;
-        contentLines.forEach(line => {
-          if (line.includes('------------------')) {
-            pdf.setDrawColor(0, 51, 102);
-            pdf.line(20, y, 190, y);
-            y += 5;
-          } else if (line.trim() === 'APPOINTMENT DETAILS' || line.trim() === 'অ্যাপয়েন্টমেন্ট বিবরণ') {
-            pdf.setFontSize(16);
-            pdf.setTextColor(0, 51, 102);
-            pdf.text(line, 105, y, { align: 'center' });
-            pdf.setFontSize(12);
-            pdf.setTextColor(0, 0, 0);
-            y += 10;
-          } else if (line.includes(':')) {
-            const [key, value] = line.split(':');
-            pdf.setFont(undefined, 'bold');
-            pdf.text(key + ':', 20, y, { charSpace: language === "bn" ? 0.5 : 0 });
-            pdf.setFont(undefined, 'normal');
-            pdf.text(value || '', 80, y, { charSpace: language === "bn" ? 0.5 : 0 });
-            y += 6;
-          } else if (line.trim().length > 0) {
-            pdf.text(line, 20, y, { charSpace: language === "bn" ? 0.5 : 0 });
-            y += 6;
-          } else {
-            y += 3;
-          }
-        });
-        pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
-        return referenceId;
-      }
+      });
+  
+      // Include reference ID in the PDF
+      pdf.text(`Reference ID: ${appointmentId}`, 10, 287);
+      pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
+      return referenceId;
     } catch (error) {
       console.error("Error generating PDF:", error);
-      return downloadAsText(formData, doctor, value, selectedDay, language);
+      return downloadAsText(formData, doctor, value, selectedDay, language, appointmentId);
     }
   };
+  
+
+
 
   const downloadAppointmentInfo = async (formData, doctor, value, selectedDay, language, format, appointmentCardRef) => {
     try {

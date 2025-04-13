@@ -15,7 +15,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -92,7 +92,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
       if (activeTab === "signUp") {
         try {
           // Make an API call to check if user exists
-          const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
+          const response = await fetch(`http://localhost:5000/api/auth/check-user?mobile=${mobileNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -191,9 +191,9 @@ const AuthModal = ({ showModal, setShowModal }) => {
         localStorage.setItem("authToken", response.token); // Token save localStorage-এ
         login(response.token);
         toast.success("Logged in successfully!");
-        
+  
         // Show loading overlay and redirect
-        setIsRedirecting(true);
+        setIsRedirecting(true); // <-- Set redirection flag to true
   
         // Redirect based on current hostname (local or live)
         const redirectUrl = window.location.hostname === "localhost"

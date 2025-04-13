@@ -30,7 +30,7 @@ const Appointment = () => {
 
   // API Config
   const API_KEY = "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079";
-  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://api.muktihospital.com/api";
+  const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000/api";
 
   // Language determination: '/bn/' => Bengali
   const language = pathname.includes("/bn/") ? "bn" : "en";
