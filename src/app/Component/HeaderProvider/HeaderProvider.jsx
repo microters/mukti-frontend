@@ -73,14 +73,14 @@ const HeaderProvider = ({ header, departments }) => {
     href: "#",
     hasSubMenu: true,
     subMenus: departments.map((dept) => ({
-      label:
-        dept.translations?.[currentLanguage]?.name ||
-        dept.translations?.en?.name ||
-        "Unnamed",
-      href: `/treatments/${dept.slug}`,
-      depIcon: `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`,
+      label: dept.translations?.[currentLanguage]?.name 
+              || dept.translations?.en?.name 
+              || "Unnamed",
+      href: `/department/${dept.slug}`,
+      depIcon: dept.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}` : "/path/to/placeholder-image.png", // Placeholder image when icon is null
     })),
   };
+  
 
 const desiredIndex = 3; // index 3 means the 4th position
 let menuItems = [...menuItemsFromHeader];
@@ -274,7 +274,7 @@ if (menuItems.length >= desiredIndex) {
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-[200px] bg-M-section-bg rounded-md shadow-lg overflow-hidden z-50 border-b-2 border-t-2 border-M-primary-color">
                     <Link
-                      href="https://dashboard-muktidigital.netlify.app/"
+                      href="https://dashboardmukti-hospital.netlify.app/"
                       className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
                     >
                       <Icon
@@ -388,7 +388,7 @@ if (menuItems.length >= desiredIndex) {
               <p className="font-medium">{user.name}</p>
             </div>
             <Link
-              href="https://dashboard-muktidigital.netlify.app/"
+              href="https://dashboardmukti-hospital.netlify.app/"
               className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
             >
               <Icon icon="ic:outline-dashboard" width="20" height="20" />{" "}

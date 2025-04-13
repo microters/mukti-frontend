@@ -39,7 +39,7 @@ const LoadingOverlay = () => (
 
 const Signin = () => {
   const router = useRouter(); // Initialize router
-  const { login,user } = useAuth();
+  const { login } = useAuth();
   const [activeTab, setActiveTab] = useState("signIn");
   const [isValid, setIsValid] = useState(true);
   const [otpSent, setOtpSent] = useState(false);
@@ -55,7 +55,7 @@ const Signin = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "http://localhost:3001/";
+        window.location.href = "https://dashboardmukti-hospital.netlify.app/";
       }, 1000);
     }
   }, []);
@@ -102,11 +102,10 @@ const Signin = () => {
 
     // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
-    const userName=user.userName
 
     setLoading(true);
     try {
-      await sendOtp(mobileNumber,userName);
+      await sendOtp(mobileNumber);
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {
@@ -118,12 +117,12 @@ const Signin = () => {
   // Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (formData.otp.length !== 6) {
       toast.error("Enter a valid 6-digit OTP");
       return;
     }
-
+  
     setLoading(true);
     try {
       // Get token from login API
@@ -131,7 +130,7 @@ const Signin = () => {
         mobile: formData.mobile,
         otp: formData.otp,
       });
-
+  
       // Check if response contains token
       if (response && response.token) {
         // Use login function from AuthContext to update the global auth state
@@ -141,8 +140,14 @@ const Signin = () => {
         
         // Show loading overlay and redirect
         setIsRedirecting(true);
+  
+        // Redirect based on current hostname (local or live)
+        const redirectUrl = window.location.hostname === "localhost"
+          ? `http://localhost:3001?token=${response.token}`  // If localhost, redirect to local site
+          : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;  // Else redirect to live site
+  
         setTimeout(() => {
-          window.location.href = `http://localhost:3001?token=${response.token}`;
+          window.location.href = redirectUrl;
         }, 1000);
       } else {
         throw new Error("No authentication token received");
@@ -153,6 +158,7 @@ const Signin = () => {
     }
     setLoading(false);
   };
+  
 
   // If redirecting, show loading overlay
   if (isRedirecting) {

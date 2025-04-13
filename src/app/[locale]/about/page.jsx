@@ -8,7 +8,23 @@ import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials"
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
 import { fetchReviews } from "@/app/api/review";
 import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData,";
+import dynamic from "next/dynamic";
+// ✅ SEO Metadata function
+export async function generateMetadata({ params }) {
+  const locale = params.locale || "en";
+  const dynamicAboutData = await fetchAboutData();
 
+  const metaTitle =
+    dynamicAboutData?.metaTitle?.[locale] || "About Us - Default Title";
+  const metaDescription =
+    dynamicAboutData?.metaDescription?.[locale] ||
+    "Default about us page description for SEO.";
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+  };
+}
 const AboutUs = async () => {
     const reviews = await fetchReviews();
     const dynamicData = await fetchDynamicData();
@@ -16,6 +32,8 @@ const AboutUs = async () => {
     const aboutSection = dynamicData.aboutSection
     const whyChooseUsSection = dynamicData.whyChooseUsSection
     const appointmentProcess = dynamicData.appointmentProcess
+    console.log(dynamicAboutData);
+    
   return (
     <div>
       <CommonHero pageName="About Us" aboutPage={dynamicAboutData}/>

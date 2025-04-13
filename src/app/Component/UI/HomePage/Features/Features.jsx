@@ -30,8 +30,6 @@ const Features = ({ featuresSection }) => {
           const formattedIcon = feature.icon ? 
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/${feature.icon.replace(/\\/g, '/')}` : 
           null;
-      
-
           return (
             <div key={index} className="bg-white pt-14 pb-10 px-4 text-center rounded-md overflow-hidden group relative group">
               <Image
@@ -52,12 +50,12 @@ const Features = ({ featuresSection }) => {
               <h3 className="text-xl mt-2" style={{ color: feature.color || "#000" }}>
                 {feature.title}
               </h3>
-              <Link
+              {/* <Link
                 href="#"
                 className="size-14 inline-flex items-center justify-center bg-[#E6F5F3] rounded-full mt-5 group-hover:-rotate-45 transition-transform duration-300 text-[#39CABB]"
               >
                 <Icon icon="solar:arrow-right-linear" width="24" />
-              </Link>
+              </Link> */}
             </div>
           );
         })}
