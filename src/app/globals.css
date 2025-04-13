@@ -128,7 +128,7 @@ abbr:where([title]) {
   color: #ff0000 !important;
 }
 
-/* Jodit Description Style */
+/* Jodit Descriptions Style */
 .jodit-description h2,
 .jodit-description h3,
 .jodit-description h4{
