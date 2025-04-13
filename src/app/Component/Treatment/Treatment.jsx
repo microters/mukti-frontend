@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
 import Counterup from "@/app/Component/Shared/Counter/Counterup";
 
-const Treatment = ({ departments }) => {
+const Treatment = ({ departments, aboutPage }) => {
   const { i18n } = useTranslation();
 
   return (
@@ -83,7 +83,7 @@ const Treatment = ({ departments }) => {
       </div>
 
       {/* Appointment Form Area */}
-      <Appointment />
+      <Appointment aboutPage={aboutPage}/>
 
       {/* Counter Up Area */}
       <div className="py-24">
