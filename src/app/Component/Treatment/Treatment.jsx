@@ -53,7 +53,7 @@ const Treatment = ({ departments, aboutPage }) => {
                   />
                   <div className="flex items-center justify-center size-20 mx-auto mb-3">
                     <Image
-                      src={`https://api.muktihospital.com${department.icon}`}
+                      src={`http://localhost:5000${department.icon}`}
 
                       alt={department.translations[i18n.language]?.name}
                       width={80}

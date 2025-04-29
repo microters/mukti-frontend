@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
   const dynamicAboutData = await fetchAboutData();
 
   const metaTitle =
-    dynamicAboutData?.metaTitle?.[locale] || "About Us - Default Title";
+    dynamicAboutData?.metaTitle?.[locale] || "About Us-Mukti Hospital";
   const metaDescription =
     dynamicAboutData?.metaDescription?.[locale] ||
     "Default about us page description for SEO.";

@@ -105,7 +105,7 @@ const Register = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
+      const response = await fetch(`http://localhost:5000/api/auth/check-user?mobile=${mobileNumber}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
