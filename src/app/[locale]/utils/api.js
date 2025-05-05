@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api/auth"; // আপনার ব্যাকএন্ড URL
+const API_BASE_URL = "https://api.muktihospital.com/api/auth"; // Backend URL
 
-// OTP পাঠানোর ফাংশন
+// Send OTP function
 export const sendOtp = async (mobile) => {
   console.log("API sendOtp called with:", mobile);
   
@@ -12,10 +12,9 @@ export const sendOtp = async (mobile) => {
   }
   
   try {
-    // নিশ্চিত করুন যে mobile একটি স্ট্রিং হিসাবে আছে
+    // Ensure mobile is a string
     const mobileNumber = typeof mobile === 'object' ? mobile.mobile : mobile;
     
-    // API এর জন্য পে-লোডে "mobileNumber" কী ব্যবহার করুন
     console.log("Sending to API:", { mobileNumber });
     const response = await axios.post(
       `${API_BASE_URL}/send-otp`,
@@ -31,7 +30,7 @@ export const sendOtp = async (mobile) => {
       console.error("Response status:", error.response.status);
       console.error("Response data:", error.response.data);
       throw new Error(
-        error.response.data?.error || error.response.data?.message || "API error: " + error.response.status
+        error.response.data?.error || error.response.data?.message || `API error: ${error.response.status}`
       );
     } else if (error.request) {
       console.error("No response received:", error.request);
@@ -42,41 +41,65 @@ export const sendOtp = async (mobile) => {
     }
   }
 };
-// OTP দিয়ে লগইন ফাংশন
+
+// Login user with OTP
 export const loginUser = async (data) => {
-  // data: { name?, mobile, otp }
+  // data: { mobile, otp }
   try {
-    const response = await axios.post(`${API_BASE_URL}/login`, data);
+    const response = await axios.post(`${API_BASE_URL}/login`, data, {
+      headers: { "Content-Type": "application/json" },
+    });
     if (response.data.token) {
       localStorage.setItem("authToken", response.data.token);
     }
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Login failed.");
+    console.error("Login error:", error);
+    throw new Error(error.response?.data?.error || error.response?.data?.message || "Login failed.");
   }
 };
 
-// OTP দিয়ে রেজিস্ট্রেশন ফাংশন
+// Register user with OTP
 export const registerUser = async (data) => {
   // data: { name, mobile, otp }
   try {
-    const response = await axios.post(`${API_BASE_URL}/register`, data);
+    const response = await axios.post(`${API_BASE_URL}/register`, data, {
+      headers: { "Content-Type": "application/json" },
+    });
     if (response.data.token) {
       localStorage.setItem("authToken", response.data.token);
     }
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.error || "Registration failed.");
+    console.error("Registration error:", error);
+    
+    // Handle 500 error by attempting login (user might already be registered)
+    if (error.response?.status === 500) {
+      try {
+        console.warn("Attempting login due to 500 error during registration");
+        const loginResponse = await loginUser({
+          mobile: data.mobile,
+          otp: data.otp,
+        });
+        return loginResponse; // Return login response if successful
+      } catch (loginError) {
+        console.error("Login attempt after registration failed:", loginError);
+        throw new Error(loginError.response?.data?.error || loginError.response?.data?.message || "Registration and login failed.");
+      }
+    }
+    
+    // Throw other errors
+    throw new Error(error.response?.data?.error || error.response?.data?.message || "Registration failed.");
   }
 };
 
-// Logout ফাংশন
+// Logout function
 export const logout = () => {
   localStorage.removeItem("authToken");
   window.location.href = "/login";
 };
 
-// (ঐচ্ছিক) ইউজার প্রোফাইল পাওয়ার ফাংশন
+// Get user profile (optional)
 export const getUserProfile = async () => {
   const token = localStorage.getItem("authToken");
   if (!token) return null;

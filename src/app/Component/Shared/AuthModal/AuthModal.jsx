@@ -71,6 +71,10 @@ const AuthModal = ({ showModal, setShowModal }) => {
       setIsValid(isValidPhoneNumber);
     }
 
+    if (name === "otp") {
+      value = value.replace(/\D/g, "").slice(0, 6); // Only numbers, max 6 digits
+    }
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -78,12 +82,11 @@ const AuthModal = ({ showModal, setShowModal }) => {
   const handleSendOtp = async (e) => {
     e.preventDefault();
 
-    if (formData.mobile.length < 10) {
-      toast.error("Enter a valid mobile number");
+    if (formData.mobile.length !== 13) {
+      toast.error("Enter a valid mobile number (8801XXXXXXXX)");
       return;
     }
 
-    // Mobile number already has 88 prefix in formData
     const mobileNumber = formData.mobile;
 
     setLoading(true);
@@ -91,8 +94,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
       // Check if the user exists first (only for signup tab)
       if (activeTab === "signUp") {
         try {
-          // Make an API call to check if user exists
-          const response = await fetch(`http://localhost:5000/api/auth/check-user?mobile=${mobileNumber}`, {
+          const response = await fetch(`https://api.muktihospital.com/api/auth/check-user?mobile=${mobileNumber}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
@@ -101,18 +103,14 @@ const AuthModal = ({ showModal, setShowModal }) => {
           
           const data = await response.json();
           
-          // If user exists, show warning and don't send OTP
           if (response.ok && data.exists) {
-       
             toast.info("This number is already registered. Redirecting to sign in.");
-
-          setActiveTab("signIn");
+            setActiveTab("signIn");
             setLoading(false);
             return;
           }
         } catch (error) {
           console.log("Error checking user existence:", error);
-          // Continue with OTP sending even if check fails
         }
       }
 
@@ -121,97 +119,56 @@ const AuthModal = ({ showModal, setShowModal }) => {
       setOtpSent(true);
       toast.success("OTP sent successfully!");
     } catch (error) {
-      // Check for specific error messages from the server about existing users
       if (
-        error.response?.data?.message?.toLowerCase().includes("already exists") ||
-        error.response?.data?.error?.toLowerCase().includes("already exists") ||
-        error.response?.status === 409 // Conflict status often used for "already exists"
+        error.message?.toLowerCase().includes("already exists") ||
+        error.response?.status === 409
       ) {
         toast.warning("This number is already registered. Please use sign in instead.");
       } else {
-        toast.error("Failed to send OTP. Try again.");
+        toast.error(error.message || "Failed to send OTP. Try again.");
       }
     }
     setLoading(false);
   };
 
   // Handle Login
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-
-  //   if (formData.otp.length !== 6) {
-  //     toast.error("Enter a valid 6-digit OTP");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     // Get token from login API
-  //     const response = await loginUser({
-  //       mobile: formData.mobile,
-  //       otp: formData.otp,
-  //     });
-      
-  //     // Check if response contains token
-  //     if (response && response.token) {
-  //       // Use login function from AuthContext to update the global auth state
-  //       login(response.token);
-  //       window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
-  //       toast.success("Logged in successfully!");
-  //       // Close modal
-  //       setShowModal(false);
-  //     } else {
-  //       throw new Error("No authentication token received");
-  //     }
-  //   } catch (error) {
-  //     toast.error(error.response?.data?.error || "Login failed");
-  //     console.error("Login error:", error);
-  //   }
-  //   setLoading(false);
-  // };
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     if (formData.otp.length !== 6) {
       toast.error("Enter a valid 6-digit OTP");
       return;
     }
-  
+
     setLoading(true);
     try {
-      // Get token from login API
       const response = await loginUser({
         mobile: formData.mobile,
         otp: formData.otp,
       });
-  
-      // Check if response contains token
+
       if (response && response.token) {
-        // Use login function from AuthContext to update the global auth state
-        localStorage.setItem("authToken", response.token); // Token save localStorage-এ
+        localStorage.setItem("authToken", response.token);
         login(response.token);
         toast.success("Logged in successfully!");
-  
-        // Show loading overlay and redirect
-        setIsRedirecting(true); // <-- Set redirection flag to true
-  
-        // Redirect based on current hostname (local or live)
-        const redirectUrl = window.location.hostname === "localhost"
-          ? `http://localhost:3001?token=${response.token}`  // If localhost, redirect to local site
-          : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;  // Else redirect to live site
-  
-        setTimeout(() => {
-          window.location.href = redirectUrl;
-        }, 1000);
+
+        const redirectUrl =
+          window.location.hostname === "localhost"
+            ? `http://localhost:3001?token=${response.token}`
+            : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
+
+        window.open(redirectUrl, '_blank'); // Open in new tab
+        setShowModal(false); // Close modal in current tab
       } else {
         throw new Error("No authentication token received");
       }
     } catch (error) {
-      toast.error(error.response?.data?.error || "Login failed");
+      toast.error(error.message || "Login failed");
       console.error("Login error:", error);
     }
     setLoading(false);
   };
+
   // Handle Registration
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -221,98 +178,48 @@ const AuthModal = ({ showModal, setShowModal }) => {
       return;
     }
 
+    if (!formData.name.trim()) {
+      toast.error("Please enter your full name");
+      return;
+    }
+
     setLoading(true);
     try {
-      // Mobile number already has 88 prefix in formData
-      const mobileNumber = formData.mobile;
+      const response = await registerUser({
+        name: formData.name,
+        mobile: formData.mobile,
+        otp: formData.otp,
+      });
 
-      
+      if (response && response.token) {
+        localStorage.setItem("authToken", response.token);
+        login(response.token);
+        toast.success("Registration and login successful!");
 
-      // First check if we can log in directly (user might already exist)
-      try {
-        const loginResponse = await loginUser({
-          mobile: mobileNumber,
-          otp: formData.otp,
-        });
-        
-        if (loginResponse && loginResponse.token) {
-          // User already exists and login successful
-          login(loginResponse.token);
-          window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
-          toast.success("Login successful!");
-          setShowModal(false);
-          return; // Exit the function
-        }
-      } catch (loginError) {
-        console.log("Login before registration failed, continuing with registration");
-      }
+        const redirectUrl =
+          window.location.hostname === "localhost"
+            ? `http://localhost:3001?token=${response.token}`
+            : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
 
-      // TEMPORARY SOLUTION WHILE SERVER IS HAVING ISSUES
-      // Instead of actual registration, show a registration error
-      try {
-        const registerResponse = await registerUser({
-          name: formData.name,
-          mobile: mobileNumber,
-          otp: formData.otp,
-        });
-        
-        console.log("Registration response:", registerResponse);
-        
-        // If registration somehow succeeds, attempt login
-        const loginResponse = await loginUser({
-          mobile: mobileNumber,
-          otp: formData.otp,
-        });
-        
-        if (loginResponse && loginResponse.token) {
-          login(loginResponse.token);
-          toast.success("Registration and login successful!");
-          setShowModal(false);
-        }
-      } catch (registerError) {
-        console.error("Registration error:", registerError);
-        
-        // HERE IS THE TEMPORARY FIX FOR SERVER ERRORS
-        // Check if this is a 500 server error
-        if (registerError.response && registerError.response.status === 500) {
-          // Try to login anyway - the user might already exist despite the 500 error
-          try {
-            const loginResponse = await loginUser({
-              mobile: mobileNumber,
-              otp: formData.otp,
-            });
-            
-            if (loginResponse && loginResponse.token) {
-              login(loginResponse.token);
-              toast.success("Login successful!");
-              setShowModal(false);
-              return; // Exit early if login works
-            }
-          } catch (finalLoginError) {
-            // If all attempts fail, show specific error message
-            toast.error("Registration failed. Please try again later or contact support.");
-            console.error("All authentication attempts failed");
-          }
-        } else {
-          // For other error types, show the specific error
-          const errorMessage = 
-            registerError.response?.data?.message || 
-            registerError.response?.data?.error || 
-            registerError.message || 
-            "Registration failed";
-          
-          toast.error(errorMessage);
-        }
+        window.open(redirectUrl, '_blank'); // Open in new tab
+        setShowModal(false); // Close modal in current tab
+      } else {
+        throw new Error("No authentication token received");
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(error.message || "Registration failed");
+      console.error("Registration error:", error);
     }
     setLoading(false);
   };
 
   return (
     <div className="bg-black/50 backdrop-blur-md w-screen h-screen fixed top-0 left-0 z-50 flex justify-center items-center px-2">
+      {isRedirecting && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-60">
+          <div className="text-white text-lg">Redirecting...</div>
+        </div>
+      )}
       <div className="max-w-96 w-full p-6 md:p-8 bg-white rounded-lg overflow-y-auto">
         <div className="relative">
           <Link href="/">
@@ -358,8 +265,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                 Verify OTP
               </h2>
               <p className="text-center text-slate-400 mb-4">
-                Enter the OTP sent to your{" "}
-                {activeTab === "signUp" ? "email" : "phone"}.
+                Enter the OTP sent to your phone.
               </p>
               <form
                 onSubmit={activeTab === "signUp" ? handleRegister : handleLogin}
@@ -450,7 +356,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
                       onChange={handleChange}
                       required
                       placeholder="8801XXXXXXXX"
-                      className={`border ${isValid ? "focus:border-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
+                      className={`border ${isValid ? "focus etherpad-M-primary-color focus:ring-M-primary-color/80" : "focus:border-M-secondary-color focus:ring-M-secondary-color/80"} outline-none ring-offset-1 focus:ring-2 transition-all duration-300 block w-full px-3 py-2 pl-12 rounded-md`}
                       maxLength="13"
                     />
                   </div>
