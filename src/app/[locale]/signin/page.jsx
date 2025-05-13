@@ -55,7 +55,7 @@ const Signin = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "https://dashboardmukti-hospital.netlify.app/";
+        window.location.href = "https://app.muktihospital.com/";
       }, 1000);
     }
   }, []);
