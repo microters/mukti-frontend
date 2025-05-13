@@ -388,7 +388,7 @@ if (menuItems.length >= desiredIndex) {
               <p className="font-medium">{user.name}</p>
             </div>
             <Link
-              href="https://dashboardmukti-hospital.netlify.app/"
+              href="https://app.muktihospital.com/"
               className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
             >
               <Icon icon="ic:outline-dashboard" width="20" height="20" />{" "}
