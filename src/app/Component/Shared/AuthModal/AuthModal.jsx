@@ -155,7 +155,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
         const redirectUrl =
           window.location.hostname === "localhost"
             ? `http://localhost:3001?token=${response.token}`
-            : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
+            : `http://localhost:3001?token=${response.token}`;
 
         window.open(redirectUrl, '_blank'); // Open in new tab
         setShowModal(false); // Close modal in current tab
@@ -199,7 +199,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
         const redirectUrl =
           window.location.hostname === "localhost"
             ? `http://localhost:3001?token=${response.token}`
-            : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
+            : `http://localhost:3001?token=${response.token}`;
 
         window.open(redirectUrl, '_blank'); // Open in new tab
         setShowModal(false); // Close modal in current tab
