@@ -180,27 +180,29 @@ const HeaderProvider = ({ header, departments }) => {
                 </Link>
                 {item.hasSubMenu && (
                   <ul
-                    className={`absolute top-full bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md hidden  z-10 ${
+                    className={`absolute top-full bg-white border-t-2 border-b-2 border-M-primary-color py-2 shadow-lg rounded-md   z-10 ${
                       item.subMenus.length > 8
                         ? "w-[1320px] grid grid-cols-4 gap-x-4 group-hover:grid left-1/2 -translate-x-1/2 p-3"
                         : "w-56 group-hover:block left-0"
                     }`}
                   >
                     {item.subMenus.map((subItem, subIndex) => (
-                      <li key={subIndex}>
+                      <li key={subIndex} className="group/item">
                         <Link
                           href={subItem.href || "#"}
                           target={subItem.openInNewTab ? "_blank" : "_self"}
                           onClick={() => handleNavigation(subItem.href)}
-                          className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
+                          className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all  duration-300 rounded-md flex items-center gap-3  group-hover/item:text-M-primary-color"
                         >
                           {subItem.depIcon && (
-                            <Image
-                              src={subItem.depIcon}
-                              alt={subItem.label}
-                              width={20}
-                              height={20}
-                            />
+                            <span className="border border-M-heading-color/5 bg-M-primary-color/10 w-9 h-9 flex items-center justify-center rounded-full group-hover/item:border-M-primary-color transition-all duration-300">
+                              <Image
+                                src={subItem.depIcon}
+                                alt={subItem.label}
+                                width={20}
+                                height={20}
+                              />
+                            </span>
                           )}{" "}
                           {subItem.label}
                         </Link>
