@@ -29,7 +29,7 @@ const HeaderProvider = ({ header, departments }) => {
   const [phone, setPhone] = useState(
     header?.translations?.[currentLanguage]?.phone || "+880 1601 666-893"
   );
-  console.log(phone)
+  console.log(phone);
   const [logo, setLogo] = useState(
     header?.logo ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${header.logo}` : null
   );
@@ -47,7 +47,6 @@ const HeaderProvider = ({ header, departments }) => {
       </div>
     );
   }
-
 
   const headerMenus =
     header?.translations?.[currentLanguage]?.menus?.filter(
@@ -73,23 +72,25 @@ const HeaderProvider = ({ header, departments }) => {
     href: "#",
     hasSubMenu: true,
     subMenus: departments.map((dept) => ({
-      label: dept.translations?.[currentLanguage]?.name 
-              || dept.translations?.en?.name 
-              || "Unnamed",
+      label:
+        dept.translations?.[currentLanguage]?.name ||
+        dept.translations?.en?.name ||
+        "Unnamed",
       href: `/department/${dept.slug}`,
-      depIcon: dept.icon ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}` : "/path/to/placeholder-image.png", // Placeholder image when icon is null
+      depIcon: dept.icon
+        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${dept.icon}`
+        : "/path/to/placeholder-image.png", // Placeholder image when icon is null
     })),
   };
-  
 
-const desiredIndex = 3; // index 3 means the 4th position
-let menuItems = [...menuItemsFromHeader];
+  const desiredIndex = 3; // index 3 means the 4th position
+  let menuItems = [...menuItemsFromHeader];
 
-if (menuItems.length >= desiredIndex) {
-  menuItems.splice(desiredIndex, 0, departmentMenu);
-} else {
-  menuItems.push(departmentMenu);
-}
+  if (menuItems.length >= desiredIndex) {
+    menuItems.splice(desiredIndex, 0, departmentMenu);
+  } else {
+    menuItems.push(departmentMenu);
+  }
 
   const toggleSubMenu = (index, hasSubMenu, event) => {
     if (!hasSubMenu) return;
@@ -120,7 +121,7 @@ if (menuItems.length >= desiredIndex) {
     <div>
       <div className="bg-M-heading-color">
         <div className="container mx-auto px-2 py-4 flex justify-between items-center gap-3">
-        <Link href="/">
+          <Link href="/">
             {logo ? (
               <img src={logo} alt="logo" width={200} className="w-32 sm:w-52" />
             ) : (
@@ -144,7 +145,7 @@ if (menuItems.length >= desiredIndex) {
               </li>
               <li>
                 {/* Language switcher */}
-                  <LanguageChanger />
+                <LanguageChanger />
               </li>
             </ul>
           </div>
@@ -190,6 +191,7 @@ if (menuItems.length >= desiredIndex) {
                         <Link
                           href={subItem.href || "#"}
                           target={subItem.openInNewTab ? "_blank" : "_self"}
+                          onClick={() => handleNavigation(subItem.href)}
                           className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all duration-300 active:bg-slate-200 hover:bg-slate-200 hover:text-M-primary-color rounded-sm flex items-center gap-3"
                         >
                           {subItem.depIcon && (
@@ -215,7 +217,8 @@ if (menuItems.length >= desiredIndex) {
             href={"/appointment"}
             className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
           >
-            {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />
+            {t("header.appointment")}{" "}
+            <Icon icon="basil:arrow-right-solid" width="24" />
           </Link>
 
           {/* Show loading indicator while auth state is being checked */}
@@ -271,50 +274,49 @@ if (menuItems.length >= desiredIndex) {
                 />
               </button>
 
-                {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-[200px] bg-M-section-bg rounded-md shadow-lg overflow-hidden z-50 border-b-2 border-t-2 border-M-primary-color">
-                    <Link
-                      href="https://dashboardmukti-hospital.netlify.app/"
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
-                    >
-                      <Icon
-                        icon="ic:outline-dashboard"
-                        width="24"
-                        height="24"
-                        className="shrink-0"
-                      />{" "}
-                      Dashboard
-                    </Link>
-                    <Link
-                      href="/settings"
-                      className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
-                    >
-                      <Icon
-                        icon="mingcute:user-4-fill"
-                        width="24"
-                        height="24"
-                        className="shrink-0"
-                      />{" "}
-                      Profile
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
-                    >
-                      <Icon
-                        icon="uil:signout"
-                        width="24"
-                        height="24"
-                        className="shrink-0"
-                      />
-                      Logout
-                    </button>
-                  </div>
-                )}
-                
-              </div>
-            )}
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-[200px] bg-M-section-bg rounded-md shadow-lg overflow-hidden z-50 border-b-2 border-t-2 border-M-primary-color">
+                  <Link
+                    href="https://dashboardmukti-hospital.netlify.app/"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
+                  >
+                    <Icon
+                      icon="ic:outline-dashboard"
+                      width="24"
+                      height="24"
+                      className="shrink-0"
+                    />{" "}
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/settings"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
+                  >
+                    <Icon
+                      icon="mingcute:user-4-fill"
+                      width="24"
+                      height="24"
+                      className="shrink-0"
+                    />{" "}
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
+                  >
+                    <Icon
+                      icon="uil:signout"
+                      width="24"
+                      height="24"
+                      className="shrink-0"
+                    />
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
+          )}
+        </div>
       </nav>
 
       {/* Mobile Menu */}
@@ -331,7 +333,8 @@ if (menuItems.length >= desiredIndex) {
               href={"/appointment"}
               className="bg-M-secondary-color font-jost font-medium uppercase rounded-md text-xs lg:text-base text-white px-3 py-2 lg:px-4 lg:py-3 inline-flex gap-1 items-center transition-all duration-300 hover:bg-M-heading-color"
             >
-              {t("header.appointment")} <Icon icon="basil:arrow-right-solid" width="24" />
+              {t("header.appointment")}{" "}
+              <Icon icon="basil:arrow-right-solid" width="24" />
             </Link>
 
             {/* Show loading indicator while auth state is being checked on mobile */}
@@ -381,34 +384,34 @@ if (menuItems.length >= desiredIndex) {
             )}
           </div>
 
-        {/* Mobile dropdown for user */}
-        {user && dropdownOpen && (
-          <div className="absolute right-2 top-full w-48 bg-white rounded-md shadow-lg overflow-hidden z-50 border-t-2 border-b-2 border-M-primary-color">
-            <div className="px-4 py-2 border-b border-gray-200 font-jost text-base">
-              <p className="font-medium">{user.name}</p>
+          {/* Mobile dropdown for user */}
+          {user && dropdownOpen && (
+            <div className="absolute right-2 top-full w-48 bg-white rounded-md shadow-lg overflow-hidden z-50 border-t-2 border-b-2 border-M-primary-color">
+              <div className="px-4 py-2 border-b border-gray-200 font-jost text-base">
+                <p className="font-medium">{user.name}</p>
+              </div>
+              <Link
+                href="https://dashboardmukti-hospital.netlify.app/"
+                className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
+              >
+                <Icon icon="ic:outline-dashboard" width="20" height="20" />{" "}
+                Dashboard
+              </Link>
+              <Link
+                href="/settings"
+                className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
+              >
+                <Icon icon="mingcute:user-4-fill" width="20" height="20" />{" "}
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
+              >
+                <Icon icon="uil:signout" width="20" height="20" /> Logout
+              </button>
             </div>
-            <Link
-              href="https://dashboardmukti-hospital.netlify.app/"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
-            >
-              <Icon icon="ic:outline-dashboard" width="20" height="20" />{" "}
-              Dashboard
-            </Link>
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-all font-jost text-base"
-            >
-              <Icon icon="mingcute:user-4-fill" width="20" height="20" />{" "}
-              Profile
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-3 px-4 py-2 w-full text-left font-jost font-normal text-base text-M-secondary-color/80 hover:bg-M-secondary-color/10 hover:text-M-secondary-color transition-all"
-            >
-              <Icon icon="uil:signout" width="20" height="20" /> Logout
-            </button>
-          </div>
-        )}
+          )}
 
           <nav
             className={`w-full absolute top-full left-0  px-2 shadow-lg rounded-md z-50 ${openMenu ? "max-h-[400px] overflow-y-auto" : "max-h-0 overflow-hidden"} transition-all duration-300`}
@@ -420,8 +423,12 @@ if (menuItems.length >= desiredIndex) {
                   className={`relative group ${item.hasSubMenu ? "hasSubMenus" : ""}`}
                 >
                   <Link
-                    href={item.href || "#"} 
-                    onClick={(e) => item.hasSubMenu ? toggleSubMenu(index, item.hasSubMenu, e) : handleNavigation(item.href)}
+                    href={item.href || "#"}
+                    onClick={(e) =>
+                      item.hasSubMenu
+                        ? toggleSubMenu(index, item.hasSubMenu, e)
+                        : handleNavigation(item.href)
+                    }
                     target={item.openInNewTab ? "_blank" : "_self"}
                     className="font-jost font-medium h-full text-M-heading-color text-base uppercase flex items-center justify-between px-3 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                   >
@@ -443,6 +450,7 @@ if (menuItems.length >= desiredIndex) {
                           <Link
                             href={subItem.href || "#"}
                             target={subItem.openInNewTab ? "_blank" : "_self"}
+                            onClick={() => handleNavigation(subItem.href)}
                             className="flex items-center gap-3 pl-6 py-3 hover:text-M-primary-color active:text-M-primary-color transition-all duration-300"
                           >
                             {subItem.depIcon && (
