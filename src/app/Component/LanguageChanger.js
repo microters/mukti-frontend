@@ -4,13 +4,14 @@ import { useRouter, usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import i18nConfig from "../../../i18nConfig";
 import { Icon } from "@iconify/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function LanguageChanger() {
   const { i18n } = useTranslation();
   const currentLocale = i18n.language;
   const router = useRouter();
   const currentPathname = usePathname();
+  const dropdownRef = useRef(null);
 
   const languages = [
     { id: "en", name: "English", flag: "circle-flags:us" },
@@ -28,6 +29,20 @@ export default function LanguageChanger() {
     const foundLang = languages.find((lang) => lang.id === currentLocale);
     if (foundLang) setSelectedLanguage(foundLang);
   }, [currentLocale]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const changeLanguage = (newLocale) => {
     if (newLocale === currentLocale) return;
@@ -52,11 +67,11 @@ export default function LanguageChanger() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-         className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color transition-all duration-300"
+        className="flex gap-1 sm:gap-2 items-center bg-[#615EFC]/10 border border-white/30 px-2 sm:px-2 py-1 rounded-md font-jost font-normal text-xs sm:text-base text-white hover:border-M-primary-color transition-all duration-300"
       >
         <span className="flex items-center gap-2">
           <Icon icon={selectedLanguage.flag} width="18" height="18" />

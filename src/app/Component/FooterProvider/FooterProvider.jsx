@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 
+// Fallback image for when logo or contact logo is missing
+const FALLBACK_IMAGE = "/images/no-image.png";
+
 const FooterProvider = ({ doctors, footer }) => {
   const { i18n } = useTranslation();
   const currentLang = i18n.language || "en";
@@ -25,7 +28,6 @@ const FooterProvider = ({ doctors, footer }) => {
   const patientCareSection = sections.PatientCare;
   const treatmentsSection = sections.Treatments;
   const quickLinksSection = sections.QuickLinks;
-  // Using "Diagnostic" section as provided
   const diagnosticSection = sections.Diagnostic;
 
   // Sort and slice doctors by experience
@@ -56,9 +58,9 @@ const FooterProvider = ({ doctors, footer }) => {
           <div className="flex flex-wrap justify-between gap-8">
             {/* Left Section: Logo, description and emergency call */}
             <div className="w-[320px]">
-              {/* Prepend baseUrl to the footerLogo */}
+              {/* Use fallback image if footerLogo is null or undefined */}
               <Image 
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${footerLogo}`} 
+                src={footerLogo ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${footerLogo}` : FALLBACK_IMAGE} 
                 alt="logo" 
                 width={200} 
                 height={100} 
@@ -68,9 +70,9 @@ const FooterProvider = ({ doctors, footer }) => {
               </p>
               <div className="flex items-start gap-5 mt-4">
                 <div>
-                  {/* Prepend baseUrl to contact.logo */}
+                  {/* Use fallback image if contact.logo is null or undefined */}
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${contact.logo}`}
+                    src={contact.logo ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${contact.logo}` : FALLBACK_IMAGE}
                     alt="Contact Logo"
                     width={24}
                     height={24}

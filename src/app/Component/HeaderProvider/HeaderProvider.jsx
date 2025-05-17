@@ -192,10 +192,10 @@ const HeaderProvider = ({ header, departments }) => {
                           href={subItem.href || "#"}
                           target={subItem.openInNewTab ? "_blank" : "_self"}
                           onClick={() => handleNavigation(subItem.href)}
-                          className="py-2 px-4 font-jost font-medium text-base text-M-heading-color transition-all  duration-300 rounded-md flex items-center gap-3  group-hover/item:text-M-primary-color"
+                          className="py-3 px-3 font-jost font-medium text-base text-M-heading-color transition-all  duration-300 flex items-center gap-3  border-b border-gray-200 rounded-none hover:bg-M-primary-color hover:text-white hover:rounded-md"
                         >
                           {subItem.depIcon && (
-                            <span className="border border-M-heading-color/5 bg-M-primary-color/10 w-9 h-9 flex items-center justify-center rounded-full group-hover/item:border-M-primary-color transition-all duration-300">
+                            <span className="border border-M-heading-color/5 bg-M-primary-color/10 w-9 h-9 flex items-center justify-center rounded-full group-hover/item:border-M-primary-color transition-all duration-300 group-hover/item:bg-white">
                               <Image
                                 src={subItem.depIcon}
                                 alt={subItem.label}
