@@ -104,7 +104,7 @@ const BestDoctors = ({ doctors }) => {
                       className="border-2 rounded-md overflow-hidden transition-all duration-300 group hover:border-M-primary-color flex flex-col justify-between"
                     >
                       <div className="flex flex-col md:flex-row py-7 px-6 gap-7">
-                        <div className="border-2 border-transparent w-24 h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
+                        <div className="border-2 border-[#eeeeee] w-24 h-24 rounded-full overflow-hidden transition-all duration-300 group-hover:border-M-primary-color shrink-0">
                           <Image
                             src={doctorImage}
                             alt={data.name || "Doctor"}
@@ -117,10 +117,10 @@ const BestDoctors = ({ doctors }) => {
 
                         <div className="flex-1">
                           <ul className="flex flex-wrap items-center gap-4 mb-5">
-                            <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-4 text-M-primary-color text-base font-jost font-normal">
+                            <li className="border-2 border-[#00224F50] inline-block w-auto rounded-md py-2 px-3 text-M-primary-color text-base font-jost font-normal">
                               {data.department || t("doctors.unknownDepartment")}
                             </li>
-                            <li className="bg-[#323290] inline-flex items-center gap-1 rounded-md py-2 px-4 font-jost font-normal text-base text-white">
+                            <li className="bg-[#323290] inline-flex items-center gap-1 rounded-md py-2 px-3 font-jost font-normal text-base text-white">
                               <Icon icon="material-symbols-light:star" width="24" height="24" className="text-[#F1E132]" />
                               ({doctor.reviews || 0})
                             </li>
@@ -134,8 +134,9 @@ const BestDoctors = ({ doctors }) => {
 
                           <p className="text-M-text-color text-base font-normal font-jost flex items-start gap-2">
                             <Icon icon="oui:index-open" width="24" className="text-M-heading-color shrink-0 relative top-[2px]" />
-                            {data.academicQualification || t("doctors.noQualification")}
+                            <span className="line-clamp-2">{data.academicQualification || t("doctors.noQualification")}</span>
                           </p>
+                          {/* <button className="text-sm font-jost text-M-heading-color">Show more</button> */}
 
                           <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
                             <Icon icon="mdi:location-on-outline" width="24" className="text-M-heading-color" />
