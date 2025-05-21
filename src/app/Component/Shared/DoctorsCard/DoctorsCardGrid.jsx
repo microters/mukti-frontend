@@ -58,11 +58,11 @@ const DoctorsCardGrid = ({ doctor }) => {
           </h3>
 
           {/* Academic Qualification */}
-          <p className="text-M-text-color text-base font-normal font-jost flex gap-2 justify-center">
+          <p className="text-M-text-color text-base font-normal font-jost">
             <Icon
               icon="oui:index-open"
               width="24"
-              className="text-M-heading-color shrink-0 relative top-[5px]"
+              className="text-M-heading-color shrink-0 relative top-[0px] inline-block mr-1"
             />
             {academicQualification}
           </p>

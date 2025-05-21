@@ -34,7 +34,7 @@ const WhyChooseUs = ({ whyChooseUsSection }) => {
               width={500}
               height={500}
               alt="Why Choose Us"
-              className="z-10 mx-auto"
+              className="z-10 mx-auto relative"
               unoptimized={true}
             />
           ) : (

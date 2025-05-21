@@ -180,10 +180,10 @@ const HeaderProvider = ({ header, departments }) => {
                 </Link>
                 {item.hasSubMenu && (
                   <ul
-                    className={`absolute top-full bg-white border-t-2 border-b-2 border-M-primary-color hidden py-2 shadow-lg rounded-md   z-10 ${
+                    className={`absolute top-full bg-white border-t-2 border-b-2 border-M-primary-color hidden py-2 shadow-lg rounded-md z-10 ${
                       item.subMenus.length > 8
                         ? "w-[1320px] grid grid-cols-4 gap-x-4 group-hover:grid left-1/2 -translate-x-1/2 p-3"
-                        : "w-56 group-hover:block left-0"
+                        : "w-56 group-hover:block left-0 p-3"
                     }`}
                   >
                     {item.subMenus.map((subItem, subIndex) => (

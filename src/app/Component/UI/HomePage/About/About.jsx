@@ -36,28 +36,32 @@ const About = ({ aboutSection }) => {
         
         <div className="grid-cols-1 md:grid-cols-2 gap-6 items-baseline hidden md:grid">
           {formattedImages?.[2] ? (
-            <Image 
+            <span className="pt-10 pl-10">
+              <Image 
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[2]}`} 
               width={600} 
               height={600} 
               style={{ width: "100%" }} 
               alt="about image" 
-              className="pt-10 pl-10"
+              className="rounded-[35px] rounded-tl-none"
               unoptimized={true}
             />
+            </span>
           ) : (
             <div className="pt-10 pl-10 bg-gray-200 h-64 w-full"></div>
           )}
           {formattedImages?.[1] ? (
-            <Image 
+            <span className="">
+              <Image 
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[1]}`} 
               width={600} 
               height={600} 
               style={{ width: "100%" }} 
               alt="about image" 
-              className="h-full hidden md:block"
+              className="h-full hidden md:block rounded-[35px] rounded-tr-none"
               unoptimized={true}
             />
+            </span>
           ) : (
             <div className="bg-gray-200 h-64 w-full hidden md:block"></div>
           )}
@@ -65,15 +69,17 @@ const About = ({ aboutSection }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start px-5">
           {formattedImages?.[0] ? (
-            <Image 
+            <span className="pb-10 pl-5 hidden md:block">
+              <Image 
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[0]}`} 
               width={600} 
               height={600} 
               style={{ width: "100%" }} 
               alt="about image" 
-              className="pb-10 pl-5 hidden md:block"
+              className="rounded-[35px] rounded-bl-none"
               unoptimized={true}
             />
+            </span>
           ) : (
             <div className="pb-10 pl-5 bg-gray-200 h-64 w-full hidden md:block"></div>
           )}

@@ -18,8 +18,8 @@ const Appointment = ({aboutPage}) => {
   const { callbackImage } = aboutPage?.data?.translations[currentLanguage] || {};
   console.log(callbackImage);
   
-  const mobileAppImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}${callbackImage}`;
-  console.log(mobileAppImage);
+  const mobileAppImage = `https://api.muktihospital.com/${callbackImage}`;
+  console.log(mobileAppImage + " Mobile app image");
   
   return (
     <div className="bg-[#323290] py-24 px-2 relative">
