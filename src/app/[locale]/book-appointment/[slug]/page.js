@@ -573,7 +573,7 @@ const Appointment = () => {
             {steps.map((step) => (
               <div
                 key={step}
-                className={`flex flex-col items-center relative lg:before:w-16 xl:before:w-24 before:h-[1px] before:absolute before:border before:border-dashed before:top-1/2 before:-translate-y-1/2 lg:before:-right-24 xl:before:-right-48 last:before:hidden ${step < currentStep ? "before:bg-M-text-color" : "before:bg-M-text-color/10"}`}
+                className={`flex flex-col items-center relative lg:before:w-16 xl:before:w-24 before:h-[1px] before:absolute before:border before:border-dashed before:top-1/2 before:-translate-y-1/2 lg:before:-right-24 xl:before:-right-36 last:before:hidden ${step < currentStep ? "before:bg-M-text-color" : "before:bg-M-text-color/10"}`}
               >
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-jost font-bold text-lg ${step === currentStep ? "bg-M-primary-color text-white" : step < currentStep ? "bg-M-primary-color text-white" : "bg-slate-300 text-white"}`}
