@@ -29,7 +29,6 @@ const HeaderProvider = ({ header, departments }) => {
   const [phone, setPhone] = useState(
     header?.translations?.[currentLanguage]?.phone || "+880 1601 666-893"
   );
-  console.log(phone);
   const [logo, setLogo] = useState(
     header?.logo ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${header.logo}` : null
   );
