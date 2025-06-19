@@ -79,7 +79,7 @@ const Testimonials = ({ reviews }) => {
                 <div className="flex gap-4 items-start">
                   {/* Profile image */}
                   <Image
-                    className="size-24 rounded-full border-8 border-white"
+                    className="size-24 rounded-full border-8 border-white object-cover"
                     src={reviewImage}
                     alt={review.name}
                     width={96}
