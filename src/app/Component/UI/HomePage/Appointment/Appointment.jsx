@@ -66,7 +66,7 @@ const Appointment = ({ appointmentSection }) => {
 
     try {
       // Submit the form data to the backend API
-      const response = await fetch(`http://localhost:5000/api/callback`, {
+      const response = await fetch(`https://api.muktihospital.com/api/callback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
