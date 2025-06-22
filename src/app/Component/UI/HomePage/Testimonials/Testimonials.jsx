@@ -69,14 +69,18 @@ const Testimonials = ({ reviews }) => {
             ))}
           </div>
         ) : (
-          reviews.map((review) => (
-            <SwiperSlide key={review.id}>
+          reviews.map((review) => {
+            const reviewImage = review.image
+              ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${review.image}`
+              : "/default-profile-photo.png";
+            return(
+              <SwiperSlide key={review.id}>
               <div className="bg-[#EBF7F6] rounded-lg py-7 px-6 space-y-6">
                 <div className="flex gap-4 items-start">
                   {/* Profile image */}
                   <Image
-                    className="size-24 rounded-full border-8 border-white"
-                    src={profileImage}
+                    className="size-24 rounded-full border-8 border-white object-cover"
+                    src={reviewImage}
                     alt={review.name}
                     width={96}
                     height={96}
@@ -92,7 +96,9 @@ const Testimonials = ({ reviews }) => {
                 <p className="text-base text-M-text-color font-jost">{review.reviewText}</p>
               </div>
             </SwiperSlide>
-          ))
+            )
+          } 
+          )
         )}
       </Swiper>
     </div>

@@ -29,7 +29,6 @@ const HeaderProvider = ({ header, departments }) => {
   const [phone, setPhone] = useState(
     header?.translations?.[currentLanguage]?.phone || "+880 1601 666-893"
   );
-  console.log(phone);
   const [logo, setLogo] = useState(
     header?.logo ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${header.logo}` : null
   );
@@ -279,7 +278,7 @@ const HeaderProvider = ({ header, departments }) => {
               {dropdownOpen && (
                 <div className="absolute right-0 mt-2 w-[200px] bg-M-section-bg rounded-md shadow-lg overflow-hidden z-50 border-b-2 border-t-2 border-M-primary-color">
                   <Link
-                    href="https://api.muktihospital.com/"
+                    href="https://app.muktihospital.com"
                     className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
                   >
                     <Icon
@@ -291,7 +290,7 @@ const HeaderProvider = ({ header, departments }) => {
                     Dashboard
                   </Link>
                   <Link
-                    href="/settings"
+                    href="https://app.muktihospital.com/profile"
                     className="flex items-center gap-3 px-4 py-2 hover:bg-M-text-color/10 transition-all font-jost font-normal text-base text-black"
                   >
                     <Icon

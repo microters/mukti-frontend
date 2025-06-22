@@ -296,7 +296,7 @@ const DoctorsList = ({ doctors }) => {
                   <li
                     key={item}
                     onClick={() => toggleGender(item)}
-                    className={`flex justify-between items-center gap-3 cursor-pointer py-4 border-b border-M-primary-color/10 last:border-0 transition-all duration-300 ${
+                    className={`flex justify-between items-center gap-3 cursor-pointer py-4 border-b border-M-primary-color/10 last:border-0 transition-all duration-300 capitalize ${
                       selectedGenders[item]
                         ? "text-slate-900"
                         : "text-slate-400"
@@ -304,7 +304,7 @@ const DoctorsList = ({ doctors }) => {
                   >
                     <span className="flex gap-3 items-center font-jost font-normal">
                       <Image
-                        src={item === "Male" ? male : female}
+                        src={item === "male" ? male : female}
                         alt={item}
                         width={30}
                         height={30}
