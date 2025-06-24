@@ -65,14 +65,17 @@ const Appointment = ({ appointmentSection }) => {
 
     try {
       // Submit the form data to the backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
 
@@ -83,7 +86,9 @@ const Appointment = ({ appointmentSection }) => {
       }
     } catch (error) {
       console.error("Error submitting the appointment request:", error);
-      alert("An error occurred while submitting the appointment request. Please try again.");
+      alert(
+        "An error occurred while submitting the appointment request. Please try again."
+      );
     }
   };
 
