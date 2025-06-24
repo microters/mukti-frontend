@@ -8,6 +8,7 @@ import male from "@/assets/images/male.png";
 import female from "@/assets/images/female.png";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
+import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
 
 const DoctorsList = ({ doctors }) => {
@@ -199,47 +200,88 @@ const DoctorsList = ({ doctors }) => {
   };
 
   // Handle Callback form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    // Validate the form data before submitting
-    if (!formData.patientName || !formData.phone) {
-      alert("Please fill in all the required fields.");
-      return;
-    }
+  //   // Validate the form data before submitting
+  //   if (!formData.patientName || !formData.phone) {
+  //     alert("Please fill in all the required fields.");
+  //     return;
+  //   }
 
-    if (!agreementChecked) {
-      alert("You must agree to the terms and conditions.");
-      return;
-    }
+  //   if (!agreementChecked) {
+  //     alert("You must agree to the terms and conditions.");
+  //     return;
+  //   }
 
-    try {
-      // Submit the form data to the backend API
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`,
-        {
+  //   try {
+  //     // Submit the form data to the backend API
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
+  //         },
+  //         body: JSON.stringify(formData),
+  //       }
+  //     );
+
+  //     const result = await response.json();
+
+  //     if (result?.status === "success") {
+  //       alert("Appointment request submitted successfully!");
+  //     } else {
+  //       alert("Failed to submit the appointment request. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting the appointment request:", error);
+  //     alert(
+  //       "An error occurred while submitting the appointment request. Please try again."
+  //     );
+  //   }
+  // };
+
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      // Validate the form data before submitting
+      if (!formData.patientName || !formData.phone) {
+        alert("Please fill in all the required fields.");
+        return;
+      }
+  
+      if (!agreementChecked) {
+        alert("You must agree to the terms and conditions.");
+        return;
+      }
+  
+      try {
+        // Submit the form data to the backend API
+        const response = await fetch(`https://api.muktihospital.com/api/callback`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is correctly set
           },
           body: JSON.stringify(formData),
+        });
+  
+        const result = await response.json();
+  
+        if (response.ok) {
+          toast.success("Appointment request submitted successfully!");
+        } else {
+          // Handle any other non-200 response codes.
+          alert(`Failed to submit the appointment request: ${result.message || 'Please try again.'}`);
         }
-      );
-
-      const result = await response.json();
-
-      if (result?.status === "success") {
-        alert("Appointment request submitted successfully!");
-      } else {
-        alert("Failed to submit the appointment request. Please try again.");
+      } catch (error) {
+        console.error("Error submitting the appointment request:", error);
+        alert(
+          "An error occurred while submitting the appointment request. Please try again."
+        );
       }
-    } catch (error) {
-      console.error("Error submitting the appointment request:", error);
-      alert(
-        "An error occurred while submitting the appointment request. Please try again."
-      );
-    }
   };
 
   return (
@@ -261,6 +303,7 @@ const DoctorsList = ({ doctors }) => {
               <h5 className="text-base font-normal text-slate-200 mb-6">
                 Fill this form for callback from us.
               </h5>
+              <ToastContainer/>
               <form
                 action="#"
                 className="flex flex-col gap-5"
