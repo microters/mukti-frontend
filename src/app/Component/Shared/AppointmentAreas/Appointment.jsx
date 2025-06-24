@@ -1,10 +1,8 @@
 'use client'
 import Image from "next/image";
 import React from "react";
-import Link from "next/link";
 
 // Assets
-import mobileApp from "@/assets/images/about-form.png";
 import shape4 from "@/assets/images/shape4.png";
 import shape5 from "@/assets/images/shape5.png";
 import FormButton from "../Buttons/FormButton";

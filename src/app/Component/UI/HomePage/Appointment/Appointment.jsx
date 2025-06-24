@@ -3,19 +3,18 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-// Assets and API calls
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
+import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
-import { useAuth } from "@/app/[locale]/utils/AuthContext";
-import { Icon } from "@iconify/react";
 
 const Appointment = ({ appointmentSection }) => {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
-  const translations =
-    appointmentSection?.translations?.[currentLanguage] || {};
+  const translations = appointmentSection?.translations?.[currentLanguage] || {};
   const { image } = translations;
   const appointmentImage = image
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/${image.replace(/\\/g, "/")}`
@@ -27,12 +26,8 @@ const Appointment = ({ appointmentSection }) => {
   });
 
   const [agreementChecked, setAgreementChecked] = useState(false);
+  const { user } = useAuth() || {};
 
-  // Get user data
-  const auth = useAuth() || {};
-  const { user } = auth;
-
-  // Pre-fill `patientName` and `phone` once when user data is available
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -52,38 +47,48 @@ const Appointment = ({ appointmentSection }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate the form data before submitting
+    // Validate form data
     if (!formData.patientName || !formData.phone) {
-      alert("Please fill in all the required fields.");
+      toast.error("Please fill in all required fields.");
       return;
     }
 
     if (!agreementChecked) {
-      alert("You must agree to the terms and conditions.");
+      toast.error("You must agree to the terms and conditions.");
       return;
     }
 
     try {
-      // Submit the form data to the backend API
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/callback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
+      console.log(response)
+      console.log("API Response:", result); // Log response for debugging
 
-      if (result?.status === "success") {
-        alert("Appointment request submitted successfully!");
+      // Check if response is successful (adjust condition based on actual API response)
+      if (response.ok) {
+        toast.success("Appointment request submitted successfully!");
+        // Reset form after successful submission
+        setFormData({ patientName: user?.name || "", phone: user?.mobile || "" });
+        setAgreementChecked(false);
       } else {
-        alert("Failed to submit the appointment request. Please try again.");
+        toast.error(
+          result?.message || "Failed to submit the appointment request. Please try again."
+        );
       }
     } catch (error) {
-      console.error("Error submitting the appointment request:", error);
-      alert("An error occurred while submitting the appointment request. Please try again.");
+      console.error("Error submitting appointment request:", error);
+      toast.error("An error occurred while submitting the request. Please try again.");
     }
   };
 
@@ -165,7 +170,6 @@ const Appointment = ({ appointmentSection }) => {
               </div>
 
               <button className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-3 px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
-                {" "}
                 <Icon icon="solar:call-medicine-linear" width="24" /> Request
                 callback
               </button>
