@@ -50,7 +50,7 @@ const Appointment = ({ appointmentSection }) => {
     setAgreementChecked(e.target.checked);
   };
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate the form data before submitting
@@ -66,14 +66,17 @@ const Appointment = ({ appointmentSection }) => {
 
     try {
       // Submit the form data to the backend API
-      const response = await fetch(`https://api.muktihospital.com/api/callback`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is correctly set
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `https://api.muktihospital.com/api/callback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is correctly set
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const result = await response.json();
 
@@ -81,7 +84,9 @@ const Appointment = ({ appointmentSection }) => {
         toast.success("Appointment request submitted successfully!");
       } else {
         // Handle any other non-200 response codes.
-        alert(`Failed to submit the appointment request: ${result.message || 'Please try again.'}`);
+        alert(
+          `Failed to submit the appointment request: ${result.message || "Please try again."}`
+        );
       }
     } catch (error) {
       console.error("Error submitting the appointment request:", error);
@@ -89,8 +94,7 @@ const Appointment = ({ appointmentSection }) => {
         "An error occurred while submitting the appointment request. Please try again."
       );
     }
-};
-
+  };
 
   return (
     <div className="bg-[url('/assets/section-bg.png')] bg-left-bottom md:rounded-[40px] relative">
@@ -119,7 +123,7 @@ const Appointment = ({ appointmentSection }) => {
             <p className="font-jost font-normal text-base text-M-text-color text-center mb-6">
               Fill this form for callback from us.
             </p>
-<ToastContainer/>
+            <ToastContainer />
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <input
