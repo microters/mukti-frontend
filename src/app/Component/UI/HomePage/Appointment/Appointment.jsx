@@ -119,7 +119,7 @@ const Appointment = ({ appointmentSection }) => {
             <p className="font-jost font-normal text-base text-M-text-color text-center mb-6">
               Fill this form for callback from us.
             </p>
-
+            <ToastContainer />
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div>
                 <input

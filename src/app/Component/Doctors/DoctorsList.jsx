@@ -8,6 +8,8 @@ import male from "@/assets/images/male.png";
 import female from "@/assets/images/female.png";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
+import { toast, ToastContainer } from "react-toastify";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
 
 const DoctorsList = ({ doctors }) => {
   const { t, i18n } = useTranslation();
@@ -27,11 +29,17 @@ const DoctorsList = ({ doctors }) => {
   const ulRefSpecialty = useRef(null);
   const ulRefGender = useRef(null);
 
+  const [formData, setFormData] = useState({
+    patientName: "",
+    phone: "",
+  });
+  const [agreementChecked, setAgreementChecked] = useState(false);
+
   // ✅ Extract unique specialties & genders from API data
   const specialtyOptions = [
     ...new Set(doctors.map((d) => d.translations[currentLanguage]?.department)),
   ];
-  
+
   const genderOptions = [
     ...new Set(doctors.map((d) => d.translations.en.gender)),
   ];
@@ -169,6 +177,118 @@ const DoctorsList = ({ doctors }) => {
     }
   }, [screenWidth]);
 
+  // Get user data
+  const auth = useAuth() || {};
+  const { user } = auth;
+
+  // Pre-fill `patientName` and `phone` once when user data is available
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      patientName: prev.patientName || user?.name || "",
+      phone: prev.phone || user?.mobile || "",
+    }));
+  }, [user]);
+
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  // Handle Checkbox change
+  const handleCheckboxChange = (e) => {
+    setAgreementChecked(e.target.checked);
+  };
+
+  // Handle Callback form submission
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // Validate the form data before submitting
+  //   if (!formData.patientName || !formData.phone) {
+  //     alert("Please fill in all the required fields.");
+  //     return;
+  //   }
+
+  //   if (!agreementChecked) {
+  //     alert("You must agree to the terms and conditions.");
+  //     return;
+  //   }
+
+  //   try {
+  //     // Submit the form data to the backend API
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_URL_T}/api/callback`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Sending the API key in the request header
+  //         },
+  //         body: JSON.stringify(formData),
+  //       }
+  //     );
+
+  //     const result = await response.json();
+
+  //     if (result?.status === "success") {
+  //       alert("Appointment request submitted successfully!");
+  //     } else {
+  //       alert("Failed to submit the appointment request. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting the appointment request:", error);
+  //     alert(
+  //       "An error occurred while submitting the appointment request. Please try again."
+  //     );
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate the form data before submitting
+    if (!formData.patientName || !formData.phone) {
+      alert("Please fill in all the required fields.");
+      return;
+    }
+
+    if (!agreementChecked) {
+      alert("You must agree to the terms and conditions.");
+      return;
+    }
+
+    try {
+      // Submit the form data to the backend API
+      const response = await fetch(
+        `https://api.muktihospital.com/api/callback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is correctly set
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Appointment request submitted successfully!");
+      } else {
+        // Handle any other non-200 response codes.
+        alert(
+          `Failed to submit the appointment request: ${result.message || "Please try again."}`
+        );
+      }
+    } catch (error) {
+      console.error("Error submitting the appointment request:", error);
+      alert(
+        "An error occurred while submitting the appointment request. Please try again."
+      );
+    }
+  };
+
   return (
     <div className="container py-24 relative">
       <button
@@ -188,16 +308,27 @@ const DoctorsList = ({ doctors }) => {
               <h5 className="text-base font-normal text-slate-200 mb-6">
                 Fill this form for callback from us.
               </h5>
-              <form action="#" className="flex flex-col gap-5">
+              <ToastContainer />
+              <form
+                action="#"
+                className="flex flex-col gap-5"
+                onSubmit={handleSubmit}
+              >
                 <input
                   type="text"
-                  placeholder="Your Name*"
+                  name="patientName"
+                  value={formData.patientName}
+                  onChange={handleChange}
+                  placeholder={t("appointment.patientName")}
                   required
                   className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost "
                 />
                 <input
                   type="tel"
-                  placeholder="Enter your Number"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder={t("appointment.phoneNumber")}
                   className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost"
                 />
                 <div>
@@ -205,6 +336,8 @@ const DoctorsList = ({ doctors }) => {
                     <input
                       type="checkbox"
                       id="agreement"
+                      checked={agreementChecked}
+                      onChange={handleCheckboxChange}
                       className="hidden peer"
                     />
                     <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
@@ -238,13 +371,19 @@ const DoctorsList = ({ doctors }) => {
               >
                 Specialty
                 <span>
-                  <Icon icon="solar:alt-arrow-down-linear" width="24" className={`transition-all duration-300 ${isSpecialtiesOpen ? "-rotate-180" : "" } `} />
+                  <Icon
+                    icon="solar:alt-arrow-down-linear"
+                    width="24"
+                    className={`transition-all duration-300 ${isSpecialtiesOpen ? "-rotate-180" : ""} `}
+                  />
                 </span>
               </h3>
               <ul
                 ref={ulRefSpecialty}
                 className="px-4 transition-all duration-300 overflow-hidden"
-                style={{ height: isSpecialtiesOpen ? `${ulHeightSpecialty}px` : "0px" }}
+                style={{
+                  height: isSpecialtiesOpen ? `${ulHeightSpecialty}px` : "0px",
+                }}
               >
                 {specialtyOptions.map((item) => (
                   <li
@@ -257,7 +396,7 @@ const DoctorsList = ({ doctors }) => {
                     }`}
                   >
                     <span className="flex gap-3 items-center font-jost font-normal">
-                       {item}
+                      {item}
                     </span>
                     {selectedSpecialties[item] ? (
                       <Icon
@@ -284,13 +423,19 @@ const DoctorsList = ({ doctors }) => {
               >
                 Gender
                 <span>
-                  <Icon icon="solar:alt-arrow-down-linear" width="24" className={`transition-all duration-300 ${isGendersOpen ? "-rotate-180" : "" } `} />
+                  <Icon
+                    icon="solar:alt-arrow-down-linear"
+                    width="24"
+                    className={`transition-all duration-300 ${isGendersOpen ? "-rotate-180" : ""} `}
+                  />
                 </span>
               </h3>
               <ul
                 ref={ulRefGender}
                 className="px-4 transition-all duration-300 overflow-hidden"
-                style={{ height: isGendersOpen ? `${ulHeightGender}px` : "0px" }}
+                style={{
+                  height: isGendersOpen ? `${ulHeightGender}px` : "0px",
+                }}
               >
                 {genderOptions.map((item) => (
                   <li
