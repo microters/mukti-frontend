@@ -144,7 +144,7 @@ const Signin = () => {
         // Redirect based on current hostname (local or live)
         const redirectUrl = window.location.hostname === "localhost"
           ? `http://localhost:3001?token=${response.token}`  // If localhost, redirect to local site
-          : `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;  // Else redirect to live site
+          : `https://app.muktihospital.com?token=${response.token}`;  // Else redirect to live site
   
         setTimeout(() => {
           window.location.href = redirectUrl;

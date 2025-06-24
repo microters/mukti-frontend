@@ -13,6 +13,8 @@ const Hero = ({ heroSection }) => {
   const currentLanguage = i18n.language || "en";
   const { prefix, title, backgroundImage } = heroSection?.translations[currentLanguage] || {};
   const heroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${backgroundImage.replace(/\\/g, '/')}`;
+  console.log(heroImage);
+  
 
   return (
     <div className="bg-cover bg-top" style={{ backgroundImage: `url(${heroImage})` }}>
