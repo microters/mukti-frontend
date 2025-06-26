@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import { Icon } from "@iconify/react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import waveShape2 from "@/assets/images/waveShape2.png";
 import waveShape3 from "@/assets/images/waveShape3.png";
 import halfCircle from "@/assets/images/half-circle.png";
