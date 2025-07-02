@@ -214,7 +214,7 @@ const AuthModal = ({ showModal, setShowModal }) => {
   };
 
   return (
-    <div className="bg-black/50 backdrop-blur-md w-screen h-screen fixed top-0 left-0 z-50 flex justify-center items-center px-2">
+    <div className="bg-black/50 backdrop-blur-md w-screen h-screen fixed top-0 left-0 z-10 flex justify-center items-center px-2">
       {isRedirecting && (
         <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-60">
           <div className="text-white text-lg">Redirecting...</div>
