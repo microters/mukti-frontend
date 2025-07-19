@@ -2,8 +2,12 @@
 import { useEffect, useState } from 'react';
 import Button from './Component/Shared/Buttons/Button';
 
+// Use environment variables for BASE_URL and API_KEY
+const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = `${BASE_URL}/api/error-page`;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079';
+
 const NotFound = () => {
-  // Initialize with cached image or default
   const cachedImage = typeof window !== 'undefined' ? localStorage.getItem('errorImage') : null;
   const [errorImage, setErrorImage] = useState(cachedImage || '/default-404.png');
   const [error, setError] = useState(null);
@@ -11,10 +15,11 @@ const NotFound = () => {
   useEffect(() => {
     const fetchErrorImage = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/error-page', {
+        const response = await fetch(API_URL, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
           },
         });
         if (!response.ok) {
@@ -45,7 +50,7 @@ const NotFound = () => {
             <p className="text-red-400 text-xl">Error: {error}</p>
           ) : (
             <img
-              src={errorImage.startsWith('/Uploads') ? `http://localhost:5000${errorImage}` : errorImage}
+              src={errorImage.startsWith('/Uploads') ? `${BASE_URL}${errorImage}` : errorImage}
               alt="Error 404"
               className="mx-auto max-w-[500px] w-full rounded-lg"
               loading="lazy"

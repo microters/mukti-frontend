@@ -73,9 +73,8 @@ const Appointment = ({ appointmentSection }) => {
 
       const result = await response.json();
       console.log(response)
-      console.log("API Response:", result); // Log response for debugging
+      console.log("API Response:", result);
 
-      // Check if response is successful (adjust condition based on actual API response)
       if (response.ok) {
         toast.success("Appointment request submitted successfully!");
         // Reset form after successful submission
