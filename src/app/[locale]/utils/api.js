@@ -4,7 +4,7 @@ const API_BASE_URL = "https://api.muktihospital.com/api/auth"; // Backend URL
 
 // Send OTP function
 export const sendOtp = async (mobile) => {
-  console.log("API sendOtp called with:", mobile);
+
   
   if (!mobile) {
     console.error("No mobile provided to sendOtp");
@@ -15,13 +15,13 @@ export const sendOtp = async (mobile) => {
     // Ensure mobile is a string
     const mobileNumber = typeof mobile === 'object' ? mobile.mobile : mobile;
     
-    console.log("Sending to API:", { mobileNumber });
+
     const response = await axios.post(
       `${API_BASE_URL}/send-otp`,
       { mobileNumber },
       { headers: { "Content-Type": "application/json" } }
     );
-    console.log("API response:", response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Full API Error:", error);
