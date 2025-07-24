@@ -60,7 +60,7 @@ const Appointment = ({ appointmentSection }) => {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/callback`,
+        `https://api.muktihospital.com/api/callback`,
         {
           method: "POST",
           headers: {

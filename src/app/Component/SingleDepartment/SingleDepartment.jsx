@@ -2,109 +2,172 @@
 import CommonHero from "@/app/Component/UI/CommonHero";
 import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
-import { t } from "i18next";
+import { t } from "i18next"; // This 't' is likely not needed if using useTranslation's 't'
 import DoctorsCardGrid from "../Shared/DoctorsCard/DoctorsCardGrid";
 import DoctorsCardList from "../Shared/DoctorsCard/DoctorsCardList";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify"; // Assuming you have react-toastify installed for toasts
 
-const SingleTreatment = ({department, doctors}) => {
-    const { t, i18n } = useTranslation();
-    const currentLanguage = i18n.language || "en";
-    const [sortOption, setSortOption] = useState("default");
-    const [isGridView, setIsGridView] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [screenWidth, setScreenWidth] = useState(0);
-    const itemsPerPage = 4;
-    
-    const departmentTranslations = department?.translations?.[currentLanguage] 
-      || department?.translations?.en 
+const SingleTreatment = ({ department, doctors, user }) => { // Added 'user' prop
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language || "en";
+  const [sortOption, setSortOption] = useState("default");
+  const [isGridView, setIsGridView] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isFilterOpen, setIsFilterOpen] = useState(false); // This state seems unused in the provided JSX
+  const [screenWidth, setScreenWidth] = useState(0);
+  const itemsPerPage = 4;
+
+  const [formData, setFormData] = useState({
+    patientName: user?.name || "",
+    phone: user?.mobile || "",
+  });
+  const [agreementChecked, setAgreementChecked] = useState(false);
+
+  const departmentTranslations = department?.translations?.[currentLanguage]
+    || department?.translations?.en
+    || {};
+
+  const departmentName = departmentTranslations.name || "Fallback Dept";
+  const filteredDoctors = (doctors || []).filter((doctor) => {
+    const docTranslations = doctor.translations[currentLanguage]
+      || doctor.translations.en
       || {};
 
-    const departmentName = departmentTranslations.name || "Fallback Dept";
-    const filteredDoctors = (doctors || []).filter((doctor) => {
-      const docTranslations = doctor.translations[currentLanguage] 
-        || doctor.translations.en 
-        || {};
+    // Ensure departmentName is available and compare with case-insensitivity
+    return docTranslations.department?.toLowerCase() === departmentName.toLowerCase();
+  });
 
-      return docTranslations.department?.toLowerCase() === departmentName.toLowerCase();
+  // ✅ Sorting Logic (applies AFTER filtering)
+  const sortedDoctors = [...filteredDoctors].sort((a, b) => {
+    const nameA = a.translations[currentLanguage]?.name?.toLowerCase() || "";
+    const nameB = b.translations[currentLanguage]?.name?.toLowerCase() || "";
+    const experienceA =
+      parseInt(a.translations[currentLanguage]?.yearsOfExperience) || 0;
+    const experienceB =
+      parseInt(b.translations[currentLanguage]?.yearsOfExperience) || 0;
+
+    switch (sortOption) {
+      case "name-asc":
+        return nameA.localeCompare(nameB);
+      case "name-desc":
+        return nameB.localeCompare(nameA);
+      case "experience-asc":
+        return experienceA - experienceB;
+      case "experience-desc":
+        return experienceB - experienceA;
+      default:
+        return 0;
+    }
+  });
+
+  // ✅ Pagination Logic (applies AFTER sorting)
+  const totalPages = Math.ceil(sortedDoctors.length / itemsPerPage);
+  const paginatedDoctors = sortedDoctors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // ✅ Ensure pagination resets when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortOption, department]); // Added department to dependency array to reset pagination if department changes
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Handle toggle between grid and list view
+  const toggleLayout = () => {
+    setIsGridView(!isGridView);
+  };
+
+  // Handle Filter Area in Mobile
+  useEffect(() => {
+    // This check ensures that `window` is only accessed on the client side
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
+
+      setScreenWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+
+      // Cleanup the event listener on component unmount
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
+
+  // Ensure the div is visible if screen is more than 768px
+  useEffect(() => {
+    if (screenWidth > 768) {
+      setIsFilterOpen(true);
+    }
+  }, [screenWidth]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
+  };
 
-      // ✅ Sorting Logic (applies AFTER filtering)
-      const sortedDoctors = [...filteredDoctors].sort((a, b) => {
-        const nameA = a.translations[currentLanguage]?.name.toLowerCase();
-        const nameB = b.translations[currentLanguage]?.name.toLowerCase();
-        const experienceA =
-          parseInt(a.translations[currentLanguage]?.yearsOfExperience) || 0;
-        const experienceB =
-          parseInt(b.translations[currentLanguage]?.yearsOfExperience) || 0;
-    
-        switch (sortOption) {
-          case "name-asc":
-            return nameA.localeCompare(nameB);
-          case "name-desc":
-            return nameB.localeCompare(nameA);
-          case "experience-asc":
-            return experienceA - experienceB;
-          case "experience-desc":
-            return experienceB - experienceA;
-          default:
-            return 0;
+  const handleCheckboxChange = (e) => {
+    setAgreementChecked(e.target.checked);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate form data
+    if (!formData.patientName || !formData.phone) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    if (!agreementChecked) {
+      toast.error("You must agree to the terms and conditions.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.muktihospital.com/api/callback`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
+          },
+          body: JSON.stringify(formData),
         }
-      });
-    
-      // ✅ Pagination Logic (applies AFTER sorting)
-      const totalPages = Math.ceil(sortedDoctors.length / itemsPerPage);
-      const paginatedDoctors = sortedDoctors.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
       );
-    
-      // ✅ Ensure pagination resets when filters change
-      useEffect(() => {
-        setCurrentPage(1);
-      }, [sortOption]);
-    
-      const handlePageChange = (page) => {
-        setCurrentPage(page);
-      };
-    
-      // Handle toggle between grid and list view
-      const toggleLayout = () => {
-        setIsGridView(!isGridView);
-      };
-    
-      // Handle Filter Area in Mobile
-      useEffect(() => {
-        // This check ensures that `window` is only accessed on the client side
-        if (typeof window !== "undefined") {
-          const handleResize = () => {
-            setScreenWidth(window.innerWidth);
-          };
-    
-          setScreenWidth(window.innerWidth);
-          window.addEventListener("resize", handleResize);
-    
-          // Cleanup the event listener on component unmount
-          return () => {
-            window.removeEventListener("resize", handleResize);
-          };
-        }
-      }, []);
-    
-      // Ensure the div is visible if screen is more than 768px
-      useEffect(() => {
-        if (screenWidth > 768) {
-          setIsFilterOpen(true);
-        }
-      }, [screenWidth]);
 
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Appointment request submitted successfully!");
+        // Reset form after successful submission
+        setFormData({ patientName: user?.name || "", phone: user?.mobile || "" });
+        setAgreementChecked(false);
+      } else {
+        toast.error(
+          result?.message || "Failed to submit the appointment request. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error submitting appointment request:", error);
+      toast.error("An error occurred while submitting the request. Please try again.");
+    }
+  };
 
   return (
     <div>
       <CommonHero pageName={departmentTranslations.name || "Fallback Title"} />
       <div className="container shadow-md bg-white py-8 px-4 md:px-8 rounded-md pb-14 gap-y-10 lg:gap-10 relative -mt-10 md:-mt-20 mb-14">
-      <div className="md:col-span-2">
+        <div className="md:col-span-2">
           {/* Doctor filter start */}
           <div className="border border-slate-200 flex flex-wrap gap-3 items-center justify-center lg:justify-between px-5 py-3 rounded-md">
             <h5 className="text-base xl:text-xl text-M-heading-color font-jost font-bold">
@@ -137,8 +200,8 @@ const SingleTreatment = ({department, doctors}) => {
                 </option>
               </select>
               <button
-                onClick={toggleLayout}
-                className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${isGridView ? "bg-slate-50 text-M-heading-color" : "text-white bg-M-heading-color"} `}
+                onClick={() => setIsGridView(false)} // Explicitly set to list view
+                className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${!isGridView ? "bg-M-heading-color text-white" : "bg-slate-50 text-M-heading-color"} `}
               >
                 <Icon
                   icon="heroicons-outline:menu-alt-2"
@@ -147,8 +210,8 @@ const SingleTreatment = ({department, doctors}) => {
                 />
               </button>
               <button
-                onClick={toggleLayout}
-                className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${isGridView ? "text-white bg-M-heading-color" : "bg-slate-50 text-M-heading-color"} `}
+                onClick={() => setIsGridView(true)} // Explicitly set to grid view
+                className={`size-9 lg:size-12 inline-flex items-center justify-center rounded ${isGridView ? "bg-M-heading-color text-white" : "bg-slate-50 text-M-heading-color"} `}
               >
                 <Icon icon="tdesign:menu-application" width="24" height="24" />
               </button>
@@ -158,28 +221,28 @@ const SingleTreatment = ({department, doctors}) => {
           {/* Doctors List/Grid */}
           {filteredDoctors.length === 0 ? (
             <div className="mt-8 text-center">
-                <p className="text-slate-500">No doctors found for {departmentName}.</p>
+              <p className="text-slate-500">No doctors found for {departmentName}.</p>
             </div>
-            ) : (
+          ) : (
             <>
-                {isGridView ? (
+              {isGridView ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
-                    {paginatedDoctors.map((doctor) => (
+                  {paginatedDoctors.map((doctor) => (
                     <DoctorsCardGrid key={doctor.id} doctor={doctor} />
-                    ))}
+                  ))}
                 </div>
-                ) : (
-                <div>
-                    {paginatedDoctors.map((doctor) => (
+              ) : (
+                <div className="grid grid-cols-1 gap-6 mt-8"> {/* Added grid for consistent spacing */}
+                  {paginatedDoctors.map((doctor) => (
                     <DoctorsCardList key={doctor.id} doctor={doctor} />
-                    ))}
+                  ))}
                 </div>
-                )}
+              )}
             </>
-            )}
+          )}
 
           {/* 🔹 Pagination */}
-          {doctors.length > itemsPerPage && (
+          {sortedDoctors.length > itemsPerPage && ( // Check sortedDoctors.length for total pages
             <ul className="mt-10 px-5 py-3 flex items-center shadow shadow-M-primary-color/10 gap-2">
               {/* Left Arrow */}
               <li
@@ -238,65 +301,74 @@ const SingleTreatment = ({department, doctors}) => {
         </div>
         {/* Subscribe Form */}
         <div className="col-span-1 space-y-6 my-6">
-           {/* CTA Start */}
-           <div className="bg-M-heading-color px-8 py-7 rounded-lg">
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Can't find what are you looking for?
-              </h3>
-              <h5 className="text-base font-normal text-slate-200 mb-6">
-                Fill this form for callback from us.
-              </h5>
-              <form action="#" className="grid grid-cols-1 md:grid-cols-3 items-start gap-5">
-                <input
-                  type="text"
-                  placeholder="Your Name*"
-                  required
-                  className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost "
-                />
-                <input
-                  type="tel"
-                  placeholder="Enter your Number"
-                  className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost"
-                />
-                <div>
-                <button className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-[10px] px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
+          {/* CTA Start */}
+          <div className="bg-M-heading-color px-8 py-7 rounded-lg">
+            <h3 className="text-2xl font-bold text-white mb-2">
+              Can't find what are you looking for?
+            </h3>
+            <h5 className="text-base font-normal text-slate-200 mb-6">
+              Fill this form for callback from us.
+            </h5>
+            <form action="#" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 items-start gap-5">
+              <input
+                type="text"
+                placeholder="Your Name*"
+                name="patientName" // Added name attribute
+                value={formData.patientName}
+                onChange={handleChange}
+                required
+                className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost "
+              />
+              <input
+                type="tel"
+                placeholder="Enter your Number"
+                name="phone" // Added name attribute
+                value={formData.phone}
+                onChange={handleChange}
+                className="block w-full px-5 py-3 ring-0 focus:outline-none rounded-md font-jost"
+              />
+              <div>
+                <button type="submit" className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-[10px] px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
                   {" "}
                   <Icon icon="solar:call-medicine-linear" width="24" /> Request
                   callback
                 </button>
-                <div className="relative">
-                    <input
-                      type="checkbox"
-                      id="agreement"
-                      className="hidden peer"
+                <div className="relative mt-3"> {/* Added mt-3 for spacing */}
+                  <input
+                    type="checkbox"
+                    id="agreement"
+                    className="hidden peer"
+                    checked={agreementChecked} // Bind checked state
+                    onChange={handleCheckboxChange} // Bind onChange handler
+                  />
+                  <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
+                    <Icon
+                      icon="mynaui:check"
+                      width="16" // Adjusted size for better visual
+                      height="16" // Adjusted size for better visual
+                      className="text-slate-100"
                     />
-                    <span className="h-4 w-4 border flex-none border-slate-100 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
-                      <Icon
-                        icon="mynaui:check"
-                        width="24"
-                        className="text-slate-100"
-                      />
-                    </span>
-                    <label
-                      htmlFor="agreement"
-                      className="cursor-pointer font-jost font-normal text-[14px] text-slate-200 relative z-10 pl-6"
-                    >
-                      Get updated on whatsapp & accept T&C
-                    </label>
+                  </span>
+                  <label
+                    htmlFor="agreement"
+                    className="cursor-pointer font-jost font-normal text-[14px] text-slate-200 relative z-10 pl-6"
+                  >
+                    Get updated on whatsapp & accept T&C
+                  </label>
                 </div>
-                </div>
-              </form>
-            </div>
-            {/* CTA End */}
+              </div>
+            </form>
+          </div>
+          {/* CTA End */}
         </div>
         {/* Blog Data */}
-          <div className="jodit-description"
-            dangerouslySetInnerHTML={{
+        <div className="jodit-description"
+          dangerouslySetInnerHTML={{
             __html: departmentTranslations.description || "",
-            }}
+          }}
         />
-        </div>
       </div>
+    </div>
   );
 };
 
