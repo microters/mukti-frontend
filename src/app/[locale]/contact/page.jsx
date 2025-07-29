@@ -24,7 +24,7 @@ const Contact = () => {
   const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL_T; // Replace with your actual API key
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL; // Replace with your actual API key
   const API_KEY = process.env.NEXT_PUBLIC_API_KEY; // Replace with your actual API key
 
   const handleChange = (e) => {
