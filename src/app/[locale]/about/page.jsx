@@ -32,7 +32,7 @@ const AboutUs = async () => {
     const aboutSection = dynamicData.aboutSection
     const whyChooseUsSection = dynamicData.whyChooseUsSection
     const appointmentProcess = dynamicData.appointmentProcess
-    console.log(dynamicAboutData);
+  
     
   return (
     <div>
