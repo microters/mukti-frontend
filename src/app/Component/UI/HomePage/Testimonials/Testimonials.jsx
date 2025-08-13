@@ -124,7 +124,7 @@ import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading
 import { useTranslation } from "react-i18next";
 import { fetchReviews } from "@/app/api/review"; // Ensure you're importing the API fetch method
 
-const Testimonials = ({ initialReviews }) => {
+const Testimonials = ({ initialReviews = [] }) => {
   const { t, i18n } = useTranslation();
   const [reviews, setReviews] = useState(initialReviews); // State to store reviews
   const [loading, setLoading] = useState(false);
@@ -144,6 +144,9 @@ const Testimonials = ({ initialReviews }) => {
 
     return () => clearInterval(interval); // Clean up the interval on component unmount
   }, []); // Empty dependency array ensures this runs only once
+
+  // Ensure reviews is always an array, even when undefined
+  const reviewsToDisplay = Array.isArray(reviews) ? reviews : [];
 
   return (
     <div className="py-12 lg:py-24">
@@ -180,7 +183,7 @@ const Testimonials = ({ initialReviews }) => {
             modules={[Navigation, Autoplay]}
             className="mySwiper sm:!px-9"
           >
-            {loading || reviews.length === 0 ? (
+            {loading || reviewsToDisplay.length === 0 ? (
               <div className="flex gap-4">
                 {[...Array(3)].map((_, index) => (
                   <div key={index} className="bg-[#EBF7F6] rounded-lg py-7 px-6 space-y-6">
@@ -199,7 +202,7 @@ const Testimonials = ({ initialReviews }) => {
                 ))}
               </div>
             ) : (
-              reviews.map((review) => {
+              reviewsToDisplay.map((review) => {
                 const reviewImage = review.image
                   ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${review.image}`
                   : "/default-profile-photo.png";
