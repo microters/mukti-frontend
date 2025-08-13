@@ -109,7 +109,6 @@
 
 // export default Testimonials;
 
-
 'use client';
 import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -122,31 +121,27 @@ import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 import { useTranslation } from "react-i18next";
-import { fetchReviews } from "@/app/api/review"; // Ensure you're importing the API fetch method
+import { fetchReviews } from "@/app/api/review"; // API কল
 
-const Testimonials = ({ initialReviews = [] }) => {
-  const { t, i18n } = useTranslation();
-  const [reviews, setReviews] = useState(initialReviews); // State to store reviews
-  const [loading, setLoading] = useState(false);
+const Testimonials = ({ reviews }) => {
+  const { t } = useTranslation();
+  const [reviewsState, setReviewsState] = useState(reviews); // Reviews State
 
-  // Polling logic to fetch new reviews every 5 seconds (optional, adjust as needed)
+  // Real-time Data Fetching (Manual Update or Polling)
   useEffect(() => {
-    const interval = setInterval(async () => {
-      setLoading(true);
+    const fetchUpdatedReviews = async () => {
       try {
-        const updatedReviews = await fetchReviews(); // Fetch updated reviews
-        setReviews(updatedReviews); // Update state with new reviews
+        const updatedReviews = await fetchReviews(); // Fetch latest reviews
+        setReviewsState(updatedReviews); // Update state
       } catch (error) {
         console.error("Error fetching updated reviews:", error);
       }
-      setLoading(false);
-    }, 5000); // Poll every 5 seconds
+    };
 
-    return () => clearInterval(interval); // Clean up the interval on component unmount
-  }, []); // Empty dependency array ensures this runs only once
+    const interval = setInterval(fetchUpdatedReviews, 5000); // Poll every 5 seconds
 
-  // Ensure reviews is always an array, even when undefined
-  const reviewsToDisplay = Array.isArray(reviews) ? reviews : [];
+    return () => clearInterval(interval); // Cleanup when component unmounts
+  }, []); // Only run once on component mount
 
   return (
     <div className="py-12 lg:py-24">
@@ -183,11 +178,11 @@ const Testimonials = ({ initialReviews = [] }) => {
             modules={[Navigation, Autoplay]}
             className="mySwiper sm:!px-9"
           >
-            {loading || reviewsToDisplay.length === 0 ? (
+            {reviewsState.length === 0 ? (
               <div className="flex gap-4">
                 {[...Array(3)].map((_, index) => (
                   <div key={index} className="bg-[#EBF7F6] rounded-lg py-7 px-6 space-y-6">
-                    {/* Skeleton Loader for profile picture */}
+                    {/* Skeleton Loader */}
                     <div className="flex gap-4 items-start">
                       <Skeleton circle height={96} width={96} />
                       <div className="flex-1">
@@ -202,7 +197,7 @@ const Testimonials = ({ initialReviews = [] }) => {
                 ))}
               </div>
             ) : (
-              reviewsToDisplay.map((review) => {
+              reviewsState.map((review) => {
                 const reviewImage = review.image
                   ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${review.image}`
                   : "/default-profile-photo.png";
@@ -210,7 +205,6 @@ const Testimonials = ({ initialReviews = [] }) => {
                   <SwiperSlide key={review.id}>
                     <div className="bg-[#EBF7F6] rounded-lg py-7 px-6 space-y-6">
                       <div className="flex gap-4 items-start">
-                        {/* Profile image */}
                         <Image
                           className="size-24 rounded-full border-8 border-white object-cover"
                           src={reviewImage}
@@ -240,3 +234,4 @@ const Testimonials = ({ initialReviews = [] }) => {
 };
 
 export default Testimonials;
+
