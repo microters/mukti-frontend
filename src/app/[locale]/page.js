@@ -1,57 +1,51 @@
-import { fetchDepartments } from "../api/department";
-import { fetchDoctors } from "../api/doctor";
-import Hero from "../Component/UI/HomePage/Hero/Hero";
-import Features from "../Component/UI/HomePage/Features/Features";
-import About from "../Component/UI/HomePage/About/About";
-import Category from "../Component/UI/HomePage/Category/Category";
-import BestDoctors from "../Component/UI/HomePage/BestDoctors/BestDoctors";  // Already imported
-import WhyChooseUs from "../Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
-import MobileApp from "../Component/UI/HomePage/MobileApp/MobileApp";
-import AppointmentProcess from "../Component/UI/HomePage/AppointmentProcess/AppointmentProcess";
-import Appointment from "../Component/UI/HomePage/Appointment/Appointment";
-import Blog from "../Component/UI/HomePage/Blog/Blog";
-import { fetchReviews } from "../api/review";
-import Testimonials from "../Component/UI/HomePage/Testimonials/Testimonials";
-import { fetchDynamicData } from "../api/dynamicData,";
-import { fetchBlogs, fetchBlogsBySlug } from "../api/blog";
 
-export default async function HomePage() {
-  // Fetching doctors and departments data
-  const doctors = await fetchDoctors();  // Fetch all doctors
-  const doctorDepartments = await fetchDepartments();  // Fetch the departments list
-  const doctorReviews = await fetchReviews();  // Fetch reviews for doctors
-  const blogs = await fetchBlogs()
-  const singleBlogs = await fetchBlogsBySlug()
-  const dynamicData = await fetchDynamicData();
+import CommonHero from "@/app/Component/UI/CommonHero";
+import About from "@/app/Component/UI/HomePage/About/About";
+import Appointment from "@/app/Component/Shared/AppointmentAreas/Appointment";
+import WhyChooseUs from "@/app/Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
+import AppointmentProcess from "@/app/Component/UI/HomePage/AppointmentProcess/AppointmentProcess";
+import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials";
+import WhoWeAre from "@/app/Component/UI/WhoWeAre";
+import { fetchReviews } from "@/app/api/review";
+import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData,";
+// ✅ SEO Metadata function
+export async function generateMetadata({ params }) {
+  const locale = params.locale || "en";
+  const dynamicAboutData = await fetchAboutData();
 
-   // Extract home data
-  const heroSection = dynamicData.heroSection;
-  const featuresSection = dynamicData.featuresSection
-  const aboutSection = dynamicData.aboutSection
-  const appointmentSection=dynamicData.appointmentSection
-  const whyChooseUsSection = dynamicData.whyChooseUsSection
-  const downloadAppSection = dynamicData.downloadAppSection
-  const appointmentProcess = dynamicData.appointmentProcess
+  const metaTitle =
+    dynamicAboutData?.metaTitle?.[locale] || "About Us-Mukti Hospital";
+  const metaDescription =
+    dynamicAboutData?.metaDescription?.[locale] ||
+    "Default about us page description for SEO.";
 
-
+  return {
+    title: metaTitle,
+    description: metaDescription,
+  };
+}
+const AboutUs = async () => {
+    const reviews = await fetchReviews();
+    const dynamicData = await fetchDynamicData();
+    const dynamicAboutData = await fetchAboutData()
+    const aboutSection = dynamicData.aboutSection
+    const whyChooseUsSection = dynamicData.whyChooseUsSection
+    const appointmentProcess = dynamicData.appointmentProcess
+  
+    
   return (
     <div>
-      <Hero heroSection={heroSection}/>
-      <Features featuresSection={featuresSection}/>
+      <CommonHero pageName="About Us" aboutPage={dynamicAboutData}/>
       <About aboutSection={aboutSection}/>
-      <Category departments={doctorDepartments} />
-      {/* Pass doctors and departments to BestDoctors component */}
-      <BestDoctors
-        doctors={doctors}
-      />
-
-      <Appointment appointmentSection={appointmentSection} />
+      <Appointment aboutPage={dynamicAboutData}/>
+      <WhoWeAre whoWeAreSection={dynamicAboutData}/>
       <WhyChooseUs whyChooseUsSection={whyChooseUsSection}/>
-      <MobileApp downloadAppSection={downloadAppSection}/>
-      <Testimonials reviews={doctorReviews} />
       <AppointmentProcess appointmentProcess={appointmentProcess}/>
-      <Blog blogs={blogs} singleBlogs={singleBlogs}/>
+      <Testimonials reviews={reviews} />
     </div>
   );
-}
+};
+
+export default AboutUs;
+
 

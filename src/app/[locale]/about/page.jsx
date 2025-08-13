@@ -8,7 +8,6 @@ import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials"
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
 import { fetchReviews } from "@/app/api/review";
 import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData,";
-import dynamic from "next/dynamic";
 // ✅ SEO Metadata function
 export async function generateMetadata({ params }) {
   const locale = params.locale || "en";
