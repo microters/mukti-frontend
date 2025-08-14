@@ -497,13 +497,14 @@ import { useAuth } from "@/app/[locale]/utils/AuthContext";
 import LanguageChanger from "../LanguageChanger";
 import AuthModal from "../Shared/AuthModal/AuthModal";
 import Skeleton from "react-loading-skeleton";
+import { fetchDepartments } from "@/app/api/department";
+import { fetchHeaderData } from "@/app/api/dynamicData,";
 
-// Updated HeaderProvider component for real-time updates
 const HeaderProvider = ({ header, departments }) => {
   const { user, logout, loading } = useAuth();
   const { t, i18n } = useTranslation();
 
-  const [isMounted, setIsMounted] = useState(false);
+  // Use state to store header and departments data
   const [headerState, setHeaderState] = useState(header);
   const [departmentsState, setDepartmentsState] = useState(departments);
 
@@ -525,11 +526,7 @@ const HeaderProvider = ({ header, departments }) => {
       : null
   );
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Fetch updated data every 10 seconds to reflect changes
+  // Polling for updates every 10 seconds
   useEffect(() => {
     const fetchUpdatedData = async () => {
       try {
@@ -546,11 +543,12 @@ const HeaderProvider = ({ header, departments }) => {
     fetchUpdatedData();
     const interval = setInterval(fetchUpdatedData, 10000); // Fetch data every 10 seconds
 
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
+    // Cleanup interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, []); // Empty array ensures it runs only once
 
   // Guard clause for early return until data is loaded
-  if (!isMounted || !headerState || !departmentsState) {
+  if (!headerState || !departmentsState) {
     return (
       <div className="container mx-auto py-4">
         <Skeleton height={50} width={200} />
