@@ -8,12 +8,25 @@ import crossShapeIcon from "@/assets/images/cross-shape.png";
 import { useTranslation } from "react-i18next";
 import SearchField from "@/app/Component/Shared/SearchField/SearchField";
 
-const Hero = ({ heroSection }) => {
+const Hero = ({ heroSection, lastUpdated }) => {
+  // const { i18n } = useTranslation();
+  // const currentLanguage = i18n.language || "en";
+  // const { prefix, title, backgroundImage } = heroSection?.translations[currentLanguage] || {};
+  // const heroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${backgroundImage.replace(/\\/g, '/')}`;
+  // console.log(heroImage);
+
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
-  const { prefix, title, backgroundImage } = heroSection?.translations[currentLanguage] || {};
-  const heroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${backgroundImage.replace(/\\/g, '/')}`;
-  console.log(heroImage);
+
+  const { prefix, title, backgroundImage, updatedAt } =
+    heroSection?.translations?.[currentLanguage] || {};
+
+  // Build a cache-busting query param so changed images show instantly
+  const ver = lastUpdated || updatedAt || Date.now();
+
+  const base = process.env.NEXT_PUBLIC_BACKEND_URL || "";
+  const bgPath = (backgroundImage || "").replace(/\\/g, "/");
+  const heroImage = `${base}/${bgPath}?v=${ver}`;
   
 
   return (
