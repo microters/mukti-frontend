@@ -141,7 +141,7 @@ const Testimonials = ({ reviews }) => {
     const interval = setInterval(fetchUpdatedReviews, 5000); // Poll every 5 seconds
 
     return () => clearInterval(interval); // Cleanup when component unmounts
-  }, []); // Only run once on component mount
+  }, []);
 
   return (
     <div className="py-12 lg:py-24">

@@ -33,12 +33,10 @@ export default async function HomePage() {
   const downloadAppSection = dynamicData.downloadAppSection
   const appointmentProcess = dynamicData.appointmentProcess
 
-  const lastUpdated = dynamicData?.updatedAt;
-
 
   return (
     <div>
-      <Hero heroSection={heroSection} lastUpdated={lastUpdated}/>
+      <Hero heroSection={heroSection}/>
       <Features featuresSection={featuresSection}/>
       <About aboutSection={aboutSection}/>
       <Category departments={doctorDepartments} />
