@@ -23,7 +23,7 @@ const Appointment = () => {
   const { user } = useAuth();
 
   const API_KEY = "caf56e69405fe970f918e99ce86a80fbf0a7d728cca687e8a433b817411a6079";
-  const BASE_URL = "https://api.muktihospital.com/api" || "https://api.muktihospital.com/api";
+  const BASE_URL = "http://localhost:5000/api" || "http://localhost:5000/api";
   const IMG_URL = "https://api.muktihospital.com" || "https://api.muktihospital.com";
 
   const language = pathname.includes("/bn/") ? "bn" : "en";
@@ -42,6 +42,7 @@ const Appointment = () => {
   const [patientExists, setPatientExists] = useState(false);
   const [patientId, setPatientId] = useState(null);
   const [value, setValue] = useState(null);
+  const [appointmentId, setAppointmentId] = useState(null); // নতুন state
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -97,6 +98,7 @@ const Appointment = () => {
           setError("Doctor not found");
         }
       } catch (error) {
+        console.error('Doctor fetch error:', error);
         setError("Error fetching doctor data");
       } finally {
         setLoading(false);
@@ -108,6 +110,7 @@ const Appointment = () => {
   const stepLabels = translations.stepLabels;
   const steps = Array.from({ length: stepLabels.length }, (_, index) => index + 1);
 
+  // ✅ পরবর্তী স্টেপ - সব সমস্যা ঠিক করা
   const nextStep = async () => {
     if (currentStep === 2) {
       if (!value) {
@@ -122,7 +125,7 @@ const Appointment = () => {
         toast.error(language === "bn" ? "অনুগ্রহ করে একটি বৈধ তারিখ নির্বাচন করুন যেদিন ডাক্তার উপলব্ধ আছেন" : "Please select a valid date when the doctor is available");
         return;
       }
-      if (currentStep < stepLabels.length) setCurrentStep(currentStep + 1);
+      setCurrentStep(currentStep + 1);
     } else if (currentStep === 3) {
       if (!formData.name.trim()) {
         toast.error(language === "bn" ? "রোগীর নাম দিন" : "Please enter patient name");
@@ -132,10 +135,16 @@ const Appointment = () => {
         toast.error(language === "bn" ? "সঠিক মোবাইল নম্বর দিন" : "Please enter a valid mobile number");
         return;
       }
-      if (user) {
-        setPatientId(user.id); // Assuming user object has an id field
-        setCurrentStep(5);
+      
+      // ✅ ইউজার আগে থেকে লগিন আছে কিনা চেক
+      if (user && user.id) {
+        console.log('User already logged in:', user);
+        setPatientId(user.id);
+        setPatientExists(true);
+        toast.success(language === "bn" ? "আপনি ইতিমধ্যে লগিন আছেন" : "You are already logged in");
+        setCurrentStep(5); // সরাসরি confirmation এ যান
       } else {
+        // নতুন বা পুরানো ইউজার চেক করে OTP পাঠান
         await checkPatientAndSendOTP();
       }
     } else if (currentStep < stepLabels.length) {
@@ -183,80 +192,78 @@ const Appointment = () => {
     const department = doctorTranslations?.department || doctor?.department;
     const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
   
-    // Use the provided appointmentId
     const referenceId = appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
   
     if (language === "bn") {
       return {
         content: `
-  অ্যাপয়েন্টমেন্ট বিবরণ
-  ------------------
-  হাসপাতাল: মুক্তি হাসপাতাল
-  
-  ডাক্তারের তথ্য:
-  নাম: ${name}
-  বিভাগ: ${department}
-  যোগ্যতা: ${academicQualification}
-  
-  রোগীর তথ্য:
-  নাম: ${formData.name}
-  ফোন: ${formData.mobile}
-  বয়স: ${formData.age || "উল্লেখ নেই"}
-  ওজন: ${formData.weight || "উল্লেখ নেই"}
-  ঠিকানা: ${formData.address || "উল্লেখ নেই"}
-  ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
-  
-  অ্যাপয়েন্টমেন্ট শেডিউল:
-  তারিখ: ${appointmentDate}
-  সময়: ${timeSlot}
-  ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
-  
-  নির্দেশনা:
-  • অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
-  • সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
-  • যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
-  
-  রেফারেন্স আইডি: ${referenceId}
+অ্যাপয়েন্টমেন্ট বিবরণ
+------------------
+হাসপাতাল: মুক্তি হাসপাতাল
+
+ডাক্তারের তথ্য:
+নাম: ${name}
+বিভাগ: ${department}
+যোগ্যতা: ${academicQualification}
+
+রোগীর তথ্য:
+নাম: ${formData.name}
+ফোন: ${formData.mobile}
+বয়স: ${formData.age || "উল্লেখ নেই"}
+ওজন: ${formData.weight || "উল্লেখ নেই"}
+ঠিকানা: ${formData.address || "উল্লেখ নেই"}
+ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
+
+অ্যাপয়েন্টমেন্ট শেডিউল:
+তারিখ: ${appointmentDate}
+সময়: ${timeSlot}
+ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
+
+নির্দেশনা:
+• অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
+• সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
+• যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
+
+রেফারেন্স আইডি: ${referenceId}
         `,
         referenceId
       };
     } else {
       return {
         content: `
-  APPOINTMENT DETAILS
-  ------------------
-  Hospital: Mukti Hospital
-  
-  Doctor Information:
-  Name: ${name}
-  Department: ${department}
-  Qualification: ${academicQualification}
-  
-  Patient Information:
-  Name: ${formData.name}
-  Phone: ${formData.mobile}
-  Age: ${formData.age || "N/A"}
-  Weight: ${formData.weight || "N/A"}
-  Address: ${formData.address || "N/A"}
-  Reason for Visit: ${formData.reason || "N/A"}
-  
-  Appointment Schedule:
-  Date: ${appointmentDate}
-  Time: ${timeSlot}
-  Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
-  
-  Instructions:
-  • Please arrive 15 minutes before your appointment time
-  • Bring any previous medical records if available
-  • For any queries, contact: +88 02 XXXX XXXX
-  
-  Reference ID: ${referenceId}
+APPOINTMENT DETAILS
+------------------
+Hospital: Mukti Hospital
+
+Doctor Information:
+Name: ${name}
+Department: ${department}
+Qualification: ${academicQualification}
+
+Patient Information:
+Name: ${formData.name}
+Phone: ${formData.mobile}
+Age: ${formData.age || "N/A"}
+Weight: ${formData.weight || "N/A"}
+Address: ${formData.address || "N/A"}
+Reason for Visit: ${formData.reason || "N/A"}
+
+Appointment Schedule:
+Date: ${appointmentDate}
+Time: ${timeSlot}
+Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
+
+Instructions:
+• Please arrive 15 minutes before your appointment time
+• Bring any previous medical records if available
+• For any queries, contact: +88 02 XXXX XXXX
+
+Reference ID: ${referenceId}
         `,
         referenceId
       };
     }
   };
-  
 
   const downloadAsText = (formData, doctor, value, selectedDay, language, appointmentId) => {
     const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
@@ -297,7 +304,6 @@ const Appointment = () => {
         }
       });
   
-      // Include reference ID in the PDF
       pdf.text(`Reference ID: ${appointmentId}`, 10, 287);
       pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
       return referenceId;
@@ -306,18 +312,15 @@ const Appointment = () => {
       return downloadAsText(formData, doctor, value, selectedDay, language, appointmentId);
     }
   };
-  
 
-
-
-  const downloadAppointmentInfo = async (formData, doctor, value, selectedDay, language, format, appointmentCardRef) => {
+  const downloadAppointmentInfo = async (formData, doctor, value, selectedDay, language, format, appointmentRef) => {
     try {
       setIsDownloading(true);
       let referenceId;
       if (format === 'pdf') {
-        referenceId = await downloadAsPdf(formData, doctor, value, selectedDay, language, appointmentCardRef);
+        referenceId = await downloadAsPdf(formData, doctor, value, selectedDay, language, appointmentRef);
       } else {
-        referenceId = downloadAsText(formData, doctor, value, selectedDay, language);
+        referenceId = downloadAsText(formData, doctor, value, selectedDay, language, appointmentRef);
       }
       toast.success(language === "bn" ? "অ্যাপয়েন্টমেন্ট তথ্য ডাউনলোড হয়েছে" : "Appointment details downloaded successfully");
       return referenceId;
@@ -333,33 +336,80 @@ const Appointment = () => {
     setOtpCode(e.target.value);
   };
 
+  // ✅ রোগী চেক এবং OTP পাঠানো - সব সমস্যা ঠিক
   const checkPatientAndSendOTP = async () => {
     if (!validateBasicPatientInfo()) return;
+    
     try {
       setSubmitting(true);
+      setError(null);
+      
       let cleanedMobile = formData.mobile.trim();
-      if (!cleanedMobile.startsWith("88")) cleanedMobile = "88" + cleanedMobile.replace(/^88/, "");
+      if (!cleanedMobile.startsWith("88")) {
+        cleanedMobile = "88" + cleanedMobile.replace(/^88/, "");
+      }
+      
+      console.log('Checking patient with mobile:', cleanedMobile);
+      
+      // রোগী আগে থেকে আছে কিনা চেক
       try {
-        const res = await axios.get(`${BASE_URL}/patient`, { headers: { "x-api-key": API_KEY } });
-        const existingPatient = res.data.find(patient => patient.phoneNumber === cleanedMobile || patient.mobile === cleanedMobile);
+        const res = await axios.get(`${BASE_URL}/patient`, { 
+          headers: { "x-api-key": API_KEY } 
+        });
+        
+        const existingPatient = res.data.find(patient => 
+          patient.phoneNumber === cleanedMobile || 
+          patient.mobile === cleanedMobile ||
+          patient.phone === cleanedMobile // অতিরিক্ত ফিল্ড চেক
+        );
+        
         if (existingPatient) {
+          console.log('Existing patient found:', existingPatient);
           setPatientExists(true);
           setPatientId(existingPatient.id);
-          toast.info(translations.existingPatient);
+          toast.info(translations.existingPatient, {
+            autoClose: 4000,
+            style: { backgroundColor: '#e3f2fd', color: '#1976d2' }
+          });
         } else {
+          console.log('New patient');
           setPatientExists(false);
           setPatientId(null);
-          toast.info(translations.newPatient);
+          toast.info(translations.newPatient, {
+            autoClose: 4000,
+            style: { backgroundColor: '#f3e5f5', color: '#7b1fa2' }
+          });
         }
       } catch (patientError) {
+        console.log('Patient check error (treating as new):', patientError);
         setPatientExists(false);
         setPatientId(null);
         toast.info(translations.newPatient);
       }
+      
+      // OTP পাঠান
+      console.log('Sending OTP to:', cleanedMobile);
       const result = await sendOtp(cleanedMobile);
-      setIsOtpSent(true);
-      toast.success(language === "bn" ? "ওটিপি পাঠানো হয়েছে" : "OTP has been sent");
-      setCurrentStep(4);
+      console.log('OTP send result:', result);
+      
+      if (result) {
+        setIsOtpSent(true);
+        toast.success(
+          language === "bn" 
+            ? `${cleanedMobile} নম্বরে ওটিপি পাঠানো হয়েছে` 
+            : `OTP has been sent to ${cleanedMobile}`,
+          { autoClose: 5000 }
+        );
+        setCurrentStep(4);
+      } else {
+        throw new Error(language === "bn" ? "ওটিপি পাঠাতে সমস্যা হয়েছে" : "Failed to send OTP");
+      }
+      
+    } catch (error) {
+      console.error('checkPatientAndSendOTP error:', error);
+      const errorMessage = error.message || (language === "bn" ? "ওটিপি পাঠাতে সমস্যা হয়েছে" : "Failed to send OTP");
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setSubmitting(false);
     }
@@ -369,41 +419,122 @@ const Appointment = () => {
     try {
       let cleanedMobile = formData.mobile.trim();
       if (!cleanedMobile.startsWith("88")) cleanedMobile = "88" + cleanedMobile.replace(/^88/, "");
-      await sendOtp(cleanedMobile);
-      toast.success(language === "bn" ? "ওটিপি পুনরায় পাঠানো হয়েছে" : "OTP has been resent");
+      
+      console.log('Resending OTP to:', cleanedMobile);
+      const result = await sendOtp(cleanedMobile);
+      
+      if (result) {
+        toast.success(language === "bn" ? "ওটিপি পুনরায় পাঠানো হয়েছে" : "OTP has been resent");
+      } else {
+        throw new Error("Failed to resend OTP");
+      }
     } catch (error) {
+      console.error('Resend OTP error:', error);
       toast.error(error.message || "Failed to resend OTP");
     }
   };
 
+  // ✅ OTP যাচাই - সব সমস্যা ঠিক করা হয়েছে
   const verifyOtp = async () => {
     if (!otpCode || otpCode.length < 4) {
       toast.error(language === "bn" ? "সঠিক ওটিপি দিন" : "Please enter a valid OTP");
       return;
     }
+    
     try {
       setVerifyingOtp(true);
+      setError(null);
+      
       let cleanedMobile = formData.mobile.trim();
-      if (!cleanedMobile.startsWith("88")) cleanedMobile = "88" + cleanedMobile;
+      if (!cleanedMobile.startsWith("88")) {
+        cleanedMobile = "88" + cleanedMobile;
+      }
+      
+      console.log('Verifying OTP for mobile:', cleanedMobile);
+      console.log('Patient exists:', patientExists);
+      console.log('OTP Code:', otpCode);
+      
       if (patientExists) {
-        const loginData = { mobile: cleanedMobile, otp: otpCode };
+        // ✅ পুরানো ইউজারের জন্য লগিন
+        const loginData = { 
+          mobile: cleanedMobile, 
+          otp: otpCode 
+        };
+        
+        console.log('Attempting login with:', loginData);
         const response = await loginUser(loginData);
-        if (response) {
-          toast.success(language === "bn" ? "লগইন সফল" : "Login successful");
-          setPatientId(response.user?.id);
-          setCurrentStep(5);
+        console.log('Login response:', response);
+        
+        if (response && response.user) {
+          // ✅ সঠিকভাবে patient ID সেট করা
+          const userId = response.user.id || response.user._id || response.user.patientId;
+          console.log('Setting patient ID:', userId);
+          
+          if (userId) {
+            setPatientId(userId);
+            toast.success(
+              language === "bn" 
+                ? "সফলভাবে লগিন হয়েছেন! এপয়েন্টমেন্ট নিশ্চিত করুন।" 
+                : "Login successful! Please confirm your appointment.",
+              { 
+                autoClose: 3000, 
+                style: { backgroundColor: '#e8f5e8', color: '#2e7d32' } 
+              }
+            );
+            setCurrentStep(5);
+          } else {
+            throw new Error(language === "bn" ? "ইউজার আইডি পাওয়া যায়নি" : "User ID not found");
+          }
+        } else {
+          throw new Error(language === "bn" ? "লগিন ব্যর্থ, অবৈধ ওটিপি" : "Login failed, invalid OTP");
         }
+        
       } else {
-        const registerData = { name: formData.name, mobile: cleanedMobile, otp: otpCode };
+        // ✅ নতুন ইউজারের জন্য রেজিস্ট্রেশন
+        const registerData = { 
+          name: formData.name, 
+          mobile: cleanedMobile, 
+          otp: otpCode,
+          age: formData.age || "",
+          address: formData.address || "",
+          weight: formData.weight || ""
+        };
+        
+        console.log('Attempting registration with:', registerData);
         const response = await registerUser(registerData);
-        if (response) {
-          setPatientId(response.user?.id);
-          toast.success(language === "bn" ? "রেজিস্ট্রেশন সফল" : "Registration successful");
-          setCurrentStep(5);
+        console.log('Registration response:', response);
+        
+        if (response && response.user) {
+          // ✅ সঠিকভাবে patient ID সেট করা
+          const userId = response.user.id || response.user._id || response.user.patientId;
+          console.log('Setting new patient ID:', userId);
+          
+          if (userId) {
+            setPatientId(userId);
+            toast.success(
+              language === "bn" 
+                ? "সফলভাবে রেজিস্টার হয়েছেন! এপয়েন্টমেন্ট নিশ্চিত করুন।" 
+                : "Registration successful! Please confirm your appointment.",
+              { 
+                autoClose: 3000, 
+                style: { backgroundColor: '#e8f5e8', color: '#2e7d32' } 
+              }
+            );
+            setCurrentStep(5);
+          } else {
+            throw new Error(language === "bn" ? "রেজিস্ট্রেশন সফল কিন্তু ইউজার আইডি পাওয়া যায়নি" : "Registration successful but user ID not found");
+          }
+        } else {
+          throw new Error(language === "bn" ? "রেজিস্ট্রেশন ব্যর্থ, অবৈধ ওটিপি" : "Registration failed, invalid OTP");
         }
       }
+      
     } catch (err) {
-      toast.error(err.message || "Error verifying OTP");
+      console.error('OTP verification error:', err);
+      const errorMessage = err.message || 
+        (language === "bn" ? "ওটিপি যাচাইয়ে সমস্যা হয়েছে" : "Error verifying OTP");
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setVerifyingOtp(false);
     }
