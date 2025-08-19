@@ -192,7 +192,7 @@ import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading
 import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
 import Button from "@/app/Component/Shared/Buttons/Button";
-import { fetchDoctors } from "@/app/api/doctor"; // Assuming you have this API call
+import { fetchDoctors } from "@/app/api/doctor";
 
 const BestDoctors = ({ doctors }) => {
   const { t, i18n } = useTranslation();
@@ -200,7 +200,7 @@ const BestDoctors = ({ doctors }) => {
 
   const [activeDepartment, setActiveDepartment] = useState("all");
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
-  const [pollingKey, setPollingKey] = useState(Date.now()); // Used to force re-render
+  const [pollingKey, setPollingKey] = useState(Date.now());
 
   // Departments including translated "All"
   const departments = [
@@ -219,15 +219,14 @@ const BestDoctors = ({ doctors }) => {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const updatedDoctors = await fetchDoctors(currentLanguage);  // Fetch updated data
-        setFilteredDoctors(updatedDoctors); // Update state immutably
-        setPollingKey(Date.now());  // Force re-render by changing the key
+        const updatedDoctors = await fetchDoctors(currentLanguage);
+        setFilteredDoctors(updatedDoctors);
+        setPollingKey(Date.now());
       } catch (error) {
         console.error("Error fetching doctors:", error);
       }
-    }, 5000); // Poll every 5 seconds
+    }, 5000);
 
-    // Cleanup the interval when component unmounts
     return () => clearInterval(interval);
   }, [currentLanguage]);
 
