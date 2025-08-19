@@ -115,7 +115,7 @@ const SingleDoctorInfo = ({ doctor }) => {
         <div className="h-96 px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative"></div>
       </div>
 
-      <div className="container pb-10 md:pb-24 relative pt-10 md:-mt-24 z-20">
+      <div className="container pb-10 md:pb-24 relative pt-10 md:-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
             <div className="flex flex-col md:flex-row gap-6 bg-white shadow border border-M-text-color/10 px-4 md:px-7 py-6 rounded-md">
@@ -187,7 +187,7 @@ const SingleDoctorInfo = ({ doctor }) => {
 
             <div className="relative">
               {/* filter List */}
-              <div className="flex gap-6 bg-white px-7 py-6 rounded-md mt-6 border border-M-heading-color/10 lg:sticky top-1 z-20">
+              <div className="flex gap-6 bg-white px-7 py-6 rounded-md mt-6 border border-M-heading-color/10 lg:sticky top-1">
                 <ul className="flex flex-wrap gap-4">
                   {tabs.map((tab) => (
                     <li key={tab.id} className="inline-block">
