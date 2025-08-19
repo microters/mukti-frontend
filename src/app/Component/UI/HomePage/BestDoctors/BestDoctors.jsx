@@ -60,7 +60,6 @@ const BestDoctors = ({ doctors }) => {
               departments.map((department, index) => {
                 const isAll = department === "all";
                 const displayLabel = isAll ? t("doctors.all") : department;
-
                 return (
                   <button
                     key={index}
