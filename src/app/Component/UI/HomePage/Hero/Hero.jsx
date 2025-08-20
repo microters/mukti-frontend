@@ -104,7 +104,7 @@ const Hero = ({ heroSection }) => {
 
   const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
   const bgPath = (tr.backgroundImage || "").replace(/^\/+|\\+/g, "/");
-  const heroImage = bgPath ? encodeURI(`${BASE}/${bgPath}?v=${Date.now()}`) : "";
+  const heroImage = bgPath ? encodeURI(`${BASE}/${bgPath}`) : "";
 
   return (
     <div
