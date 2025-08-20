@@ -71,11 +71,12 @@ import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
 import { useTranslation } from "react-i18next";
 import SearchField from "@/app/Component/Shared/SearchField/SearchField";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { fetchDynamicData } from "@/app/api/dynamicData,";
 const Hero = ({ heroSection }) => {
   const { i18n } = useTranslation();
   const [section, setSection] = useState(heroSection || null);
+  const previousBgPath = useRef(null);
 
   useEffect(() => {
     const fetchUpdatedHero = async () => {
@@ -104,7 +105,14 @@ const Hero = ({ heroSection }) => {
 
   const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
   const bgPath = (tr.backgroundImage || "").replace(/^\/+|\\+/g, "/");
-  const heroImage = bgPath ? encodeURI(`${BASE}/${bgPath}`) : "";
+
+  // Generate heroImage only if bgPath changes
+  let cacheBuster = "";
+  if (bgPath && bgPath !== previousBgPath.current) {
+    cacheBuster = `?v=${Date.now()}`;
+    previousBgPath.current = bgPath;
+  }
+  const heroImage = bgPath ? encodeURI(`${BASE}/${bgPath}${cacheBuster}`) : "";
 
   return (
     <div
