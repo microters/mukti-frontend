@@ -38,11 +38,11 @@ const DoctorsList = ({ doctors }) => {
   // ✅ Extract unique specialties & genders from API data
   const specialtyOptions = [
     ...new Set(doctors.map((d) => d.translations[currentLanguage]?.department)),
-  ];
+  ].filter(Boolean);
 
   const genderOptions = [
-    ...new Set(doctors.map((d) => d.translations.en.gender)),
-  ];
+    ...new Set(doctors.map((d) => d.translations[currentLanguage]?.gender)),
+  ].filter(Boolean);
 
   // Measure height of the UL element
   useEffect(() => {
@@ -265,7 +265,7 @@ const DoctorsList = ({ doctors }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.NEXT_PUBLIC_API_KEY, // Ensure the API key is correctly set
+            "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
           },
           body: JSON.stringify(formData),
         }
@@ -621,3 +621,4 @@ const DoctorsList = ({ doctors }) => {
 };
 
 export default DoctorsList;
+
