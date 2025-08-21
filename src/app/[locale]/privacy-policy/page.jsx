@@ -1,4 +1,5 @@
-import ClientPrivacyPolicy from '@/app/Component/ClientStaticPage/ClientStaticPage';
+
+import ClientStaticPage from '@/app/Component/ClientStaticPage/ClientStaticPage';
 import React from 'react';
 
 export default async function PrivacyPolicy({ searchParams }) {
@@ -20,7 +21,7 @@ export default async function PrivacyPolicy({ searchParams }) {
   }
 
   return (
-    <ClientPrivacyPolicy page={privacyPolicyPage} locale={locale} />
+    <ClientStaticPage page={privacyPolicyPage} locale={locale} />
   );
 }
 

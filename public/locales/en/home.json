@@ -59,6 +59,10 @@
     "title": "Appointment Process",
     "subtitle": "How We Work?"
   },
+  "blog": {
+    "title": "News & articles",
+    "subtitle": "From the Blog"
+  },
   "singleDepartment":{
     "best": "Best"
   }
