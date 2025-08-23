@@ -84,7 +84,7 @@ const Contact = () => {
             </div>
             <h3 className="text-2xl sm:text-3xl text-black mb-2">Location</h3>
             <p className="text-base text-M-text-color font-jost font-normal hover:text-M-primary-color">
-              3400 Cottage Way, Ste G2 #16117, Sacramento, California 95825 USA
+              Race Course, Sasongacha, Cumilla – 3500
             </p>
           </div>
           <div className="bg-white p-6 rounded-md text-center border border-M-text-color/20 hover:border-M-primary-color/80 transition-all duration-300 group">
