@@ -41,8 +41,11 @@ const DoctorsList = ({ doctors }) => {
   ].filter(Boolean);
 
   const genderOptions = [
-    ...new Set(doctors.map((d) => d.translations[currentLanguage]?.gender)),
-  ].filter(Boolean);
+  ...new Set(doctors.map((d) => d.translations[currentLanguage]?.gender)),
+].filter(Boolean);
+useEffect(() => {
+  console.log("genderOptions:", genderOptions);
+}, [genderOptions]);
 
   // Measure height of the UL element
   useEffect(() => {
@@ -449,7 +452,7 @@ const DoctorsList = ({ doctors }) => {
                   >
                     <span className="flex gap-3 items-center font-jost font-normal">
                       <Image
-                        src={item === "male" ? male : female}
+                        src={item === "male" || item === "পুরুষ" ? male : female}
                         alt={item}
                         width={30}
                         height={30}
