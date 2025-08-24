@@ -9,7 +9,7 @@ import SearchField from "../Shared/SearchField/SearchField";
 
 const HeroInnerPage = () => {
   return (
-    <div className="bg-[url(@/assets/images/inner-hero-bg.jpg)] bg-cover bg-top">
+    <div className="bg-[url(../../public/assets/inner-hero-bg.jpg)] bg-cover bg-top">
       <div className="pt-[80px] lg:pt-[100px] pb-20 md:pb-32 lg:pb-[120px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
         <Image
