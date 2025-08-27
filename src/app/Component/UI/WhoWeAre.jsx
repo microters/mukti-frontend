@@ -95,30 +95,33 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import SectionHeading from "../Shared/SectionHeading/SectionHeading";
-
 import { fetchDynamicData } from "@/app/api/dynamicData,";
 
 const WhoWeAre = ({ whoWeAreSection }) => {
   const { t, i18n } = useTranslation();
   const [section, setSection] = useState(whoWeAreSection || null);
+  const [activeTab, setActiveTab] = useState(""); // keep active tab in state
   const currentLanguage = i18n.language || "en";
 
-  // Fetch updated data periodically
+  // Polling & fetching data every 5 seconds
   useEffect(() => {
     const fetchUpdatedData = async () => {
       try {
         const data = await fetchDynamicData(currentLanguage);
-        if (data?.whoWeAreSection) setSection(data.whoWeAreSection);
+        if (data?.whoWeAreSection) {
+          setSection(data.whoWeAreSection);
+        }
       } catch (e) {
         console.error("Error fetching WhoWeAre section:", e);
       }
     };
 
-    fetchUpdatedData();
+    fetchUpdatedData(); // initial fetch
     const intervalId = setInterval(fetchUpdatedData, 5000);
     return () => clearInterval(intervalId);
-  }, [currentLanguage]);
+  }, [currentLanguage]); // re-run effect if language changes
 
+  // Recompute tabs based on latest section state
   const whoWeAre =
     section?.data?.translations?.[currentLanguage]?.whoWeAre || {};
 
@@ -126,7 +129,6 @@ const WhoWeAre = ({ whoWeAreSection }) => {
   const sectionSubtitle = whoWeAre?.subtitle || t("whoWeAre.defaultSubtitle");
   const rawTabs = whoWeAre?.tabs || [];
 
-  // Format tabs and generate IDs
   const tabs = rawTabs.map((tab) => ({
     id: tab.title.replace(/\s+/g, "-").toLowerCase(),
     label: tab.title,
@@ -134,9 +136,14 @@ const WhoWeAre = ({ whoWeAreSection }) => {
     image: tab.image,
   }));
 
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id || "");
-  const activeTabData = tabs.find((tab) => tab.id === activeTab);
+  // Ensure activeTab is set when tabs change
+  useEffect(() => {
+    if (tabs.length && !tabs.find((tab) => tab.id === activeTab)) {
+      setActiveTab(tabs[0].id);
+    }
+  }, [tabs]);
 
+  const activeTabData = tabs.find((tab) => tab.id === activeTab);
   const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
   const fmt = (p) => (p || "").replace(/\\/g, "/");
 
@@ -205,3 +212,6 @@ const WhoWeAre = ({ whoWeAreSection }) => {
 };
 
 export default WhoWeAre;
+
+
+
