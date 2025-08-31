@@ -57,7 +57,7 @@ const Register = () => {
     if (token) {
       setIsRedirecting(true);
       setTimeout(() => {
-        window.location.href = "https://dashboardmukti-hospital.netlify.app";
+        window.location.href = "https://app.muktihospital.com";
       }, 1000);
     }
   }, []);
@@ -171,7 +171,7 @@ const Register = () => {
         toast.success("Registered and logged in successfully!");
         setIsRedirecting(true);
         setTimeout(() => {
-          window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${response.token}`;
+          window.location.href = `https://app.muktihospital.com?token=${response.token}`;
         }, 1000);
       } else {
         try {
@@ -186,7 +186,7 @@ const Register = () => {
             toast.success("Registered and logged in successfully!");
             setIsRedirecting(true);
             setTimeout(() => {
-              window.location.href = `https://dashboardmukti-hospital.netlify.app?token=${loginResponse.token}`;
+              window.location.href = `https://app.muktihospital.com?token=${loginResponse.token}`;
             }, 1000);
           } else {
             toast.success("Registered successfully! Please sign in now.");

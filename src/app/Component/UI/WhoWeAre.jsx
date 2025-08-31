@@ -99,29 +99,32 @@ import { fetchDynamicData } from "@/app/api/dynamicData,";
 
 const WhoWeAre = ({ whoWeAreSection }) => {
   const { t, i18n } = useTranslation();
-  const [section, setSection] = useState(whoWeAreSection || null);
-  const [activeTab, setActiveTab] = useState(""); // keep active tab in state
   const currentLanguage = i18n.language || "en";
 
-  // Polling & fetching data every 5 seconds
-  useEffect(() => {
-    const fetchUpdatedData = async () => {
-      try {
-        const data = await fetchDynamicData(currentLanguage);
-        if (data?.whoWeAreSection) {
-          setSection(data.whoWeAreSection);
-        }
-      } catch (e) {
-        console.error("Error fetching WhoWeAre section:", e);
-      }
-    };
+  const [section, setSection] = useState(whoWeAreSection || null);
+  const [activeTab, setActiveTab] = useState(""); // active tab ID
 
+  // Function to fetch fresh data from backend
+  const fetchUpdatedData = async () => {
+    try {
+      const data = await fetchDynamicData(currentLanguage); // ensure fetchDynamicData uses cache: "no-store"
+      if (data?.whoWeAreSection) {
+        // Deep clone to guarantee new object reference
+        setSection(JSON.parse(JSON.stringify(data.whoWeAreSection)));
+      }
+    } catch (e) {
+      console.error("Error fetching WhoWeAre section:", e);
+    }
+  };
+
+  // Polling every 5 seconds for live updates
+  useEffect(() => {
     fetchUpdatedData(); // initial fetch
     const intervalId = setInterval(fetchUpdatedData, 5000);
     return () => clearInterval(intervalId);
-  }, [currentLanguage]); // re-run effect if language changes
+  }, [currentLanguage]);
 
-  // Recompute tabs based on latest section state
+  // Extract the translated section
   const whoWeAre =
     section?.data?.translations?.[currentLanguage]?.whoWeAre || {};
 
@@ -129,6 +132,7 @@ const WhoWeAre = ({ whoWeAreSection }) => {
   const sectionSubtitle = whoWeAre?.subtitle || t("whoWeAre.defaultSubtitle");
   const rawTabs = whoWeAre?.tabs || [];
 
+  // Map tabs to a usable format
   const tabs = rawTabs.map((tab) => ({
     id: tab.title.replace(/\s+/g, "-").toLowerCase(),
     label: tab.title,
@@ -136,14 +140,15 @@ const WhoWeAre = ({ whoWeAreSection }) => {
     image: tab.image,
   }));
 
-  // Ensure activeTab is set when tabs change
+  // Reset active tab whenever tabs change or section updates
   useEffect(() => {
-    if (tabs.length && !tabs.find((tab) => tab.id === activeTab)) {
+    if (tabs.length) {
       setActiveTab(tabs[0].id);
     }
-  }, [tabs]);
+  }, [section, currentLanguage]);
 
   const activeTabData = tabs.find((tab) => tab.id === activeTab);
+
   const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
   const fmt = (p) => (p || "").replace(/\\/g, "/");
 
@@ -193,7 +198,8 @@ const WhoWeAre = ({ whoWeAreSection }) => {
             <div className="relative">
               {activeTabData?.image ? (
                 <Image
-                  src={`${BASE}/${fmt(activeTabData.image)}`}
+                  // Add timestamp to force browser to reload updated image
+                  src={`${BASE}/${fmt(activeTabData.image)}?t=${Date.now()}`}
                   alt={activeTabData.label}
                   width={500}
                   height={400}
@@ -212,6 +218,5 @@ const WhoWeAre = ({ whoWeAreSection }) => {
 };
 
 export default WhoWeAre;
-
 
 
