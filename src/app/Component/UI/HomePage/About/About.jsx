@@ -163,6 +163,7 @@ const About = ({ aboutSection }) => {
     const fetchUpdatedAbout = async () => {
       try {
         const data = await fetchDynamicData(i18n.language || "en");
+        console.log("Fetched about section:", data);
         if (data && data.aboutSection) setSection(data.aboutSection);
       } catch (e) {
         console.error("Error fetching about:", e);
