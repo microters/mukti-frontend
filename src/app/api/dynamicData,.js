@@ -11,7 +11,7 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
  */
 const fetchData = async (endpoint) => {
   // 1. Construct the full URL for the API call
-  const fullUrl = `${API_BASE_URL}${endpoint}`;
+  const fullUrl = `${API_BASE_URL}/${endpoint}`;
 
   // 2. Log the URL to the server console for debugging the 404 error
   console.log(`[API CALL] Attempting to fetch data from: ${fullUrl}`);
@@ -49,17 +49,17 @@ const fetchData = async (endpoint) => {
 
 // Fetch Header Data
 export const fetchHeaderData = async (language = 'en') => {
-  return fetchData(`api/header?lang=${language}`);
+  return fetchData(`/api/header?lang=${language}`);
 };
 
 // Fetch Footer Data
 export const fetchFooterData = async (language = 'en') => {
-  return fetchData(`api/footer?lang=${language}`);
+  return fetchData(`/api/footer?lang=${language}`);
 };
 
 // Fetch all dynamic home page data
 export const fetchDynamicData = async (language = 'en') => {
-  return fetchData(`api/home?lang=${language}`);
+  return fetchData(`/api/home?lang=${language}`);
 };
 
 // Fetch about page data
