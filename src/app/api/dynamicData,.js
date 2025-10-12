@@ -1,19 +1,20 @@
-// lib/api.js (ফাইলের একটি ভালো নাম)
+// ✅ Correct and robust data fetching logic for a Next.js App Router project.
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 /**
- * A helper function to fetch data from the API and handle errors.
- * It automatically disables caching for all requests.
+ * A centralized helper function to fetch data from the API.
+ * It handles URL construction, headers, caching, and errors.
  * @param {string} endpoint - The API endpoint to call (e.g., 'api/about?lang=en').
- * @returns {Promise<any>} - The JSON data from the API, or an empty array on error.
+ * @param {object} options - Optional parameters.
+ * @param {any} options.defaultReturnValue - The value to return on error.
+ * @returns {Promise<any>} The JSON data or the default return value on error.
  */
-const fetchData = async (endpoint) => {
-  // 1. Construct the full URL for the API call
-  const fullUrl = `${API_BASE_URL}${endpoint}`;
+const fetchData = async (endpoint, { defaultReturnValue = null } = {}) => {
+  // 1. FIX: Ensures the URL is always correctly formed with a single slash.
+  const fullUrl = `${API_BASE_URL.replace(/\/$/, '')}/${endpoint.replace(/^\//, '')}`;
 
-  // 2. Log the URL to the server console for debugging the 404 error
   console.log(`[API CALL] Attempting to fetch data from: ${fullUrl}`);
 
   try {
@@ -23,46 +24,72 @@ const fetchData = async (endpoint) => {
         'x-api-key': API_KEY,
         'Content-Type': 'application/json',
       },
-      // 3. This option tells Next.js NOT to cache the response.
-      // Every request will fetch fresh data from the server.
+      // 2. FIX: Correctly disables caching for real-time updates.
+      // This also makes the pages that use it dynamic.
       cache: 'no-store',
     });
 
-    // 4. Check if the request was successful
     if (!response.ok) {
-      // If the status is 404, 500, etc., this will throw an error
       throw new Error(`API call failed for ${fullUrl} with status: ${response.status}`);
     }
-
-    // 5. Parse the JSON data and return it
-    return await response.json();
+    
+    const data = await response.json();
+    return data;
 
   } catch (error) {
-    // 6. Log any errors that occur during the fetch process
-    console.error(`[API ERROR] ${error.message}`);
-    // Return a default value so the page doesn't crash
-    return [];
+    console.error(`[API ERROR] Fetching ${fullUrl} failed:`, error.message);
+    // 3. FIX: Returns a safe default value to prevent app crashes.
+    return defaultReturnValue;
   }
 };
 
-// --- API Functions ---
+// --- General API Functions ---
 
-// Fetch Header Data
 export const fetchHeaderData = async (language = 'en') => {
-  return fetchData(`/api/header?lang=${language}`);
+  return fetchData(`api/header?lang=${language}`, { defaultReturnValue: {} });
 };
 
-// Fetch Footer Data
 export const fetchFooterData = async (language = 'en') => {
-  return fetchData(`/api/footer?lang=${language}`);
+  return fetchData(`api/footer?lang=${language}`, { defaultReturnValue: {} });
 };
 
-// Fetch all dynamic home page data
+// --- Page Specific Functions ---
+
 export const fetchDynamicData = async (language = 'en') => {
-  return fetchData(`/api/home?lang=${language}`);
+  return fetchData(`api/home?lang=${language}`, { defaultReturnValue: {} });
 };
 
-// Fetch about page data
 export const fetchAboutData = async (language = 'en') => {
-  return fetchData(`api/about?lang=${language}`);
+  return fetchData(`api/about?lang=${language}`, { defaultReturnValue: {} });
+};
+
+export const fetchReviews = async (language = 'en') => {
+    return fetchData(`api/review?lang=${language}`, { defaultReturnValue: [] });
+};
+
+// --- Department Functions ---
+
+/**
+ * Fetches all departments.
+ * @param {string} language - The locale code (e.g., 'en', 'bn').
+ * @returns {Promise<Array>} An array of departments.
+ */
+export const fetchDepartments = async (language = 'en') => {
+  const data = await fetchData(`api/department?lang=${language}`, { defaultReturnValue: [] });
+  // Ensure the final return value is always an array to prevent .map() errors.
+  return Array.isArray(data) ? data : data?.departments || [];
+};
+
+/**
+ * Fetches a single department by its slug.
+ * @param {string} slug - The department's slug.
+ * @param {string} language - The locale code.
+ * @returns {Promise<Object|null>} The department object or null if not found.
+ */
+export const fetchDepartmentBySlug = async (slug, language = 'en') => {
+  if (!slug) {
+    console.warn("⚠️ fetchDepartmentBySlug: Missing slug parameter.");
+    return null;
+  }
+  return fetchData(`api/department/slug/${slug}?lang=${language}`, { defaultReturnValue: null });
 };
