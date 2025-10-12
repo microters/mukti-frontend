@@ -6,7 +6,8 @@ import AppointmentProcess from "@/app/Component/UI/HomePage/AppointmentProcess/A
 import Testimonials from "@/app/Component/UI/HomePage/Testimonials/Testimonials";
 import WhoWeAre from "@/app/Component/UI/WhoWeAre";
 import { fetchReviews } from "@/app/api/review";
-import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData"; // ✅ FIX: কমা (,) সরানো হয়েছে
+import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData,";
+ // ✅ FIX: কমা (,) সরানো হয়েছে
 
 // ✅ Tells Next.js to render this page dynamically for every request.
 export const dynamic = 'force-dynamic';
