@@ -1,22 +1,9 @@
-// ✅ Correct and robust data fetching logic for a Next.js App Router project.
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
-/**
- * A centralized helper function to fetch data from the API.
- * It handles URL construction, headers, caching, and errors.
- * @param {string} endpoint - The API endpoint to call (e.g., 'api/about?lang=en').
- * @param {object} options - Optional parameters.
- * @param {any} options.defaultReturnValue - The value to return on error.
- * @returns {Promise<any>} The JSON data or the default return value on error.
- */
-const fetchData = async (endpoint, { defaultReturnValue = null } = {}) => {
-  // 1. FIX: Ensures the URL is always correctly formed with a single slash.
+// ✅ ট্যাগ গ্রহণ করার জন্য ফাংশনটি আপডেট করা হয়েছে
+const fetchData = async (endpoint, tags = []) => {
   const fullUrl = `${API_BASE_URL.replace(/\/$/, '')}/${endpoint.replace(/^\//, '')}`;
-
-  console.log(`[API CALL] Attempting to fetch data from: ${fullUrl}`);
-
   try {
     const response = await fetch(fullUrl, {
       method: 'GET',
@@ -24,72 +11,39 @@ const fetchData = async (endpoint, { defaultReturnValue = null } = {}) => {
         'x-api-key': API_KEY,
         'Content-Type': 'application/json',
       },
-      // 2. FIX: Correctly disables caching for real-time updates.
-      // This also makes the pages that use it dynamic.
-      cache: 'no-store',
+      // ✅ FIX: 'cache: no-store' এর পরিবর্তে ট্যাগ ব্যবহার করা হচ্ছে
+      next: {
+        tags: tags, // gelen tag'leri burada kullan
+      },
     });
 
     if (!response.ok) {
-      throw new Error(`API call failed for ${fullUrl} with status: ${response.status}`);
+      throw new Error(`API call failed with status: ${response.status}`);
     }
-    
-    const data = await response.json();
-    return data;
-
+    return await response.json();
   } catch (error) {
     console.error(`[API ERROR] Fetching ${fullUrl} failed:`, error.message);
-    // 3. FIX: Returns a safe default value to prevent app crashes.
-    return defaultReturnValue;
+    return null;
   }
 };
 
-// --- General API Functions ---
+// --- API Functions with Tags ---
 
+// Header এবং Footer এর ডেটা 'layout' ট্যাগের অধীনে থাকবে
 export const fetchHeaderData = async (language = 'en') => {
-  return fetchData(`api/header?lang=${language}`, { defaultReturnValue: {} });
+  return fetchData(`api/header?lang=${language}`, ['layout']); // ✅ ট্যাগ যোগ করা হয়েছে
 };
 
 export const fetchFooterData = async (language = 'en') => {
-  return fetchData(`api/footer?lang=${language}`, { defaultReturnValue: {} });
+  return fetchData(`api/footer?lang=${language}`, ['layout']); // ✅ ট্যাগ যোগ করা হয়েছে
 };
 
-// --- Page Specific Functions ---
-
-export const fetchDynamicData = async (language = 'en') => {
-  return fetchData(`api/home?lang=${language}`, { defaultReturnValue: {} });
-};
-
+// About পেজের ডেটা 'about' ট্যাগের অধীনে থাকবে
 export const fetchAboutData = async (language = 'en') => {
-  return fetchData(`api/about?lang=${language}`, { defaultReturnValue: {} });
+  return fetchData(`api/about?lang=${language}`, ['about']); // ✅ ট্যাগ যোগ করা হয়েছে
 };
 
-export const fetchReviews = async (language = 'en') => {
-    return fetchData(`api/review?lang=${language}`, { defaultReturnValue: [] });
-};
-
-// --- Department Functions ---
-
-/**
- * Fetches all departments.
- * @param {string} language - The locale code (e.g., 'en', 'bn').
- * @returns {Promise<Array>} An array of departments.
- */
-export const fetchDepartments = async (language = 'en') => {
-  const data = await fetchData(`api/department?lang=${language}`, { defaultReturnValue: [] });
-  // Ensure the final return value is always an array to prevent .map() errors.
-  return Array.isArray(data) ? data : data?.departments || [];
-};
-
-/**
- * Fetches a single department by its slug.
- * @param {string} slug - The department's slug.
- * @param {string} language - The locale code.
- * @returns {Promise<Object|null>} The department object or null if not found.
- */
-export const fetchDepartmentBySlug = async (slug, language = 'en') => {
-  if (!slug) {
-    console.warn("⚠️ fetchDepartmentBySlug: Missing slug parameter.");
-    return null;
-  }
-  return fetchData(`api/department/slug/${slug}?lang=${language}`, { defaultReturnValue: null });
+// Home পেজের ডেটা 'home' ট্যাগের অধীনে থাকবে
+export const fetchDynamicData = async (language = 'en') => {
+  return fetchData(`api/home?lang=${language}`, ['home']); // ✅ ট্যাগ যোগ করা হয়েছে
 };

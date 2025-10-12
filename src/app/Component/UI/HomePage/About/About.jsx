@@ -1,6 +1,8 @@
+
+
 // "use client";
-// import React from "react";
-// import { useTranslation } from "react-i18next"; // Import useTranslation hook
+// import React, { useEffect, useState } from "react";
+// import { useTranslation } from "react-i18next";
 // import Image from "next/image";
 // import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 // import Button from "@/app/Component/Shared/Buttons/Button";
@@ -9,18 +11,45 @@
 // import aboutObject from "@/assets/images/about_object.png";
 // import aboutShape1 from "@/assets/images/aboutShape1.png";
 // import aboutShape2 from "@/assets/images/aboutShape2.png";
+// import { fetchDynamicData } from "@/app/api/dynamicData,";
 
 // const About = ({ aboutSection }) => {
-//   const { t, i18n } = useTranslation(); // Access i18n context to get the current language
-//   const currentLanguage = i18n.language || "en"; // Default to 'en' if no language is set
+//   const { t, i18n } = useTranslation();
+//   const [section, setSection] = useState(aboutSection || null);
 
-//   // Extract the translations for the current language
-//   const translations = aboutSection?.translations?.[currentLanguage] || {};
+//   useEffect(() => {
+//     const fetchUpdatedAbout = async () => {
+//       try {
+//         const data = await fetchDynamicData(i18n.language || "en");
+//         console.log("Fetched about section:", data);
+//         if (data && data.aboutSection) setSection(data.aboutSection);
+//       } catch (e) {
+//         console.error("Error fetching about:", e);
+//       }
+//     };
 
-//   // Destructure translations for easier use
-//   const { title, subtitle, description, experience, services, images } =
-//     translations;
-//   const formattedImages = images?.map((image) => image.replace(/\\/g, "/"));
+//     fetchUpdatedAbout();
+//     const id = setInterval(fetchUpdatedAbout, 5000);
+//     return () => clearInterval(id);
+//   }, []);
+
+//   const currentLanguage = i18n.language || "en";
+//   const tr = (section && section.translations && section.translations[currentLanguage]) || {};
+
+//   const {
+//     title,
+//     subtitle,
+//     description,
+//     experience,
+//     services = [],
+//     images = [],
+//   } = tr;
+
+//   const BASE = (process.env.NEXT_PUBLIC_BACKEND_URL || "").replace(/\/+$/, "");
+//   const fmt = (p) => (p || "").replace(/\\/g, "/");
+//   const formattedImages = Array.isArray(images)
+//     ? images.map((img) => `${BASE}/${fmt(img)}`)
+//     : [];
 
 //   return (
 //     <div className="container py-12 lg:py-[100px] flex flex-wrap lg:flex-nowrap gap-10 items-center relative">
@@ -37,30 +66,30 @@
 //         <div className="grid-cols-1 md:grid-cols-2 gap-6 items-baseline hidden md:grid">
 //           {formattedImages?.[2] ? (
 //             <span className="pt-10 pl-10">
-//               <Image 
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[2]}`} 
-//               width={600} 
-//               height={600} 
-//               style={{ width: "100%" }} 
-//               alt="about image" 
-//               className="rounded-[35px] rounded-tl-none"
-//               unoptimized={true}
-//             />
+//               <Image
+//                 src={formattedImages[2]}
+//                 width={600}
+//                 height={600}
+//                 style={{ width: "100%" }}
+//                 alt="about image"
+//                 className="rounded-[35px] rounded-tl-none"
+//                 unoptimized={true}
+//               />
 //             </span>
 //           ) : (
 //             <div className="pt-10 pl-10 bg-gray-200 h-64 w-full"></div>
 //           )}
-//           {formattedImages?.[1] ? (
-//             <span className="">
-//               <Image 
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[1]}`} 
-//               width={600} 
-//               height={600} 
-//               style={{ width: "100%" }} 
-//               alt="about image" 
-//               className="h-full hidden md:block rounded-[35px] rounded-tr-none"
-//               unoptimized={true}
-//             />
+//             {formattedImages?.[1] ? (
+//             <span>
+//               <Image
+//                 src={formattedImages[1]}
+//                 width={600}
+//                 height={600}
+//                 style={{ width: "100%" }}
+//                 alt="about image"
+//                 className="h-full hidden md:block rounded-[35px] rounded-tr-none"
+//                 unoptimized={true}
+//               />
 //             </span>
 //           ) : (
 //             <div className="bg-gray-200 h-64 w-full hidden md:block"></div>
@@ -68,17 +97,17 @@
 //         </div>
 
 //         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start px-5">
-//           {formattedImages?.[0] ? (
+//            {formattedImages?.[0] ? (
 //             <span className="pb-10 pl-5 hidden md:block">
-//               <Image 
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${formattedImages[0]}`} 
-//               width={600} 
-//               height={600} 
-//               style={{ width: "100%" }} 
-//               alt="about image" 
-//               className="rounded-[35px] rounded-bl-none"
-//               unoptimized={true}
-//             />
+//               <Image
+//                 src={formattedImages[0]}
+//                 width={600}
+//                 height={600}
+//                 style={{ width: "100%" }}
+//                 alt="about image"
+//                 className="rounded-[35px] rounded-bl-none"
+//                 unoptimized={true}
+//               />
 //             </span>
 //           ) : (
 //             <div className="pb-10 pl-5 bg-gray-200 h-64 w-full hidden md:block"></div>
@@ -104,9 +133,9 @@
 //           {services && services.length > 0 ? services.map((service, index) => (
 //             <div key={index} className="border border-[#323290] rounded-md pr-3 flex items-center gap-4 overflow-hidden group">
 //               <div className="w-20 h-16 bg-[#323290]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
-//                 {service.serviceIcon && (
+//                 {service.icon && (
 //                   <Image 
-//                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${service.serviceIcon}`} 
+//                     src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${service.icon}`} 
 //                     width={36} 
 //                     height={36} 
 //                     alt={service.serviceTitle || "service icon"} 
@@ -142,8 +171,9 @@
 
 // export default About;
 
-"use client";
-import React, { useEffect, useState } from "react";
+"use client"; // useTranslation হুকের জন্য এটি থাকবে
+
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
@@ -153,31 +183,16 @@ import Button from "@/app/Component/Shared/Buttons/Button";
 import aboutObject from "@/assets/images/about_object.png";
 import aboutShape1 from "@/assets/images/aboutShape1.png";
 import aboutShape2 from "@/assets/images/aboutShape2.png";
-import { fetchDynamicData } from "@/app/api/dynamicData,";
 
+// ✅ FIX: ক্লায়েন্ট-সাইড ডেটা ফেচিং এবং useState/useEffect সরিয়ে ফেলা হয়েছে।
+// এটি এখন শুধু props এর উপর নির্ভরশীল একটি সাধারণ UI কম্পোনেন্ট।
 const About = ({ aboutSection }) => {
   const { t, i18n } = useTranslation();
-  const [section, setSection] = useState(aboutSection || null);
-
-  useEffect(() => {
-    const fetchUpdatedAbout = async () => {
-      try {
-        const data = await fetchDynamicData(i18n.language || "en");
-        console.log("Fetched about section:", data);
-        if (data && data.aboutSection) setSection(data.aboutSection);
-      } catch (e) {
-        console.error("Error fetching about:", e);
-      }
-    };
-
-    fetchUpdatedAbout();
-    const id = setInterval(fetchUpdatedAbout, 5000);
-    return () => clearInterval(id);
-  }, []);
-
   const currentLanguage = i18n.language || "en";
-  const tr = (section && section.translations && section.translations[currentLanguage]) || {};
 
+  // সরাসরি prop থেকে ডেটা ব্যবহার করা হচ্ছে
+  const tr = aboutSection?.translations?.[currentLanguage] || {};
+  
   const {
     title,
     subtitle,
@@ -221,7 +236,7 @@ const About = ({ aboutSection }) => {
           ) : (
             <div className="pt-10 pl-10 bg-gray-200 h-64 w-full"></div>
           )}
-            {formattedImages?.[1] ? (
+          {formattedImages?.[1] ? (
             <span>
               <Image
                 src={formattedImages[1]}
@@ -239,7 +254,7 @@ const About = ({ aboutSection }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start px-5">
-           {formattedImages?.[0] ? (
+          {formattedImages?.[0] ? (
             <span className="pb-10 pl-5 hidden md:block">
               <Image
                 src={formattedImages[0]}
@@ -271,7 +286,6 @@ const About = ({ aboutSection }) => {
         <p className="text-M-text-color font-jost text-base">{description || t("about.defaultDescription")}</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-2 max-w-[600px]">
-          {/* Render each service dynamically based on `services` */}
           {services && services.length > 0 ? services.map((service, index) => (
             <div key={index} className="border border-[#323290] rounded-md pr-3 flex items-center gap-4 overflow-hidden group">
               <div className="w-20 h-16 bg-[#323290]/10 flex items-center justify-center rounded-s-md rounded-r-[30px]">
@@ -289,7 +303,6 @@ const About = ({ aboutSection }) => {
               <h4 className="text-base text-M-heading-color">{service.serviceTitle}</h4>
             </div>
           )) : (
-            // Fallback content if no services are available
             <div className="col-span-2">
               <p className="text-M-text-color">{t("about.noServicesAvailable")}</p>
             </div>
