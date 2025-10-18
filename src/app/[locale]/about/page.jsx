@@ -9,39 +9,48 @@ import { fetchReviews } from "@/app/api/review";
 import { fetchAboutData, fetchDynamicData } from "@/app/api/dynamicData,";
 
 
-export const dynamic = 'force-dynamic';
+// ✅ Instead of force-dynamic, use cache-based revalidation
+export const revalidate = 300; // 5 min cache
 
+// Shared data loader (avoid double API calls)
+async function getAboutPageData(locale) {
+  const [reviews, dynamicData, aboutData] = await Promise.all([
+    fetchReviews(locale),
+    fetchDynamicData(locale),
+    fetchAboutData(locale),
+  ]);
+
+  return { reviews, dynamicData, aboutData };
+}
+
+// ✅ SEO metadata
 export async function generateMetadata({ params: { locale } }) {
-  const dynamicAboutData = await fetchAboutData(locale);
-  const metaTitle = dynamicAboutData?.metaTitle?.[locale] || "About Us - Mukti Hospital";
-  const metaDescription = dynamicAboutData?.metaDescription?.[locale] || "Default about us page description for SEO.";
-
+  const aboutData = await fetchAboutData(locale);
   return {
-    title: metaTitle,
-    description: metaDescription,
+    title: aboutData?.metaTitle?.[locale] || "About Us - Mukti Hospital",
+    description:
+      aboutData?.metaDescription?.[locale] ||
+      "Default about us page description for SEO.",
   };
 }
 
-const AboutUs = async ({ params: { locale } }) => {
-  const reviews = await fetchReviews(locale);
-  const dynamicData = await fetchDynamicData(locale);
-  const dynamicAboutData = await fetchAboutData(locale);
-  
+// ✅ Server Component
+export default async function AboutUs({ params: { locale } }) {
+  const { reviews, dynamicData, aboutData } = await getAboutPageData(locale);
+
   const aboutSection = dynamicData?.aboutSection || {};
   const whyChooseUsSection = dynamicData?.whyChooseUsSection || {};
   const appointmentProcess = dynamicData?.appointmentProcess || {};
-  
+
   return (
     <div>
-      <CommonHero pageName="About Us" aboutPage={dynamicAboutData || {}} />
+      <CommonHero pageName="About Us" aboutPage={aboutData} />
       <About aboutSection={aboutSection} />
-      <Appointment aboutPage={dynamicAboutData || {}} />
-      <WhoWeAre whoWeAreSection={dynamicAboutData || {}} />
+      <Appointment aboutPage={aboutData} />
+      <WhoWeAre whoWeAreSection={aboutData} />
       <WhyChooseUs whyChooseUsSection={whyChooseUsSection} />
       <AppointmentProcess appointmentProcess={appointmentProcess} />
       <Testimonials reviews={reviews || []} />
     </div>
   );
-};
-
-export default AboutUs;
+}

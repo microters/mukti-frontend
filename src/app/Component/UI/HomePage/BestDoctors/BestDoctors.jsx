@@ -1,3 +1,5 @@
+// BestDoctors.jsx (FIXED)
+
 'use client';
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -8,13 +10,13 @@ import { useTranslation } from "react-i18next";
 import Skeleton from "react-loading-skeleton";
 import Button from "@/app/Component/Shared/Buttons/Button";
 
-const BestDoctors = ({ doctors }) => {
-  const { t, i18n } = useTranslation();
+// ✅ FIX: এখানে doctors prop এর জন্য default value হিসেবে একটি খালি অ্যারে ([]) সেট করা হয়েছে।
+const BestDoctors = ({ doctors = [] }) => {
+  const { t, i18n  } = useTranslation();
   const currentLanguage = i18n.language || "en";
 
   const [activeDepartment, setActiveDepartment] = useState("all");
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
-  console.log("All doctors:", doctors)
 
   // Departments including translated "All"
   const departments = [
@@ -56,7 +58,7 @@ const BestDoctors = ({ doctors }) => {
         {/* Tabs */}
         <div className="p-4 mx-auto mt-8">
           <div className="flex-col sm:flex-row flex-wrap flex justify-center space-y-0 md:space-x-6 lg:space-x-12 py-4 px-3 md:px-7 bg-M-heading-color rounded-md">
-            {departments.length > 0 ? (
+            {departments.length > 1 ? ( // Check > 1 because "all" is always there
               departments.map((department, index) => {
                 const isAll = department === "all";
                 const displayLabel = isAll ? t("doctors.all") : department;
@@ -75,18 +77,31 @@ const BestDoctors = ({ doctors }) => {
                 );
               })
             ) : (
-              <Skeleton width={150} height={40} count={5} />
+              <div className="flex justify-center gap-4">
+                 <Skeleton width={100} height={40} />
+                 <Skeleton width={100} height={40} />
+                 <Skeleton width={100} height={40} />
+              </div>
             )}
           </div>
 
           {/* Doctor Grid */}
           <div className="mt-4">
             {displayedDoctors.length === 0 ? (
-              <p className="text-center text-lg font-bold">
-                {t("doctors.noDoctorsAvailable", {
-                  department: activeDepartment,
-                })}
-              </p>
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                 {/* Skeleton Loader for doctors */}
+                 {[...Array(3)].map((_, i) => (
+                    <div key={i} className="border-2 rounded-md p-6">
+                       <div className="flex gap-4">
+                         <Skeleton circle width={96} height={96} />
+                         <div className="flex-1">
+                           <Skeleton height={20} width="80%" />
+                           <Skeleton height={15} width="60%" />
+                         </div>
+                       </div>
+                    </div>
+                 ))}
+               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedDoctors.map((doctor) => {
@@ -135,7 +150,6 @@ const BestDoctors = ({ doctors }) => {
                             <Icon icon="oui:index-open" width="24" className="text-M-heading-color shrink-0 relative top-[2px]" />
                             <span className="line-clamp-2">{data.academicQualification || t("doctors.noQualification")}</span>
                           </p>
-                          {/* <button className="text-sm font-jost text-M-heading-color">Show more</button> */}
 
                           <p className="text-M-text-color text-base font-normal font-jost flex items-center gap-2 mt-2 capitalize">
                             <Icon icon="mdi:location-on-outline" width="24" className="text-M-heading-color" />
