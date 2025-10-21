@@ -55,7 +55,7 @@ const Signin = () => {
       
       // Redirect to dashboard after a short delay to show loading
       setTimeout(() => {
-        window.location.href = "http://app.muktihospital.com/";
+        window.location.href = "https://app.muktihospital.com/";
       }, 1000);
     }
   }, []);
@@ -144,7 +144,7 @@ const Signin = () => {
         // Redirect based on current hostname (local or live)
         const redirectUrl = window.location.hostname === "localhost"
           ? `http://localhost:3001?token=${response.token}`  // If localhost, redirect to local site
-          : `http://app.muktihospital.com?token=${response.token}`;  // Else redirect to live site
+          : `https://app.muktihospital.com?token=${response.token}`;  // Else redirect to live site
   
         setTimeout(() => {
           window.location.href = redirectUrl;
