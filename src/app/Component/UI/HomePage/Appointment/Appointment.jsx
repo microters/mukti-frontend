@@ -62,7 +62,7 @@ const Appointment = ({ appointmentSection }) => { // ✅ prop ব্যবহা
     }
 
     try {
-      const response = await fetch(`https://api.muktihospital.com/api/callback`, {
+      const response = await fetch(`http://localhost:5000/api/callback`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
