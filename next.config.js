@@ -47,7 +47,7 @@ const nextConfig = {
     return config;
   },
 
-  // Additional custom configurations (optional)
+
   env: {
     CUSTOM_ENV_VAR: 'value', // Example of custom environment variable
   },
