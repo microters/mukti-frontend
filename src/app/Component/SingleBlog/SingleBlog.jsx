@@ -1,9 +1,9 @@
 'use client'
 import BlogSidebar from "@/app/Component/Shared/BlogSidebar/BlogSidebar";
-import authorImage from "@/assets/images/client2.png"; // Assuming this is a generic placeholder for comments
+import authorImage from "@/assets/images/client2.png";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import Link from "next/link"; // Changed from "next/link" to just "Link" if it's not a direct import. Keep "Link" if it's next/link.
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify"; // Added for notifications
 import "react-toastify/dist/ReactToastify.css"; // Added for notifications
@@ -435,8 +435,8 @@ const SingleBlog = ({ blogs, singleBlogs }) => {
                                             key={comment.id} 
                                             comment={comment} 
                                             blogId={singleBlogs.id} 
-                                            onPostCommentOrReply={postCommentOrReply} // Pass the common post function
-                                            level={0} // Top-level comments start at level 0
+                                            onPostCommentOrReply={postCommentOrReply}
+                                            level={0}
                                         />
                                     ))
                                 )}

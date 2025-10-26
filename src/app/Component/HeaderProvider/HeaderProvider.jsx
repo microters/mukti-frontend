@@ -256,7 +256,7 @@ const HeaderProvider = ({ header, departments }) => {
                   <img
                     src={`http://api.muktihospital.com${user.profilePhoto}`}
                     alt="User Profile"
-                    className="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full object-cover"
                   />
                 ) : (
                   <Icon
