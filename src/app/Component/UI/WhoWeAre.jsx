@@ -48,9 +48,9 @@ const WhoWeAre = ({whoWeAreSection}) => { // ✅ prop ব্যবহার ক�
 
         <div className="mt-10">
           {/* Tab List */}
-          <ul className="bg-[#F9FAFB] py-3 px-10 flex items-center justify-center gap-6 max-w-[600px] mx-auto rounded-md">
+          <ul className="bg-[#F9FAFB] py-3 px-5 flex items-center justify-center gap-6 max-w-[800px] mx-auto rounded-md">
             {tabs.map((tab, index) => (
-              <li key={tab.id} className="relative">
+              <li key={tab.id} className="relative flex-grow flex justify-center">
                 <button
                   className={`px-4 py-2 font-jost font-normal text-lg rounded-md transition-colors duration-300 ${
                     activeTab === tab.id
@@ -90,6 +90,7 @@ const WhoWeAre = ({whoWeAreSection}) => { // ✅ prop ব্যবহার ক�
                 width={500}
                 height={400}
                 className="w-full h-auto"
+                unoptimized={true}
               />
             </div>
           </div>

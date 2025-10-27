@@ -176,6 +176,7 @@ const Appointment = ({ aboutPage }) => {
         src={shape4}
         alt="shape4"
         className="absolute right-0 top-0 z-0 hidden md:block"
+        unoptimized={true}
       />
       <div className="container relative">
         <div className="grid grid-cols-1 items-center lg:grid-cols-3 space-y-5">
@@ -185,12 +186,14 @@ const Appointment = ({ aboutPage }) => {
               width={600}
               height={600}
               alt="mobileApp"
-              className="mx-auto relative z-10"
+              className="mx-auto relative z-10 rounded-lg border-4 border-[#ebf7f6]"
+              unoptimized={true}
             />
             <Image
               src={shape5}
               alt="shape5"
               className="absolute left-0 top-[10%] z-0 animate-pulse hidden md:block"
+              unoptimized={true}
             />
           </div>
           <div>

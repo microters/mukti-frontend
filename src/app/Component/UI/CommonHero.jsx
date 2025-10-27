@@ -15,7 +15,7 @@ const CommonHero = ({pageName = 'pageName', aboutPage}) => {
   const aboutHeroImage = `${process.env.NEXT_PUBLIC_BACKEND_URL}${heroImage}`;
   return (
     <div className="bg-cover bg-top" style={{ backgroundImage: `url(${aboutHeroImage})` }}>
-      <div className="pt-[80px] lg:pt-[100px] pb-20 md:pb-32 lg:pb-[120px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
+      <div className="pt-[100px] lg:pt-[130px] pb-[100px] md:pb-32 lg:pb-[150px] px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
         {/* Shapes */}
         <Image
           src={tabletIcon}

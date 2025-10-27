@@ -45,6 +45,7 @@ const About = ({ aboutSection }) => {
         src={aboutObject}
         alt="about"
         className="hidden xl:block absolute right-0 bottom-[10%] -z-10 animate-spin"
+        unoptimized={true}
       />
 
       <div className="w-full max-w-[500px] mx-auto lg:w-5/12 md:space-y-6 relative before:size-0 lg:before:size-8 before:bg-M-secondary-color before:rounded-md before:rotate-45 before:absolute before:top-[50%] before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:z-[-1]">

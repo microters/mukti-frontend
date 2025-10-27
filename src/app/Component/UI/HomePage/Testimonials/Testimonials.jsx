@@ -89,6 +89,7 @@ const Testimonials = ({ reviews = [] }) => {
                           alt={review.name}
                           width={96}
                           height={96}
+                          unoptimized={true}
                         />
                         <div>
                           <h3 className="text-M-heading-color text-xl m-0">{review.name}</h3>

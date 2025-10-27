@@ -49,7 +49,7 @@ const WhyChooseUs = ({ whyChooseUsSection }) => { // ✅ prop ব্যবহা
             </div>
           )}
 
-          <Image src={shapeimg} alt="Background Shape" className="absolute left-0 bottom-0 z-0" />
+          <Image src={shapeimg} alt="Background Shape" className="absolute left-0 bottom-0 z-0" unoptimized={true}/>
         </div>
         <div>
           <SectionHeading

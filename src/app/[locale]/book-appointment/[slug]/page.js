@@ -14,6 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { sendOtp, loginUser, registerUser } from "../../utils/api";
 import { jsPDF } from 'jspdf';
+import { AppointmentPrintLayout } from "@/app/Component/AppointmentPrintLayout";
 
 const Appointment = () => {
   const params = useParams();
@@ -42,7 +43,8 @@ const Appointment = () => {
   const [patientExists, setPatientExists] = useState(false);
   const [patientId, setPatientId] = useState(null);
   const [value, setValue] = useState(null);
-  const [appointmentId, setAppointmentId] = useState(null); // নতুন state
+  const [appointmentId, setAppointmentId] = useState(null); 
+  const [isPrinting, setIsPrinting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -169,149 +171,158 @@ const Appointment = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const generateAppointmentText = (formData, doctor, value, selectedDay, language, appointmentId) => {
-    const appointmentDate = value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
+//   const generateAppointmentText = (formData, doctor, value, selectedDay, language, appointmentId) => {
+//     const appointmentDate = value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", {
+//       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+//     });
   
-    const formatTime = (time) => {
-      if (!time || typeof time !== "string" || !/^\d{2}:\d{2}$/.test(time)) return "N/A";
-      const [hours, minutes] = time.split(":");
-      const date = new Date();
-      date.setHours(+hours);
-      date.setMinutes(+minutes);
-      return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+//     const formatTime = (time) => {
+//       if (!time || typeof time !== "string" || !/^\d{2}:\d{2}$/.test(time)) return "N/A";
+//       const [hours, minutes] = time.split(":");
+//       const date = new Date();
+//       date.setHours(+hours);
+//       date.setMinutes(+minutes);
+//       return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+//     };
+  
+//     const timeSlot = (selectedDay && selectedDay.startTime && selectedDay.endTime)
+//       ? `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`
+//       : (language === "bn" ? "উপলব্ধ নয়" : "Not Available");
+  
+//     const doctorTranslations = doctor?.translations || {};
+//     const name = doctorTranslations?.name || doctor?.name;
+//     const department = doctorTranslations?.department || doctor?.department;
+//     const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
+  
+//     const referenceId = appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
+  
+//     if (language === "bn") {
+//       return {
+//         content: `
+// অ্যাপয়েন্টমেন্ট বিবরণ
+// ------------------
+// হাসপাতাল: মুক্তি হাসপাতাল
+
+// ডাক্তারের তথ্য:
+// নাম: ${name}
+// বিভাগ: ${department}
+// যোগ্যতা: ${academicQualification}
+
+// রোগীর তথ্য:
+// নাম: ${formData.name}
+// ফোন: ${formData.mobile}
+// বয়স: ${formData.age || "উল্লেখ নেই"}
+// ওজন: ${formData.weight || "উল্লেখ নেই"}
+// ঠিকানা: ${formData.address || "উল্লেখ নেই"}
+// ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
+
+// অ্যাপয়েন্টমেন্ট শেডিউল:
+// তারিখ: ${appointmentDate}
+// সময়: ${timeSlot}
+// ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
+
+// নির্দেশনা:
+// • অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
+// • সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
+// • যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
+
+// রেফারেন্স আইডি: ${referenceId}
+//         `,
+//         referenceId
+//       };
+//     } else {
+//       return {
+//         content: `
+// APPOINTMENT DETAILS
+// ------------------
+// Hospital: Mukti Hospital
+
+// Doctor Information:
+// Name: ${name}
+// Department: ${department}
+// Qualification: ${academicQualification}
+
+// Patient Information:
+// Name: ${formData.name}
+// Phone: ${formData.mobile}
+// Age: ${formData.age || "N/A"}
+// Weight: ${formData.weight || "N/A"}
+// Address: ${formData.address || "N/A"}
+// Reason for Visit: ${formData.reason || "N/A"}
+
+// Appointment Schedule:
+// Date: ${appointmentDate}
+// Time: ${timeSlot}
+// Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
+
+// Instructions:
+// • Please arrive 15 minutes before your appointment time
+// • Bring any previous medical records if available
+// • For any queries, contact: +88 02 XXXX XXXX
+
+// Reference ID: ${referenceId}
+//         `,
+//         referenceId
+//       };
+//     }
+//   };
+
+  // const downloadAsText = (formData, doctor, value, selectedDay, language, appointmentId) => {
+  //   const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
+  //   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  //   const url = URL.createObjectURL(blob);
+  //   const a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = `Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.txt`;
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   setTimeout(() => {
+  //     document.body.removeChild(a);
+  //     URL.revokeObjectURL(url);
+  //   }, 100);
+  //   return referenceId;
+  // };
+  
+  // const downloadAsPdf = async (formData, doctor, value, selectedDay, language, appointmentId) => {
+  //   try {
+  //     const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
+  //     const pdf = new jsPDF();
+  //     pdf.setFontSize(22);
+  //     pdf.setTextColor(0, 51, 102);
+  //     pdf.text("Mukti Hospital", 105, 20, { align: 'center' });
+  //     pdf.setFontSize(12);
+  //     pdf.setTextColor(0, 0, 0);
+  
+  //     const contentLines = content.split('\n');
+  //     let y = 30;
+  //     contentLines.forEach(line => {
+  //       if (line.includes('------------------')) {
+  //         pdf.setDrawColor(0, 51, 102);
+  //         pdf.line(20, y, 190, y);
+  //         y += 5;
+  //       } else {
+  //         pdf.text(line, 20, y);
+  //         y += 6;
+  //       }
+  //     });
+  
+  //     pdf.text(`Reference ID: ${appointmentId}`, 10, 287);
+  //     pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
+  //     return referenceId;
+  //   } catch (error) {
+  //     console.error("Error generating PDF:", error);
+  //     return downloadAsText(formData, doctor, value, selectedDay, language, appointmentId);
+  //   }
+  // };
+
+  useEffect(() => {
+    const handleAfterPrint = () => {
+      setIsPrinting(false);
+      console.log("Print dialog closed.");
     };
-  
-    const timeSlot = (selectedDay && selectedDay.startTime && selectedDay.endTime)
-      ? `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`
-      : (language === "bn" ? "উপলব্ধ নয়" : "Not Available");
-  
-    const doctorTranslations = doctor?.translations || {};
-    const name = doctorTranslations?.name || doctor?.name;
-    const department = doctorTranslations?.department || doctor?.department;
-    const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
-  
-    const referenceId = appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
-  
-    if (language === "bn") {
-      return {
-        content: `
-অ্যাপয়েন্টমেন্ট বিবরণ
-------------------
-হাসপাতাল: মুক্তি হাসপাতাল
-
-ডাক্তারের তথ্য:
-নাম: ${name}
-বিভাগ: ${department}
-যোগ্যতা: ${academicQualification}
-
-রোগীর তথ্য:
-নাম: ${formData.name}
-ফোন: ${formData.mobile}
-বয়স: ${formData.age || "উল্লেখ নেই"}
-ওজন: ${formData.weight || "উল্লেখ নেই"}
-ঠিকানা: ${formData.address || "উল্লেখ নেই"}
-ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
-
-অ্যাপয়েন্টমেন্ট শেডিউল:
-তারিখ: ${appointmentDate}
-সময়: ${timeSlot}
-ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
-
-নির্দেশনা:
-• অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
-• সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
-• যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
-
-রেফারেন্স আইডি: ${referenceId}
-        `,
-        referenceId
-      };
-    } else {
-      return {
-        content: `
-APPOINTMENT DETAILS
-------------------
-Hospital: Mukti Hospital
-
-Doctor Information:
-Name: ${name}
-Department: ${department}
-Qualification: ${academicQualification}
-
-Patient Information:
-Name: ${formData.name}
-Phone: ${formData.mobile}
-Age: ${formData.age || "N/A"}
-Weight: ${formData.weight || "N/A"}
-Address: ${formData.address || "N/A"}
-Reason for Visit: ${formData.reason || "N/A"}
-
-Appointment Schedule:
-Date: ${appointmentDate}
-Time: ${timeSlot}
-Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
-
-Instructions:
-• Please arrive 15 minutes before your appointment time
-• Bring any previous medical records if available
-• For any queries, contact: +88 02 XXXX XXXX
-
-Reference ID: ${referenceId}
-        `,
-        referenceId
-      };
-    }
-  };
-
-  const downloadAsText = (formData, doctor, value, selectedDay, language, appointmentId) => {
-    const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
-    return referenceId;
-  };
-  
-  const downloadAsPdf = async (formData, doctor, value, selectedDay, language, appointmentId) => {
-    try {
-      const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
-      const pdf = new jsPDF();
-      pdf.setFontSize(22);
-      pdf.setTextColor(0, 51, 102);
-      pdf.text("Mukti Hospital", 105, 20, { align: 'center' });
-      pdf.setFontSize(12);
-      pdf.setTextColor(0, 0, 0);
-  
-      const contentLines = content.split('\n');
-      let y = 30;
-      contentLines.forEach(line => {
-        if (line.includes('------------------')) {
-          pdf.setDrawColor(0, 51, 102);
-          pdf.line(20, y, 190, y);
-          y += 5;
-        } else {
-          pdf.text(line, 20, y);
-          y += 6;
-        }
-      });
-  
-      pdf.text(`Reference ID: ${appointmentId}`, 10, 287);
-      pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
-      return referenceId;
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-      return downloadAsText(formData, doctor, value, selectedDay, language, appointmentId);
-    }
-  };
+    window.addEventListener('afterprint', handleAfterPrint);
+    return () => window.removeEventListener('afterprint', handleAfterPrint);
+  }, []); // Runs once
 
   const downloadAppointmentInfo = async (formData, doctor, value, selectedDay, language, format, appointmentRef) => {
     try {
@@ -977,111 +988,177 @@ Reference ID: ${referenceId}
               </div>
             )}
             {currentStep === 5 && (
-              <div className="mb-10">
-                <div className="rounded-md bg-white">
-                  <h3 className="border-b border-M-text-color/20 p-7 pb-5 text-xl flex justify-between items-center">{translations.stepLabels[4]}</h3>
-                  <div className="p-7">
-                    <div className="max-w-[720px] mx-auto w-full">
-                      <div className="border border-M-text-color/20 rounded-md">
-                        <div className="px-5 py-3 border-b border-M-text-color/20">
-                          <h4 className="text-lg text-M-heading-color mb-2">{translations.bookingInfo}</h4>
-                          <p className="font-jost">
-                            {language === "bn" ? `${name} এর সাথে আপনার অ্যাপয়েন্টমেন্ট নিশ্চিত করতে নিচের সাবমিট বাটনে ক্লিক করুন।` : `Click the submit button below to confirm your booking with ${name}.`}
-                          </p>
-                        </div>
-                        <div className="px-5 py-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.patientName}</h5>
-                            <p className="text-M-text-color text-base font-jost">{formData.name || "N/A"}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.age}</h5>
-                            <p className="text-M-text-color text-base font-jost">{formData.age || "N/A"}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.phone}</h5>
-                            <p className="text-M-text-color text-base font-jost">{formData.mobile || "N/A"}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "বিভাগ" : "Department"}</h5>
-                            <p className="text-M-text-color text-base font-jost">{department}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.address}</h5>
-                            <p className="text-M-text-color text-base font-jost">{formData.address || "N/A"}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "কারণ" : "Reason"}</h5>
-                            <p className="text-M-text-color text-base font-jost">{formData.reason || "N/A"}</p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.appointmentDate}</h5>
-                            <p className="text-M-text-color text-base font-jost">
-                              {value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                            </p>
-                          </div>
-                          <div>
-                            <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "সময়" : "Time"}</h5>
-                            <p className="text-M-text-color text-base font-jost">
-                              {(() => {
-                                const selectedDayNumber = value.getDay();
-                                const selectedDay = scheduleWithDayNumbers.find(item => item.dayNumber === selectedDayNumber);
-                                if (!selectedDay) return "N/A";
-                                const formatTime = (time) => {
-                                  if (!time || !/^([01]?\d|2[0-3]):([0-5]\d)$/.test(time)) return time;
-                                  return new Date(`2025-01-01T${time}:00`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-                                };
-                                return `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`;
-                              })()}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="px-5 py-4 border-t border-M-text-color/20 text-center">
-                          <p className="text-gray-500 text-sm mb-2">{language === "bn" ? "অ্যাপয়েন্টমেন্ট বুক এবং ডাউনলোড করতে নিচের সাবমিট বাটনে ক্লিক করুন" : "Click the submit button below to book and download your appointment information"}</p>
-                        </div>
+        <div className="mb-10">
+          <div className="rounded-md bg-white">
+            <h3 className="border-b border-M-text-color/20 p-7 pb-5 text-xl flex justify-between items-center">
+              {translations.stepLabels[4]}
+            </h3>
+            <div className="p-7">
+              
+              {/* --- TERNARY OPERATOR FOR SUCCESS --- */}
+              {!success ? (
+                // --- ORIGINAL VIEW: Review before submit ---
+                <div className="max-w-[720px] mx-auto w-full">
+                  <div className="border border-M-text-color/20 rounded-md">
+                    <div className="px-5 py-3 border-b border-M-text-color/20">
+                      <h4 className="text-lg text-M-heading-color mb-2">{translations.bookingInfo}</h4>
+                      <p className="font-jost">
+                        {language === "bn" 
+                          ? `${doctor?.translations?.name || doctor?.name} এর সাথে আপনার অ্যাপয়েন্টমেন্ট নিশ্চিত করতে নিচের সাবমিট বাটনে ক্লিক করুন।` 
+                          : `Click the submit button below to confirm your booking with ${doctor?.translations?.name || doctor?.name}.`
+                        }
+                      </p>
+                    </div>
+                    <div className="px-5 py-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+                      {/* Patient Name */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.patientName}</h5>
+                        <p className="text-M-text-color text-base font-jost">{formData.name || "N/A"}</p>
+                      </div>
+                      {/* Age */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.age}</h5>
+                        <p className="text-M-text-color text-base font-jost">{formData.age || "N/A"}</p>
+                      </div>
+                      {/* Phone */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.phone}</h5>
+                        <p className="text-M-text-color text-base font-jost">{formData.mobile || "N/A"}</p>
+                      </div>
+                      {/* Department */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "বিভাগ" : "Department"}</h5>
+                        <p className="text-M-text-color text-base font-jost">{doctor?.translations?.department || "N/A"}</p>
+                      </div>
+                      {/* Address */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.address}</h5>
+                        <p className="text-M-text-color text-base font-jost">{formData.address || "N/A"}</p>
+                      </div>
+                      {/* Reason */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "কারণ" : "Reason"}</h5>
+                        <p className="text-M-text-color text-base font-jost">{formData.reason || "N/A"}</p>
+                      </div>
+                      {/* Date */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{translations.appointmentDate}</h5>
+                        <p className="text-M-text-color text-base font-jost">
+                          {value?.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}
+                        </p>
+                      </div>
+                      {/* Time */}
+                      <div>
+                        <h5 className="text-M-heading-color text-lg font-bold font-jost">{language === "bn" ? "সময়" : "Time"}</h5>
+                        <p className="text-M-text-color text-base font-jost">
+                          {(() => {
+                            if (!value) return "N/A";
+                            const selectedDayNumber = value.getDay();
+                            const selectedDay = scheduleWithDayNumbers.find(item => item.dayNumber === selectedDayNumber);
+                            if (!selectedDay) return "N/A";
+                            const formatTime = (time) => {
+                              if (!time || !/^([01]?\d|2[0-3]):([0-5]\d)$/.test(time)) return time;
+                              return new Date(`2025-01-01T${time}:00`).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+                            };
+                            return `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`;
+                          })()}
+                        </p>
                       </div>
                     </div>
+                    {/* ... (rest of the review info) ... */}
                   </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                // --- NEW VIEW: Success message and print button ---
+                <div className="text-center p-8">
+                  <Icon icon="clarity:success-standard-line" className="text-6xl text-green-500 mx-auto" />
+                  <h2 className="text-2xl font-bold mt-4">
+                    {language === "bn" ? "অ্যাপয়েন্টমেন্ট সফল হয়েছে!" : "Appointment Confirmed!"}
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    {language === "bn" 
+                      ? `আপনার অ্যাপয়েন্টমেন্ট আইডি: ${appointmentId || 'N/A'}` 
+                      : `Your Appointment ID: ${appointmentId || 'N/A'}`
+                    }
+                  </p>
+                  
+                  <div className="mt-6 flex justify-center gap-4">
+                     <button
+                       type="button" // Important: not submit
+                       onClick={downloadAppointmentInfo} // Call new print function
+                       disabled={isDownloading}
+                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all disabled:opacity-50"
+                     >
+                       {isDownloading ? (language === "bn" ? "প্রস্তুত হচ্ছে..." : "Preparing...")
+                         : (language === "bn" ? "স্লিপ প্রিন্ট/ডাউনলোড করুন" : "Print / Download Slip")
+                       }
+                     </button>
+                     <Link href="/" className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all">
+                       {language === "bn" ? "হোমে যান" : "Go Home"}
+                     </Link>
+                  </div>
+                </div>
+              )}
+              {/* --- END TERNARY --- */}
+            </div>
+          </div>
+        </div>
+      )}
           </div>
 
           <div className="flex justify-between border-t border-M-text-color/10 pt-8">
-            {currentStep > 1 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                className="flex items-center justify-center px-4 py-3 bg-M-heading-color text-white rounded hover:bg-M-heading-color font-jost font-medium text-base min-w-24 uppercase"
-                disabled={submitting || verifyingOtp}
-              >
-                <Icon icon="mynaui:chevron-left" width="24" height="24" />
-                {translations.previous}
-              </button>
-            )}
-            {currentStep < stepLabels.length ? (
-              <button
-                type="button"
-                onClick={nextStep}
-                className="ml-auto flex items-center justify-center px-4 py-3 bg-M-primary-color text-white rounded hover:bg-M-primary-color font-jost font-medium text-base min-w-24 uppercase"
-                disabled={submitting || verifyingOtp || (currentStep === 4 && !isOtpSent)}
-              >
-                {translations.next}
-                <Icon icon="mynaui:chevron-right" width="24" height="24" />
-              </button>
-            ) : (
-              <button
-                type="button" // Changed to type="button" to prevent form submission
-                onClick={handleSubmit}
-                disabled={submitting}
-                className="ml-auto px-4 py-3 bg-M-primary-color text-white rounded hover:bg-M-primary-color/90 transition-all duration-300 font-jost font-medium text-base min-w-24 uppercase"
-              >
-                {submitting ? translations.submitting : translations.submit}
-              </button>
-            )}
+            {currentStep > 1 && !success && (
+    <button
+      type="button"
+      onClick={prevStep}
+      className="flex items-center justify-center px-4 py-3 bg-M-heading-color text-white rounded hover:bg-M-heading-color font-jost font-medium text-base min-w-24 uppercase disabled:opacity-50"
+      disabled={submitting || verifyingOtp || isDownloading} // Disable during any loading
+    >
+      <Icon icon="mynaui:chevron-left" width="24" height="24" />
+      {translations.previous}
+    </button>
+  )}
+
+  {/* --- 2. NEXT BUTTON --- */}
+  {/* Show ONLY on steps 1, 2, and 3 */}
+  {currentStep < 4 && (
+    <button
+      type="button"
+      onClick={nextStep}
+      className="ml-auto flex items-center justify-center px-4 py-3 bg-M-primary-color text-white rounded hover:bg-M-primary-color font-jost font-medium text-base min-w-24 uppercase disabled:opacity-50"
+      // Disable 'Next' on step 3 (Patient Info) if mobile is invalid
+      disabled={submitting || (currentStep === 3 && !isValid)}
+    >
+      {translations.next}
+      <Icon icon="mynaui:chevron-right" width="24" height="24" />
+    </button>
+  )}
+
+  {/* --- 3. SUBMIT BUTTON --- */}
+  {/* Show ONLY on step 5 AND before success */}
+  {currentStep === 5 && !success && (
+    <button
+      type="button" // Use "button" to prevent default form submission
+      onClick={handleSubmit} // This calls your API
+      disabled={submitting || isDownloading}
+      className="ml-auto px-4 py-3 bg-M-primary-color text-white rounded hover:bg-M-primary-color/90 transition-all duration-300 font-jost font-medium text-base min-w-24 uppercase disabled:opacity-50"
+    >
+      {submitting ? translations.submitting : translations.submit}
+    </button>
+  )}
           </div>
         </div>
       </form>
+      {isPrinting && (
+        <AppointmentPrintLayout
+          className="appointment-print-layout" // This class is used in the CSS
+          formData={formData}
+          doctor={doctor}
+          value={value} // The selected date
+          language={language}
+          appointmentId={appointmentId} // Pass the confirmed ID
+        />
+      )}
     </div>
   );
 };

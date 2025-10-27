@@ -10,7 +10,7 @@ const SectionHeading = ({
       <h6 className="text-base text-M-secondary-color font-medium font-jost uppercase mb-3">
         {subtitle}
       </h6>
-      <h2 className="font-jost font-bold text-3xl sm:text-4xl md:text-5xl xl:text-6xl text-M-heading-color capitalize">
+      <h2 className="font-jost font-bold text-3xl sm:text-4xl md:text-5xl xl:text-6xl text-M-heading-color capitalize max-w-[1000px] mx-auto">
         {heading}
       </h2>
     </div>
