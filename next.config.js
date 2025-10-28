@@ -3,9 +3,9 @@ const path = require('path');
 
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
+  // experimental: {
+  //   appDir: true,
+  // },
 
   // Image optimization settings
   images: {
@@ -42,10 +42,10 @@ const nextConfig = {
   trailingSlash: true, // This helps keep `/bn` from breaking
 
   // Webpack configuration (optional, for custom path aliases)
-  // webpack(config) {
-  //   config.resolve.alias['@'] = path.join(__dirname, 'src');
-  //   return config;
-  // },
+  webpack(config) {
+    config.resolve.alias['@'] = path.join(__dirname, 'src');
+    return config;
+  },
 
 
   env: {

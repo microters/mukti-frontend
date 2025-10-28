@@ -22,7 +22,7 @@ export async function generateStaticParams() {
 // ✅ FIX: ফাংশন সিগনেচার পরিবর্তন করে শুধু 'params' নিন
 export default async function RootLayout({ children, params }) {
   // ✅ FIX: 'locale' কে ফাংশনের ভেতরে ডিফল্ট মান দিয়ে extract করুন
-  const { locale = "en" }  = params;
+  const { locale = "en" }  = await params;
   const direction = dir(locale);
   const i18nNamespaces = ["home"];
 
