@@ -3,15 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import Button from "../Buttons/Button";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
 const DoctorsCardGrid = ({ doctor }) => {
-  console.log("doctor card", doctor);
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language || "en";
-  console.log(currentLanguage);
 
   if (!doctor || !doctor.translations) return null;
   const doctorData = doctor.translations[currentLanguage] || {};
@@ -27,9 +24,8 @@ const DoctorsCardGrid = ({ doctor }) => {
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : "/default-profile-photo.png";
     const slug = doctor.slug
-    console.log(slug);
-  const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
-  const appointmentLink = `/book-appointment/${slug}`;
+    const profileLink = doctor.slug ? `/doctor/${doctor.slug}` : "#";
+    const appointmentLink = `/book-appointment/${slug}`;
   return (
     <div key={doctor.id} className="h-full">
       <div className="w-full flex flex-col justify-between h-full border border-slate-200 p-7 rounded-md text-center">

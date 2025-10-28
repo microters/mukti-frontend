@@ -24,7 +24,9 @@ async function getAboutPageData(locale) {
 }
 
 // ✅ SEO metadata
-export async function generateMetadata({ params: { locale } }) {
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
   const aboutData = await fetchAboutData(locale);
   return {
     title: aboutData?.metaTitle?.[locale] || "About Us - Mukti Hospital",
@@ -35,7 +37,9 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 // ✅ Server Component
-export default async function AboutUs({ params: { locale } }) {
+export default async function AboutUs({ params }) {
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
   const { reviews, dynamicData, aboutData } = await getAboutPageData(locale);
 
   const aboutSection = dynamicData?.aboutSection || {};

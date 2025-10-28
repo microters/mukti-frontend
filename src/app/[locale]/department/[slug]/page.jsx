@@ -7,7 +7,8 @@ export const dynamic = 'force-dynamic';
 
 // ✅ SEO Metadata Setup
 export async function generateMetadata({ params }) {
-  const { slug, locale } = params;
+  const resolvedParams = await params;
+  const { slug, locale } = resolvedParams;
 
   const department = await fetchDepartmentBySlug(slug);
   if (!department) return {};
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }) {
 
 // ✅ Actual Page Render
 export default async function DepartmentPage({ params }) {
-  const { slug, locale } = params;
+  const resolvedParams = await params;
+  const { slug, locale } = resolvedParams;
 
   const department = await fetchDepartmentBySlug(slug);
   const doctors = await fetchDoctors();

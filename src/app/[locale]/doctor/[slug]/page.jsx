@@ -5,20 +5,17 @@ import { headers } from "next/headers"; // ✅ CORRECT import
 
 // ✅ Dynamic Metadata based on doctor + locale
 export async function generateMetadata({ params }) {
-  const { slug, locale } = params;
+  const resolvedParams = await params;
+  const { slug, locale } = resolvedParams;
 
   const doctor = await fetchDoctorBySlug(slug, locale);
   if (!doctor) return {};
 
   const translations = doctor.translations?.[locale] || doctor.translations?.["en"] || {};
-  console.log("locale:", locale);
-  console.log("doctor.translations:", doctor.translations);
-  console.log("fallback to:", doctor.translations?.[locale] || doctor.translations?.["en"]);
   
 
-  const headersList = headers(); // ✅ This works now
-  const host =
-    headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
+  const headersList = await headers();
+  const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
   const protocol = host.includes("localhost") ? "http" : "https";
   const baseUrl = `${protocol}://${host}`;
   const pageUrl = `${baseUrl}/${locale}/doctor/${slug}`;
@@ -69,7 +66,8 @@ export async function generateMetadata({ params }) {
 
 // ✅ Main Page Component
 export default async function SingleDoctorPage({ params }) {
-  const { slug, locale } = params;
+  const resolvedParams = await params;
+  const { slug, locale } = resolvedParams;
 
   if (!slug) return notFound();
 

@@ -13,8 +13,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        jost: ["Jost", "serif"],
-        poppins: ["Poppins", "serif"],
+        jost: ["Jost", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       colors: {
         "M-primary-color": "#009650",

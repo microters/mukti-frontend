@@ -27,7 +27,8 @@ function DataLoading() {
 
 // ✅ params error সমাধানের জন্য সিগনেচার ঠিক করা হয়েছে
 export default async function HomePage({ params }) {
-  const { locale = "en" } = params;
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
 
   // ✅ Client Component-গুলোর ডেটা এখানে লোড করুন
   const [dynamicData, doctors, reviews] = await Promise.all([

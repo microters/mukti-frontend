@@ -1,5 +1,4 @@
 import { headers } from "next/headers";
-import { Metadata } from "next";
 import DoctorsList from "@/app/Component/Doctors/DoctorsList";
 import HeroInnerPage from "@/app/Component/UI/HeroInnerPage";
 import { fetchDoctors } from "@/app/api/doctor";
@@ -28,10 +27,11 @@ const dict = {
 
 // ✅ i18n-friendly Metadata with dynamic URL
 export async function generateMetadata({ params }) {
-  const locale = params.locale || "en";
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale || "en";
   const content = dict[locale] || dict.en;
 
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get("x-forwarded-host") || headersList.get("host") || "localhost:3000";
   const protocol = host.includes("localhost") ? "http" : "https";
   const baseUrl = `${protocol}://${host}`;
@@ -76,7 +76,8 @@ export async function generateMetadata({ params }) {
 
 // ✅ Main page component
 export default async function DoctorPage({ params }) {
-  const locale = params.locale || "en";
+  const resolvedParams = await params;
+  const locale = resolvedParams.locale || "en";
   const content = dict[locale] || dict.en;
 
   const doctors = await fetchDoctors();
