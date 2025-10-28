@@ -31,8 +31,7 @@ const nextConfig = {
     
   },
 
-  // Internationalization (i18n) settings
-  // i18n: {
+  
   //   locales: ['en', 'bn'], // Supported locales
   //   defaultLocale: 'en', // Default locale
   //   localeDetection: false, // Disable automatic locale detection
