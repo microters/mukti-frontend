@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import Button from "../Buttons/Button";
 import Image from "next/image";
 
 const DoctorsCardList = ({ doctor }) => {

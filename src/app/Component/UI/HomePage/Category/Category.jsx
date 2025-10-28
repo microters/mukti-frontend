@@ -46,7 +46,7 @@ const Category = async ({ locale }) => {
             const profileLink = department.slug ? `/department/${department.slug}` : "#";
 
             return (
-              <div key={department.id} className="bg-white group text-center py-8 px-3 md:px-6 rounded-lg overflow-hidden relative">
+              <div key={department.id} className="bg-white group text-center py-8 px-3 md:px-5 rounded-lg overflow-hidden relative">
                 <Image
                   src={shape}
                   alt="Shape"

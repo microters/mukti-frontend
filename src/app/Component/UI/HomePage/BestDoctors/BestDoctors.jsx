@@ -18,33 +18,41 @@ const BestDoctors = ({ doctors = [] }) => {
   const [activeDepartment, setActiveDepartment] = useState("all");
   const [filteredDoctors, setFilteredDoctors] = useState(doctors);
 
-  // Departments including translated "All"
+  const departmentCounts = doctors.reduce((acc, doc) => {
+    const dept = 
+      doc.translations?.[currentLanguage]?.department || 
+      doc.translations?.en?.department || 
+      null;
+
+    if (dept) {
+      acc[dept] = (acc[dept] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const sortedDepartments = Object.keys(departmentCounts).sort(
+    (a, b) => departmentCounts[b] - departmentCounts[a]
+  );
+
   const departments = [
     "all",
-    ...new Set(
-      doctors.slice(0,6).map(
-        (doc) =>
-          doc.translations?.[currentLanguage]?.department ||
-          doc.translations?.en?.department ||
-          ""
-      )
-    ),
+    ...sortedDepartments.slice(0, 5),
   ];
 
-  useEffect(() => {
-    if (activeDepartment === "all") {
-      setFilteredDoctors(doctors);
-    } else {
-      const filtered = doctors.filter(
-        (doc) =>
-          doc.translations?.[currentLanguage]?.department === activeDepartment
-      );
-      setFilteredDoctors(filtered);
-    }
-  }, [activeDepartment, doctors, currentLanguage]);
+useEffect(() => {
+    if (activeDepartment === "all") {
+      setFilteredDoctors(doctors);
+    } else {
+      const filtered = doctors.filter(
+        (doc) =>
+          (doc.translations?.[currentLanguage]?.department || doc.translations?.en?.department) === activeDepartment
+      );
+      setFilteredDoctors(filtered);
+    }
+  }, [activeDepartment, doctors, currentLanguage]);
 
-  const displayedDoctors =
-    activeDepartment === "all" ? filteredDoctors.slice(0, 6) : filteredDoctors;
+  const displayedDoctors =
+    activeDepartment === "all" ? filteredDoctors.slice(0, 6) : filteredDoctors;
 
   return (
     <div className="py-12 lg:py-[100px]">
@@ -58,7 +66,7 @@ const BestDoctors = ({ doctors = [] }) => {
         {/* Tabs */}
         <div className="p-4 mx-auto mt-8">
           <div className="flex-col sm:flex-row flex-wrap flex justify-center space-y-0 md:space-x-6 lg:space-x-12 py-4 px-3 md:px-7 bg-M-heading-color rounded-md">
-            {departments.length > 1 ? ( // Check > 1 because "all" is always there
+            {departments.length > 1 ? (
               departments.map((department, index) => {
                 const isAll = department === "all";
                 const displayLabel = isAll ? t("doctors.all") : department;

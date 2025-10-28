@@ -14,7 +14,6 @@
 // import "react-toastify/dist/ReactToastify.css";
 // import { sendOtp, loginUser, registerUser } from "../../utils/api";
 // import { jsPDF } from 'jspdf';
-// import { AppointmentPrintLayout } from "@/app/Component/AppointmentPrintLayout";
 
 // const Appointment = () => {
 //   const params = useParams();

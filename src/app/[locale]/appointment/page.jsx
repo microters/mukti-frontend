@@ -17,7 +17,7 @@ export default async function DoctorPage() {
   const doctors = await fetchDoctors(); // Fetch on the server before rendering
 
   // Get headers to construct the current URL dynamically
-  const headerList = headers();
+  const headerList = await headers();
   const host = headerList.get("host"); // e.g., "www.muktihospital.com" or "localhost:3000"
   const protocol = headerList.get("x-forwarded-proto") || "http"; // "http" or "https"
   const siteUrl = `${protocol}://${host}/doctors`; // Construct full URL, e.g., "https://www.muktihospital.com/doctors"

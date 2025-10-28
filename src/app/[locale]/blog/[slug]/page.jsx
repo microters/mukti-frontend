@@ -1,7 +1,8 @@
 import { fetchBlogs, fetchBlogsBySlug } from "@/app/api/blog";
 import SingleBlog from "@/app/Component/SingleBlog/SingleBlog";
 const SingleBlogPage = async ({params}) => {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   if (!slug) return notFound();
 
   const blogs = await fetchBlogs();
