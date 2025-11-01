@@ -2,149 +2,79 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
-import FormButton from "@/app/Component/Shared/Buttons/FormButton";
-import SectionHeading from "@/app/Component/Shared/SectionHeading/SectionHeading";
 
-import heroImag from "@/assets/images/labHeroImg.png";
-import DiagnosticPlanCard from "@/app/Component/UI/DiagnosticPlanCard";
-import dimg1 from "@/assets/images/dimg1.png";
-import dimg2 from "@/assets/images/dimg2.png";
-import dimg3 from "@/assets/images/dimg3.png";
-import dimg4 from "@/assets/images/dimg4.png";
+import heroImag from "@/assets/images/diagonosticDoctor.png";
 import WhyChooseUs from "@/app/Component/UI/HomePage/WhyChooseUs/WhyChooseUs";
 import { useState } from "react";
+import { useAuth } from "@/app/[locale]/utils/AuthContext";
+import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import TestCategoryAccordion from "../../TestCategoryAccordion";
+import { testGroups } from "@/app/data/diagnosticTestData";
 
 const DiagnosticContent = ({ whyChooseUsSection}) => {
-  const DiagnosticTabContent = [
-    {
-      id: "special-offers",
-      label: "Special offers",
-      tests: [
-        {
-          test_name: "Cancer Screening",
-          price: "৳ 6000",
-          description: "Initial cancer screening with specialist consultation",
-          included_tests: ["Surface inspection", "Blood test", "Imaging tests"],
-          imageSrc: dimg1,
-          detailsLink: "/details/cancer-screening",
-          bookingLink: "/booking/cancer-screening",
-        },
-        {
-            test_name: "25-OH Vitamin D",
-            price: "৳ 5000",
-            description: "Comprehensive vitamin D status check and consultation",
-            included_tests: ["Vitamin D blood level", "Bone density evaluation"],
-            imageSrc: dimg2,
-            detailsLink: "/details/vitamin-d",
-            bookingLink: "/booking/vitamin-d",
-          },
-          {
-            test_name: "HIV Test",
-            price: "৳ 3000",
-            description: "Confidential HIV screening with follow-up support",
-            included_tests: ["HIV antibody test", "Counseling session"],
-            imageSrc: dimg3,
-            detailsLink: "/details/hiv-test",
-            bookingLink: "/booking/hiv-test",
-          },
-          {
-            test_name: "25-OH Vitamin D",
-            price: "৳ 5000",
-            description: "Comprehensive vitamin D status check and consultation",
-            included_tests: ["Vitamin D blood level", "Bone density evaluation"],
-            imageSrc: dimg2,
-            detailsLink: "/details/vitamin-d",
-            bookingLink: "/booking/vitamin-d",
-          },
-      ],
-    },
-    {
-      id: "popular-packages",
-      label: "Popular Packages",
-      tests: [
-        {
-          test_name: "25-OH Vitamin D",
-          price: "৳ 5000",
-          description: "Comprehensive vitamin D status check and consultation",
-          included_tests: ["Vitamin D blood level", "Bone density evaluation"],
-          imageSrc: dimg2,
-          detailsLink: "/details/vitamin-d",
-          bookingLink: "/booking/vitamin-d",
-        },
-        {
-          test_name: "HIV Test",
-          price: "৳ 3000",
-          description: "Confidential HIV screening with follow-up support",
-          included_tests: ["HIV antibody test", "Counseling session"],
-          imageSrc: dimg3,
-          detailsLink: "/details/hiv-test",
-          bookingLink: "/booking/hiv-test",
-        },
-        {
-          test_name: "25-OH Vitamin D",
-          price: "৳ 5000",
-          description: "Comprehensive vitamin D status check and consultation",
-          included_tests: ["Vitamin D blood level", "Bone density evaluation"],
-          imageSrc: dimg2,
-          detailsLink: "/details/vitamin-d",
-          bookingLink: "/booking/vitamin-d",
-        },
-        {
-          test_name: "HIV Test",
-          price: "৳ 3000",
-          description: "Confidential HIV screening with follow-up support",
-          included_tests: ["HIV antibody test", "Counseling session"],
-          imageSrc: dimg3,
-          detailsLink: "/details/hiv-test",
-          bookingLink: "/booking/hiv-test",
-        },
-        {
-          test_name: "25-OH Vitamin D",
-          price: "৳ 5000",
-          description: "Comprehensive vitamin D status check and consultation",
-          included_tests: [
-            "Vitamin D blood level",
-            "Bone density evaluation",
-            "Vitamin D blood level",
-            "Bone density evaluation",
-          ],
-          imageSrc: dimg2,
-          detailsLink: "/details/vitamin-d",
-          bookingLink: "/booking/vitamin-d",
-        },
-        {
-          test_name: "HIV Test",
-          price: "৳ 3000",
-          description: "Confidential HIV screening with follow-up support",
-          included_tests: ["HIV antibody test", "Counseling session"],
-          imageSrc: dimg3,
-          detailsLink: "/details/hiv-test",
-          bookingLink: "/booking/hiv-test",
-        },
-      ],
-    },
-    {
-      id: "frequently-prescribed-tests",
-      label: "Frequently Prescribed Tests",
-      tests: [
-        {
-          test_name: "A/G RATIO",
-          price: "৳ 4000",
-          description: "Albumin/Globulin ratio blood test with expert analysis",
-          included_tests: ["Blood protein analysis", "Clinical consultation"],
-          imageSrc: dimg4,
-          detailsLink: "/details/ag-ratio",
-          bookingLink: "/booking/ag-ratio",
-        },
-      ],
-    },
-  ];
+  const { t, i18n } = useTranslation();
+  const { user } = useAuth() || {};
 
-  const [activeTab, setActiveTab] = useState(DiagnosticTabContent[0].id);
-  // Find the active tab data
-  const activeTabContent = DiagnosticTabContent.find(
-    (tab) => tab.id === activeTab
-  );
+  const [formData, setFormData] = useState({
+     patientName: "",
+     phone: "",
+   });
+  const [agreementChecked, setAgreementChecked] = useState(false);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      patientName: prev.patientName || user?.name || "",
+      phone: prev.phone || user?.mobile || "",
+    }));
+  }, [user]);
+
+ const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const handleCheckboxChange = (e) => setAgreementChecked(e.target.checked);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formData.patientName || !formData.phone) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+    if (!agreementChecked) {
+      toast.error("You must agree to the terms and conditions.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://api.muktihospital.com/api/callback`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY || "",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Appointment request submitted successfully!");
+        setFormData({ patientName: user?.name || "", phone: user?.mobile || "" });
+        setAgreementChecked(false);
+      } else {
+        toast.error(result?.message || "Failed to submit the appointment request. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting appointment request:", error);
+      toast.error("An error occurred while submitting the request. Please try again.");
+    }
+  };
+
+  const [activeTab, setActiveTab] = useState(
+        testGroups.length > 0 ? testGroups[0].id : null
+    );
 
   return (
     <div>
@@ -152,39 +82,35 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
       <div className="bg-[url(../../public/assets/diagnosticHeroBg.png)] bg-cover bg-top">
         <div className="pt-16 bg-gradient-to-t from-[#009650be] to-[#323290be] relative">
           <div className="container">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
               <div>
-                <h1 className="text-white text-4xl md:text-[64px] mb-3">
-                  Diagnostic Solutions in Mukti Hospital.
+                <h1 className="text-white text-4xl md:text-[60px] mb-3">
+                  {t("diagnostic.heroTitle")}
                 </h1>
                 <p className="text-white text-base font-jost">
-                  Our advanced diagnostic services provide precise and reliable
-                  health assessments to ensure early detection and effective
-                  treatment. With state-of-the-art technology and expert
-                  professionals, we offer a wide range of tests tailored to your
-                  healthcare needs.
+                  {t("diagnostic.heroDesc")}
                 </p>
                 <div className="flex flex-wrap gap-4 mt-7">
                   <Link
-                    href="#"
+                    href="/contact"
                     className="bg-M-heading-color font-jost font-medium uppercase text-white text-base hover:text-M-heading-color border-M-heading-color hover:bg-white hover:border-white py-3 px-6 inline-flex gap-2 items-center justify-center border rounded-md transition-all duration-300"
                   >
                     <Icon
                       icon="streamline:customer-support-1-solid"
                       width="20"
                     />{" "}
-                    Call Us Now
+                    {t("diagnostic.callUsNow")}
                   </Link>
                   <Link
-                    href="#"
+                    href="#all-tests"
                     className="bg-white font-jost font-medium uppercase text-M-text-color text-base hover:text-white border-white hover:bg-M-heading-color hover:border-M-heading-color py-3 px-6 inline-flex gap-2 items-center justify-center border rounded-md transition-all duration-300"
                   >
                     <Icon
-                      icon="ph:file-pdf-duotone"
+                      icon="streamline:shopping-cart-1-solid"
                       width="20"
                       className="text-M-secondary-color"
                     />{" "}
-                    Download E-Brochure
+                    {t("diagnostic.viewOffers")}
                   </Link>
                 </div>
               </div>
@@ -192,7 +118,7 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
                 <Image
                   src={heroImag}
                   alt="Hero Image"
-                  className="w-full max-w-[550px] lg:ml-auto mx-auto lg:mr-0 "
+                  className="w-full max-w-[500px] lg:ml-auto mx-auto lg:mr-0 "
                 />
               </div>
             </div>
@@ -203,156 +129,168 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
       {/* Call Area */}
       <div className="py-24">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-7 items-start">
-            <div className="bg-M-heading-color p-6 rounded-md grid-cols-1">
-              <h3 className="text-white text-2xl capitalize">
-                Request a Callback
-              </h3>
-              <form className="space-y-5 mt-4">
-                <input
-                  type="text"
-                  placeholder="Your Name *"
-                  required
-                  className="AboutInputField"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email *"
-                  required
-                  className="AboutInputField"
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone *"
-                  required
-                  className="AboutInputField"
-                />
-                <input type="file" className="AboutInputField bg-white" />
-                <textarea
-                  rows="5"
-                  name="textarea"
-                  placeholder="Your Message"
-                  className="AboutInputField"
-                />
-                <FormButton
-                  buttonText="Send Message"
-                  buttonColor="bg-white"
-                  textColor="text-M-heading-color"
-                  borderColor="border-M-heading-color"
-                  padding="py-3 px-8"
-                  fontSize="text-xs sm:text-lg"
-                  alignment="text-center"
-                  hoverTextColor="hover:text-white"
-                />
-              </form>
-            </div>
-            <div className="col-span-2 bg-M-section-bg py-6 px-4 md:p-12 rounded-md">
-              <h2 className="text-2xl md:text-3xl lg:text-5xl text-M-heading-color">
-                The Right Care. Right Now.
-              </h2>
-              <p className="font-jost font-normal text-base text-M-text-color mt-4">
-                Multiply very years also midst fill fruitful you're moving day.
-                Were without man replenish. Air the, is was moveth gathering
-                you're rule called let spirit ughf brought green forth so cattle
-                waters stars there she'd moveth. Thing years have firmament upon
-                first subdue blessed sea stars spirit said. Evening you're
-                them.Day can't. Very living lesser multiply the herb, fly.
-                Brought over us seasons greater, land sea, the created gathered
-                bring spirit whose upon years fruitful third dominion cattle
-                midst night morning bring.
-              </p>
-              <p className="font-jost font-normal text-base text-M-text-color mt-4">
-                Day can't. Very living lesser multiply the herb, fly. Brought
-                over us seasons greater, land sea, the created gathered bring
-                spirit whose upon years fruitful third dominion cattle midst
-                night morning bring.Day can't. Very living lesser multiply the
-                herb, fly. Brought over us seasons greater, land sea, the
-                created gathered bring spirit whose upon years fruitful third
-                dominion cattle midst night morning bring.
-              </p>
-              <p className="font-jost font-normal text-base text-M-text-color mt-4">
-                Day can't. Very living lesser multiply the herb, fly. Brought
-                over us seasons, gathered bring spirit.
-              </p>
-
-              <div className="mt-5 py-5 border-t border-M-heading-color/20">
-                <h4 className="text-xl text-M-heading-color">
-                  Need an Emergency Help? Call Us!
-                </h4>
-                <div className="flex gap-4 mt-4">
-                  <div className="size-12 bg-M-primary-color rounded-full p-3 text-white">
-                    <Icon
-                      icon="line-md:phone-call-loop"
-                      width="24"
-                      height="24"
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-20 items-center">
+              <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
+              <div className="w-full relative z-10 bg-M-heading-color py-8 px-4 md:p-8 rounded-lg md:rounded-[40px] shadow-lg">
+                <h2 className="text-2xl font-semibold text-white mb-2 text-center">
+                  {t("diagnostic.callAreaTitle")}
+                </h2>
+                <p className="font-jost font-normal text-base text-white text-center mb-6">
+                  {t("diagnostic.callAreaSubtitle")}
+                </p>
+                <ToastContainer />
+                <form className="space-y-5" onSubmit={handleSubmit}>
+                  <div>
+                    <input
+                      type="text"
+                      name="patientName"
+                      value={formData.patientName}
+                      onChange={handleChange}
+                      placeholder={t("appointment.patientName")}
+                      className="appointment-input-field"
+                      required
                     />
                   </div>
                   <div>
-                    <h6 className="text-M-text-color text-lg font-jost">
-                      Telephone
-                    </h6>
-                    <Link
-                      href="tel:+11165458856"
-                      className="font-jost font-bold text-base text-M-heading-color hover:text-M-primary-color transition-all duration-300"
-                    >
-                      +(111) 65-458-856
-                    </Link>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder={t("appointment.phoneNumber")}
+                      className="appointment-input-field"
+                      required
+                    />
                   </div>
-                </div>
+    
+                  <div>
+                    <div className="relative">
+                      <input
+                        type="checkbox"
+                        id="agreement"
+                        checked={agreementChecked}
+                        onChange={handleCheckboxChange}
+                        className="hidden peer"
+                      />
+                      <span className="h-4 w-4 border flex-none border-M-text-color/50 rounded inline-flex items-center justify-center ltr:mr-3 rtl:ml-3 transition-all duration-150 bg-slate-100 peer-checked:bg-M-primary-color peer-checked:ring-1 peer-checked:ring-M-primary-color peer-checked:ring-offset-1 absolute top-[6px] left-0 z-0">
+                        <Icon
+                          icon="mynaui:check"
+                          width="24"
+                          className="text-slate-100"
+                        />
+                      </span>
+                      <label
+                        htmlFor="agreement"
+                        className="cursor-pointer font-jost font-normal text-base text-white relative z-10 pl-6"
+                      >
+                        {t("diagnostic.checkboxText")}
+                      </label>
+                    </div>
+                  </div>
+    
+                  <button className="font-bold font-jost text-base md:text-xs xl:text-lg text-white py-3 px-3 md:px-3 lg:px-8 w-full bg-M-primary-color flex items-center justify-center gap-2 rounded-md uppercase transition-all duration-300 hover:bg-M-secondary-color">
+                    <Icon icon="solar:call-medicine-linear" width="24" /> {t("diagnostic.requestCallback")}
+                  </button>
+                </form>
               </div>
             </div>
+            <div className="col-span-2 bg-M-section-bg py-6 px-4 md:p-12 rounded-md">
+              <h2 className="text-2xl md:text-3xl lg:text-5xl text-M-heading-color">
+                  {t("diagnostic.rightCareTitle")}
+              </h2>
+              <p className="font-jost font-normal text-base text-M-text-color mt-4">
+                  {t("diagnostic.rightCareDesc")}
+              </p>
+
+              <h3 className="text-2xl text-M-heading-color mt-8 mb-4">
+                  {t("diagnostic.whyChooseTitle")}
+              </h3>
+              <ul className="list-disc list-inside space-y-3 font-jost font-normal text-base text-M-text-color ml-4">
+                  <li>
+                      <span className="font-bold">{t("diagnostic.emergencyCare")}:</span> {t("diagnostic.emergencyCareDesc")}
+                  </li>
+                  <li>
+                      <span className="font-bold">{t("diagnostic.expertDoctors")}:</span> {t("diagnostic.expertDoctorsDesc")}
+                  </li>
+                  <li>
+                      <span className="font-bold">{t("diagnostic.advancedImaging")}:</span> {t("diagnostic.advancedImagingDesc")}
+                  </li>
+                  <li>
+                      <span className="font-bold">{t("diagnostic.hassleFreeBooking")}:</span> {t("diagnostic.hassleFreeBookingDesc")}
+                  </li>
+              </ul>
+              <div className="mt-5 py-5 border-t border-M-heading-color/20">
+                  <h4 className="text-xl text-M-heading-color">
+                      {t("diagnostic.emergencyCall")}
+                  </h4>
+                  <div className="flex gap-4 mt-4">
+                      <div className="size-12 bg-M-primary-color rounded-full p-3 text-white">
+                          <Icon
+                              icon="line-md:phone-call-loop"
+                              width="24"
+                              height="24"
+                          />
+                      </div>
+                      <div>
+                          <h6 className="text-M-text-color text-lg font-jost">
+                              Telephone
+                          </h6>
+                          <Link
+                              href="tel:+880 1601 666-893"
+                              className="font-jost font-bold text-base text-M-heading-color hover:text-M-primary-color transition-all duration-300"
+                          >
+                              +880 1601 666-893
+                          </Link>
+                      </div>
+                  </div>
+              </div>
+          </div>
           </div>
         </div>
       </div>
-
       {/* Diagnostic plans */}
-      <div className="bg-M-section-bg py-24">
-        <div className="container">
-          <SectionHeading
-            subtitle="Diagnostic plans"
-            heading="Our special offers"
-            align="center"
-          />
+      <section id="all-tests" className="py-12 md:py-20 bg-M-section-bg">
+            <div className="container mx-auto px-4 max-w-5xl">
+                <h2 className="text-3xl md:text-4xl text-M-heading-color font-bold text-center">
+                    {t("diagnostic.listTitle")}
+                </h2>
+                <p className="text-center text-M-text-color mb-10">
+                    {t("diagnostic.listSubtitle")}
+                </p>
 
-          <div className="mt-10">
-            {/* Tab List */}
-            <ul className="bg-[#F9FAFB] py-3 px-4 flex flex-wrap items-center justify-center  sm:gap-6 max-w-[600px] mx-auto rounded-md ">
-              {DiagnosticTabContent.map((tab, index) => (
-                <li key={tab.id} className="relative">
-                  <button
-                    className={`px-4 py-2 font-jost font-normal text-base rounded-md transition-colors duration-300 ${
-                      activeTab === tab.id
-                        ? "text-white bg-M-heading-color shadow"
-                        : "text-M-text-color"
-                    }`}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    {tab.label}
-                  </button>
-                  {index < DiagnosticTabContent.length - 1 && (
-                    <span className="w-[1px] h-1/2 border-l border-dashed border-M-text-color absolute -right-3 top-1/2 -translate-y-1/2 hidden sm:inline-block"></span>
-                  )}
-                </li>
-              ))}
-            </ul>
-            {/* Tab Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-5">
-              {activeTabContent?.tests.map((items, index) => (
-                <DiagnosticPlanCard
-                  key={index}
-                  test_name={items.test_name}
-                  price={items.price}
-                  description={items.description}
-                  included_tests={items.included_tests}
-                  imageSrc={items.imageSrc}
-                  detailsLink={items.detailsLink}
-                  bookingLink={items.bookingLink}
-                />
-              ))}
+                {/* --- TAB NAVIGATION --- */}
+                <div className="flex flex-wrap justify-center border-b border-M-heading-color/20 mb-8">
+                    {testGroups.map((group) => (
+                        <button
+                            key={group.id}
+                            onClick={() => setActiveTab(group.id)}
+                            className={`py-3 px-6 text-lg font-semibold transition-colors duration-300
+                                ${activeTab === group.id
+                                    ? 'text-M-primary-color border-b-2 border-M-primary-color'
+                                    : 'text-M-text-color hover:text-M-primary-color/80'
+                                }
+                            `}
+                        >
+                            {group.groupName}
+                        </button>
+                    ))}
+                </div>
+                {/* --- TAB CONTENT AREA --- */}
+                <div className="space-y-4">
+                    {/* Filter and display the categories of the currently active tab */}
+                    {testGroups.find(group => group.id === activeTab)?.categories.map((category, index) => (
+                        <TestCategoryAccordion 
+                            key={index}
+                            categoryName={category.categoryName}
+                            tests={category.tests}
+                        />
+                    ))}
+                    {testGroups.find(group => group.id === activeTab)?.categories.length === 0 && (
+                        <p className="text-center text-M-text-color mt-8">এই বিভাগে বর্তমানে কোনো পরীক্ষা উপলব্ধ নেই।</p>
+                    )}
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
 
       {/* Why Choose Us */}
       <WhyChooseUs whyChooseUsSection={whyChooseUsSection}/>

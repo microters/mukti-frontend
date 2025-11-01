@@ -65,5 +65,29 @@
   },
   "singleDepartment":{
     "best": "Best"
+  },
+  "diagnostic": {
+    "heroTitle": "Expert Diagnostic Care at Mukti Hospital.",
+    "heroDesc": "We provide precise, reliable health assessments for early detection and effective treatment. Trust our combination of state-of-the-art technology and Mukti's expert diagnostic professionals. Get the peace of mind you deserve with clear, rapid reporting.",
+    "callUsNow": "Call Us Now",
+    "viewOffers": "View All Tests & Prices",
+    "callAreaTitle": "Can't find what are you looking for?",
+    "callAreaSubtitle": "Fill this form for callback from us.",
+    "checkboxText": "Get updated on whatsapp & accept T&C",
+    "requestCallback": "Request callback",
+    "rightCareTitle": "The Right Care. Right Now.",
+    "rightCareDesc": "High-quality health services should always be readily available. At Mukti Hospital, we combine immediate access with clinical excellence across all our departments.",
+    "whyChooseTitle": "Why Choose Mukti Hospital?",
+    "emergencyCare": "24/7 Emergency & Critical Care",
+    "expertDoctors": "Expert Consultant Doctors",
+    "advancedImaging": "Advanced Imaging Technology",
+    "hassleFreeBooking": "Hassle-Free Booking",
+    "emergencyCareDesc": "Our team is ready around the clock.",
+    "expertDoctorsDesc": "Specialists across 20+ disciplines are here for you.",
+    "advancedImagingDesc": "Fast, precise, and reliable diagnostics.",
+    "hassleFreeBookingDesc": "Get immediate answers and minimize your wait time.",
+    "emergencyCall": "Need an Emergency Help? Call Us!",
+    "listTitle": "Our Diagnostic Tests List and Prices",
+    "listSubtitle": "Select the main category according to your need and view the detailed list of tests."
   }
 }
