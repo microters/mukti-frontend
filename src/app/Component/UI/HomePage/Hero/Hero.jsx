@@ -10,7 +10,7 @@ import penToolIcon from "@/assets/images/pen-tool.png";
 import crossShapeIcon from "@/assets/images/cross-shape.png";
 import { useTranslation } from "react-i18next";
 import SearchField from "@/app/Component/Shared/SearchField/SearchField";
-import { useMemo, useRef } from "react"; // 🔴 useEffect, useState, fetchDynamicData বাদ
+import { useMemo, useRef } from "react";
  
 const Hero = ({ heroSection }) => { // ✅ prop ব্যবহার করুন
   const { i18n } = useTranslation();
