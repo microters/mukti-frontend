@@ -13,7 +13,8 @@
 // import { toast, ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 // import { sendOtp, loginUser, registerUser } from "../../utils/api";
-// import { jsPDF } from 'jspdf';
+// import { downloadAsPdf } from "@/app/lib/pdfUtils";
+// import { AppointmentPrintLayout } from "@/app/Component/AppointmentPrintLayout";
 
 // const Appointment = () => {
 //   const params = useParams();
@@ -27,7 +28,6 @@
 //   const IMG_URL = "https://api.muktihospital.com" || "https://api.muktihospital.com";
 
 //   const language = pathname.includes("/bn/") ? "bn" : "en";
-//   const [downloadFormat, setDownloadFormat] = useState('pdf');
 //   const [isDownloading, setIsDownloading] = useState(false);
 //   const [isValid, setIsValid] = useState(true);
 //   const [currentStep, setCurrentStep] = useState(1);
@@ -44,6 +44,7 @@
 //   const [value, setValue] = useState(null);
 //   const [appointmentId, setAppointmentId] = useState(null); 
 //   const [isPrinting, setIsPrinting] = useState(false);
+//   const [downloadTrigger, setDownloadTrigger] = useState(null);
 
 //   const [formData, setFormData] = useState({
 //     name: user?.name || "",
@@ -168,178 +169,6 @@
 //       setIsValid(value.length === 13);
 //     }
 //     setFormData({ ...formData, [name]: value });
-//   };
-
-// //   const generateAppointmentText = (formData, doctor, value, selectedDay, language, appointmentId) => {
-// //     const appointmentDate = value.toLocaleDateString(language === "bn" ? "bn-BD" : "en-US", {
-// //       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-// //     });
-  
-// //     const formatTime = (time) => {
-// //       if (!time || typeof time !== "string" || !/^\d{2}:\d{2}$/.test(time)) return "N/A";
-// //       const [hours, minutes] = time.split(":");
-// //       const date = new Date();
-// //       date.setHours(+hours);
-// //       date.setMinutes(+minutes);
-// //       return date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-// //     };
-  
-// //     const timeSlot = (selectedDay && selectedDay.startTime && selectedDay.endTime)
-// //       ? `${formatTime(selectedDay.startTime)} - ${formatTime(selectedDay.endTime)}`
-// //       : (language === "bn" ? "উপলব্ধ নয়" : "Not Available");
-  
-// //     const doctorTranslations = doctor?.translations || {};
-// //     const name = doctorTranslations?.name || doctor?.name;
-// //     const department = doctorTranslations?.department || doctor?.department;
-// //     const academicQualification = doctorTranslations?.academicQualification || doctor?.academicQualification;
-  
-// //     const referenceId = appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`;
-  
-// //     if (language === "bn") {
-// //       return {
-// //         content: `
-// // অ্যাপয়েন্টমেন্ট বিবরণ
-// // ------------------
-// // হাসপাতাল: মুক্তি হাসপাতাল
-
-// // ডাক্তারের তথ্য:
-// // নাম: ${name}
-// // বিভাগ: ${department}
-// // যোগ্যতা: ${academicQualification}
-
-// // রোগীর তথ্য:
-// // নাম: ${formData.name}
-// // ফোন: ${formData.mobile}
-// // বয়স: ${formData.age || "উল্লেখ নেই"}
-// // ওজন: ${formData.weight || "উল্লেখ নেই"}
-// // ঠিকানা: ${formData.address || "উল্লেখ নেই"}
-// // ভিজিটের কারণ: ${formData.reason || "উল্লেখ নেই"}
-
-// // অ্যাপয়েন্টমেন্ট শেডিউল:
-// // তারিখ: ${appointmentDate}
-// // সময়: ${timeSlot}
-// // ফি: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} টাকা
-
-// // নির্দেশনা:
-// // • অনুগ্রহ করে আপনার অ্যাপয়েন্টমেন্টের ১৫ মিনিট আগে পৌছান
-// // • সম্ভব হলে আগের মেডিকেল রেকর্ড নিয়ে আসুন
-// // • যেকোনো প্রশ্নের জন্য, যোগাযোগ করুন: +৮৮ ০২ XXXX XXXX
-
-// // রেফারেন্স আইডি: ${referenceId}
-// //         `,
-// //         referenceId
-// //       };
-// //     } else {
-// //       return {
-// //         content: `
-// // APPOINTMENT DETAILS
-// // ------------------
-// // Hospital: Mukti Hospital
-
-// // Doctor Information:
-// // Name: ${name}
-// // Department: ${department}
-// // Qualification: ${academicQualification}
-
-// // Patient Information:
-// // Name: ${formData.name}
-// // Phone: ${formData.mobile}
-// // Age: ${formData.age || "N/A"}
-// // Weight: ${formData.weight || "N/A"}
-// // Address: ${formData.address || "N/A"}
-// // Reason for Visit: ${formData.reason || "N/A"}
-
-// // Appointment Schedule:
-// // Date: ${appointmentDate}
-// // Time: ${timeSlot}
-// // Fee: ${doctorTranslations?.appointmentFee || doctor?.regularFee || "1000"} TK
-
-// // Instructions:
-// // • Please arrive 15 minutes before your appointment time
-// // • Bring any previous medical records if available
-// // • For any queries, contact: +88 02 XXXX XXXX
-
-// // Reference ID: ${referenceId}
-// //         `,
-// //         referenceId
-// //       };
-// //     }
-// //   };
-
-//   // const downloadAsText = (formData, doctor, value, selectedDay, language, appointmentId) => {
-//   //   const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
-//   //   const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-//   //   const url = URL.createObjectURL(blob);
-//   //   const a = document.createElement('a');
-//   //   a.href = url;
-//   //   a.download = `Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.txt`;
-//   //   document.body.appendChild(a);
-//   //   a.click();
-//   //   setTimeout(() => {
-//   //     document.body.removeChild(a);
-//   //     URL.revokeObjectURL(url);
-//   //   }, 100);
-//   //   return referenceId;
-//   // };
-  
-//   // const downloadAsPdf = async (formData, doctor, value, selectedDay, language, appointmentId) => {
-//   //   try {
-//   //     const { content, referenceId } = generateAppointmentText(formData, doctor, value, selectedDay, language, appointmentId);
-//   //     const pdf = new jsPDF();
-//   //     pdf.setFontSize(22);
-//   //     pdf.setTextColor(0, 51, 102);
-//   //     pdf.text("Mukti Hospital", 105, 20, { align: 'center' });
-//   //     pdf.setFontSize(12);
-//   //     pdf.setTextColor(0, 0, 0);
-  
-//   //     const contentLines = content.split('\n');
-//   //     let y = 30;
-//   //     contentLines.forEach(line => {
-//   //       if (line.includes('------------------')) {
-//   //         pdf.setDrawColor(0, 51, 102);
-//   //         pdf.line(20, y, 190, y);
-//   //         y += 5;
-//   //       } else {
-//   //         pdf.text(line, 20, y);
-//   //         y += 6;
-//   //       }
-//   //     });
-  
-//   //     pdf.text(`Reference ID: ${appointmentId}`, 10, 287);
-//   //     pdf.save(`Appointment_${formData.name.replace(/\s+/g, '_')}_${referenceId}.pdf`);
-//   //     return referenceId;
-//   //   } catch (error) {
-//   //     console.error("Error generating PDF:", error);
-//   //     return downloadAsText(formData, doctor, value, selectedDay, language, appointmentId);
-//   //   }
-//   // };
-
-//   useEffect(() => {
-//     const handleAfterPrint = () => {
-//       setIsPrinting(false);
-//       console.log("Print dialog closed.");
-//     };
-//     window.addEventListener('afterprint', handleAfterPrint);
-//     return () => window.removeEventListener('afterprint', handleAfterPrint);
-//   }, []); // Runs once
-
-//   const downloadAppointmentInfo = async (formData, doctor, value, selectedDay, language, format, appointmentRef) => {
-//     try {
-//       setIsDownloading(true);
-//       let referenceId;
-//       if (format === 'pdf') {
-//         referenceId = await downloadAsPdf(formData, doctor, value, selectedDay, language, appointmentRef);
-//       } else {
-//         referenceId = downloadAsText(formData, doctor, value, selectedDay, language, appointmentRef);
-//       }
-//       toast.success(language === "bn" ? "অ্যাপয়েন্টমেন্ট তথ্য ডাউনলোড হয়েছে" : "Appointment details downloaded successfully");
-//       return referenceId;
-//     } catch (error) {
-//       console.error("Download failed:", error);
-//       toast.error(language === "bn" ? "ডাউনলোড ব্যর্থ হয়েছে, আবার চেষ্টা করুন" : "Download failed, please try again");
-//     } finally {
-//       setIsDownloading(false);
-//     }
 //   };
 
 //   const handleOtpChange = (e) => {
@@ -630,8 +459,17 @@
 //       setSuccess(successMessage);
 //       toast.success(successMessage);
 
-//       // Download happens only after successful submission
-//       await downloadAppointmentInfo(formData, doctor, value, selectedDay, language, downloadFormat, null);
+//       const confirmedId = response.data?.appointmentId || response.data?.id || 'REF_001'; 
+        
+//         // 2. Save the confirmed ID to state (used in the print layout)
+//         setAppointmentId(confirmedId); 
+        
+//         // 3. Initiate the render of AppointmentPrintLayout
+//         setIsPrinting(true);          
+        
+//         // 4. Trigger the useEffect hook to start the download (using the confirmed ID as the trigger value)
+//         // This is where the old function call was.
+//         setDownloadTrigger(confirmedId);
 
 //     } catch (error) {
 //       const errorMessage = error.response?.data?.message || (language === "bn" ? "অ্যাপয়েন্টমেন্ট বুক করতে সমস্যা হয়েছে।" : "Failed to book appointment.");
@@ -641,6 +479,13 @@
 //       setSubmitting(false);
 //     }
 //   };
+
+//   const handlePrint = () => {
+//   setIsPrinting(true);
+//   setTimeout(() => {
+//     window.print();
+//   }, 500);
+// };
 
 //   if (loading) {
 //     return (
@@ -690,7 +535,7 @@
 //       <CommonHero pageName={language === "bn" ? "অ্যাপয়েন্টমেন্ট" : "Appointment"} />
       
 //       {success && (
-//         <div className="container mx-auto px-4 mt-4">
+//         <div className="container mx-auto mt-4">
 //           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
 //             <strong className="font-bold">{language === "bn" ? "সফল!" : "Success!"}</strong>
 //             <span className="block sm:inline ml-1">{success}</span>
@@ -699,7 +544,7 @@
 //       )}
       
 //       {error && !loading && (
-//         <div className="container mx-auto px-4 mt-4">
+//         <div className="container mx-auto mt-4">
 //           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
 //             <strong className="font-bold">{language === "bn" ? "ত্রুটি!" : "Error!"}</strong>
 //             <span className="block sm:inline ml-1">{error}</span>
@@ -1064,7 +909,6 @@
 //                         </p>
 //                       </div>
 //                     </div>
-//                     {/* ... (rest of the review info) ... */}
 //                   </div>
 //                 </div>
 //               ) : (
@@ -1083,15 +927,12 @@
                   
 //                   <div className="mt-6 flex justify-center gap-4">
 //                      <button
-//                        type="button" // Important: not submit
-//                        onClick={downloadAppointmentInfo} // Call new print function
-//                        disabled={isDownloading}
-//                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all disabled:opacity-50"
-//                      >
-//                        {isDownloading ? (language === "bn" ? "প্রস্তুত হচ্ছে..." : "Preparing...")
-//                          : (language === "bn" ? "স্লিপ প্রিন্ট/ডাউনলোড করুন" : "Print / Download Slip")
-//                        }
-//                      </button>
+//                         type="button"
+//                         onClick={handlePrint}
+//                         className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all disabled:opacity-50"
+//                       >
+//                         {language === "bn" ? "স্লিপ প্রিন্ট করুন" : "Print Slip"}
+//                       </button>
 //                      <Link href="/" className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all">
 //                        {language === "bn" ? "হোমে যান" : "Go Home"}
 //                      </Link>
@@ -1103,15 +944,14 @@
 //           </div>
 //         </div>
 //       )}
-//           </div>
-
-//           <div className="flex justify-between border-t border-M-text-color/10 pt-8">
-//             {currentStep > 1 && !success && (
+//       </div>
+//     <div className="flex justify-between border-t border-M-text-color/10 pt-8">
+//     {currentStep > 1 && !success && (
 //     <button
 //       type="button"
 //       onClick={prevStep}
 //       className="flex items-center justify-center px-4 py-3 bg-M-heading-color text-white rounded hover:bg-M-heading-color font-jost font-medium text-base min-w-24 uppercase disabled:opacity-50"
-//       disabled={submitting || verifyingOtp || isDownloading} // Disable during any loading
+//       disabled={submitting || verifyingOtp || isDownloading}
 //     >
 //       <Icon icon="mynaui:chevron-left" width="24" height="24" />
 //       {translations.previous}
@@ -1150,12 +990,12 @@
 //       </form>
 //       {isPrinting && (
 //         <AppointmentPrintLayout
-//           className="appointment-print-layout" // This class is used in the CSS
+//           className="appointment-print-layout"
 //           formData={formData}
 //           doctor={doctor}
-//           value={value} // The selected date
+//           value={value}
 //           language={language}
-//           appointmentId={appointmentId} // Pass the confirmed ID
+//           appointmentId={appointmentId}
 //         />
 //       )}
 //     </div>
@@ -2253,3 +2093,62 @@ Reference ID: ${referenceId}
 };
 
 export default Appointment;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
