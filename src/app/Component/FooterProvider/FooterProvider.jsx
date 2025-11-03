@@ -43,7 +43,7 @@ const FooterProvider = ({ initialDoctors, initialFooter }) => {
 
   return (
     <div>
-      <div className="bg-[#00224F] py-24 px-3 relative">
+      <div className="footer bg-[#00224F] py-24 px-3 relative">
         <Image
           src={shape}
           alt="shape"

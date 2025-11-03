@@ -56,6 +56,13 @@ export const AppointmentPrintLayout = ({
               size: A4;
               margin: 0;
             }
+          .print-hide-element{
+              display: none !important;
+              visibility: hidden !important;
+          }
+          form.container.mx-auto.my-24, .footer{
+              display: none !important;
+          }
             body * {
               visibility: hidden;
             }
@@ -72,12 +79,25 @@ export const AppointmentPrintLayout = ({
               -webkit-print-color-adjust: exact !important;
               color-adjust: exact !important;
             }
+            .print-patient-grid {
+              column-count: 2 !important;
+              column-gap: 20px;
+              margin-top: 10px;
+            }
+            .print-doctor-grid {
+              column-count: 1; 
+            }
            .print-container {
-               position: absolute;
-               top: 0; left: 0; right: 0; bottom: 0;
-               overflow: hidden;
-               page-break-inside: avoid;
-               height: 100vh;
+              position: absolute;
+              top: 0; left: 0; right: 0; bottom: 0;
+              overflow: hidden;
+              page-break-inside: avoid;
+              height: 100vh;
+            }
+            .print-info-block, .print-schedule-block {
+              -webkit-print-color-adjust: exact !important;
+              color-adjust: exact !important;
+              page-break-inside: avoid;
             }
             .print-bg-force {
               -webkit-print-color-adjust: exact !important;
@@ -127,6 +147,19 @@ export const AppointmentPrintLayout = ({
               z-index: -1;
               white-space: nowrap;
             }
+            .print-schedule-styles {
+              background-color: #f7f9ff !important;
+              border: 1px solid #e0e5f5 !important;
+              padding: 15px 20px !important;
+              page-break-inside: avoid;
+            }
+            .print-time-highlight {
+              background-color: #e8f5e8 !important;
+              color: #009650 !important;
+              padding: 3px 8px !important;
+              border-radius: 4px;
+              font-size: 14pt !important;
+            }
             .print-container .note-box {
               border-left: 4px solid #323290;
               padding: 10px;
@@ -163,25 +196,71 @@ export const AppointmentPrintLayout = ({
         <div className="px-[20mm] content-wrapper">
           <div className="pt-[110px] pb-[90px]">
             <h1 className="print-title">{title}</h1>
-          <div className="print-info-grid">
-            {/* Patient & Doctor Info */}
-            <div className='w-1/2'>
-              <p><strong>{language === 'bn' ? 'রোগীর নাম' : 'Patient Name'}:</strong> {formData.name}</p>
-              <p><strong>{language === 'bn' ? 'ফোন' : 'Phone'}:</strong> {formData.mobile}</p>
-              <p><strong>{language === 'bn' ? 'বয়স' : 'Age'}:</strong> {formData.age || 'N/A'}</p>
-              <p><strong>{language === 'bn' ? 'ওজন' : 'Weight'}:</strong> {formData.weight || 'N/A'}</p>
-              <p><strong>{language === 'bn' ? 'ঠিকানা' : 'Address'}:</strong> {formData.address || 'N/A'}</p>
-              <p><strong>{language === 'bn' ? 'অ্যাপয়েন্টমেন্টের তারিখ' : 'Appointment Date'}:</strong> {appointmentDate}</p>
+          <div className="print-info-block border-2 border-[#323290] p-4 mb-4 rounded-md">
+            <h2 className="text-sm font-bold text-[#323290] mb-2 uppercase border-b border-dashed border-gray-300 pb-1">
+                {language === 'bn' ? 'রোগীর বিবরণ' : 'Patient Details'}
+            </h2>
+            <div className="print-info-grid print-patient-grid">
+                <div className='w-full'>
+                    <p><strong>{language === 'bn' ? 'নাম' : 'Patient Name'}:</strong> {formData.name}</p>
+                    <p><strong>{language === 'bn' ? 'ফোন' : 'Phone'}:</strong> {formData.mobile}</p>
+                    <p><strong>{language === 'bn' ? 'বয়স' : 'Age'}:</strong> {formData.age || 'N/A'}</p>
+                    <p><strong>{language === 'bn' ? 'ওজন' : 'Weight'}:</strong> {formData.weight || 'N/A'}</p>
+                    <p><strong>{language === 'bn' ? 'ঠিকানা' : 'Address'}:</strong> {formData.address || 'N/A'}</p>
+                </div>
             </div>
-            <div className='w-1/2'>
+        </div>
+
+  {/* 3. DOCTOR & FEE BLOCK */}
+  <div className="print-info-block bg-[#f7f9ff] border-2 border-[#009650] p-4 mb-4 rounded-md">
+      <h2 className="text-sm font-bold text-[#009650] mb-2 uppercase border-b border-dashed border-gray-300 pb-1">
+          {language === 'bn' ? 'ডাক্তার ও ফি' : 'Doctor & Fee Details'}
+      </h2>
+      <div className="print-info-grid print-doctor-grid">
+          <div className='w-full'>
               <p><strong>{language === 'bn' ? 'ডাক্তারের নাম' : 'Doctor Name'}:</strong> {docName}</p>
               <p><strong>{language === 'bn' ? 'বিভাগ' : 'Department'}:</strong> {docDept}</p>
               <p><strong>{language === 'bn' ? 'যোগ্যতা' : 'Qualification'}:</strong> {docQual}</p>
               <p><strong>{language === 'bn' ? 'পরামর্শ ফি' : 'Consultation Fee'}:</strong> ৳{fee}</p>
-              <p><strong>{language === 'bn' ? 'রেফারেন্স আইডি' : 'Reference ID'}:</strong> {appointmentId || 'N/A'}</p>
-              <p><strong>{language === 'bn' ? 'উপলব্ধ সময়' : 'Available Time Slot'}:</strong> {timeSlot}</p>
-            </div>
           </div>
+      </div>
+  </div>
+
+  {/* 4. APPOINTMENT TIME BLOCK - Clear, single row at the bottom */}
+  <div className="print-schedule-block print-bg-force p-4 mb-4 rounded-md print-schedule-styles">
+      
+      <div className="flex justify-between items-start mb-3 border-b border-dashed border-gray-300 pb-2">
+          {/* Date (Left Column) */}
+          <div className="w-1/2">
+              <p className="text-xs font-bold text-gray-500 uppercase">
+                  {language === 'bn' ? 'অ্যাপয়েন্টমেন্টের তারিখ' : 'Appointment Date'}
+              </p>
+              <p className="text-base font-semibold text-gray-800 mt-1">
+                  {appointmentDate}
+              </p>
+          </div>
+          
+          {/* Reference ID (Right Column) */}
+          <div className="w-1/2 text-right">
+              <p className="text-xs font-bold text-red-600 uppercase">
+                  {language === 'bn' ? 'রেফারেন্স আইডি' : 'Reference ID'}
+              </p>
+              <p className="text-base font-extrabold text-red-600 mt-1">
+                  {appointmentId || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`}
+              </p>
+          </div>
+      </div>
+      
+      {/* Time Slot */}
+      <div className="flex justify-center items-center pt-2">
+          <h3 className="text-sm font-bold text-gray-500 mr-4">
+              {language === 'bn' ? 'উপলব্ধ সময়:' : 'Available Time Slot:'}
+          </h3>
+          <p className="text-lg font-extrabold text-[#323290] print-time-highlight">
+              {timeSlot}
+          </p>
+      </div>
+    </div>
           <div className="w-1/2">
              <div className="note-box">
                 <p><strong>{language === 'bn' ? 'নির্দেশনা' : 'Instructions'}:</strong></p>
