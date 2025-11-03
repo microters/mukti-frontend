@@ -401,7 +401,7 @@ const Appointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
-    if (currentStep !== 5) return; // Only allow submission from Step 5
+    if (currentStep !== 5) return;
 
     if (!validateForm()) return;
 
@@ -460,13 +460,11 @@ const Appointment = () => {
 
       const confirmedId = response.data?.appointmentId || response.data?.id || `MUKTI-${Date.now().toString().substring(7)}-${Math.random().toString(36).substring(2, 5).toUpperCase()}`; 
         
-        // 2. Save the confirmed ID to state (used in the print layout)
         setAppointmentId(confirmedId); 
         
         // 3. Initiate the render of AppointmentPrintLayout
         setIsPrinting(true);          
         
-        // 4. Trigger the useEffect hook to start the download (using the confirmed ID as the trigger value)
         // This is where the old function call was.
         setDownloadTrigger(confirmedId);
 
@@ -551,7 +549,7 @@ const Appointment = () => {
         </div>
       )}
       
-      <form onSubmit={(e) => e.preventDefault()} className="container mx-auto px-4 md:px-0 my-24 print-hide-element">
+      <form onSubmit={(e) => e.preventDefault()} className="container mx-auto px-4 md:px-0 my-20 print-hide-element">
         <div className="bg-slate-100 p-5 md:p-10 mt-10 rounded-xl border border-M-text-color/20">
           <div className="flex flex-wrap justify-between items-center gap-2 mb-10 relative">
             {steps.map((step) => (
@@ -912,7 +910,7 @@ const Appointment = () => {
                 </div>
               ) : (
                 // --- NEW VIEW: Success message and print button ---
-                <div className="text-center p-8">
+                <div className="text-center">
                   <Icon icon="clarity:success-standard-line" className="text-6xl text-green-500 mx-auto" />
                   <h2 className="text-2xl font-bold mt-4">
                     {language === "bn" ? "অ্যাপয়েন্টমেন্ট সফল হয়েছে!" : "Appointment Confirmed!"}
@@ -2092,36 +2090,6 @@ export default Appointment;
 // };
 
 // export default Appointment;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
           

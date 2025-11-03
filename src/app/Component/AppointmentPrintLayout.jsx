@@ -60,7 +60,7 @@ export const AppointmentPrintLayout = ({
               display: none !important;
               visibility: hidden !important;
           }
-          form.container.mx-auto.my-24, .footer{
+          form.container.mx-auto.my-20,.footer{
               display: none !important;
           }
             body * {
@@ -92,7 +92,6 @@ export const AppointmentPrintLayout = ({
               top: 0; left: 0; right: 0; bottom: 0;
               overflow: hidden;
               page-break-inside: avoid;
-              height: 100vh;
             }
             .print-info-block, .print-schedule-block {
               -webkit-print-color-adjust: exact !important;
