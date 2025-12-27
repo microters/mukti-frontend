@@ -1,7 +1,7 @@
 import { fetchDoctorBySlug } from "@/app/api/doctor";
 import SingleDoctorInfo from "@/app/Component/SingleDoctor/SingleDoctorInfo";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers"; // ✅ CORRECT import
+import { headers } from "next/headers";
 
 // ✅ Dynamic Metadata based on doctor + locale
 export async function generateMetadata({ params }) {

@@ -111,7 +111,7 @@ const SingleDoctorInfo = ({ doctor }) => {
   return (
     <div>
       {/* Hero Area */}
-      <div className="bg-[url(../../public/assets/inner-hero-bg.jpg)] bg-cover bg-top hidden md:block ">
+      <div className="bg-[url(../../public/assets/inner-hero-bg.png)] bg-cover bg-top hidden md:block ">
         <div className="h-96 px-3 bg-gradient-to-t from-[#009650be] to-[#323290be] relative"></div>
       </div>
 
