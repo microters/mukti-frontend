@@ -190,3 +190,319 @@ abbr:where([title]) {
 .static-page-content strong {
   font-weight: 600;
 }
+
+/* Mukti Landing Page */
+/* ==========================================================================
+   Mukti Hospital app landing page — styles
+   Scoped to .mukti-landing so it never leaks into the rest of the app.
+   Header (nav) and footer styles are intentionally removed.
+   ========================================================================== */
+
+.mukti-landing {
+  --blue: #2e2c8e;
+  --blue-deep: #232176;
+  --green: #0f9d6e;
+  --green-deep: #067a54;
+  --mint: #e7f6f0;
+  --ink: #12242b;
+  --muted: #6e8189;
+  --bg: #f4f7f8;
+  --line: #e7ecee;
+  --coral: #f0564b;
+  --card: #ffffff;
+  --display: var(--font-anek-bangla), sans-serif;
+  --body: var(--font-hind-siliguri), sans-serif;
+
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 90px; /* replaces the space the old footer used to take */
+}
+
+.mukti-landing * { box-sizing: border-box; margin: 0; padding: 0; }
+.mukti-landing h1,
+.mukti-landing h2,
+.mukti-landing h3 { font-family: var(--display); line-height: 1.35; font-weight: 800; }
+.mukti-landing a { text-decoration: none; color: inherit; }
+.mukti-landing .wrap { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
+.mukti-landing section { position: relative; }
+
+/* ---------- hero ---------- */
+.mukti-landing .hero {
+  background: linear-gradient(160deg, var(--blue) 0%, var(--blue-deep) 38%, var(--green) 120%);
+  color: #fff;
+  overflow: hidden;
+  padding: 70px 0 90px;
+  position: relative;
+}
+.mukti-landing .hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><path d="M0 30h60" stroke="white" stroke-opacity="0.04" stroke-width="1"/><path d="M30 0v60" stroke="white" stroke-opacity="0.04" stroke-width="1"/></svg>');
+  pointer-events: none;
+}
+.mukti-landing .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; position: relative; z-index: 2; }
+.mukti-landing .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); padding: 7px 14px; border-radius: 30px; font-size: 13px; font-weight: 600; margin-bottom: 22px; }
+.mukti-landing .eyebrow .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #7be3b4; box-shadow: 0 0 0 0 rgba(123,227,180,.7); animation: mukti-ping 1.8s infinite; }
+@keyframes mukti-ping {
+  0% { box-shadow: 0 0 0 0 rgba(123,227,180,.6); }
+  70% { box-shadow: 0 0 0 10px rgba(123,227,180,0); }
+  100% { box-shadow: 0 0 0 0 rgba(123,227,180,0); }
+}
+.mukti-landing .hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 800; letter-spacing: -.5px; }
+.mukti-landing .hero h1 .hl { color: #8ff0c4; }
+.mukti-landing .hero p.lead { font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,.9); margin: 20px 0 30px; max-width: 520px; }
+.mukti-landing .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
+.mukti-landing .btn-store { display: inline-flex; align-items: center; gap: 11px; background: #fff; color: var(--ink); padding: 13px 22px; border-radius: 15px; font-weight: 700; transition: transform .15s, box-shadow .15s; }
+.mukti-landing .btn-store:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+.mukti-landing .btn-store svg { width: 26px; height: 26px; }
+.mukti-landing .btn-store small { display: block; font-size: 10px; color: var(--muted); font-weight: 600; }
+.mukti-landing .btn-store b { font-family: var(--display); font-size: 16px; line-height: 1.1; }
+.mukti-landing .btn-call { display: inline-flex; align-items: center; gap: 9px; border: 1.5px solid rgba(255,255,255,.4); color: #fff; padding: 13px 22px; border-radius: 15px; font-weight: 700; font-family: var(--display); transition: background .15s; }
+.mukti-landing .btn-call:hover { background: rgba(255,255,255,.12); }
+.mukti-landing .ecg { margin-top: 34px; height: 38px; opacity: .85; width: 100%; }
+.mukti-landing .ecg path { stroke: #8ff0c4; stroke-width: 2.5; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: mukti-draw 3s ease-out forwards, mukti-flow 6s linear 3s infinite; }
+@keyframes mukti-draw { to { stroke-dashoffset: 0; } }
+@keyframes mukti-flow {
+  0% { opacity: .85; }
+  50% { opacity: .5; }
+  100% { opacity: .85; }
+}
+
+/* ---------- phone mockup ---------- */
+.mukti-landing .phone-wrap { display: flex; justify-content: center; }
+.mukti-landing .phone { width: 280px; height: 570px; background: #0d1b22; border-radius: 38px; padding: 11px; box-shadow: 0 40px 80px rgba(0,0,0,.4), 0 0 0 2px rgba(255,255,255,.08); position: relative; }
+.mukti-landing .phone::before { content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 110px; height: 26px; background: #0d1b22; border-radius: 0 0 16px 16px; z-index: 5; }
+.mukti-landing .screen { width: 100%; height: 100%; background: var(--bg); border-radius: 28px; overflow: hidden; }
+.mukti-landing .app-head { background: linear-gradient(160deg, var(--blue), var(--green)); padding: 38px 16px 30px; border-radius: 0 0 22px 22px; }
+.mukti-landing .app-head .row { display: flex; align-items: center; justify-content: space-between; }
+.mukti-landing .app-logo { color: #fff; font-family: var(--display); font-weight: 800; font-size: 15px; }
+.mukti-landing .app-av { width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,.25); border: 1.5px solid rgba(255,255,255,.6); }
+.mukti-landing .app-cta { margin: 14px; background: var(--green); border-radius: 14px; padding: 13px; color: #fff; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 20px rgba(15,157,110,.35); margin-top: -14px; position: relative; }
+.mukti-landing .app-cta .ci { width: 34px; height: 34px; border-radius: 10px; background: #fff; display: grid; place-items: center; flex: none; }
+.mukti-landing .app-cta b { font-family: var(--display); font-size: 13px; display: block; }
+.mukti-landing .app-cta small { font-size: 9.5px; opacity: .9; }
+.mukti-landing .app-sec { margin: 18px 14px 8px; font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--ink); }
+.mukti-landing .doc-row { display: flex; gap: 10px; padding: 0 14px; }
+.mukti-landing .doc { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 10px; }
+.mukti-landing .doc .pic { width: 38px; height: 38px; border-radius: 11px; background: var(--mint); margin-bottom: 8px; }
+.mukti-landing .doc .ln { height: 7px; border-radius: 4px; background: #e6ecee; margin: 5px 0; }
+.mukti-landing .doc .ln.s { width: 60%; background: #d4eee3; }
+.mukti-landing .doc .tag { display: inline-block; font-size: 8px; color: var(--green-deep); background: var(--mint); padding: 2px 7px; border-radius: 6px; margin-top: 4px; font-weight: 700; }
+
+/* ---------- stats ---------- */
+.mukti-landing .stats { margin-top: -46px; position: relative; z-index: 5; }
+.mukti-landing .stats-card { background: #fff; border-radius: 22px; box-shadow: 0 20px 50px rgba(16,45,60,.1); border: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); overflow: hidden; }
+.mukti-landing .stat { padding: 26px 18px; text-align: center; border-right: 1px solid var(--line); }
+.mukti-landing .stat:last-child { border-right: none; }
+.mukti-landing .stat .n { font-family: var(--display); font-size: 30px; font-weight: 800; color: var(--blue); line-height: 1; }
+.mukti-landing .stat .n .u { color: var(--green); }
+.mukti-landing .stat .l { font-size: 12.5px; color: var(--muted); margin-top: 7px; font-weight: 500; }
+
+/* ---------- generic section ---------- */
+.mukti-landing .band { padding: 78px 0; }
+.mukti-landing .sec-eyebrow { font-family: var(--display); font-size: 13px; font-weight: 700; letter-spacing: 1px; color: var(--green-deep); text-align: center; }
+.mukti-landing .sec-title { font-size: clamp(24px, 3.4vw, 34px); text-align: center; margin: 10px 0 12px; }
+.mukti-landing .sec-sub { text-align: center; color: var(--muted); max-width: 560px; margin: 0 auto 46px; font-size: 15px; }
+
+/* ---------- features ---------- */
+.mukti-landing .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mukti-landing .feat { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 26px; transition: transform .18s, box-shadow .18s, border-color .18s; }
+.mukti-landing .feat:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(16,45,60,.09); border-color: transparent; }
+.mukti-landing .feat .ic { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; margin-bottom: 16px; }
+.mukti-landing .feat h3 { font-size: 18px; margin-bottom: 8px; }
+.mukti-landing .feat p { font-size: 14px; color: var(--muted); }
+.mukti-landing .ic-blue { background: #e9e8fa; color: var(--blue); }
+.mukti-landing .ic-green { background: var(--mint); color: var(--green-deep); }
+.mukti-landing .ic-coral { background: #fdecea; color: var(--coral); }
+
+/* ---------- steps ---------- */
+.mukti-landing .steps-band { background: linear-gradient(180deg, #fff, var(--bg)); }
+.mukti-landing .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: step; }
+.mukti-landing .step { text-align: center; position: relative; }
+.mukti-landing .step .num { counter-increment: step; width: 60px; height: 60px; margin: 0 auto 18px; border-radius: 20px; background: linear-gradient(135deg, var(--blue), var(--green)); color: #fff; font-family: var(--display); font-weight: 800; font-size: 24px; display: grid; place-items: center; box-shadow: 0 12px 26px rgba(46,44,142,.28); }
+.mukti-landing .step .num::before { content: counter(step); }
+.mukti-landing .step h3 { font-size: 17px; margin-bottom: 7px; }
+.mukti-landing .step p { font-size: 13.5px; color: var(--muted); padding: 0 8px; }
+
+/* ---------- discount ---------- */
+.mukti-landing .promo { background: linear-gradient(135deg, var(--green), var(--green-deep)); border-radius: 26px; padding: 44px; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: 30px; overflow: hidden; position: relative; }
+.mukti-landing .promo::after { content: "১০%"; position: absolute; right: -10px; bottom: -30px; font-family: var(--display); font-weight: 800; font-size: 160px; color: rgba(255,255,255,.08); }
+.mukti-landing .promo h2 { font-size: clamp(22px, 3vw, 30px); color: #fff; }
+.mukti-landing .promo p { margin-top: 10px; color: rgba(255,255,255,.9); font-size: 15px; max-width: 520px; }
+.mukti-landing .promo .badge { flex: none; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.16); border: 2px dashed rgba(255,255,255,.5); display: grid; place-items: center; text-align: center; z-index: 2; }
+.mukti-landing .promo .badge b { font-family: var(--display); font-size: 38px; font-weight: 800; line-height: 1; }
+.mukti-landing .promo .badge span { font-size: 12px; }
+
+/* ---------- emergency ---------- */
+.mukti-landing .emg { background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--coral); border-radius: 18px; padding: 24px 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.mukti-landing .emg .ei { width: 56px; height: 56px; border-radius: 16px; background: var(--coral); display: grid; place-items: center; flex: none; }
+.mukti-landing .emg h3 { font-size: 19px; }
+.mukti-landing .emg p { font-size: 13.5px; color: var(--muted); }
+.mukti-landing .emg .call { margin-left: auto; background: var(--coral); color: #fff; padding: 13px 26px; border-radius: 13px; font-family: var(--display); font-weight: 700; display: inline-flex; gap: 9px; align-items: center; }
+
+/* ---------- download band ---------- */
+.mukti-landing .dl { background: linear-gradient(160deg, var(--blue), var(--blue-deep)); border-radius: 28px; padding: 56px 40px; text-align: center; color: #fff; }
+.mukti-landing .dl h2 { font-size: clamp(24px, 3.2vw, 34px); color: #fff; }
+.mukti-landing .dl p { color: rgba(255,255,255,.86); margin: 12px auto 26px; max-width: 480px; font-size: 15px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 880px) {
+  .mukti-landing .hero-grid { grid-template-columns: 1fr; gap: 50px; }
+  .mukti-landing .phone-wrap { order: 2; }
+  .mukti-landing .stats-card { grid-template-columns: repeat(2, 1fr); }
+  .mukti-landing .stat:nth-child(2) { border-right: none; }
+  .mukti-landing .stat:nth-child(1),
+  .mukti-landing .stat:nth-child(2) { border-bottom: 1px solid var(--line); }
+  .mukti-landing .feat-grid { grid-template-columns: 1fr; }
+  .mukti-landing .steps { grid-template-columns: 1fr; gap: 34px; }
+  .mukti-landing .promo { flex-direction: column; text-align: center; }
+  .mukti-landing .promo .badge { margin: 0 auto; }
+  .mukti-landing .emg { flex-direction: column; text-align: center; align-items: center; }
+  .mukti-landing .emg .call { margin: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mukti-landing * { animation: none !important; }
+  .mukti-landing .ecg path { stroke-dashoffset: 0; }
+}
+
+.mukti-landing :focus-visible { outline: 3px solid #8ff0c4; outline-offset: 2px; border-radius: 6px; }
+
+/* Mukti Policy */
+/* ==========================================================================
+   Mukti Hospital — privacy policy page styles
+   Scoped to .mukti-policy so it never clashes with .mukti-landing or the
+   rest of the site. Nav and footer styles are intentionally removed.
+   ========================================================================== */
+
+.mukti-policy {
+  --blue: #2e2c8e;
+  --blue-deep: #232176;
+  --green: #0f9d6e;
+  --green-deep: #067a54;
+  --mint: #e7f6f0;
+  --ink: #12242b;
+  --muted: #6e8189;
+  --bg: #f4f7f8;
+  --line: #e7ecee;
+  --coral: #f0564b;
+  --card: #ffffff;
+  --display: "Anek Bangla", sans-serif;
+  --body: "Hind Siliguri", sans-serif;
+
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 40px; /* replaces the space the old footer used to take */
+}
+
+.mukti-policy * { box-sizing: border-box; margin: 0; padding: 0; }
+.mukti-policy h1,
+.mukti-policy h2,
+.mukti-policy h3,
+.mukti-policy h4 { font-family: var(--display); line-height: 1.4; font-weight: 800; }
+.mukti-policy a { text-decoration: none; color: var(--green-deep); }
+.mukti-policy a:hover { text-decoration: underline; }
+.mukti-policy .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+
+/* ---------- page head ---------- */
+.mukti-policy .head {
+  background: linear-gradient(160deg, var(--blue), var(--blue-deep) 55%, var(--green) 130%);
+  color: #fff;
+  padding: 52px 0 60px;
+  text-align: center;
+}
+.mukti-policy .head .tag { display: inline-block; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); padding: 6px 15px; border-radius: 30px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+.mukti-policy .head h1 { font-size: clamp(26px, 4vw, 38px); }
+.mukti-policy .head p { color: rgba(255,255,255,.85); margin-top: 12px; font-size: 14px; }
+
+/* ---------- content card ---------- */
+.mukti-policy .card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 44px);
+  margin: -34px auto 60px;
+  box-shadow: 0 20px 50px rgba(16,45,60,.07);
+  position: relative;
+  z-index: 2;
+}
+.mukti-policy .card h2 { font-size: 20px; color: var(--blue); margin: 30px 0 10px; padding-top: 6px; }
+.mukti-policy .card h3 { font-size: 16px; margin: 18px 0 6px; color: var(--ink); }
+.mukti-policy .card p { margin-bottom: 12px; color: #33454c; font-size: 15px; }
+.mukti-policy .card ul { margin: 0 0 14px; padding-left: 4px; list-style: none; }
+.mukti-policy .card li { position: relative; padding-left: 26px; margin-bottom: 9px; font-size: 15px; color: #33454c; }
+.mukti-policy .card li::before { content: ""; position: absolute; left: 4px; top: 11px; width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.mukti-policy .card strong { color: var(--ink); font-weight: 600; }
+
+.mukti-policy .lead { background: var(--mint); border-radius: 14px; padding: 16px 18px; font-size: 14.5px; color: var(--green-deep); margin-bottom: 8px; }
+.mukti-policy .contact-box { background: #f7fafb; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-top: 14px; }
+.mukti-policy .contact-box p { margin-bottom: 6px; font-size: 14px; }
+
+.mukti-policy :focus-visible { outline: 3px solid #8ff0c4; outline-offset: 2px; border-radius: 6px; }
+
+
+/* ==========================================================================
+   Mukti Hospital — form styles for the account deletion page
+   Append this AFTER the .mukti-policy block already in globals.css.
+   ========================================================================== */
+
+.mukti-policy .form label {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 14px;
+  color: #33454c;
+  margin: 16px 0 7px;
+}
+.mukti-policy .rq { color: var(--coral); }
+
+.mukti-policy .form input,
+.mukti-policy .form textarea {
+  width: 100%;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
+  background: #f9fbfc;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 15px;
+  outline: none;
+  transition: border-color .15s;
+}
+.mukti-policy .form input:focus,
+.mukti-policy .form textarea:focus { border-color: var(--green); }
+.mukti-policy .form textarea { resize: vertical; }
+
+.mukti-policy .what { background: #fdf3f2; border: 1px solid #f8d9d5; border-radius: 13px; padding: 15px 17px; margin: 20px 0 6px; }
+.mukti-policy .what b { font-family: var(--display); color: var(--coral); font-size: 14px; display: block; margin-bottom: 5px; }
+.mukti-policy .what span { font-size: 13.5px; color: #7a5551; line-height: 1.7; }
+
+.mukti-policy .btn {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 13px;
+  padding: 14px;
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  transition: transform .15s, box-shadow .15s;
+}
+.mukti-policy .btn:hover { transform: translateY(-1px); }
+.mukti-policy .btn-wa { background: #25d366; color: #fff; }
+.mukti-policy .btn-wa:hover { box-shadow: 0 10px 24px rgba(37,211,102,.35); }
+.mukti-policy .btn-mail { background: #fff; color: var(--blue); border: 1.5px solid var(--line); }
+
+.mukti-policy .note { color: var(--coral); font-size: 13px; margin-top: 10px; min-height: 18px; text-align: center; }
