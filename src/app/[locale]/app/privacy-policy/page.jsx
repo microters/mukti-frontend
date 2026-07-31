@@ -1,151 +1,151 @@
-export const metadata = {
-  title: "প্রাইভেসি পলিসি — মুক্তি হাসপাতাল",
-  description:
-    "মুক্তি হাসপাতাল অ্যাপের প্রাইভেসি পলিসি — আমরা কী তথ্য সংগ্রহ করি, কেন করি এবং কীভাবে সুরক্ষিত রাখি।",
-};
+"use client";
+
+import { useTranslation } from "react-i18next";
 
 const PHONE = "+8801601666893";
 const WHATSAPP = "https://wa.me/8801609291934";
-const LAST_UPDATED = "জুলাই ২০২৫";
 
 export default function PrivacyPolicyPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="mukti-policy">
       {/* ===== PAGE HEAD ===== */}
       <header className="head">
-        <span className="tag">সর্বশেষ হালনাগাদ: {LAST_UPDATED}</span>
-        <h1>প্রাইভেসি পলিসি</h1>
-        <p>মুক্তি হাসপাতাল মোবাইল অ্যাপ</p>
+        <span className="tag">{t("privacyPolicy.lastUpdated")}</span>
+        <h1>{t("privacyPolicy.title")}</h1>
+        <p>{t("privacyPolicy.subtitle")}</p>
       </header>
 
       {/* ===== CONTENT ===== */}
       <main className="wrap">
         <div className="card">
-          <p className="lead">
-            আপনার ব্যক্তিগত ও স্বাস্থ্য সংক্রান্ত তথ্যের গোপনীয়তা আমাদের কাছে অত্যন্ত
-            গুরুত্বপূর্ণ। এই নীতিমালায় আমরা পরিষ্কারভাবে জানাচ্ছি — আমরা কী তথ্য সংগ্রহ করি, কেন
-            করি, কীভাবে ব্যবহার ও সুরক্ষা করি, এবং এর উপর আপনার কী অধিকার রয়েছে।
-          </p>
+          <p className="lead">{t("privacyPolicy.leadText")}</p>
 
-          <h2>১. আমরা যে তথ্য সংগ্রহ করি</h2>
-          <p>মুক্তি হাসপাতাল অ্যাপ ব্যবহার করার সময় আমরা নিম্নলিখিত তথ্য সংগ্রহ করতে পারি:</p>
+          <h2>{t("privacyPolicy.sec1Title")}</h2>
+          <p>{t("privacyPolicy.sec1Desc")}</p>
 
-          <h3>ক. আপনি নিজে যে তথ্য দেন</h3>
+          <h3>{t("privacyPolicy.sec1SubA")}</h3>
           <ul>
             <li>
-              <strong>অ্যাকাউন্ট তথ্য:</strong> নাম ও মোবাইল নাম্বার — অ্যাকাউন্ট তৈরি ও OTP
-              যাচাইয়ের জন্য।
+              <strong>{t("privacyPolicy.sec1AccTitle")}</strong>{" "}
+              {t("privacyPolicy.sec1AccDesc")}
             </li>
             <li>
-              <strong>প্রোফাইল তথ্য:</strong> প্রোফাইল ছবি ও ইমেইল (ঐচ্ছিক)।
+              <strong>{t("privacyPolicy.sec1ProfTitle")}</strong>{" "}
+              {t("privacyPolicy.sec1ProfDesc")}
             </li>
             <li>
-              <strong>স্বাস্থ্য সংক্রান্ত তথ্য:</strong> লিঙ্গ, জন্ম তারিখ, বয়স, রক্তের গ্রুপ,
-              উচ্চতা ও ওজন — যা আপনি প্রোফাইলে দেন। এগুলো অ্যাপয়েন্টমেন্ট ও রোগীর রেকর্ডের জন্য
-              ব্যবহৃত হয়।
+              <strong>{t("privacyPolicy.sec1HealthTitle")}</strong>{" "}
+              {t("privacyPolicy.sec1HealthDesc")}
             </li>
             <li>
-              <strong>অ্যাপয়েন্টমেন্ট তথ্য:</strong> রোগীর নাম, মোবাইল নাম্বার এবং যে ডাক্তার বা
-              সেবা আপনি বেছে নেন।
+              <strong>{t("privacyPolicy.sec1ApptTitle")}</strong>{" "}
+              {t("privacyPolicy.sec1ApptDesc")}
             </li>
             <li>
-              <strong>পরিবারের সদস্য:</strong> আপনি যদি পরিবারের সদস্য যোগ করেন, তাদের নাম,
-              সম্পর্ক, বয়স ও লিঙ্গ — এই তথ্য <strong>শুধু আপনার ফোনেই</strong> সংরক্ষিত থাকে,
-              আমাদের সার্ভারে পাঠানো হয় না।
+              <strong>{t("privacyPolicy.sec1FamilyTitle")}</strong>{" "}
+              {t("privacyPolicy.sec1FamilyDesc1")}{" "}
+              <strong>{t("privacyPolicy.sec1FamilyDesc2")}</strong>{" "}
+              {t("privacyPolicy.sec1FamilyDesc3")}
             </li>
           </ul>
 
-          <h3>খ. স্বয়ংক্রিয়ভাবে সংগৃহীত তথ্য</h3>
+          <h3>{t("privacyPolicy.sec1SubB")}</h3>
           <ul>
-            <li>
-              অ্যাপটি সঠিকভাবে চালানোর জন্য প্রয়োজনীয় সাধারণ কারিগরি তথ্য (যেমন অ্যাপ সংস্করণ)।
-              আমরা কোনো লোকেশন ট্র্যাকিং বা বিজ্ঞাপন-সংক্রান্ত তথ্য সংগ্রহ করি না।
-            </li>
+            <li>{t("privacyPolicy.sec1AutoDesc")}</li>
           </ul>
 
-          <h2>২. কেন এই তথ্য ব্যবহার করি</h2>
+          <h2>{t("privacyPolicy.sec2Title")}</h2>
           <ul>
-            <li>ডাক্তারের অ্যাপয়েন্টমেন্ট ও সিরিয়াল নিশ্চিত করতে এবং SMS-এ জানাতে।</li>
-            <li>আপনার রোগীর রেকর্ড ও টেস্টের রিপোর্ট দেখাতে।</li>
-            <li>OTP পাঠিয়ে আপনার অ্যাকাউন্ট যাচাই ও সুরক্ষিত রাখতে।</li>
-            <li>প্রয়োজনে হাসপাতাল থেকে সেবা সংক্রান্ত জরুরি যোগাযোগ করতে।</li>
-            <li>অ্যাপের সেবা উন্নত করতে।</li>
+            <li>{t("privacyPolicy.sec2Point1")}</li>
+            <li>{t("privacyPolicy.sec2Point2")}</li>
+            <li>{t("privacyPolicy.sec2Point3")}</li>
+            <li>{t("privacyPolicy.sec2Point4")}</li>
+            <li>{t("privacyPolicy.sec2Point5")}</li>
           </ul>
 
-          <h2>৩. তথ্য শেয়ার করা</h2>
+          <h2>{t("privacyPolicy.sec3Title")}</h2>
           <p>
-            আমরা আপনার ব্যক্তিগত বা স্বাস্থ্য তথ্য{" "}
-            <strong>কোনো তৃতীয় পক্ষের কাছে বিক্রি বা ভাড়া দিই না</strong>। তথ্য শুধু নিম্নলিখিত
-            ক্ষেত্রে ব্যবহৃত হয়:
+            {t("privacyPolicy.sec3Desc1")}{" "}
+            <strong>{t("privacyPolicy.sec3Desc2")}</strong>
+            {t("privacyPolicy.sec3Desc3")}
           </p>
           <ul>
-            <li>মুক্তি হাসপাতাল ও এর অনুমোদিত চিকিৎসা কর্মীদের মধ্যে, আপনাকে সেবা দেওয়ার জন্য।</li>
-            <li>
-              OTP ও নোটিফিকেশন পাঠাতে ব্যবহৃত SMS সেবাদাতার মাধ্যমে (শুধু বার্তা পাঠানোর
-              প্রয়োজনে)।
-            </li>
-            <li>আইনি বাধ্যবাধকতা থাকলে, প্রযোজ্য আইন অনুযায়ী।</li>
+            <li>{t("privacyPolicy.sec3Point1")}</li>
+            <li>{t("privacyPolicy.sec3Point2")}</li>
+            <li>{t("privacyPolicy.sec3Point3")}</li>
           </ul>
 
-          <h2>৪. তথ্যের সুরক্ষা</h2>
-          <p>
-            আপনার অ্যাকাউন্ট মোবাইল OTP দিয়ে যাচাই করা হয়। লগইন তথ্য আপনার ডিভাইসে নিরাপদে
-            (এনক্রিপ্টেড স্টোরেজে) রাখা হয়। তবে ইন্টারনেটে কোনো ব্যবস্থাই শতভাগ নিরাপদ নয় — আমরা
-            যুক্তিসঙ্গত সর্বোচ্চ সুরক্ষা নিশ্চিত করার চেষ্টা করি।
-          </p>
+          <h2>{t("privacyPolicy.sec4Title")}</h2>
+          <p>{t("privacyPolicy.sec4Desc")}</p>
 
-          <h2>৫. আপনার অধিকার</h2>
+          <h2>{t("privacyPolicy.sec5Title")}</h2>
           <ul>
-            <li>যেকোনো সময় প্রোফাইল থেকে আপনার তথ্য দেখা ও সংশোধন করতে পারবেন।</li>
-            <li>
-              অ্যাপের <strong>সেটিংস → অ্যাকাউন্ট মুছে ফেলুন</strong> থেকে আপনার অ্যাকাউন্ট ও
-              সংশ্লিষ্ট তথ্য মুছে ফেলার অনুরোধ করতে পারবেন।
-            </li>
-            <li>ফোনে সংরক্ষিত পরিবারের সদস্যের তথ্য আপনি নিজেই যেকোনো সময় মুছতে পারবেন।</li>
+            <li>{t("privacyPolicy.sec5Point1")}</li>
+            <li>{t("privacyPolicy.sec5Point2")}</li>
+            <li>{t("privacyPolicy.sec5Point3")}</li>
           </ul>
 
-          <h2>৬. তথ্য সংরক্ষণের সময়সীমা এবং ডাটা মুছে ফেলার নীতিমালা (Data Retention and Deletion Policy)</h2>
+          <h2>{t("privacyPolicy.sec6Title")}</h2>
           <ul>
             <li>
-              <strong>সংরক্ষণের সময়সীমা:</strong> আমরা ব্যবহারকারীর ব্যক্তিগত এবং স্বাস্থ্য সংক্রান্ত তথ্য (যেমন: নাম, মোবাইল নাম্বার, অ্যাপয়েন্টমেন্ট হিস্ট্রি এবং টেস্ট রিপোর্ট) কেবলমাত্র আমাদের চিকিৎসা সেবা সঠিকভাবে প্রদান করার জন্য এবং আইনি ও হাসপাতালের রেকর্ড সংরক্ষণের বাধ্যবাধকতা বজায় রাখার জন্য প্রয়োজনীয় সময় পর্যন্ত আমাদের সুরক্ষিত সার্ভারে সংরক্ষণ করি।
+              <strong>{t("privacyPolicy.sec6RetentionTitle")}</strong>{" "}
+              {t("privacyPolicy.sec6RetentionDesc")}
             </li>
             <li>
-              <strong>তথ্য মুছে ফেলা (Data Deletion):</strong> কোনো ব্যবহারকারী যদি তার অ্যাকাউন্ট এবং সমস্ত ব্যক্তিগত তথ্য চিরতরে মুছে ফেলতে চান, তবে তিনি দুইভাবে অনুরোধ জানাতে পারবেন:
+              <strong>{t("privacyPolicy.sec6DeletionTitle")}</strong>{" "}
+              {t("privacyPolicy.sec6DeletionDesc")}
               <ul>
-                <li><strong>ক) অ্যাপ থেকে সরাসরি:</strong> অ্যাপের &quot;প্রোফাইল ➔ সেটিংস ➔ অ্যাকাউন্ট মুছে ফেলুন&quot; অপশন থেকে।</li>
-                <li><strong>খ) ওয়েবসাইট থেকে সরাসরি:</strong> আমাদের ডেডিকেটেড ওয়েব পোর্টাল অ্যাকাউন্ট মুছে ফেলার অনুরোধ পেজে (<a href="https://muktihospital.com/app/delete-account/" target="_blank" rel="noopener noreferrer">https://muktihospital.com/app/delete-account/</a>) গিয়ে ফর্ম পূরণের মাধ্যমে।</li>
+                <li>
+                  <strong>{t("privacyPolicy.sec6DelApp")}</strong>{" "}
+                  {t("privacyPolicy.sec6DelAppDesc")}
+                </li>
+                <li>
+                  <strong>{t("privacyPolicy.sec6DelWeb")}</strong>{" "}
+                  {t("privacyPolicy.sec6DelWebDesc")}
+                  {" ("}
+                  <a
+                    href="https://muktihospital.com/app/delete-account/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    https://muktihospital.com/app/delete-account/
+                  </a>
+                  {")"}
+                </li>
               </ul>
             </li>
             <li>
-              <strong>কার্যকরের সময়সীমা:</strong> অনুরোধ পাওয়ার সর্বোচ্চ ৭ কর্মদিবসের মধ্যে আমরা আমাদের মূল ডাটাবেজ এবং সার্ভার থেকে ব্যবহারকারীর অ্যাকাউন্ট ও সংশ্লিষ্ট সকল ব্যক্তিগত ডাটা স্থায়ীভাবে ও নিরাপদে মুছে ফেলব। তবে আইনি বা হাসপাতালের প্রাতিষ্ঠানিক রেকর্ডের প্রয়োজনে কিছু তথ্য আইনানুযায়ী সংরক্ষিত থাকতে পারে।
+              <strong>{t("privacyPolicy.sec6TimeframeTitle")}</strong>{" "}
+              {t("privacyPolicy.sec6TimeframeDesc")}
             </li>
           </ul>
 
-          <h2>৭. শিশুদের গোপনীয়তা</h2>
-          <p>
-            অ্যাপটি প্রাপ্তবয়স্কদের ব্যবহারের জন্য। অভিভাবক হিসেবে আপনি সন্তানের জন্য
-            অ্যাপয়েন্টমেন্ট নিতে পারবেন, তবে অ্যাকাউন্টটি একজন প্রাপ্তবয়স্কের নামেই থাকবে।
-          </p>
+          <h2>{t("privacyPolicy.sec7Title")}</h2>
+          <p>{t("privacyPolicy.sec7Desc")}</p>
 
-          <h2>৮. নীতিমালার পরিবর্তন</h2>
-          <p>
-            প্রয়োজনে আমরা এই প্রাইভেসি পলিসি হালনাগাদ করতে পারি। উল্লেখযোগ্য পরিবর্তন হলে অ্যাপ বা
-            ওয়েবসাইটে জানানো হবে। উপরের &quot;সর্বশেষ হালনাগাদ&quot; তারিখ দেখে সর্বশেষ সংস্করণ
-            বুঝতে পারবেন।
-          </p>
+          <h2>{t("privacyPolicy.sec8Title")}</h2>
+          <p>{t("privacyPolicy.sec8Desc")}</p>
 
-          <h2>৯. যোগাযোগ</h2>
-          <p>এই নীতিমালা বা আপনার তথ্য সম্পর্কে কোনো প্রশ্ন থাকলে যোগাযোগ করুন:</p>
+          <h2>{t("privacyPolicy.sec9Title")}</h2>
+          <p>{t("privacyPolicy.sec9Desc")}</p>
           <div className="contact-box">
             <p>
-              <strong>মুক্তি হাসপাতাল (প্রা.) লিমিটেড</strong>
+              <strong>{t("privacyPolicy.companyName")}</strong>
             </p>
-            <p>ঢাকা–চট্টগ্রাম বাইপাস রোড, রেইসকোর্স, শাসনগাছা, কুমিল্লা–৩৫০০</p>
+            <p>{t("privacyPolicy.address")}</p>
             <p>
-              ফোন: <a href={`tel:${PHONE}`}>+৮৮০ ১৬০১ ৬৬৬-৮৯৩</a>
+              {t("privacyPolicy.phoneLabel")}{" "}
+              <a href={`tel:${PHONE}`}>
+                {t("privacyPolicy.phoneDisplay")}
+              </a>
             </p>
             <p>
-              WhatsApp: <a href={WHATSAPP}>+৮৮০ ১৬০৯ ২৯১৯৩৪</a>
+              {t("privacyPolicy.whatsappLabel")}{" "}
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">
+                {t("privacyPolicy.whatsappDisplay")}
+              </a>
             </p>
           </div>
         </div>
