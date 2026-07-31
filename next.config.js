@@ -3,19 +3,16 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  // experimental: {
-  //   appDir: true,
-  // },
 
   // Image optimization settings
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'localhost',
@@ -27,33 +24,24 @@ const nextConfig = {
         hostname: 'example.com',
         pathname: '/images/**',
       },
+      // Mukti Hospital এর জন্য HTTP এবং HTTPS দুটোই অ্যালাউ করা হলো
+      {
+        protocol: 'http',
+        hostname: 'api.muktihospital.com',
+        pathname: '/uploads/**',
+      },
       {
         protocol: 'https',
         hostname: 'api.muktihospital.com',
         pathname: '/uploads/**',
       },
     ],
-    
   },
 
-  
-  //   locales: ['en', 'bn'], // Supported locales
-  //   defaultLocale: 'en', // Default locale
-  //   localeDetection: false, // Disable automatic locale detection
-  // },
-
-  // Enable trailing slash in URLs (useful for static hosting)
-  trailingSlash: true, // This helps keep `/bn` from breaking
-
-  // Webpack configuration (optional, for custom path aliases)
-  // webpack(config) {
-  //   config.resolve.alias['@'] = path.join(__dirname, 'src');
-  //   return config;
-  // },
-
+  trailingSlash: true,
 
   env: {
-    CUSTOM_ENV_VAR: 'value', // Example of custom environment variable
+    CUSTOM_ENV_VAR: 'value',
   },
 };
 
