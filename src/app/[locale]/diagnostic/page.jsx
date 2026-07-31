@@ -9,4 +9,4 @@ const Diagnostic = async () => {
   return <DiagnosticContent dynamicData={dynamicData} whyChooseUsSection={whyChooseUsSection} />;
 };
 
-export default Diagnostic;
+export default Diagnostic; 
