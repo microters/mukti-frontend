@@ -23,21 +23,41 @@ export async function generateMetadata({ params }) {
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${doctor.icon}`
     : `${baseUrl}/default-og-image.jpg`;
 
-  const metaTitle =  doctor.translations.metaTitle || "Doctor";
-  const metaDescription = doctor.translations.metaDescription || "";
+  const t = doctor.translations || {};
+  const name = (t.name || "").trim();
+  const specialist = (t.designation || t.department || "").trim();
+  const years = t.yearsOfExperience ? String(t.yearsOfExperience).trim() : "";
 
+  const pageTitle =
+    t.metaTitle && t.metaTitle.trim()
+      ? t.metaTitle.trim()
+      : [name, specialist, "Mukti Hospital"].filter(Boolean).join(" | ");
+
+  // Description: use admin-set metaDescription; otherwise auto-generate per doctor
+  let pageDescription = (t.metaDescription && t.metaDescription.trim()) || "";
+  if (!pageDescription) {
+    if (locale === "bn") {
+      pageDescription = `মুক্তি হসপিটাল, কুমিল্লায় ${name}${specialist ? ` (${specialist})` : ""}-এর অ্যাপয়েন্টমেন্ট নিন।${years ? ` অভিজ্ঞতা ${years}+ বছর।` : ""} সময়সূচি, ফি ও বিস্তারিত দেখুন।`;
+    } else {
+      pageDescription = `Book an appointment with ${name}${specialist ? `, ${specialist}` : ""} at Mukti Hospital, Cumilla.${years ? ` ${years}+ years of experience.` : ""} View schedule, fees & details.`;
+    }
+  }
+  // Keep description within a safe SEO length (~160 chars)
+  if (pageDescription.length > 160) {
+    pageDescription = pageDescription.slice(0, 157).trimEnd() + "…";
+  }
 
   return {
-    title: `${metaTitle} | Mukti Hospital`,
-    description: metaDescription,
-    keywords: [metaTitle, "doctor", "Mukti Hospital", "healthcare"],
+    title: pageTitle,
+    description: pageDescription,
+    keywords: [name, specialist, "doctor", "Mukti Hospital", "Cumilla", "healthcare"].filter(Boolean),
     authors: [{ name: "Mukti Hospital", url: baseUrl }],
     creator: "Mukti Hospital",
     publisher: "Mukti Hospital",
     robots: "index, follow",
     openGraph: {
-      title: `${metaTitle} | Mukti Hospital`,
-      description: metaDescription,
+      title: pageTitle,
+      description: pageDescription,
       url: pageUrl,
       siteName: "Mukti Hospital",
       type: "profile",
@@ -46,14 +66,14 @@ export async function generateMetadata({ params }) {
           url: ogImage,
           width: 1200,
           height: 630,
-          alt: `${metaTitle} - Doctor at Mukti Hospital`,
+          alt: `${name || "Doctor"} - Mukti Hospital`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${metaTitle} | Mukti Hospital`,
-      description: metaDescription,
+      title: pageTitle,
+      description: pageDescription,
       site: "@MuktiHospital",
       creator: "@MuktiHospital",
       images: [ogImage],
