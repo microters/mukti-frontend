@@ -26,20 +26,32 @@ export async function generateMetadata({ params }) {
   const t = doctor.translations || {};
   const name = (t.name || "").trim();
   const specialist = (t.designation || t.department || "").trim();
+  // For the TITLE use the SHORT department (e.g. "ENT") so it stays compact;
+  // fall back to the longer designation only when department is empty.
+  const shortSpecialist = (t.department || t.designation || "").trim();
   const years = t.yearsOfExperience ? String(t.yearsOfExperience).trim() : "";
 
-  const pageTitle =
-    t.metaTitle && t.metaTitle.trim()
-      ? t.metaTitle.trim()
-      : [name, specialist, "Mukti Hospital"].filter(Boolean).join(" | ");
+  // Build a compact fallback title, dropping parts gracefully if it gets too long
+  const TITLE_MAX = 60;
+  const buildFallbackTitle = () => {
+    const full = [name, shortSpecialist, "Mukti Hospital"].filter(Boolean).join(" | ");
+    if (full.length <= TITLE_MAX) return full;
+    const noSpec = [name, "Mukti Hospital"].filter(Boolean).join(" | ");
+    if (noSpec.length <= TITLE_MAX) return noSpec;
+    return noSpec.slice(0, TITLE_MAX - 1).trimEnd() + "…";
+  };
 
-  // Description: use admin-set metaDescription; otherwise auto-generate per doctor
+  // Title: admin-set metaTitle as-is; otherwise the compact auto title
+  const pageTitle =
+    t.metaTitle && t.metaTitle.trim() ? t.metaTitle.trim() : buildFallbackTitle();
+
+  // Description: admin-set metaDescription; otherwise auto-generate per doctor
   let pageDescription = (t.metaDescription && t.metaDescription.trim()) || "";
   if (!pageDescription) {
     if (locale === "bn") {
-      pageDescription = `মুক্তি হসপিটাল, কুমিল্লায় ${name}${specialist ? ` (${specialist})` : ""}-এর অ্যাপয়েন্টমেন্ট নিন।${years ? ` অভিজ্ঞতা ${years}+ বছর।` : ""} সময়সূচি, ফি ও বিস্তারিত দেখুন।`;
+      pageDescription = `মুক্তি হসপিটাল, কুমিল্লায় ${name}${shortSpecialist ? ` (${shortSpecialist})` : ""}-এর অ্যাপয়েন্টমেন্ট নিন।${years ? ` অভিজ্ঞতা ${years}+ বছর।` : ""} সময়সূচি, ফি ও বিস্তারিত দেখুন।`;
     } else {
-      pageDescription = `Book an appointment with ${name}${specialist ? `, ${specialist}` : ""} at Mukti Hospital, Cumilla.${years ? ` ${years}+ years of experience.` : ""} View schedule, fees & details.`;
+      pageDescription = `Book an appointment with ${name}${shortSpecialist ? `, ${shortSpecialist} specialist` : ""} at Mukti Hospital, Cumilla.${years ? ` ${years}+ years experience.` : ""} View schedule & fees.`;
     }
   }
   // Keep description within a safe SEO length (~160 chars)
