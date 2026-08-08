@@ -20,6 +20,46 @@ import { Suspense } from "react";
 
 export const revalidate = 900;
 
+// Default SEO fallbacks (used when nothing is set from the dashboard)
+const DEFAULT_META = {
+  bn: {
+    metaTitle: "Mukti Hospital - Cumilla | মুক্তি হসপিটাল - কুমিল্লা",
+    metaDescription:
+      "কুমিল্লার বিশ্বস্ত মুক্তি হসপিটাল। ৩০+ বিশেষজ্ঞ ডাক্তারের সিরিয়াল, প্যাথলজি টেস্ট, NICU ও ২৪/৭ জরুরি সেবা। অনলাইনে অ্যাপয়েন্টমেন্ট নিন অথবা সরাসরি কল করুন।",
+  },
+  en: {
+    metaTitle: "Mukti Hospital - Cumilla | মুক্তি হসপিটাল - কুমিল্লা",
+    metaDescription:
+      "Mukti Hospital Cumilla — trusted care with 30+ specialist doctors, pathology tests, NICU & 24/7 emergency. Book your doctor appointment online or call now.",
+  },
+};
+
+// Homepage metadata: dashboard value first, hardcoded fallback second
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
+  const fallback = DEFAULT_META[locale] || DEFAULT_META.en;
+
+  let seo = null;
+  try {
+    // Same URL + options as the page itself, so Next.js dedupes this fetch (no extra API call)
+    const data = await fetchDynamicData(locale);
+    seo = data?.seo?.[locale] || data?.seo?.en || null;
+  } catch (err) {
+    console.error("generateMetadata: failed to load homepage seo", err);
+  }
+
+  const title = seo?.metaTitle?.trim() || fallback.metaTitle;
+  const description = seo?.metaDescription?.trim() || fallback.metaDescription;
+
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
+
 // একটি সাধারণ Loading কম্পোনেন্ট
 function DataLoading() {
   return <div className="py-10 text-center">Loading...</div>;
