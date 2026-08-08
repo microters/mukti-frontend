@@ -1,15 +1,44 @@
-import { headers } from "next/headers"; // Import headers from next/headers
+import { headers } from "next/headers";
 import DoctorsList from "@/app/Component/Doctors/DoctorsList";
 import HeroInnerPage from "@/app/Component/UI/HeroInnerPage";
 import { fetchDoctors } from "@/app/api/doctor";
+import { fetchPageBySlug } from "@/app/api/page";
 
-export const metadata = {
-  title: "Our Doctors - Mukti Hospital",
-  description: "Meet the expert doctors at Mukti Hospital. Browse our list of specialists providing top-quality healthcare services.",
-  keywords: "doctors, Mukti Hospital, healthcare, specialists, medical professionals",
-  robots: "index, follow",
-  viewport: "width=device-width, initial-scale=1.0",
+// Fallback meta (used until the "appointment" page is set from the dashboard)
+const DEFAULT_META = {
+  en: {
+    metaTitle: "Book an Appointment | Mukti Hospital, Cumilla",
+    metaDescription:
+      "Book an appointment with expert doctors at Mukti Hospital, Cumilla. Browse specialists by department, view schedules & fees, and confirm your slot online.",
+  },
+  bn: {
+    metaTitle: "অ্যাপয়েন্টমেন্ট নিন | মুক্তি হসপিটাল, কুমিল্লা",
+    metaDescription:
+      "মুক্তি হসপিটাল, কুমিল্লার বিশেষজ্ঞ ডাক্তারদের অ্যাপয়েন্টমেন্ট নিন। বিভাগ অনুযায়ী ডাক্তার, সময়সূচি ও ফি দেখে অনলাইনেই সিরিয়াল নিশ্চিত করুন।",
+  },
 };
+
+// Dashboard-controlled meta with hardcoded fallback
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
+  const fallback = DEFAULT_META[locale] || DEFAULT_META.en;
+
+  const page = await fetchPageBySlug("appointment", locale);
+  const t = page?.translations?.[locale] || page?.translations?.en || {};
+
+  const title = (t.metaTitle && t.metaTitle.trim()) || fallback.metaTitle;
+  const description = (t.metaDescription && t.metaDescription.trim()) || fallback.metaDescription;
+
+  return {
+    title,
+    description,
+    keywords: "appointment, doctors, Mukti Hospital, Cumilla, healthcare, specialists",
+    robots: "index, follow",
+    openGraph: { title, description, siteName: "Mukti Hospital" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 export const revalidate = 3600; // Revalidate every hour (optional, for static generation)
 
