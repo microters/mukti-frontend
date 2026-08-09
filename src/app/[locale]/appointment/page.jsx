@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import DoctorsList from "@/app/Component/Doctors/DoctorsList";
 import HeroInnerPage from "@/app/Component/UI/HeroInnerPage";
 import { fetchDoctors } from "@/app/api/doctor";
-import { fetchPageBySlug } from "@/app/api/page";
+import { fetchPageBySlug } from "@/app/api/cmsPage";
 
 // Fallback meta (used until the "appointment" page is set from the dashboard)
 const DEFAULT_META = {
