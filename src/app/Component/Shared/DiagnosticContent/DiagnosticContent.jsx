@@ -11,9 +11,8 @@ import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import TestCategoryAccordion from "../../TestCategoryAccordion";
-import { testGroups } from "@/app/data/diagnosticTestData";
 
-const DiagnosticContent = ({ whyChooseUsSection}) => {
+const DiagnosticContent = ({ whyChooseUsSection, testCategories = [] }) => {
   const { t, i18n } = useTranslation();
   const { user } = useAuth() || {};
 
@@ -71,10 +70,6 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
       toast.error("An error occurred while submitting the request. Please try again.");
     }
   };
-
-  const [activeTab, setActiveTab] = useState(
-        testGroups.length > 0 ? testGroups[0].id : null
-    );
 
   return (
     <div>
@@ -250,7 +245,7 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
       </div>
       {/* Diagnostic plans */}
       <section id="all-tests" className="py-12 md:py-20 bg-M-section-bg">
-            <div className="container mx-auto px-4 max-w-5xl">
+            <div className="container mx-auto px-4 max-w-6xl">
                 <h2 className="text-3xl md:text-4xl text-M-heading-color font-bold text-center">
                     {t("diagnostic.listTitle")}
                 </h2>
@@ -258,35 +253,20 @@ const DiagnosticContent = ({ whyChooseUsSection}) => {
                     {t("diagnostic.listSubtitle")}
                 </p>
 
-                {/* --- TAB NAVIGATION --- */}
-                <div className="flex flex-wrap justify-center border-b border-M-heading-color/20 mb-8">
-                    {testGroups.map((group) => (
-                        <button
-                            key={group.id}
-                            onClick={() => setActiveTab(group.id)}
-                            className={`py-3 px-6 text-lg font-semibold transition-colors duration-300
-                                ${activeTab === group.id
-                                    ? 'text-M-primary-color border-b-2 border-M-primary-color'
-                                    : 'text-M-text-color hover:text-M-primary-color/80'
-                                }
-                            `}
-                        >
-                            {group.groupName}
-                        </button>
+                {/* --- CATEGORY ACCORDIONS (from API) — masonry so cards pack tightly --- */}
+                <div className="columns-1 md:columns-2 gap-4">
+                    {testCategories.map((category, index) => (
+                        <div key={index} className="break-inside-avoid mb-4">
+                            <TestCategoryAccordion
+                                categoryName={category.categoryName}
+                                tests={category.tests}
+                            />
+                        </div>
                     ))}
-                </div>
-                {/* --- TAB CONTENT AREA --- */}
-                <div className="space-y-4">
-                    {/* Filter and display the categories of the currently active tab */}
-                    {testGroups.find(group => group.id === activeTab)?.categories.map((category, index) => (
-                        <TestCategoryAccordion 
-                            key={index}
-                            categoryName={category.categoryName}
-                            tests={category.tests}
-                        />
-                    ))}
-                    {testGroups.find(group => group.id === activeTab)?.categories.length === 0 && (
-                        <p className="text-center text-M-text-color mt-8">এই বিভাগে বর্তমানে কোনো পরীক্ষা উপলব্ধ নেই।</p>
+                    {testCategories.length === 0 && (
+                        <p className="text-center text-M-text-color mt-8">
+                            এই মুহূর্তে কোনো পরীক্ষা উপলব্ধ নেই।
+                        </p>
                     )}
                 </div>
             </div>

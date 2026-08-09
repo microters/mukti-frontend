@@ -13,7 +13,12 @@ const TestCategoryAccordion = ({ categoryName, tests }) => {
                     ${isOpen ? 'bg-M-primary-color text-white' : 'bg-white text-M-heading-color hover:bg-M-primary-color/10'}`}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="text-lg md:text-xl">{categoryName}</span>
+        <span className="flex items-center gap-2">
+          <span className="text-lg md:text-xl">{categoryName}</span>
+          <span className={`text-xs font-semibold rounded-full px-2 py-0.5 ${isOpen ? 'bg-white/20 text-white' : 'bg-M-primary-color/10 text-M-primary-color'}`}>
+            {tests.length}
+          </span>
+        </span>
         <svg 
           className={`w-5 h-5 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`} 
           fill="none" 
@@ -25,15 +30,15 @@ const TestCategoryAccordion = ({ categoryName, tests }) => {
         </svg>
       </button>
 
-      {/* Accordion Content */}
-      <div 
-        className={`transition-all duration-500 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
-        style={{ transitionProperty: 'max-height, opacity' }} 
+      {/* Accordion Content — smooth open/close via grid-rows 0fr → 1fr */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
       >
-        <div className="p-4 bg-M-section-bg/90">
+        <div className="overflow-hidden">
+        <div className={`px-4 pb-4 pt-0 bg-white max-h-[420px] ${isOpen ? 'overflow-y-auto' : 'overflow-hidden'}`}>
           
-          {/* List Header */}
-          <div className="flex justify-between font-bold border-b-2 border-M-primary-color pb-2 mb-2 text-M-heading-color">
+          {/* List Header — solid background so scrolled rows don't show through */}
+          <div className="flex justify-between font-bold border-b-2 border-M-primary-color pt-1 pb-2 mb-2 text-M-heading-color sticky -top-4 bg-white z-10">
             <span className="w-3/4 text-base">পরীক্ষার নাম</span>
             <span className="w-1/4 text-right text-base">মূল্য</span>
           </div>
@@ -46,10 +51,17 @@ const TestCategoryAccordion = ({ categoryName, tests }) => {
                           text-M-text-color`}
             >
               <span className="w-3/4 font-jost">{test.name}</span>
-              <span className="w-1/4 text-right font-bold text-M-primary-color">{test.price}</span>
+              <span className="w-1/4 text-right font-bold text-M-primary-color">
+                {(!test.price || test.price === 0)
+                  ? "—"
+                  : typeof test.price === "number"
+                    ? `৳${test.price.toLocaleString("en-BD")}`
+                    : test.price}
+              </span>
             </div>
           ))}
 
+        </div>
         </div>
       </div>
     </div>
