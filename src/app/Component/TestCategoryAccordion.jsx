@@ -38,7 +38,7 @@ const TestCategoryAccordion = ({ categoryName, tests }) => {
         <div className={`px-4 pb-4 pt-0 bg-white max-h-[420px] ${isOpen ? 'overflow-y-auto' : 'overflow-hidden'}`}>
           
           {/* List Header — solid background so scrolled rows don't show through */}
-          <div className="flex justify-between font-bold border-b-2 border-M-primary-color pt-1 pb-2 mb-2 text-M-heading-color sticky -top-4 bg-white z-10">
+          <div className="flex justify-between font-bold border-b-2 border-M-primary-color pt-5 pb-2 mb-2 text-M-heading-color sticky -top-4 bg-white z-10">
             <span className="w-3/4 text-base">পরীক্ষার নাম</span>
             <span className="w-1/4 text-right text-base">মূল্য</span>
           </div>
