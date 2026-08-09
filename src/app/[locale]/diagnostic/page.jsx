@@ -1,8 +1,45 @@
 import { fetchDynamicData } from "@/app/api/dynamicData,";
 import { fetchPathologyTests, fetchPathologyCategories } from "@/app/api/diagnostic";
+import { fetchPageBySlug } from "@/app/api/cmsPage";
 import DiagnosticContent from "@/app/Component/Shared/DiagnosticContent/DiagnosticContent";
 
 export const revalidate = 300;
+
+// Fallback meta (used until the "diagnostic" page is set from the dashboard)
+const DEFAULT_META = {
+  en: {
+    metaTitle: "Diagnostic Tests & Prices | Mukti Hospital, Cumilla",
+    metaDescription:
+      "View the full diagnostic test list and prices at Mukti Hospital, Cumilla. Pathology, X-ray, ultrasound, CT scan & more. Request a callback to book your test.",
+  },
+  bn: {
+    metaTitle: "ডায়াগনস্টিক টেস্ট ও মূল্য তালিকা | মুক্তি হসপিটাল, কুমিল্লা",
+    metaDescription:
+      "মুক্তি হসপিটাল, কুমিল্লার সম্পূর্ণ ডায়াগনস্টিক টেস্ট তালিকা ও মূল্য দেখুন। প্যাথলজি, এক্স-রে, আল্ট্রাসনোগ্রাম, সিটি স্ক্যানসহ সব টেস্ট। কলব্যাক রিকোয়েস্ট করুন।",
+  },
+};
+
+// Dashboard-controlled meta with hardcoded fallback (same pattern as appointment/about)
+export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
+  const { locale = "en" } = resolvedParams;
+  const fallback = DEFAULT_META[locale] || DEFAULT_META.en;
+
+  const page = await fetchPageBySlug("diagnostic", locale);
+  const t = page?.translations?.[locale] || page?.translations?.en || {};
+
+  const title = (t.metaTitle && t.metaTitle.trim()) || fallback.metaTitle;
+  const description = (t.metaDescription && t.metaDescription.trim()) || fallback.metaDescription;
+
+  return {
+    title,
+    description,
+    keywords: "diagnostic, test, price, pathology, X-ray, ultrasound, CT scan, Mukti Hospital, Cumilla",
+    robots: "index, follow",
+    openGraph: { title, description, siteName: "Mukti Hospital" },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 // Group tests by their categoryName, ordered by the category list from the API
 function groupTestsByCategory(tests, categories) {
