@@ -1,6 +1,5 @@
 import { fetchDynamicData } from "@/app/api/dynamicData,";
 import { fetchPathologyTests, fetchPathologyCategories, fetchDiagnosticHero } from "@/app/api/diagnostic";
-import { fetchPageBySlug } from "@/app/api/cmsPage";
 import DiagnosticContent from "@/app/Component/Shared/DiagnosticContent/DiagnosticContent";
 
 export const revalidate = 300; // 5 min cache
