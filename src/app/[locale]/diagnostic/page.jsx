@@ -24,8 +24,8 @@ export async function generateMetadata({ params }) {
   const { locale = "en" } = resolvedParams;
   const fallback = DEFAULT_META[locale] || DEFAULT_META.en;
 
-  const page = await fetchPageBySlug("diagnostic", locale);
-  const t = page?.translations?.[locale] || page?.translations?.en || {};
+  const hero = await fetchDiagnosticHero();
+  const t = hero?.translations?.[locale] || {};
 
   const title = (t.metaTitle && t.metaTitle.trim()) || fallback.metaTitle;
   const description = (t.metaDescription && t.metaDescription.trim()) || fallback.metaDescription;

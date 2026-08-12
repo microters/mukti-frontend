@@ -138,10 +138,10 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [], heroTransl
               <div className="max-w-[400px] mx-auto lg:ml-4 w-full relative before:w-full before:h-full before:border before:border-M-primary-color before:-left-[20px] before:-top-[20px] before:absolute before:z-[0] before:rounded-[40px] before:hidden md:before:block">
               <div className="w-full relative z-10 bg-M-heading-color py-8 px-4 md:p-8 rounded-lg md:rounded-[40px] shadow-lg">
                 <h2 className="text-2xl font-semibold text-white mb-2 text-center">
-                  {t("diagnostic.callAreaTitle")}
+                  {dash("callAreaTitle", "diagnostic.callAreaTitle")}
                 </h2>
                 <p className="font-jost font-normal text-base text-white text-center mb-6">
-                  {t("diagnostic.callAreaSubtitle")}
+                  {dash("callAreaSubtitle", "diagnostic.callAreaSubtitle")}
                 </p>
                 <ToastContainer />
                 <form className="space-y-5" onSubmit={handleSubmit}>
@@ -201,32 +201,32 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [], heroTransl
             </div>
             <div className="col-span-2 bg-M-section-bg py-6 px-4 md:p-12 rounded-md">
               <h2 className="text-2xl md:text-3xl lg:text-5xl text-M-heading-color">
-                  {t("diagnostic.rightCareTitle")}
+                  {dash("rightCareTitle", "diagnostic.rightCareTitle")}
               </h2>
               <p className="font-jost font-normal text-base text-M-text-color mt-4">
-                  {t("diagnostic.rightCareDesc")}
+                  {dash("rightCareDesc", "diagnostic.rightCareDesc")}
               </p>
 
               <h3 className="text-2xl text-M-heading-color mt-8 mb-4">
-                  {t("diagnostic.whyChooseTitle")}
+                  {dash("whyChooseTitle", "diagnostic.whyChooseTitle")}
               </h3>
               <ul className="list-disc list-inside space-y-3 font-jost font-normal text-base text-M-text-color ml-4">
                   <li>
-                      <span className="font-bold">{t("diagnostic.emergencyCare")}:</span> {t("diagnostic.emergencyCareDesc")}
+                      <span className="font-bold">{dash("emergencyCare", "diagnostic.emergencyCare")}:</span> {dash("emergencyCareDesc", "diagnostic.emergencyCareDesc")}
                   </li>
                   <li>
-                      <span className="font-bold">{t("diagnostic.expertDoctors")}:</span> {t("diagnostic.expertDoctorsDesc")}
+                      <span className="font-bold">{dash("expertDoctors", "diagnostic.expertDoctors")}:</span> {dash("expertDoctorsDesc", "diagnostic.expertDoctorsDesc")}
                   </li>
                   <li>
-                      <span className="font-bold">{t("diagnostic.advancedImaging")}:</span> {t("diagnostic.advancedImagingDesc")}
+                      <span className="font-bold">{dash("advancedImaging", "diagnostic.advancedImaging")}:</span> {dash("advancedImagingDesc", "diagnostic.advancedImagingDesc")}
                   </li>
                   <li>
-                      <span className="font-bold">{t("diagnostic.hassleFreeBooking")}:</span> {t("diagnostic.hassleFreeBookingDesc")}
+                      <span className="font-bold">{dash("hassleFreeBooking", "diagnostic.hassleFreeBooking")}:</span> {dash("hassleFreeBookingDesc", "diagnostic.hassleFreeBookingDesc")}
                   </li>
               </ul>
               <div className="mt-5 py-5 border-t border-M-heading-color/20">
                   <h4 className="text-xl text-M-heading-color">
-                      {t("diagnostic.emergencyCall")}
+                      {dash("emergencyCall", "diagnostic.emergencyCall")}
                   </h4>
                   <div className="flex gap-4 mt-4">
                       <div className="size-12 bg-M-primary-color rounded-full p-3 text-white">
@@ -241,10 +241,10 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [], heroTransl
                               Telephone
                           </h6>
                           <Link
-                              href="tel:+880 1601 666-893"
+                              href={`tel:${heroT?.emergencyPhone?.trim() || "+880 1601 666-893"}`}
                               className="font-jost font-bold text-base text-M-heading-color hover:text-M-primary-color transition-all duration-300"
                           >
-                              +880 1601 666-893
+                              {heroT?.emergencyPhone?.trim() || "+880 1601 666-893"}
                           </Link>
                       </div>
                   </div>
@@ -257,10 +257,10 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [], heroTransl
       <section id="all-tests" className="py-12 md:py-20 bg-M-section-bg">
             <div className="container mx-auto px-4 max-w-6xl">
                 <h2 className="text-3xl md:text-4xl text-M-heading-color font-bold text-center">
-                    {t("diagnostic.listTitle")}
+                    {dash("listTitle", "diagnostic.listTitle")}
                 </h2>
                 <p className="text-center text-M-text-color mb-10">
-                    {t("diagnostic.listSubtitle")}
+                    {dash("listSubtitle", "diagnostic.listSubtitle")}
                 </p>
 
                 {/* --- CATEGORY ACCORDIONS (from API) — masonry so cards pack tightly --- */}
