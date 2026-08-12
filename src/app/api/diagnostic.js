@@ -11,3 +11,10 @@ export const fetchPathologyCategories = () =>
     tags: ["pathology-categories"],
     revalidate: 300,
   }).catch(() => ({ categories: [] }));
+
+
+export const fetchDiagnosticHero = () =>
+  apiFetch("api/diagnostic-page", {
+    tags: ["diagnostic-hero"],
+    revalidate: 300,
+  }).catch(() => ({ translations: {} }));

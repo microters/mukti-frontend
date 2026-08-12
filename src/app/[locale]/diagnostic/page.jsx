@@ -1,9 +1,9 @@
 import { fetchDynamicData } from "@/app/api/dynamicData,";
-import { fetchPathologyTests, fetchPathologyCategories } from "@/app/api/diagnostic";
+import { fetchPathologyTests, fetchPathologyCategories, fetchDiagnosticHero } from "@/app/api/diagnostic";
 import { fetchPageBySlug } from "@/app/api/cmsPage";
 import DiagnosticContent from "@/app/Component/Shared/DiagnosticContent/DiagnosticContent";
 
-export const revalidate = 300;
+export const revalidate = 300; // 5 min cache
 
 // Fallback meta (used until the "diagnostic" page is set from the dashboard)
 const DEFAULT_META = {
@@ -19,7 +19,6 @@ const DEFAULT_META = {
   },
 };
 
-// Dashboard-controlled meta with hardcoded fallback (same pattern as appointment/about)
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const { locale = "en" } = resolvedParams;
@@ -46,7 +45,6 @@ function groupTestsByCategory(tests, categories) {
   const safeTests = Array.isArray(tests) ? tests : [];
   const catList = Array.isArray(categories) ? categories : [];
 
-  // Bucket tests under each category name
   const buckets = new Map();
   for (const test of safeTests) {
     const cat = (test.categoryName || "Others").trim();
@@ -74,23 +72,26 @@ function groupTestsByCategory(tests, categories) {
 }
 
 const Diagnostic = async () => {
-  const [dynamicData, tests, categoriesRes] = await Promise.all([
+  const [dynamicData, tests, categoriesRes, heroRes] = await Promise.all([
     fetchDynamicData(),
     fetchPathologyTests(),
     fetchPathologyCategories(),
+    fetchDiagnosticHero(),
   ]);
 
   const whyChooseUsSection = dynamicData?.whyChooseUsSection || {};
   const categories = categoriesRes?.categories || [];
   const testCategories = groupTestsByCategory(tests, categories);
+  const heroTranslations = heroRes?.translations || {};
 
   return (
     <DiagnosticContent
       dynamicData={dynamicData}
       whyChooseUsSection={whyChooseUsSection}
       testCategories={testCategories}
+      heroTranslations={heroTranslations}
     />
   );
 };
 
-export default Diagnostic; 
+export default Diagnostic;

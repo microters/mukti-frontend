@@ -12,8 +12,16 @@ import { toast, ToastContainer } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import TestCategoryAccordion from "../../TestCategoryAccordion";
 
-const DiagnosticContent = ({ whyChooseUsSection, testCategories = [] }) => {
+const DiagnosticContent = ({ whyChooseUsSection, testCategories = [], heroTranslations = {} }) => {
   const { t, i18n } = useTranslation();
+
+  // Dashboard-controlled hero (Manage Sections → Diagnostic Page) for current language
+  const heroT = heroTranslations?.[i18n.language] || heroTranslations?.en || {};
+  const dash = (key, fallbackKey) => {
+    const val = heroT?.[key];
+    return val && String(val).trim() !== "" ? val : t(fallbackKey);
+  };
+  const API_ORIGIN = "https://api.muktihospital.com";
   const { user } = useAuth() || {};
 
   const [formData, setFormData] = useState({
@@ -80,24 +88,24 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [] }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 items-center">
               <div>
                 <h1 className="text-white text-4xl md:text-[60px] mb-3">
-                  {t("diagnostic.heroTitle")}
+                  {dash("heroTitle", "diagnostic.heroTitle")}
                 </h1>
                 <p className="text-white text-base font-jost">
-                  {t("diagnostic.heroDesc")}
+                  {dash("heroDesc", "diagnostic.heroDesc")}
                 </p>
                 <div className="flex flex-wrap gap-4 mt-7">
                   <Link
-                    href="/contact"
+                    href={heroT?.heroBtn1Link?.trim() || "/contact"}
                     className="bg-M-heading-color font-jost font-medium uppercase text-white text-base hover:text-M-heading-color border-M-heading-color hover:bg-white hover:border-white py-3 px-6 inline-flex gap-2 items-center justify-center border rounded-md transition-all duration-300"
                   >
                     <Icon
                       icon="streamline:customer-support-1-solid"
                       width="20"
                     />{" "}
-                    {t("diagnostic.callUsNow")}
+                    {dash("heroBtn1Text", "diagnostic.callUsNow")}
                   </Link>
                   <Link
-                    href="#all-tests"
+                    href={heroT?.heroBtn2Link?.trim() || "#all-tests"}
                     className="bg-white font-jost font-medium uppercase text-M-text-color text-base hover:text-white border-white hover:bg-M-heading-color hover:border-M-heading-color py-3 px-6 inline-flex gap-2 items-center justify-center border rounded-md transition-all duration-300"
                   >
                     <Icon
@@ -105,14 +113,16 @@ const DiagnosticContent = ({ whyChooseUsSection, testCategories = [] }) => {
                       width="20"
                       className="text-M-secondary-color"
                     />{" "}
-                    {t("diagnostic.viewOffers")}
+                    {dash("heroBtn2Text", "diagnostic.viewOffers")}
                   </Link>
                 </div>
               </div>
               <div>
                 <Image
-                  src={heroImag}
+                  src={heroT?.heroImage ? `${API_ORIGIN}${heroT.heroImage}` : heroImag}
                   alt="Hero Image"
+                  width={500}
+                  height={500}
                   className="w-full max-w-[500px] lg:ml-auto mx-auto lg:mr-0 "
                 />
               </div>
