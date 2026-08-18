@@ -212,36 +212,6 @@ const FooterProvider = ({ initialDoctors, initialFooter }) => {
                 </Link>
               </li>
             )}
-            {/* {socialLinks.twitter && (
-              <li>
-                <Link
-                  href={socialLinks.twitter}
-                  className="size-9 inline-flex items-center justify-center rounded-full bg-M-secondary-color hover:bg-M-heading-color transition-all duration-300 border-2 border-[#fd7578] hover:border-M-heading-color/50 text-white"
-                >
-                  <Icon icon="ri:twitter-x-fill" width="19" />
-                </Link>
-              </li>
-            )} */}
-            {/* {socialLinks.instagram && (
-              <li>
-                <Link
-                  href={socialLinks.instagram}
-                  className="size-9 inline-flex items-center justify-center rounded-full bg-M-secondary-color hover:bg-M-heading-color transition-all duration-300 border-2 border-[#fd7578] hover:border-M-heading-color/50 text-white"
-                >
-                  <Icon icon="ri:instagram-line" width="19" />
-                </Link>
-              </li>
-            )} */}
-            {/* {socialLinks.linkedin && (
-              <li>
-                <Link
-                  href={socialLinks.linkedin}
-                  className="size-9 inline-flex items-center justify-center rounded-full bg-M-secondary-color hover:bg-M-heading-color transition-all duration-300 border-2 border-[#fd7578] hover:border-M-heading-color/50 text-white"
-                >
-                  <Icon icon="ri:linkedin-fill" width="19" />
-                </Link>
-              </li>
-            )} */}
             {socialLinks.youtube && (
               <li>
                 <Link
