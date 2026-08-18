@@ -146,7 +146,7 @@ const FooterProvider = ({ initialDoctors, initialFooter }) => {
             )}
 
             {/* Diagnostic Section */}
-            {diagnosticSection && (
+            {/* {diagnosticSection && (
               <div>
                 <h4 className="text-white text-base md:text-xl font-jost font-bold uppercase">
                   {diagnosticSection.title}
@@ -161,7 +161,7 @@ const FooterProvider = ({ initialDoctors, initialFooter }) => {
                   ))}
                 </ul>
               </div>
-            )}
+            )} */}
           </div>
         </div>
         <div className="container mx-auto border-t border-[#39CABB]/10 pt-5">
